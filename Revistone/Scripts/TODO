@@ -1,0 +1,3 @@
+rework line render system to prevent flickering (use a buffer)
+clean up code
+and more interaction and user options
