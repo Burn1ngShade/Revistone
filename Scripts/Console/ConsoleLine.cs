@@ -60,6 +60,13 @@ namespace Revistone
                 this._updated = false;
             }
 
+            public ConsoleLine(ConsoleLine consoleLine)
+            {
+                this._lineText = consoleLine.lineText;
+                this._lineColour = consoleLine.lineColour == null ? new ConsoleColor[] {ConsoleColor.White} : consoleLine.lineColour;
+                this._updated = false;
+            }
+
             //--- METHODS ---
 
             public void Update(ConsoleLine line) { Update(line.lineText, line.lineColour); }

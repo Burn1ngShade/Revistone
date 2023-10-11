@@ -30,6 +30,7 @@ namespace Revistone
 
             public static void SendConsoleMessage(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo)
             {
+                SendDebugMessage(GetConsoleLine().ToString() + " : " + (consoleLines.Length - 9).ToString());
                 UpdateEnclosedConsole(lineInfo, updateInfo, 2, consoleLines.Length - 9, ref consoleCurrentLine);
             }
 
@@ -103,7 +104,7 @@ namespace Revistone
 
             public static void GoNextLine(int shift = 1)
             {
-                consoleCurrentLine = Math.Clamp(consoleCurrentLine + shift, 1, consoleLines.Length - 9);
+                consoleCurrentLine = Math.Clamp(consoleCurrentLine + shift, 1, consoleLines.Length - 8);
             }
 
             public static void GoToLine(int index)

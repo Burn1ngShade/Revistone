@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Revistone.Apps;
 using Revistone.Functions;
 using static Revistone.Console.ConsoleLine;
@@ -138,8 +139,10 @@ namespace Revistone
             {
                 int cursorTop = System.Console.GetCursorPosition().Top;
 
-                ConsoleLine c = consoleLines[cursorTop];
-                ConsoleLine bc = consoleLinesBuffer[cursorTop];
+                consoleLines[cursorTop].MarkAsUpToDate();
+
+                ConsoleLine c = new ConsoleLine(consoleLines[cursorTop]);
+                ConsoleLine bc = new ConsoleLine(consoleLinesBuffer[cursorTop]);
 
                 if (bc.lineText.Length > c.lineText.Length)
                 {
@@ -166,7 +169,6 @@ namespace Revistone
 
                     System.Console.SetCursorPosition(0, i);
                     WriteCurrentConsoleLine();
-                    consoleLines[i].MarkAsUpToDate();
 
                     consoleLinesBuffer[i].Update(consoleLines[i]);
                 }

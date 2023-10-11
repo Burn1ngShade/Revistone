@@ -2,6 +2,7 @@ using Revistone.Console;
 using Revistone.Functions;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Console.ConsoleInteraction;
+using static Revistone.Console.ConsoleDisplay;
 
 namespace Revistone
 {
