@@ -1,0 +1,70 @@
+--- Version 0.1 --- [Major]
+
+Summary:
+First full version, which is fairly bug free im fairly happy with,
+still a lot more i want to and need to do with this but a good start
+
+Stats:
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                         | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                            |         16 |      1,362 |        173 |        313 |      1,848 |
+| App                                                                          |          4 |        597 |         29 |        123 |        749 |
+| App (Files)                                                                  |          2 |        169 |         24 |         40 |        233 |
+| App\CreatedApps                                                              |          2 |        428 |          5 |         83 |        516 |
+| App\CreatedApps (Files)                                                      |          1 |         18 |          0 |          3 |         21 |
+| App\CreatedApps\DebitCard                                                    |          1 |        410 |          5 |         80 |        495 |
+| Console                                                                      |          6 |        345 |         73 |         75 |        493 |
+| Functions                                                                    |          2 |        155 |         36 |         43 |        234 |
+| Interaction                                                                  |          3 |        212 |         25 |         60 |        297 |
+| Management                                                                   |          1 |         53 |         10 |         12 |         75 |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Overview:
+
+Simplified Process Down To 2 Threads (From 3)
+Added Summarys To All Scripts!
+More Consitent Name Conventions!
+Lots of recompiled scripts!
+User interaction greatly improved
+lots of bug fixes
+and much more
+
+Specifics:
+
+[Major] 
+StringFunctions -> Renamed (prev: UtilityScripts) and renames, added support for capital modifications, and formated strings
+ColourFunctions -> Renamed (prev: ColourCreator), all functions Rewritten and renamed
+UserInputProfile -> Added, handles all requirements for user input and checks, cleaner and more options than before, easily expandable
+UserInput -> Renamed (prev: ConsoleInteraction), completely redone, all functions cleaned up, clear is now true by default, implements UserInputPorfile 
+ConsoleAnimatedLine -> Renamed (prev: ConsoleLineDynamicUpdate) Completley redone, now array like console lines, instead of refercening a console lien and index, fixes lots
+ConsoleDisplay -> Refactored, added summarys, redid dynamic update logic, header and boundary now use dynamic lines
+AppCommands -> Completley redid to use UserInputProfiles, now much more intutive and supports app specific commands
+
+[Notable] 
+App -> Summarys, added OnInitalisation option, more custom options like min buffer width and height, and custom commands
+
+[Minor]
+ConsoleData -> Added, contains all static data around console, moved into seperate class so user less likley to interact with (THEY SHOULDNT)
+ConsoleAction -> Added summarys, redid a copule functions and names 
+ConsoleLineUpdate -> Added declerations for all possible permutations, renamed old declerations
+ConsoleLine -> Refactored Declerations
+UserRealtimeInputProfile -> Added, will be used for realtime input for more control (NOT IMPLEMENTED)
+Manger -> Slight code clean up and renames
+
+Fixed bugs:
+
+[Major]
+Big issue with rendering breaking at line randomly
+ColourWords function did not work (at all)
+Trying to backspace on large amounts of text (> than window buffer causes error)
+
+[Notable]
+Windows 2 small cause certain apps to malfunction
+Error on resizing window width or height 2 zero
+when exiting app based in promt, new app promt wont show / start messages 
+
+[Minor]
+Menus wouldnt shift correctly on full buffer
+very rarely dynamic colours do not clear from list
+very rarely dynamic colours remain on screen

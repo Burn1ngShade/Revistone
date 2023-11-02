@@ -1,7 +1,6 @@
-using System.Runtime.InteropServices;
 using Revistone.Apps;
 using Revistone.Functions;
-using static Revistone.Console.ConsoleLine;
+using static Revistone.Console.Data.ConsoleData;
 
 namespace Revistone
 {
@@ -9,148 +8,144 @@ namespace Revistone
     {
         public static class ConsoleDisplay
         {
-            //--- DYNAMIC LINES ---
-            static List<ConsoleLineDynamicUpdate> dynamicLines = new List<ConsoleLineDynamicUpdate>();
-
-            public static void AddDynamicLine(ConsoleLineDynamicUpdate d)
-            {
-                dynamicLines.Add(d);
-            }
-
-            public static void ForceStopDynamicLines()
-            {
-                dynamicLines = new List<ConsoleLineDynamicUpdate>();
-            }
-
             //--- CONSOLE LOOPS ---
 
-            public static void HandleConsoleFunctions()
+            /// <summary> [DO NOT CALL] Initializes ConsoleDisplay. </summary>
+            internal static void InitializeConsoleDisplay()
             {
-                Manager.Tick += HandleConsoleTickFunctions;
-
                 System.Console.CursorVisible = false;
+                consoleLineIndex = 1;
+                debugLineIndex = bufferSize.height - 8;
 
-                consoleCurrentLine = 1;
-                debugCurrentLine = bufferSize.height - 8;
-
-                while (true)
-                {
-                    if (bufferSize.width != System.Console.BufferWidth || bufferSize.height != System.Console.BufferHeight || consoleReload)
-                    {
-                        bufferSize = (System.Console.BufferWidth, System.Console.BufferHeight);
-                        ReloadConsoleDisplay();
-                        consoleReload = false;
-                    }
-
-                    if (consoleUpdated) continue;
-
-                    if (bufferSize.height <= minBufferSize)
-                    {
-                        System.Console.SetCursorPosition(0, 0);
-                        System.Console.ForegroundColor = ConsoleColor.Red;
-                        for (int i = 0; i < bufferSize.height; i++)
-                        {
-                            System.Console.WriteLine("Console To Small, Must Be Resized!");
-                        }
-                        System.Console.ForegroundColor = ConsoleColor.White;
-                        consoleUpdated = true;
-                        continue;
-                    }
-
-                    RenderConsole();
-
-                    consoleUpdated = true;
-                }
+                Management.Manager.Tick += HandleConsoleDisplayBehaviour;
             }
 
-            static void HandleConsoleTickFunctions(int tickNum)
+            /// <summary> Main loop for ConsoleDisplay, handles dynamic lines and rendering console. </summary>
+            static void HandleConsoleDisplayBehaviour(int tickNum)
             {
-                if (tickNum % App.activeApp.colourSpeed == 0 && consoleLines.Length > 9)
+                //if console display resized
+                if (bufferSize.width != System.Console.BufferWidth || bufferSize.height != System.Console.BufferHeight || consoleReload)
                 {
-                    consoleLines[0].Update(ColourCreator.ShiftColours(consoleLines[0].lineColour, 1));
-                    consoleLines[^8].Update(ColourCreator.ShiftColours(consoleLines[0].lineColour, -1));
-                    consoleUpdated = false;
+                    bufferSize = (System.Console.BufferWidth, System.Console.BufferHeight);
+                    ResetConsoleDisplay();
+                    consoleReload = false;
                 }
 
-                List<int> r = new List<int>();
+                // --- Render Console ---
 
-                for (int i = 0; i < dynamicLines.Count; i++)
+                if (bufferSize.height < App.activeApp.minHeightBuffer || bufferSize.width < App.activeApp.minWidthBuffer)
                 {
-                    if (tickNum % dynamicLines[i].tickMod != 0) continue;
+                    if (consoleUpdated || bufferSize.height == 0 || bufferSize.width == 0) return;
 
-                    if (consoleLines[dynamicLines[i].index].lineText != dynamicLines[i].consoleLine.lineText)
+                    System.Console.SetCursorPosition(0, 0);
+                    System.Console.ForegroundColor = ConsoleColor.Red;
+                    for (int i = 0; i < bufferSize.height; i++)
                     {
-                        r.Add(i);
-                        continue;
+                        System.Console.WriteLine($"{(bufferSize.height < App.activeApp.minHeightBuffer ? "[Console Height Is To Small] " : "")}{(bufferSize.width < App.activeApp.minWidthBuffer ? "[Console Width Is To Small] " : "")}");
                     }
+                    System.Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    UpdateAnimatedLines(tickNum);
+                    if (consoleUpdated) return;
+                    RenderConsole();
+                }
 
-                    switch (dynamicLines[i].updateType)
+                consoleUpdated = true;
+            }
+
+            //--- ANIMATED LINES METHOD ---
+
+            /// <summary> Updates all lines marked as animated. </summary>
+            static void UpdateAnimatedLines(int tickNum)
+            {
+                for (int i = 0; i < consoleLineUpdates.Length; i++)
+                {
+                    if (!consoleLineUpdates[i].enabled || tickNum % consoleLineUpdates[i].tickMod != 0) continue; //not dynamic or not right tick
+
+                    switch (consoleLineUpdates[i].updateType)
                     {
-                        case ConsoleLineDynamicUpdate.UpdateType.ShiftRight:
-                            dynamicLines[i].consoleLine.Update(ColourCreator.ShiftColours(dynamicLines[i].consoleLine.lineColour, 1));
-                            consoleLines[dynamicLines[i].index].Update(dynamicLines[i].consoleLine.lineColour);
+                        case ConsoleAnimatedLine.UpdateType.ShiftRight: //shifts colour right by one
+                            consoleLines[i].Update(ColourFunctions.ShiftColours(consoleLines[i].lineColour, 1));
                             break;
-                        case ConsoleLineDynamicUpdate.UpdateType.ShiftLeft:
-                            consoleLines[dynamicLines[i].index].Update(ColourCreator.ShiftColours(consoleLines[dynamicLines[i].index].lineColour, -1));
+                        case ConsoleAnimatedLine.UpdateType.ShiftLeft: //shifts colour left by one
+                            consoleLines[i].Update(ColourFunctions.ShiftColours(consoleLines[i].lineColour, -1));
                             break;
                     }
 
                     consoleUpdated = false;
-                }
-
-                for (int i = r.Count - 1; i > 0; i--)
-                {
-                    dynamicLines.RemoveAt(r[i]);
                 }
             }
 
             //--- CONSOLE DISPLAY METHODS ---
 
-            static void ReloadConsoleDisplay()
+            /// <summary> Resets console display to default. </summary>
+            static void ResetConsoleDisplay()
             {
                 System.Console.Clear();
                 consoleUpdated = false;
-                consoleCurrentLine = 1;
-                debugCurrentLine = System.Console.BufferHeight - 8;
+                consoleLineIndex = 1;
+                debugLineIndex = System.Console.BufferHeight - 8;
 
-                ConsoleLine[] debug = new ConsoleLine[8];
-
-                consoleLines = new ConsoleLine[System.Console.BufferHeight - 1];
+                Array.Resize(ref consoleLines, System.Console.BufferHeight - 1);
                 consoleLinesBuffer = new ConsoleLine[System.Console.BufferHeight - 1];
+                consoleLineUpdates = new ConsoleAnimatedLine[System.Console.BufferHeight - 1];
                 for (int i = 0; i < consoleLines.Length; i++)
                 {
                     consoleLines[i] = new ConsoleLine();
                     consoleLinesBuffer[i] = new ConsoleLine();
+                    consoleLineUpdates[i] = new ConsoleAnimatedLine();
                 }
-                consoleLines[1] = new ConsoleLine("> ");
-                ConsoleAction.UpdateConsoleTitle(App.activeApp.colours);
-                ConsoleAction.UpdateConsoleBorder(App.activeApp.colours);
+
+                UpdateConsoleTitle();
+                UpdateConsoleBorder();
+
+                appInitalisation = true;
             }
 
-            static void ClearCurrentConsoleLine()
+            /// <summary> [WIP] Reloads console display updating buffer size, while maintaing screen. </summary>
+            static void SoftReloadConsoleDisplay()
             {
-                int currentLineCursor = System.Console.CursorTop;
-                System.Console.SetCursorPosition(0, System.Console.CursorTop);
-                System.Console.Write(new string(' ', System.Console.WindowWidth));
-                System.Console.SetCursorPosition(0, currentLineCursor);
+                throw new NotImplementedException("Will Add Soon!");
             }
 
-            static void WriteCurrentConsoleLine()
+            /// <summary> Updates console title, with current app name and colour scheme. </summary>
+            static void UpdateConsoleTitle()
             {
+                if (consoleLines.Length < App.activeApp.minHeightBuffer) return;
+                string title = App.activeApp.name;
+                consoleLines[0].Update(new string('-', (bufferSize.width - title.Length) / 2 - 2) + $" [{title}] " + new string('-', (bufferSize.width - title.Length) / 2 - 2), App.activeApp.borderColours);
+                ConsoleAction.UpdateLineAnimation(new ConsoleAnimatedLine(true, ConsoleAnimatedLine.UpdateType.ShiftRight, App.activeApp.borderColourSpeed), 0);
+                consoleUpdated = false;
+            }
+
+            /// <summary> Updates console border, with current app colour scheme. </summary>
+            static void UpdateConsoleBorder()
+            {
+                if (consoleLines.Length < App.activeApp.minHeightBuffer) return;
+                consoleLines[^8].Update(new string('-', bufferSize.width - 1), App.activeApp.borderColours);
+                ConsoleAction.UpdateLineAnimation(new ConsoleAnimatedLine(true, ConsoleAnimatedLine.UpdateType.ShiftRight, App.activeApp.borderColourSpeed), consoleLines.Length - 8);
+                consoleUpdated = false;
+            }
+
+            /// <summary> Writes given line to screen, using value of consoleLines. </summary>
+            static void WriteConsoleLine(int lineIndex)
+            {
+                System.Console.SetCursorPosition(0, lineIndex);
+
                 int cursorTop = System.Console.GetCursorPosition().Top;
-
                 consoleLines[cursorTop].MarkAsUpToDate();
 
-                ConsoleLine c = new ConsoleLine(consoleLines[cursorTop]);
-                ConsoleLine bc = new ConsoleLine(consoleLinesBuffer[cursorTop]);
+                ConsoleLine c = new ConsoleLine(consoleLines[cursorTop]); //copy of current console line
+                ConsoleLine bc = new ConsoleLine(consoleLinesBuffer[cursorTop]); //copy of buffer console line
 
-                if (bc.lineText.Length > c.lineText.Length)
+                if (bc.lineText.Length > c.lineText.Length) //clears line between end of currentline and buffer line
                 {
                     System.Console.SetCursorPosition(c.lineText.Length, cursorTop);
                     System.Console.Write(new string(' ', System.Console.WindowWidth - c.lineText.Length));
+                    System.Console.SetCursorPosition(0, System.Console.GetCursorPosition().Top);
                 }
-
-                System.Console.SetCursorPosition(0, System.Console.GetCursorPosition().Top);
 
                 for (int i = 0; i < c.lineText.Length; i++)
                 {
@@ -161,14 +156,14 @@ namespace Revistone
                 System.Console.ForegroundColor = ConsoleColor.White;
             }
 
+            /// <summary> Updates the console display, based on current states of consoleLines, before updating consoleLinesBuffer. </summary>
             static void RenderConsole()
             {
                 for (int i = 0; i < consoleLines.Length; i++)
                 {
                     if (consoleLines[i].updated) continue;
 
-                    System.Console.SetCursorPosition(0, i);
-                    WriteCurrentConsoleLine();
+                    WriteConsoleLine(i);
 
                     consoleLinesBuffer[i].Update(consoleLines[i]);
                 }

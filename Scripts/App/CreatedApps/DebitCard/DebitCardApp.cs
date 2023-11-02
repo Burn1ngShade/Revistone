@@ -1,8 +1,9 @@
 using Revistone.Console;
 using Revistone.Functions;
 using static Revistone.Console.ConsoleAction;
-using static Revistone.Console.ConsoleInteraction;
-using static Revistone.Console.ConsoleDisplay;
+using Revistone.Interaction;
+using static Revistone.Interaction.UserInput;
+using static Revistone.Interaction.UserInputProfile;
 
 namespace Revistone
 {
@@ -12,10 +13,9 @@ namespace Revistone
         {
             List<DebitCard> cardInfo = new List<DebitCard>();
 
-            public DebitCardApp(string name) : base(name) { }
-            public DebitCardApp(string name, ConsoleColor[] colours, int colourSpeed = 5) : base(name, colours, colourSpeed) { }
+            public DebitCardApp(string name, ConsoleColor[] borderColours, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int borderColourSpeed = 5, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base (name, borderColours, appCommands, borderColourSpeed, minAppWidth, minAppHeight, baseCommands) {}
 
-            public override void HandleUserPromt()
+            public override void OnAppInitalisation()
             {
                 DebitCard.accountID = int.Parse(File.ReadLines("Scripts/App/CreatedApps/DebitCard/DebitCard.txt").ToArray()[0]);
 
@@ -25,23 +25,24 @@ namespace Revistone
 
             void MainMenu()
             {
-                ClearConsole();
-                Thread.Sleep(25); //gives time to console graphics to update so it doesnt all break
+                ClearPrimaryConsole();
 
-                ConsoleColor[] colours = ColourCreator.CreateColourGradient(ColourCreator.CyanToDarkMagentaGradient, 62);
-                ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(
-                    new ConsoleLine(" _   _ _____ _   _  _______   __   ______  ___   _   _  _   __", colours), ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(
-                    new ConsoleLine(@"| | | |  _  | \ | ||  ___\ \ / /   | ___ \/ _ \ | \ | || | / /", colours), ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(
-                    new ConsoleLine(@"| |_| | | | |  \| || |__  \ V /    | |_/ / /_\ \|  \| || |/ / ", colours), ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(
-                    new ConsoleLine(@"|  _  | | | | . ` ||  __|  \ /     | ___ \  _  || . ` ||    \ ", colours), ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(
-                    new ConsoleLine(@"| | | \ \_/ / |\  || |___  | |     | |_/ / | | || |\  || |\  \", colours), ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(
-                    new ConsoleLine(@"\_| |_/\___/\_| \_/\____/  \_/     \____/\_| |_/\_| \_/\_| \_/", colours), ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                GoNextLine();
+                string[] title = new string[] {
+                    " _   _ _____ _   _  _______   __   ______  ___   _   _  _   __",
+                    @"| | | |  _  | \ | ||  ___\ \ / /   | ___ \/ _ \ | \ | || | / /",
+                    @"| |_| | | | |  \| || |__  \ V /    | |_/ / /_\ \|  \| || |/ / ",
+                    @"|  _  | | | | . ` ||  __|  \ /     | ___ \  _  || . ` ||    \ ",
+                    @"| | | \ \_/ / |\  || |___  | |     | |_/ / | | || |\  || |\  \",
+                    @"\_| |_/\___/\_| \_/\____/  \_/     \____/\_| |_/\_| \_/\_| \_/"
+                };
+
+                for (int i = 1; i < 7; i++)
+                {
+                    SendConsoleMessage(new ConsoleLine(title[i - 1], ColourFunctions.ColourGradient(ColourFunctions.CyanToDarkMagentaGradient, 62)));
+                    UpdateLineAnimation(new ConsoleAnimatedLine(true, ConsoleAnimatedLine.UpdateType.ShiftRight, 10), i);
+                }
+
+                ShiftLine();
 
                 int userChoice = CreateOptionMenu($"Options",
                          new string[] { "Access Debit Card", "Create Debit Card",
@@ -66,7 +67,6 @@ namespace Revistone
                         return;
                 }
 
-
                 MainMenu();
             }
 
@@ -74,17 +74,17 @@ namespace Revistone
 
             void CardMenu(DebitCard c)
             {
-                ClearConsole();
+                ClearPrimaryConsole();
                 string s = $"Welcome Back To Your [{c.accountType} Account] {c.holderName}!";
                 string funds = $"You Currently Have £{Math.Round(c.funds, 2)}";
 
-                SendConsoleMessage(new ConsoleLine(s, ColourCreator.HighlightWords(s, new int[] { 4, 5 },
+                SendConsoleMessage(new ConsoleLine(s, ColourFunctions.ColourWords(s, new int[] { 4, 5 },
         new ConsoleColor[] { DebitCard.accountColourLookup[(int)c.accountType] }, ConsoleColor.White)));
                 SendConsoleMessage(funds);
 
-                GoNextLine();
+                ShiftLine();
                 c.DisplayCard();
-                GoNextLine();
+                ShiftLine();
 
                 while (true)
                 {
@@ -93,13 +93,14 @@ namespace Revistone
                     switch (option)
                     {
                         case 0:
-                            float fundChange = float.Parse(GetValidUserInput(new ConsoleLine("How Much Would You Like To Deposit Or Withdraw: ", ConsoleColor.DarkBlue), new InputType[] { InputType.Float, InputType.Int }, removeWhitespace: true));
+                            float fundChange = float.Parse(GetValidUserInput(new ConsoleLine("How Much Would You Like To Deposit Or Withdraw: ", ConsoleColor.DarkBlue),
+                            new UserInputProfile(new InputType[] { InputType.Int, InputType.Float }, removeWhitespace: true)));
                             if (c.funds + fundChange < 0)
                             {
                                 SendConsoleMessage(new ConsoleLine("Insufficient Funds!", ConsoleColor.Red));
-                                GoNextLine();
+                                ShiftLine();
                                 WaitForUserInput(ConsoleKey.Enter);
-                                ClearPreviousLines(3, true);
+                                ClearLines(3, true);
                             }
                             else
                             {
@@ -108,9 +109,9 @@ namespace Revistone
                                 funds = $"You Currently Have £{Math.Round(c.funds, 2)}";
                                 UpdateConsoleLine(new ConsoleLine(funds), 2);
                                 SaveDebitCardInfo();
-                                GoNextLine();
+                                ShiftLine();
                                 WaitForUserInput(ConsoleKey.Enter);
-                                ClearPreviousLines(3, true);
+                                ClearLines(3, true);
                             }
                             break;
                         case 1:
@@ -122,29 +123,29 @@ namespace Revistone
                     "White", "Black", "Red", "Blue", "Green", "Magenta", "Cyan To Blue", "Green And Blue" }, true);
                             c.colours = colourSchemes[colourScheme].ToList();
                             SaveDebitCardInfo();
-                            ClearConsole();
-                            SendConsoleMessage(new ConsoleLine(s, ColourCreator.HighlightWords(s, new int[] { 4, 5 },
+                            ClearPrimaryConsole();
+                            SendConsoleMessage(new ConsoleLine(s, ColourFunctions.ColourWords(s, new int[] { 4, 5 },
                             new ConsoleColor[] { DebitCard.accountColourLookup[(int)c.accountType] }, ConsoleColor.White)));
                             SendConsoleMessage(funds);
 
-                            GoNextLine();
+                            ShiftLine();
                             c.DisplayCard();
-                            GoNextLine();
+                            ShiftLine();
                             break;
                         case 2:
                             GoToLine(14);
                             int accountType = CreateOptionMenu("New Account Type: ", new string[] { "Standard", "Premier", "Gold", "Ruby" }, true);
                             c.accountType = (DebitCard.AccountType)accountType;
                             SaveDebitCardInfo();
-                            ClearConsole();
+                            ClearPrimaryConsole();
                             s = $"Welcome Back To Your [{c.accountType} Account] {c.holderName}!";
-                            SendConsoleMessage(new ConsoleLine(s, ColourCreator.HighlightWords(s, new int[] { 4, 5 },
+                            SendConsoleMessage(new ConsoleLine(s, ColourFunctions.ColourWords(s, new int[] { 4, 5 },
                             new ConsoleColor[] { DebitCard.accountColourLookup[(int)c.accountType] }, ConsoleColor.White)));
                             SendConsoleMessage(funds);
 
-                            GoNextLine();
+                            ShiftLine();
                             c.DisplayCard();
-                            GoNextLine();
+                            ShiftLine();
                             break;
                         case 3:
                             if (CreateOptionMenu("Are You Sure You Want To Delete Your Account? ", true))
@@ -152,14 +153,14 @@ namespace Revistone
                                 cardInfo.Remove(c);
                                 SaveDebitCardInfo();
                                 SendConsoleMessage("Account Deleted!");
-                                GoNextLine();
+                                ShiftLine();
                                 WaitForUserInput(ConsoleKey.Enter);
                                 return;
                             }
                             else
                             {
                                 SendConsoleMessage("Account Deletion Aborted!");
-                                GoNextLine();
+                                ShiftLine();
                                 WaitForUserInput(ConsoleKey.Enter);
                             }
                             break;
@@ -171,43 +172,43 @@ namespace Revistone
 
             void AccessCard()
             {
-                string accountNumber = GetValidUserInput(new ConsoleLine("Account Number [Last 4 Digits Of The Card Number]: ", ConsoleColor.DarkBlue), InputType.Int, 4);
+                string accountNumber = GetValidUserInput(new ConsoleLine("Account Number [Last 4 Digits Of The Card Number]: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.Int, charCount: 4));
                 for (int i = 0; i < cardInfo.Count; i++)
                 {
                     if (accountNumber == cardInfo[i].accountNumber.Substring(12))
                     {
                         SendConsoleMessage(new ConsoleLine($"Account With The Number {accountNumber} Found, Owner {cardInfo[i].initals}!", ConsoleColor.DarkBlue));
-                        GoNextLine();
+                        ShiftLine();
                         WaitForUserInput(ConsoleKey.Enter);
 
-                        ClearConsole();
+                        ClearPrimaryConsole();
 
-                        DateOnly d = DateOnly.Parse(GetValidUserInput(new ConsoleLine("DOB [dd/mm/yyyy]: ", ConsoleColor.DarkBlue), InputType.DateOnly));
+                        DateOnly d = DateOnly.Parse(GetValidUserInput(new ConsoleLine("DOB [dd/mm/yyyy]: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.DateOnly)));
                         if (d != cardInfo[i].dob)
                         {
                             SendConsoleMessage("DOB Incorrect!");
-                            GoNextLine();
+                            ShiftLine();
                             WaitForUserInput(ConsoleKey.Enter);
                             return;
                         }
 
-                        int p = int.Parse(GetValidUserInput(new ConsoleLine("Pin: ", ConsoleColor.DarkBlue), InputType.Int, 4));
+                        int p = int.Parse(GetValidUserInput(new ConsoleLine("Pin: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.Int, charCount: 4)));
                         if (p != cardInfo[i].DecryptPin())
                         {
                             SendConsoleMessage("Pin Incorrect!");
-                            GoNextLine();
+                            ShiftLine();
                             WaitForUserInput(ConsoleKey.Enter);
                             return;
                         }
 
                         CardMenu(cardInfo[i]);
-                        ClearConsole();
+                        ClearPrimaryConsole();
                         return;
                     }
                 }
 
                 SendConsoleMessage($"No Account With The Number {accountNumber} Found!");
-                GoNextLine();
+                ShiftLine();
                 WaitForUserInput(ConsoleKey.Enter);
                 return;
             }
@@ -220,16 +221,16 @@ namespace Revistone
 
                 while (true)
                 {
-                    ClearConsole();
+                    ClearPrimaryConsole();
 
                     DebitCard d = cardInfo[pointer];
 
                     SendConsoleMessage($"Account [{pointer + 1} / {cardInfo.Count}]");
-                    GoNextLine();
+                    ShiftLine();
 
                     cardInfo[pointer].DisplayCard(true);
 
-                    GoNextLine();
+                    ShiftLine();
 
                     int option = CreateOptionMenu("Options: ", new string[] { "Next Card", "Previous Card", "Exit" });
 
@@ -242,7 +243,6 @@ namespace Revistone
                             pointer = pointer > 0 ? pointer - 1 : cardInfo.Count - 1;
                             break;
                         case 2:
-                            ConsoleDisplay.ForceStopDynamicLines();
                             return;
                     }
                 }
@@ -250,7 +250,7 @@ namespace Revistone
 
             void CreateCard()
             {
-                string dob = GetValidUserInput(new ConsoleLine("DOB [dd/mm/yyyy]: ", ConsoleColor.DarkBlue), InputType.DateOnly);
+                string dob = GetValidUserInput(new ConsoleLine("DOB [dd/mm/yyyy]: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.DateOnly));
                 DateOnly dobCheck = DateOnly.FromDateTime(DateTime.Now).AddYears(-30);
                 if (DateOnly.Parse(dob) > dobCheck)
                 {
@@ -259,13 +259,13 @@ namespace Revistone
                 else
                 {
                     SendConsoleMessage(new ConsoleLine("You Are Over 30 Years Old! You Can't Create An Account! ", ConsoleColor.Red), new ConsoleLineUpdate());
-                    GoNextLine();
+                    ShiftLine();
                     WaitForUserInput(ConsoleKey.Enter);
                     return;
                 }
 
-                string name = GetValidUserInput(new ConsoleLine("Enter Your Full Name: ", ConsoleColor.DarkBlue), InputType.FullText, -1, 2);
-                int pin = int.Parse(GetValidUserInput(new ConsoleLine("Create A Pin [4 Digits]: ", ConsoleColor.DarkBlue), InputType.Int, 4, -1, true));
+                string name = GetValidUserInput(new ConsoleLine("Enter Your Full Name: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.FullText, wordCount: 2));
+                int pin = int.Parse(GetValidUserInput(new ConsoleLine("Create A Pin [4 Digits]: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.Int, charCount: 4)));
                 bool masterCard = CreateOptionMenu("Card Type: ", new string[] { "Visa", "Mastercard" }, true) == 0 ? false : true;
                 bool contactless = CreateOptionMenu("Contactless: ", true);
 
@@ -283,25 +283,25 @@ namespace Revistone
                 AddCard(d);
 
                 string s = $"Congrats On Your New Honeycomb [{(DebitCard.AccountType)accountType} Account] {d.holderName}!";
-                SendConsoleMessage(new ConsoleLine(s, ColourCreator.HighlightWords(s, new int[] { 5, 6 },
+                SendConsoleMessage(new ConsoleLine(s, ColourFunctions.ColourWords(s, new int[] { 5, 6 },
                 new ConsoleColor[] { DebitCard.accountColourLookup[(int)accountType] }, ConsoleColor.White)));
-                GoNextLine();
+                ShiftLine();
                 d.DisplayCard();
-                GoNextLine();
+                ShiftLine();
                 WaitForUserInput(ConsoleKey.Enter);
             }
 
             void ExitApp()
             {
                 SetActiveApp("Revistone");
-                ReloadConsole();
+                ResetConsole();
                 return;
             }
 
             void ValidateCardNumber()
             {
-                string card = GetValidUserInput(new ConsoleLine("Enter A Card Number", ConsoleColor.DarkBlue), InputType.Int, 16, -1, true);
-                
+                string card = GetValidUserInput(new ConsoleLine("Enter A Card Number", ConsoleColor.DarkBlue), new UserInputProfile(InputType.Int, charCount: 16, removeWhitespace: true));
+
                 card = card.Replace(" ", "");
                 int[] digits = new int[16];
                 for (int i = 0; i < 16; i++)
@@ -311,7 +311,7 @@ namespace Revistone
                 if (IsValidLuhn(digits)) SendConsoleMessage(new ConsoleLine("Debit Card Number Is Valid!", ConsoleColor.Green), new ConsoleLineUpdate());
                 else SendConsoleMessage(new ConsoleLine("Debit Card Number Is NOT Valid!", ConsoleColor.Red), new ConsoleLineUpdate());
 
-                GoNextLine();
+                ShiftLine();
                 WaitForUserInput(ConsoleKey.Enter, true);
             }
 
@@ -322,6 +322,7 @@ namespace Revistone
                 SaveDebitCardInfo();
             }
 
+            /// <summary> Gets DebitCard info from text file </summary>
             void LoadDebitCardInfo()
             {
                 string[] lines = File.ReadAllLines("Scripts/App/CreatedApps/DebitCard/DebitCard.txt");
@@ -439,28 +440,29 @@ namespace Revistone
 
                 public void DisplayCard(bool censored = false)
                 {
-                    ConsoleColor[] c = ColourCreator.AlternateColours(colours.ToArray(), 60, 2);
+                    ConsoleColor[] c = ColourFunctions.AlternatingColours(colours.ToArray(), 60, 2);
 
-                    ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(new ConsoleLine(new string('-', 60), c),
-                    ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                    ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(new ConsoleLine($"|" + new string(' ', 58) + "|", c),
-                    ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
                     string s = $"{(masterCard ? "Mastercard" : "Visa")} {(contactless ? "- Contactless" : "")}";
-                    ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(new ConsoleLine($"|  {s}" + new string(' ', 34 - s.Length) + $"Account Number: {accountNumber.ToString().Substring(12)}  |", c),
-                    ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                    ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(new ConsoleLine($"|{new string(' ', 58)}|", c),
-                    ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                    ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(new ConsoleLine($"|  {(censored ? "**** **** **** ****" : FormattedAccountNumber())}" + new string(' ', 25) + $"{(censored ? "**/**/****" : expiryDate)}  |", c),
-                    ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                    ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(new ConsoleLine($"|" + new string(' ', 58) + "|", c),
-                    ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                    s = $"Honeycomb Bank [{(censored ? "******" : accountType)} Account]  |";
-                    ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(new ConsoleLine($"|  {initals}" + new string(' ', 53 - s.Length) + s, c),
-                    ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                    ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(new ConsoleLine($"|" + new string(' ', 58) + "|", c),
-                    ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
-                    ConsoleDisplay.AddDynamicLine(new ConsoleLineDynamicUpdate(new ConsoleLine(new string('-', 60), c),
-                    ConsoleLineDynamicUpdate.UpdateType.ShiftRight, 10));
+                    string s2 = $"Honeycomb Bank [{(censored ? "******" : accountType)} Account]  |";
+
+                    string[] cardLines = new string[] {
+                        new string('-', 60),
+                        $"|" + new string(' ', 58) + "|",
+                        $"|  {s}" + new string(' ', 34 - s.Length) + $"Account Number: {accountNumber.ToString().Substring(12)}  |",
+                        $"|{new string(' ', 58)}|",
+                        $"|  {(censored ? "**** **** **** ****" : FormattedAccountNumber())}" + new string(' ', 25) + $"{(censored ? "**/**/****" : expiryDate)}  |",
+                        $"|" + new string(' ', 58) + "|",
+                        $"|  {initals}" + new string(' ', 53 - s2.Length) + s2,
+                        $"|" + new string(' ', 58) + "|",
+                        new string('-', 60)
+                    };
+                    int currentLine = GetConsoleLineIndex();
+
+                    for (int i = 0; i < cardLines.Length; i++)
+                    {
+                        SendConsoleMessage(new ConsoleLine(cardLines[i], c), new ConsoleLineUpdate());
+                        UpdateLineAnimation(new ConsoleAnimatedLine(true, ConsoleAnimatedLine.UpdateType.ShiftRight, 10), currentLine + i);
+                    }
                 }
 
                 public static int accountID = 0;

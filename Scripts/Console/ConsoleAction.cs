@@ -1,58 +1,57 @@
-using static Revistone.Console.ConsoleLine;
-using static Revistone.Console.ConsoleDisplay;
+using static Revistone.Console.Data.ConsoleData;
 using Revistone.Apps;
 
 namespace Revistone
 {
     namespace Console
     {
+        /// <summary> Handles all functions for apps to interact with the console. </summary>
         public static class ConsoleAction
         {
-            public static void ReloadConsole()
+            /// <summary> Marks the console for reset on next tick. </summary>
+            public static void ResetConsole()
             {
                 consoleReload = true;
             }
 
-            public static void UpdateConsoleTitle(ConsoleColor[] colours)
+            /// <summary> Updates given lines animation settings, via the given ConsoleAnimatedLine. </summary>
+            public static void UpdateLineAnimation(ConsoleAnimatedLine dynamicUpdate, int lineIndex)
             {
-                if (consoleLines.Length < minBufferSize) return;
-                string title = App.activeApp.name;
-                consoleLines[0].Update(new string('-', (System.Console.WindowWidth - title.Length) / 2 - 2) + $" [{title}] " + new string('-', (System.Console.WindowWidth - title.Length) / 2 - 2), colours);
-                consoleUpdated = false;
+                consoleLineUpdates[lineIndex].Update(dynamicUpdate);
             }
 
-            public static void UpdateConsoleBorder(ConsoleColor[] colours)
-            {
-                if (consoleLines.Length < minBufferSize) return;
-                consoleLines[^8].Update(new string('-', System.Console.WindowWidth - 1), colours);
-                consoleUpdated = false;
-            }
-
+            /// <summary> Sends lineInfo into primary console area. </summary>
             public static void SendConsoleMessage(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo)
             {
-                SendDebugMessage(GetConsoleLine().ToString() + " : " + (consoleLines.Length - 9).ToString());
-                UpdateEnclosedConsole(lineInfo, updateInfo, 2, consoleLines.Length - 9, ref consoleCurrentLine);
+                UpdateEnclosedConsole(lineInfo, updateInfo, 2, consoleLines.Length - 9, ref consoleLineIndex);
             }
 
+            /// <summary> Sends ConsoleLine into debug console area. </summary>
             public static void SendDebugMessage(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo)
             {
-                UpdateEnclosedConsole(lineInfo, updateInfo, bufferSize.height - 7, bufferSize.height - 2, ref debugCurrentLine);
+                UpdateEnclosedConsole(lineInfo, updateInfo, bufferSize.height - 7, bufferSize.height - 2, ref debugLineIndex);
             }
 
-            public static void UpdateConsoleLine(ConsoleLine lineinfo, int lineIndex)
+            /// <summary> Updates ConsoleLine at given index, with given lineInfo </summary>
+            public static void UpdateConsoleLine(ConsoleLine lineInfo, int lineIndex)
             {
-                consoleLines[lineIndex].Update(lineinfo);
+                consoleLines[lineIndex].Update(lineInfo);
                 consoleUpdated = false;
             }
 
+            /// <summary> Sends lineInfo into primary console area. </summary>
             public static void SendConsoleMessage(string text) { SendConsoleMessage(new ConsoleLine(text), new ConsoleLineUpdate()); } //just for ez of type
+            /// <summary> Sends lineInfo into primary console area. </summary>
             public static void SendConsoleMessage(ConsoleLine lineInfo) { SendConsoleMessage(lineInfo, new ConsoleLineUpdate()); } //just for ez of type
+            /// <summary> Updates ConsoleLine at given index, with given lineInfo </summary>
             public static void SendDebugMessage(string text) { SendDebugMessage(new ConsoleLine(text), new ConsoleLineUpdate()); } //just for ez of type
+            /// <summary> Updates ConsoleLine at given index, with given lineInfo </summary>
             public static void SendDebugMessage(ConsoleLine lineInfo) { SendDebugMessage(lineInfo, new ConsoleLineUpdate()); } //just for ez of type
 
+            /// <summary> Updates lineInfo at given index, adjusting position of ConsoleLines within console if needed.  </summary>
             public static void UpdateEnclosedConsole(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo, int consoleTop, int consoleBot, ref int consoleIndex)
             {
-                if (consoleLines.Length < minBufferSize) return;
+                if (consoleLines.Length < App.activeApp.minHeightBuffer) return;
 
                 if (consoleIndex > consoleBot)
                 {
@@ -79,44 +78,63 @@ namespace Revistone
                 consoleUpdated = false;
             }
 
-            public static void ClearConsole()
+            /// <summary> Clears primary console area. </summary>
+            public static void ClearPrimaryConsole()
             {
                 for (int i = 1; i < consoleLines.Length - 8; i++)
                 {
                     consoleLines[i].Update("");
+                    consoleLineUpdates[i].Update();
                 }
 
                 consoleUpdated = false;
 
-                consoleCurrentLine = 1;
+                consoleLineIndex = 1;
             }
 
-            public static void ClearPreviousLines(int count, bool updateCurrentLine = false)
+            /// <summary> Clears debug console area. </summary>
+            public static void ClearDebugConsole()
             {
-                for (int i = consoleCurrentLine; i > consoleCurrentLine - count; i--)
+                for (int i = bufferSize.height - 8; i < bufferSize.height - 2; i++)
+                {
+                    consoleLines[i].Update("");
+                    consoleLineUpdates[i].Update();
+                }
+
+                consoleUpdated = false;
+
+                debugLineIndex = bufferSize.height - 8;
+            }
+
+            // <summary> Clears previous [count] lines. </summary>
+            public static void ClearLines(int count = 1, bool updateCurrentLine = false)
+            {
+                for (int i = consoleLineIndex; i > consoleLineIndex - count; i--)
                 {
                     consoleLines[i].Update("");
                 }
 
                 consoleUpdated = false;
-                if (updateCurrentLine) consoleCurrentLine -= count;
+                if (updateCurrentLine) consoleLineIndex -= count;
             }
 
-            public static void GoNextLine(int shift = 1)
+            /// <summary> Shifts consoleLineIndex via given shift. </summary>
+            public static void ShiftLine(int shift = 1)
             {
-                consoleCurrentLine = Math.Clamp(consoleCurrentLine + shift, 1, consoleLines.Length - 8);
+                consoleLineIndex = Math.Clamp(consoleLineIndex + shift, 1, consoleLines.Length - 8);
             }
 
+            /// <summary> Sets consoleLineIndex to given line. </summary>
             public static void GoToLine(int index)
             {
-                consoleCurrentLine = Math.Clamp(index, 1, consoleLines.Length - 9);
+                consoleLineIndex = Math.Clamp(index, 1, consoleLines.Length - 9);
             }
 
-            public static int GetConsoleLine()
+            /// <summary> Gets current value of consoleLineIndex. </summary>
+            public static int GetConsoleLineIndex()
             {
-                return consoleCurrentLine;
+                return consoleLineIndex;
             }
-
         }
     }
 }
