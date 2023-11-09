@@ -63,6 +63,12 @@ namespace Revistone
             {
                 this._updated = true;
             }
+
+            /// <summary> Marks ConsoleLine as not updated. </summary>
+            public void MarkForUpdate()
+            {
+                this._updated = false;
+            }
         }
     }
 }

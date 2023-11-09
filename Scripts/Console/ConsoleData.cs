@@ -8,9 +8,9 @@ namespace Revistone
             public static class ConsoleData
             {
                 //--- Console Lines ---
-                public static ConsoleLine[] consoleLines = new ConsoleLine[] {}; //current state of console lines
-                public static ConsoleLine[] consoleLinesBuffer = new ConsoleLine[] {}; //last tick state of console lines
-                public static ConsoleAnimatedLine[] consoleLineUpdates = new ConsoleAnimatedLine[] {}; //animation data of console lines
+                public static ConsoleLine[] consoleLines = new ConsoleLine[] { }; //current state of console lines
+                public static ConsoleLine[] consoleLinesBuffer = new ConsoleLine[] { }; //last tick state of console lines
+                public static ConsoleAnimatedLine[] consoleLineUpdates = new ConsoleAnimatedLine[] { }; //animation data of console lines
 
                 //--- Console Metadata ---
                 public static int consoleLineIndex; //index of current console line

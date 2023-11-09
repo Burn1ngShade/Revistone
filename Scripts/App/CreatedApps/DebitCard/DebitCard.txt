@@ -4,7 +4,7 @@ Jimmy Jim
 2975098
 False
 True
-9,1
+10,2
 2406209034520000
-Ruby
+Gold
 3468

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 using System.Linq.Expressions;
 using Colorful;
@@ -39,6 +40,50 @@ namespace Revistone
 
                 return c;
             }
+
+            /// <summary>
+            /// Generates a ConsoleColor array out of given colours and lengths.
+            /// </summary>
+            public static ConsoleColor[] ColourArray((ConsoleColor colour, int length)[] colours)
+            {
+                List<ConsoleColor> c = new List<ConsoleColor>();
+                for (int i = 0; i < colours.Length; i++)
+                {
+                    for (int j = 0; j < colours[i].length; j++)
+                    {
+                        c.Add(colours[i].colour);
+                    }
+                }
+                return c.ToArray();
+            }
+
+            /// <summary>
+            /// Generates a ConsoleColor array replacing given colour, with replacement colour.
+            /// </summary>
+            public static ConsoleColor[] ColourReplace(ConsoleColor[] colours, (ConsoleColor colour, ConsoleColor replacementColour)[] replace)
+            {
+                ConsoleColor[] c = new ConsoleColor[colours.Length];
+                for (int i = 0; i < colours.Length; i++)
+                {
+                    bool replaced = false;
+                    for (int j = 0; j < replace.Length; j++)
+                    {
+                        if (colours[i] == replace[j].colour)
+                        {
+                            c[i] = replace[j].replacementColour;
+                            replaced = true;
+                            break;
+                        }
+                    }
+                    if (!replaced) c[i] = colours[i];
+                }
+                return c;
+            }
+
+            /// <summary>
+            /// Generates a ConsoleColor array with a gradient pattern using the provided colour.
+            /// </summary>
+            public static ConsoleColor[] ColourGradient(ConsoleColor[] colours) { return ColourGradient(colours, colours.Length * 2 - 1); }
 
             /// <summary>
             /// Generates a ConsoleColor array colourising alternating words in provided string using given colours.
@@ -95,8 +140,8 @@ namespace Revistone
             /// <summary>
             /// Generates a ConsoleColor array with cycling colours, changing every colourLength, for given length.
             /// </summary>
-            public static ConsoleColor[] AlternatingColours(ConsoleColor[] colours, int length, int colourLength = 1) 
-            { return AlternatingColours(colours, length, new int[] {colourLength}); }
+            public static ConsoleColor[] AlternatingColours(ConsoleColor[] colours, int length, int colourLength = 1)
+            { return AlternatingColours(colours, length, new int[] { colourLength }); }
 
             /// <summary>
             /// Generates a ConsoleColor array with cycling colours, changing after each given colourLength, for given length.

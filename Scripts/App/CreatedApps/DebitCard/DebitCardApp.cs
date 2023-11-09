@@ -39,7 +39,7 @@ namespace Revistone
                 for (int i = 1; i < 7; i++)
                 {
                     SendConsoleMessage(new ConsoleLine(title[i - 1], ColourFunctions.ColourGradient(ColourFunctions.CyanToDarkMagentaGradient, 62)));
-                    UpdateLineAnimation(new ConsoleAnimatedLine(true, ConsoleAnimatedLine.UpdateType.ShiftRight, 10), i);
+                    UpdateLineAnimation(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", 10, true), i);
                 }
 
                 ShiftLine();
@@ -461,7 +461,7 @@ namespace Revistone
                     for (int i = 0; i < cardLines.Length; i++)
                     {
                         SendConsoleMessage(new ConsoleLine(cardLines[i], c), new ConsoleLineUpdate());
-                        UpdateLineAnimation(new ConsoleAnimatedLine(true, ConsoleAnimatedLine.UpdateType.ShiftRight, 10), currentLine + i);
+                        UpdateLineAnimation(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", 10, true), currentLine + i);
                     }
                 }
 

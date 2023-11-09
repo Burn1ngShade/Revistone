@@ -1,4 +1,4 @@
---- Version 0.1 --- [Major]
+--- The Summary Update --- 0.1.0 [Major] (07/11/23)
 
 Summary:
 First full version, which is fairly bug free im fairly happy with,
@@ -52,7 +52,7 @@ ConsoleLine -> Refactored Declerations
 UserRealtimeInputProfile -> Added, will be used for realtime input for more control (NOT IMPLEMENTED)
 Manger -> Slight code clean up and renames
 
-Fixed bugs:
+Fixed Bugs:
 
 [Major]
 Big issue with rendering breaking at line randomly
@@ -68,3 +68,56 @@ when exiting app based in promt, new app promt wont show / start messages
 Menus wouldnt shift correctly on full buffer
 very rarely dynamic colours do not clear from list
 very rarely dynamic colours remain on screen
+
+--- The Resize Update --- 0.1.1 [Notable] (09/11/23)
+
+Summary:
+Adds, abilty to freely resize console, aswell as custom functions for ConsoleAnimatedLines, 
+setting up groundwork for images, videos and a colourCreator overhaul
+
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                         | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                            |         16 |      1,521 |        197 |        345 |      2,063 |
+| App                                                                          |          4 |        616 |         30 |        127 |        773 |
+| App (Files)                                                                  |          2 |        173 |         25 |         41 |        239 |
+| App\CreatedApps                                                              |          2 |        443 |          5 |         86 |        534 |
+| App\CreatedApps (Files)                                                      |          1 |         33 |          0 |          6 |         39 |
+| App\CreatedApps\DebitCard                                                    |          1 |        410 |          5 |         80 |        495 |
+| Console                                                                      |          6 |        431 |         87 |        101 |        619 |
+| Functions                                                                    |          2 |        211 |         45 |         46 |        302 |
+| Interaction                                                                  |          3 |        210 |         25 |         59 |        294 |
+| Management                                                                   |          1 |         53 |         10 |         12 |         75 |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Specifics:
+
+[Major]
+ConsoleDisplay -> Resizing window added
+ConsoleAnimatedLine -> Redid script, instead of using predefinded methods, uses action with consoleLine and metadata of the animatedLine, Deep Copys, []Predefinded methods added (shiftColour, shiftLetters, consoletheme)
+
+[Notable]
+UserInputProfile -> Added [A:] and [A_number], allowing to specify any type of charchter digit or puncation, new whitespace options
+ColourFuctions -> Create gradient without length (one gradient long), Create ConsoleColor[] from colours and lengths, 
+
+[Minor]
+Revistone -> slight graphical changes
+ConsoleAction -> GetDebugLine(), options for editing animatedLine on SendingMessage, option for string and consoleLineUpdate on SendingMessage
+AppCommands -> debug[A:] sends debug message
+
+Fixed Bugs:
+
+[Major]
+Length dependent types in formatting did not work, and would allow and length 
+Resizing window breaks program until input (yay)
+
+[Notable]
+Resizing window caused debug console to shrink by one
+Resizing window caused debug console index to be moved
+Clear debug did not clear last consoleline
+
+[Minor] 
+borders dont have righht length colour[]
+resizing borders width wont update title and border length
+consoleLineIndex would be shifted when resizing window
+EnclosedConsole shift will not cause dynamic line to change (intentional behaviour but not good ygm)

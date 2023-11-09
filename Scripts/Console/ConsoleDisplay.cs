@@ -1,3 +1,4 @@
+using System.Reflection.Emit;
 using Revistone.Apps;
 using Revistone.Functions;
 using static Revistone.Console.Data.ConsoleData;
@@ -16,6 +17,7 @@ namespace Revistone
                 System.Console.CursorVisible = false;
                 consoleLineIndex = 1;
                 debugLineIndex = bufferSize.height - 8;
+                consoleReload = true;
 
                 Management.Manager.Tick += HandleConsoleDisplayBehaviour;
             }
@@ -27,27 +29,30 @@ namespace Revistone
                 if (bufferSize.width != System.Console.BufferWidth || bufferSize.height != System.Console.BufferHeight || consoleReload)
                 {
                     bufferSize = (System.Console.BufferWidth, System.Console.BufferHeight);
-                    ResetConsoleDisplay();
+                    if (consoleReload) ResetConsoleDisplay();
+                    else SoftReloadConsoleDisplay();
                     consoleReload = false;
                 }
 
                 // --- Render Console ---
 
-                if (bufferSize.height < App.activeApp.minHeightBuffer || bufferSize.width < App.activeApp.minWidthBuffer)
+                if (bufferSize.height <= App.activeApp.minHeightBuffer || bufferSize.width <= App.activeApp.minWidthBuffer)
                 {
                     if (consoleUpdated || bufferSize.height == 0 || bufferSize.width == 0) return;
 
+                    System.Console.Clear();
                     System.Console.SetCursorPosition(0, 0);
                     System.Console.ForegroundColor = ConsoleColor.Red;
                     for (int i = 0; i < bufferSize.height; i++)
                     {
-                        System.Console.WriteLine($"{(bufferSize.height < App.activeApp.minHeightBuffer ? "[Console Height Is To Small] " : "")}{(bufferSize.width < App.activeApp.minWidthBuffer ? "[Console Width Is To Small] " : "")}");
+                        System.Console.WriteLine($"{(bufferSize.height <= App.activeApp.minHeightBuffer ? "[Console Height Is To Small] " : "")}{(bufferSize.width <= App.activeApp.minWidthBuffer ? "[Console Width Is To Small] " : "")}");
                     }
                     System.Console.ForegroundColor = ConsoleColor.White;
                 }
                 else
                 {
                     UpdateAnimatedLines(tickNum);
+
                     if (consoleUpdated) return;
                     RenderConsole();
                 }
@@ -64,15 +69,7 @@ namespace Revistone
                 {
                     if (!consoleLineUpdates[i].enabled || tickNum % consoleLineUpdates[i].tickMod != 0) continue; //not dynamic or not right tick
 
-                    switch (consoleLineUpdates[i].updateType)
-                    {
-                        case ConsoleAnimatedLine.UpdateType.ShiftRight: //shifts colour right by one
-                            consoleLines[i].Update(ColourFunctions.ShiftColours(consoleLines[i].lineColour, 1));
-                            break;
-                        case ConsoleAnimatedLine.UpdateType.ShiftLeft: //shifts colour left by one
-                            consoleLines[i].Update(ColourFunctions.ShiftColours(consoleLines[i].lineColour, -1));
-                            break;
-                    }
+                    consoleLineUpdates[i].update.Invoke(consoleLines[i], consoleLineUpdates[i].metaInfo, tickNum);
 
                     consoleUpdated = false;
                 }
@@ -88,7 +85,7 @@ namespace Revistone
                 consoleLineIndex = 1;
                 debugLineIndex = System.Console.BufferHeight - 8;
 
-                Array.Resize(ref consoleLines, System.Console.BufferHeight - 1);
+                consoleLines = new ConsoleLine[System.Console.BufferHeight - 1];
                 consoleLinesBuffer = new ConsoleLine[System.Console.BufferHeight - 1];
                 consoleLineUpdates = new ConsoleAnimatedLine[System.Console.BufferHeight - 1];
                 for (int i = 0; i < consoleLines.Length; i++)
@@ -104,19 +101,67 @@ namespace Revistone
                 appInitalisation = true;
             }
 
-            /// <summary> [WIP] Reloads console display updating buffer size, while maintaing screen. </summary>
+            /// <summary> Reloads console display updating buffer size, while maintaing screen. </summary>
             static void SoftReloadConsoleDisplay()
             {
-                throw new NotImplementedException("Will Add Soon!");
+                consoleUpdated = false;
+
+                if (bufferSize.height <= App.activeApp.minHeightBuffer) return;
+
+                System.Console.Clear();
+
+                int debugDistanceFromEnd = consoleLines.Length - debugLineIndex;
+
+                (ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo)[] enclosedConsoleLinesDC = new (ConsoleLine, ConsoleAnimatedLine)[consoleLines.Length - 9];
+                (ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo)[] metaConsoleLinesDC = new (ConsoleLine, ConsoleAnimatedLine)[8];
+
+                for (int i = 1; i < consoleLines.Length; i++)
+                {
+                    if (i <= consoleLines.Length - 9) enclosedConsoleLinesDC[i - 1] = (new ConsoleLine(consoleLines[i]), new ConsoleAnimatedLine(consoleLineUpdates[i]));
+                    else
+                    {
+                        metaConsoleLinesDC[i - (consoleLines.Length - 8)] = (new ConsoleLine(consoleLines[i]), new ConsoleAnimatedLine(consoleLineUpdates[i]));
+                    }
+                }
+
+                Array.Resize(ref consoleLines, bufferSize.height - 1);
+                Array.Resize(ref consoleLinesBuffer, bufferSize.height - 1);
+                Array.Resize(ref consoleLineUpdates, bufferSize.height - 1);
+
+                for (int i = 1; i < consoleLines.Length; i++)
+                {
+                    consoleLines[i] = new ConsoleLine();
+                    consoleLinesBuffer[i] = new ConsoleLine();
+                    consoleLineUpdates[i] = new ConsoleAnimatedLine();
+                }
+
+                for (int i = 0; i < metaConsoleLinesDC.Length; i++)
+                {
+                    consoleLines[i + (consoleLines.Length - 8)].Update(metaConsoleLinesDC[i].lineInfo);
+                    consoleLineUpdates[i + (consoleLines.Length - 8)].Update(metaConsoleLinesDC[i].animationInfo);
+                }
+
+                for (int i = 1; i < Math.Min(enclosedConsoleLinesDC.Length, consoleLines.Length - 8); i++)
+                {
+                    consoleLines[i].Update(enclosedConsoleLinesDC[i - 1].lineInfo);
+                    consoleLineUpdates[i].Update(enclosedConsoleLinesDC[i - 1].animationInfo);
+                }
+
+                consoleLineIndex = Math.Clamp(consoleLineIndex, 1, consoleLines.Length - 8);
+                debugLineIndex = consoleLines.Length - debugDistanceFromEnd;
+
+                UpdateConsoleTitle();
+                UpdateConsoleBorder();
             }
 
             /// <summary> Updates console title, with current app name and colour scheme. </summary>
             static void UpdateConsoleTitle()
             {
                 if (consoleLines.Length < App.activeApp.minHeightBuffer) return;
+                consoleLinesBuffer[0].Update(""); //stops buffer width
                 string title = App.activeApp.name;
-                consoleLines[0].Update(new string('-', (bufferSize.width - title.Length) / 2 - 2) + $" [{title}] " + new string('-', (bufferSize.width - title.Length) / 2 - 2), App.activeApp.borderColours);
-                ConsoleAction.UpdateLineAnimation(new ConsoleAnimatedLine(true, ConsoleAnimatedLine.UpdateType.ShiftRight, App.activeApp.borderColourSpeed), 0);
+                consoleLines[0].Update(new string('-', (bufferSize.width - title.Length) / 2 - 2) + $" [{title}] " + new string('-', (bufferSize.width - title.Length) / 2 - 2), ColourFunctions.AlternatingColours(App.activeApp.borderColours, bufferSize.width - 1, 1));
+                ConsoleAction.UpdateLineAnimation(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", App.activeApp.borderColourSpeed, true), 0);
                 consoleUpdated = false;
             }
 
@@ -124,8 +169,9 @@ namespace Revistone
             static void UpdateConsoleBorder()
             {
                 if (consoleLines.Length < App.activeApp.minHeightBuffer) return;
-                consoleLines[^8].Update(new string('-', bufferSize.width - 1), App.activeApp.borderColours);
-                ConsoleAction.UpdateLineAnimation(new ConsoleAnimatedLine(true, ConsoleAnimatedLine.UpdateType.ShiftRight, App.activeApp.borderColourSpeed), consoleLines.Length - 8);
+                consoleLinesBuffer[^8].Update(""); //stops buffer width
+                consoleLines[^8].Update(new string('-', bufferSize.width - 1), ColourFunctions.AlternatingColours(App.activeApp.borderColours, bufferSize.width - 1, 1));
+                ConsoleAction.UpdateLineAnimation(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", App.activeApp.borderColourSpeed, true), consoleLines.Length - 8);
                 consoleUpdated = false;
             }
 
@@ -161,7 +207,7 @@ namespace Revistone
             {
                 for (int i = 0; i < consoleLines.Length; i++)
                 {
-                    if (consoleLines[i].updated) continue;
+                    if (consoleLines[i].updated || System.Console.BufferHeight <= i) continue;
 
                     WriteConsoleLine(i);
 

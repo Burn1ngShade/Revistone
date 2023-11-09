@@ -27,6 +27,8 @@ namespace Revistone
             public CapitalCasing caseSettings; //changes caps to this
 
             public bool removeWhitespace; //remove spaces
+            public bool removeLeadingWhitespace; //removes whitespace at start of word
+            public bool removeTrailingWhitespace; //removes whitespace at start of word
 
             //--- OUTPUT ---
 
@@ -38,7 +40,7 @@ namespace Revistone
             /// <summary> The configuration of the requirements of user input. </summary>
             public UserInputProfile(InputType[] validTypes, string inputFormat = "", CapitalCasing caseRequirements = CapitalCasing.None,
             int charCount = -1, int wordCount = -1, CapitalCasing caseSettings = CapitalCasing.None,
-            bool removeWhitespace = false, OutputFormat outputFormat = OutputFormat.Standard)
+            bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false, OutputFormat outputFormat = OutputFormat.Standard)
             {
                 this.validInputTypes = validTypes;
                 this.inputFormat = inputFormat;
@@ -47,24 +49,17 @@ namespace Revistone
                 this.wordCount = wordCount;
                 this.caseSettings = caseSettings;
                 this.removeWhitespace = removeWhitespace;
+                this.removeLeadingWhitespace = removeLeadingWhitespace;
+                this.removeTrailingWhitespace = removeTrailingWhitespace;
                 this.outputFormat = outputFormat;
             }
 
             /// <summary> The configuration of the requirements of user input. </summary>
             public UserInputProfile(InputType validType, string inputFormat = "", CapitalCasing caseRequirements = CapitalCasing.None,
             int charCount = -1, int wordCount = -1, CapitalCasing caseSettings = CapitalCasing.None,
-            bool removeWhitespace = false, OutputFormat outputFormat = OutputFormat.Standard)
-            {
-                this.validInputTypes = new InputType[] { validType };
-                this.inputFormat = inputFormat;
-                this.caseRequirements = caseRequirements;
-                this.charCount = charCount;
-                this.wordCount = wordCount;
-                this.caseSettings = caseSettings;
-                this.removeWhitespace = removeWhitespace;
-                this.outputFormat = outputFormat;
-            }
-
+            bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false, OutputFormat outputFormat = OutputFormat.Standard) :
+            this (new InputType[] {validType}, inputFormat, caseRequirements, charCount, wordCount, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, outputFormat)
+            {}
 
             //--- FUNCTIONS ---
 
@@ -78,6 +73,8 @@ namespace Revistone
                 string modInput = input;
 
                 modInput = AdjustCapitalisation(modInput, caseSettings);
+                if (removeLeadingWhitespace) modInput = modInput.TrimStart();
+                if (removeTrailingWhitespace) modInput = modInput.TrimEnd();
                 if (removeWhitespace) modInput = modInput.Replace(" ", "");
 
                 // Requirements

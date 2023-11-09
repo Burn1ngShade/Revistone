@@ -14,11 +14,10 @@ namespace Revistone
             /// <summary> Holds all apps recognised by Console, add app here to use. </summary>
             static App[] _appRegistry = {
                 new RevistoneApp("Revistone",
-                ColourFunctions.ColourGradient(new ConsoleColor[] { ConsoleColor.Cyan, ConsoleColor.DarkCyan, ConsoleColor.Blue, ConsoleColor.DarkBlue },
-                System.Console.WindowWidth),
-                new (UserInputProfile format, Action<string> payload, string summary)[] {}, 5),
+                ColourFunctions.ColourGradient(new ConsoleColor[] { ConsoleColor.Cyan, ConsoleColor.DarkCyan, ConsoleColor.Blue, ConsoleColor.DarkBlue }),
+                new (UserInputProfile format, Action<string> payload, string summary)[] {}, 5, minAppHeight: 1),
 
-                new DebitCardApp("Debit Card Manager", ColourFunctions.AlternatingColours(new ConsoleColor[] { ConsoleColor.Magenta, ConsoleColor.DarkBlue }, System.Console.WindowWidth, 3),
+                new DebitCardApp("Debit Card Manager", ColourFunctions.AlternatingColours(new ConsoleColor[] { ConsoleColor.Magenta, ConsoleColor.DarkBlue }, 6, 3),
                 new (UserInputProfile format, Action<string> payload, string summary)[] {}, 5)
                 };
 
@@ -30,7 +29,6 @@ namespace Revistone
             public static App activeApp { get { return _appRegistry[_activeAppIndex]; } }
 
             public string name;
-            public int appState = 0; //if app has different layers or modes
 
             public ConsoleColor[] borderColours;
             public int borderColourSpeed;
@@ -51,7 +49,7 @@ namespace Revistone
                 this.borderColourSpeed = borderColourSpeed;
 
                 this.minWidthBuffer = minAppWidth;
-                this.minHeightBuffer = minAppHeight;
+                this.minHeightBuffer = Math.Max(minAppHeight, 15);
 
                 this.baseCommands = baseCommands;
                 this.appCommands = appCommands;
@@ -62,7 +60,7 @@ namespace Revistone
             /// <summary> Called on app initalisation. </summary>
             public virtual void OnAppInitalisation()
             {
-
+                
             }
 
             /// <summary> Called just before user is asked for input, use to interact with user. </summary>

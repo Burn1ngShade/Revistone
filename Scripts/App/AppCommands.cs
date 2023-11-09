@@ -16,19 +16,19 @@ namespace Revistone
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "help", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => {Help(); },
                 "List Of All Base Commands And Their Descriptions."),
-                (new UserInputProfile(UserInputProfile.InputType.FullText, "app help", caseSettings: StringFunctions.CapitalCasing.Lower),
+                (new UserInputProfile(UserInputProfile.InputType.FullText, "app help", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => {AppHelp(); },
                 "List Of All App Specfic Commands And Their Descriptions."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "reload", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { ReloadApp(s); },
                 "Reloads The Current App."),
-                (new UserInputProfile(UserInputProfile.InputType.FullText, "load[C:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (new UserInputProfile(new UserInputProfile.InputType[] {}, "load[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { LoadApp(s); },
-                "Loads App With The Given Name ([C:] meaning name of app)."),
-                (new UserInputProfile(UserInputProfile.InputType.FullText, "clear", caseSettings: StringFunctions.CapitalCasing.Lower),
+                "Loads App With The Given Name ([A:] meaning name of app)."),
+                (new UserInputProfile(UserInputProfile.InputType.FullText, "clear", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { ClearPrimaryConsole(); },
                 "Clears Primary Console."),
-                (new UserInputProfile(UserInputProfile.InputType.FullText, "debug clear", caseSettings: StringFunctions.CapitalCasing.Lower),
+                (new UserInputProfile(UserInputProfile.InputType.FullText, "clear debug", caseSettings: StringFunctions.CapitalCasing.Lower,  removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => { ClearDebugConsole(); },
                 "Clears Debug Console."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "apps", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
@@ -39,7 +39,11 @@ namespace Revistone
                 //fun commands
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "boop", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => SendConsoleMessage(new ConsoleLine("Boop!", ConsoleColor.DarkBlue)),
-                "Boop!")
+                "Boop!"),
+
+                //test commands
+                (new UserInputProfile(new UserInputProfile.InputType[] {}, "debug[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => { SendDebugMessage(s.Substring(5).TrimStart()); }, "Sends Debug Message [A:] ([A:] being the message)"),
             };
 
             // --- BASE COMMANDS ---
@@ -51,7 +55,9 @@ namespace Revistone
 
                 for (int i = 0; i < commands.name.Length; i++)
                 {
-                    SendConsoleMessage(new ConsoleLine($"{commands.name[i]} -> {commands.summary[i]}", ConsoleColor.DarkBlue));
+                    SendConsoleMessage(new ConsoleLine($"{commands.name[i]}: {commands.summary[i]}",
+                    ColourFunctions.AlternatingColours(new ConsoleColor[] {ConsoleColor.Cyan, ConsoleColor.DarkCyan}, commands.name[i].Length % 2 == 0 ? commands.name[i].Length + 2 : commands.name[i].Length + 1).Concat(new ConsoleColor[] {ConsoleColor.Blue}).ToArray()),
+                    new ConsoleAnimatedLine(ConsoleAnimatedLine.ConsoleTheme, "", 10, true));
                 }
             }
 
@@ -62,7 +68,9 @@ namespace Revistone
 
                 for (int i = 0; i < commands.name.Length; i++)
                 {
-                    SendConsoleMessage(new ConsoleLine($"{commands.name[i]} -> {commands.summary[i]}", ConsoleColor.DarkBlue));
+                    SendConsoleMessage(new ConsoleLine($"{commands.name[i]}: {commands.summary[i]}",
+                    ColourFunctions.AlternatingColours(new ConsoleColor[] {ConsoleColor.Cyan, ConsoleColor.DarkCyan}, commands.name[i].Length % 2 == 0 ? commands.name[i].Length + 2 : commands.name[i].Length + 1).Concat(new ConsoleColor[] {ConsoleColor.Blue}).ToArray()),
+                    new ConsoleAnimatedLine(ConsoleAnimatedLine.ConsoleTheme, "", 10, true));
                 }
 
                 if (commands.name.Length == 0) SendConsoleMessage(new ConsoleLine("This App Has No Custom Commands!", ConsoleColor.DarkBlue));
@@ -80,7 +88,7 @@ namespace Revistone
             static void LoadApp(string userInput)
             {
                 int cindex = App.activeAppIndex;
-                string appName = userInput.Substring(5);
+                string appName = userInput.Substring(4).TrimStart();
                 if (App.SetActiveApp(appName))
                 {
                     int closeApp = UserInput.CreateOptionMenu($"Load {appName}?", new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") });

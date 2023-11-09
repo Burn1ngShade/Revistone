@@ -1,12 +1,15 @@
 --- TO DO ---
-allow custom functions for animation lines.
 work on realtime user input support.
-expand userinput options.
+add option to resize removing top of console or bottom, dependent on app
 add support for underline / bold text
 image/video support.
-add trailing whitespace removal option
+redo consoleColour to be much more intuitive for complex lines
+Ability to pin lines to console
+
+$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`\'.
 
 --- KNOWN BUGS ---
-[Medium] Resizing window breaks program until input (ibr this is hard to fix)
-[Minor] EnclosedConsole shift will not cause dynamic line to change (intentional behaviour but not good ygm)
-[Minor] borders dont have righht length colour[]
+
+--- CHANGE LOG ---
+
+--- FIXED BUGS ---

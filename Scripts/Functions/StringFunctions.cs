@@ -72,11 +72,34 @@ namespace Revistone
             public static bool Formatted(string input, string format)
             {
                 // Replace [N4] with \d{4} for numeric checks and [C2] with [A-Za-z]{2} for character checks
-                format = Regex.Replace(format, @"\[N\d+\]", @"\d+");
-                format = Regex.Replace(format, @"\[C\d+\]", @"[A-Za-z]+");
+                format = Regex.Replace(format, @"\[N(\d+)]", m =>
+                {
+                   if (int.TryParse(m.Groups[1].Value, out int numberOfDigits))
+                   {
+                        return @"\d{" + numberOfDigits + "}";
+                   }
+                   return m.Value; // Return the original string if parsing fails
+                });
+                format = Regex.Replace(format, @"\[C(\d+)]", m =>
+                {
+                   if (int.TryParse(m.Groups[1].Value, out int numberOfDigits))
+                   {
+                        return @"[A-Za-z]{" + numberOfDigits + "}";
+                   }
+                   return m.Value; // Return the original string if parsing fails
+                });
+                format = Regex.Replace(format, @"\[A(\d+)]", m =>
+                {
+                   if (int.TryParse(m.Groups[1].Value, out int numberOfDigits))
+                   {
+                        return @".{" + numberOfDigits + "}";
+                   }
+                   return m.Value; // Return the original string if parsing fails
+                });
 
                 format = Regex.Replace(format, @"\[N:\]", @"\d+");
                 format = Regex.Replace(format, @"\[C:\]", @"[A-Za-z]+");
+                format = Regex.Replace(format, @"\[A:\]", ".*");
 
                 return Regex.IsMatch(input, $"^{format}$");
             }

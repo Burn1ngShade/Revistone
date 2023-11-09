@@ -39,14 +39,36 @@ namespace Revistone
                 consoleUpdated = false;
             }
 
+            /// <summary> Sends lineInfo into primary console area, also updating the animationInfo of the same line. </summary>
+            public static void SendConsoleMessage(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo, ConsoleAnimatedLine animationInfo)
+            {
+                consoleLineUpdates[consoleLineIndex].Update(animationInfo);
+                SendConsoleMessage(lineInfo, updateInfo);
+            }
+            /// <summary> Sends lineInfo into primary console area, also updating the animationInfo of the same line. </summary>
+            public static void SendConsoleMessage(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo) { SendConsoleMessage(lineInfo, new ConsoleLineUpdate(), animationInfo); }
             /// <summary> Sends lineInfo into primary console area. </summary>
             public static void SendConsoleMessage(string text) { SendConsoleMessage(new ConsoleLine(text), new ConsoleLineUpdate()); } //just for ez of type
             /// <summary> Sends lineInfo into primary console area. </summary>
             public static void SendConsoleMessage(ConsoleLine lineInfo) { SendConsoleMessage(lineInfo, new ConsoleLineUpdate()); } //just for ez of type
-            /// <summary> Updates ConsoleLine at given index, with given lineInfo </summary>
+            /// <summary> Sends lineInfo into primary console area. </summary>
+            public static void SendConsoleMessage(string text, ConsoleLineUpdate updateIfno) { SendConsoleMessage(new ConsoleLine(text), updateIfno); } //just for ez of type
+
+
+            /// <summary> Sends ConsoleLine into debug console area. </summary>
+            public static void SendDebugMessage(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo, ConsoleAnimatedLine animationInfo)
+            {
+                consoleLineUpdates[debugLineIndex].Update(animationInfo);
+                SendDebugMessage(lineInfo, updateInfo);
+            }
+            /// <summary> Sends ConsoleLine into debug console area. </summary>
+            public static void SendDebugMessage(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo) { SendDebugMessage(lineInfo, new ConsoleLineUpdate(), animationInfo); }
+            /// <summary> Sends ConsoleLine into debug console area. </summary>
             public static void SendDebugMessage(string text) { SendDebugMessage(new ConsoleLine(text), new ConsoleLineUpdate()); } //just for ez of type
-            /// <summary> Updates ConsoleLine at given index, with given lineInfo </summary>
+            /// <summary> Sends ConsoleLine into debug console area. </summary>
             public static void SendDebugMessage(ConsoleLine lineInfo) { SendDebugMessage(lineInfo, new ConsoleLineUpdate()); } //just for ez of type
+            /// <summary> Sends ConsoleLine into debug console area. </summary>
+            public static void SendDebugMessage(string text, ConsoleLineUpdate updateIfno) { SendDebugMessage(new ConsoleLine(text), updateIfno); } //just for ez of type
 
             /// <summary> Updates lineInfo at given index, adjusting position of ConsoleLines within console if needed.  </summary>
             public static void UpdateEnclosedConsole(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo, int consoleTop, int consoleBot, ref int consoleIndex)
@@ -58,6 +80,7 @@ namespace Revistone
                     for (int i = consoleTop; i <= consoleBot; i++)
                     {
                         consoleLines[i - 1].Update(consoleLines[i]);
+                        consoleLineUpdates[i - 1].Update(consoleLineUpdates[i]);
                     }
                     consoleIndex = consoleBot;
                 }
@@ -95,7 +118,7 @@ namespace Revistone
             /// <summary> Clears debug console area. </summary>
             public static void ClearDebugConsole()
             {
-                for (int i = bufferSize.height - 8; i < bufferSize.height - 2; i++)
+                for (int i = bufferSize.height - 8; i < bufferSize.height - 1; i++)
                 {
                     consoleLines[i].Update("");
                     consoleLineUpdates[i].Update();
@@ -134,6 +157,12 @@ namespace Revistone
             public static int GetConsoleLineIndex()
             {
                 return consoleLineIndex;
+            }
+
+            /// <summary> Gets current value of debugLineIndex. </summary>
+            public static int GetDebugLineIndex()
+            {
+                return debugLineIndex;
             }
         }
     }
