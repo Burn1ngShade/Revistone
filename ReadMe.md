@@ -1,4 +1,3 @@
-## Disclamer! Only works in vscode/fluent terminal (will look at)
 # Revistone
 ## What Is It?
 Revistone, is a console based application, capable of managing and streamlining the creation of apps for the console. Currently in development by me (Isaac) with the hopes to continue to build upon this system expanding it into a truly impressive project!
