@@ -28,9 +28,9 @@ namespace Revistone
             static void HandleConsoleDisplayBehaviour(int tickNum)
             {
                 //if console display resized
-                if (bufferSize.width != System.Console.BufferWidth || bufferSize.height != System.Console.BufferHeight || consoleReload)
+                if (bufferSize.width != System.Console.WindowWidth || bufferSize.height != System.Console.WindowHeight || consoleReload)
                 {
-                    bufferSize = (System.Console.BufferWidth, System.Console.BufferHeight);
+                    bufferSize = (System.Console.WindowWidth, System.Console.WindowHeight);
                     if (!consoleReload) SoftReloadConsoleDisplay();
                     else if (!(bufferSize.height <= AppRegistry.activeApp.minHeightBuffer || bufferSize.width <= AppRegistry.activeApp.minWidthBuffer))
                     {
@@ -87,9 +87,9 @@ namespace Revistone
                 consoleLineIndex = 1;
                 debugLineIndex = debugBufferStartIndex;
 
-                consoleLines = new ConsoleLine[System.Console.BufferHeight - 1];
-                consoleLinesBuffer = new ConsoleLine[System.Console.BufferHeight - 1];
-                consoleLineUpdates = new ConsoleAnimatedLine[System.Console.BufferHeight - 1];
+                consoleLines = new ConsoleLine[System.Console.WindowHeight - 1];
+                consoleLinesBuffer = new ConsoleLine[System.Console.WindowHeight - 1];
+                consoleLineUpdates = new ConsoleAnimatedLine[System.Console.WindowHeight - 1];
                 for (int i = 0; i < consoleLines.Length; i++)
                 {
                     consoleLines[i] = new ConsoleLine();
@@ -190,7 +190,7 @@ namespace Revistone
                 {
                     System.Console.SetCursorPosition(c.lineText.Length, cursorTop);
                     System.Console.Write(new string(' ', System.Console.WindowWidth - c.lineText.Length));
-                    System.Console.SetCursorPosition(0, System.Console.GetCursorPosition().Top);
+                    System.Console.SetCursorPosition(0, cursorTop);
                 }
 
                 for (int i = 0; i < c.lineText.Length; i++)
@@ -209,7 +209,7 @@ namespace Revistone
                 {
                     for (int i = 0; i < consoleLines.Length; i++)
                     {
-                        if (consoleLines[i].updated || System.Console.BufferHeight <= i) continue;
+                        if (consoleLines[i].updated || System.Console.WindowHeight <= i) continue;
 
                         WriteConsoleLine(i);
                         consoleLinesBuffer[i].Update(consoleLines[i]);
