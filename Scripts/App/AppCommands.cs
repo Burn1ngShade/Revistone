@@ -25,6 +25,9 @@ namespace Revistone
                 (new UserInputProfile(new UserInputProfile.InputType[] {}, "load[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { LoadApp(s); },
                 "Loads App With The Given Name ([A:] meaning name of app)."),
+                (new UserInputProfile(UserInputProfile.InputType.FullText, "hub", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => { LoadApp("LoadRevistone"); },
+                "Loads Hub Revistone App."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "clear", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { ClearPrimaryConsole(); },
                 "Clears Primary Console."),
@@ -32,7 +35,7 @@ namespace Revistone
                 (s) => { ClearDebugConsole(); },
                 "Clears Debug Console."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "apps", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => { SendConsoleMessage(new ConsoleLine(StringFunctions.ToElementString(AppRegistry.appRegistry.Select(app => app.name).ToArray()), ConsoleColor.DarkBlue)); },
+                (s) => { SendConsoleMessage(new ConsoleLine(StringFunctions.ToElementString(AppRegistry.appRegistry.Select(app => app.name).ToArray()), AppRegistry.activeApp.colourScheme.primaryColour)); },
                 "Prints A List Of The Names Of All Apps."),
 
                 //test commands
@@ -51,8 +54,8 @@ namespace Revistone
                 {
                     SendConsoleMessage(new ConsoleLine($"{commands.name[i]}: {commands.summary[i]}",
                     ColourFunctions.AdvancedHighlight(
-                    $"{commands.name[i]}: {commands.summary[i]}".Length, ConsoleColor.DarkBlue, (ColourFunctions.CyanGradient, 0, commands.name[i].Length + 1))),
-                    new ConsoleAnimatedLine(ConsoleAnimatedLine.ConsoleTheme, "", 10, true));
+                    $"{commands.name[i]}: {commands.summary[i]}".Length, AppRegistry.activeApp.colourScheme.primaryColour, (AppRegistry.activeApp.colourScheme.secondaryColour, 0, commands.name[i].Length + 1))),
+                    ConsoleAnimatedLine.AppTheme);
                 }
             }
 
@@ -65,11 +68,11 @@ namespace Revistone
                 {
                     SendConsoleMessage(new ConsoleLine($"{commands.name[i]}: {commands.summary[i]}",
                     ColourFunctions.AdvancedHighlight(
-                    $"{commands.name[i]}: {commands.summary[i]}".Length, ConsoleColor.DarkBlue, (ColourFunctions.CyanGradient, 0, commands.name[i].Length + 1))),
-                    new ConsoleAnimatedLine(ConsoleAnimatedLine.ConsoleTheme, "", 10, true));
+                    $"{commands.name[i]}: {commands.summary[i]}".Length, AppRegistry.activeApp.colourScheme.primaryColour, (AppRegistry.activeApp.colourScheme.secondaryColour, 0, commands.name[i].Length + 1))),
+                    ConsoleAnimatedLine.AppTheme);
                 }
 
-                if (commands.name.Length == 0) SendConsoleMessage(new ConsoleLine("This App Has No Custom Commands!", ConsoleColor.DarkBlue));
+                if (commands.name.Length == 0) SendConsoleMessage(new ConsoleLine("This App Has No Custom Commands!", AppRegistry.activeApp.colourScheme.primaryColour));
             }
 
             /// <summary> Gives user Y/N option to reload current app. </summary>
@@ -77,7 +80,7 @@ namespace Revistone
             {
                 int clearConsole = UserInput.CreateOptionMenu("Reload App?", new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") });
                 if (clearConsole == 0) ResetConsole();
-                else SendConsoleMessage(new ConsoleLine("App Reload Cancelled!", ConsoleColor.DarkBlue), new ConsoleLineUpdate());
+                else SendConsoleMessage(new ConsoleLine("App Reload Cancelled!", AppRegistry.activeApp.colourScheme.primaryColour), new ConsoleLineUpdate());
             }
 
             /// <summary> Gives user Y/N option to load given app. </summary>
@@ -92,12 +95,12 @@ namespace Revistone
                     else
                     {
                         AppRegistry.SetActiveApp(cindex);
-                        SendConsoleMessage(new ConsoleLine($"App Load Cancelled!", ConsoleColor.DarkBlue), new ConsoleLineUpdate());
+                        SendConsoleMessage(new ConsoleLine($"App Load Cancelled!", AppRegistry.activeApp.colourScheme.primaryColour), new ConsoleLineUpdate());
                     }
                 }
                 else
                 {
-                    SendConsoleMessage(new ConsoleLine($"App Named [{appName}] Could Not Be Found!", ConsoleColor.DarkBlue), new ConsoleLineUpdate());
+                    SendConsoleMessage(new ConsoleLine($"App Named [{appName}] Could Not Be Found!", AppRegistry.activeApp.colourScheme.primaryColour), new ConsoleLineUpdate());
                 }
             }
 

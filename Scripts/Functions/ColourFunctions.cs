@@ -48,8 +48,10 @@ namespace Revistone
             public static ConsoleColor[] BlueDarkMagentaGradient { get { return new ConsoleColor[4] { Blue, DarkBlue, Magenta, DarkMagenta }; } }
             /// <summary> Colour gradient, [Cyan, Dark Cyan, Blue, Dark Blue, Magenta, Dark Magenta]. </summary>
             public static ConsoleColor[] CyanDarkMagentaGradient { get { return new ConsoleColor[6] { Cyan, DarkCyan, Blue, DarkBlue, Magenta, DarkMagenta }; } }
-            /// <summary> Colour gradient, [Cyan, Dark Cyan, Blue, Dark Blue, Magenta, Dark Magenta]. </summary>
+            /// <summary> Colour gradient, [Red, Yellow, Green, Cyan, Blue, Magenta]. </summary>
             public static ConsoleColor[] RainbowGradient { get { return new ConsoleColor[6] { Red, Yellow, Green, Cyan, Blue, Magenta }; } }
+            /// <summary> Colour gradient, [Red, Green, Cyan, Blue, Magenta]. </summary>
+            public static ConsoleColor[] RainbowWithoutYellowGradient { get { return new ConsoleColor[5] { Red, Green, Cyan, Blue, Magenta }; } }
 
             // --- MODIFY ARRAY ---
 
@@ -75,7 +77,7 @@ namespace Revistone
             }
 
             /// <summary> Replaces colours within ConsoleColor array, with replacement colours. </summary>
-            public static ConsoleColor[] Replace(this ConsoleColor[] colours, (ConsoleColor colour, ConsoleColor replacementColour)[] replace) { return Replace(colours, replace, 0, colours.Length); }
+            public static ConsoleColor[] Replace(this ConsoleColor[] colours, params (ConsoleColor colour, ConsoleColor replacementColour)[] replace) { return Replace(colours, replace, 0, colours.Length); }
 
             /// <summary> Reverses section of ConsoleColour array, of given startIndex and length. </summary>
             public static ConsoleColor[] Flip(this ConsoleColor[] colours, int startIndex, int length)

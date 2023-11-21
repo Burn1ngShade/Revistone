@@ -1,5 +1,6 @@
 using static Revistone.Console.Data.ConsoleData;
 using Revistone.Apps;
+using Revistone.Management;
 
 namespace Revistone
 {
@@ -14,34 +15,44 @@ namespace Revistone
                 consoleReload = true;
             }
 
-            /// <summary> Updates given lines animation settings, via the given ConsoleAnimatedLine. </summary>
-            public static void UpdateLineAnimation(ConsoleAnimatedLine dynamicUpdate, int lineIndex)
+            public static void UpdateLineExceptionStatus(bool status, int lineIndex)
             {
+                if (lineIndex < 0 || lineIndex >= consoleLines.Length) return;
+                exceptionLines[lineIndex] = status;
+            }
+
+            public static bool GetLineExceptionStatus(int lineIndex)
+            {
+                if (lineIndex < 0 || lineIndex >= consoleLines.Length) return false;
+                return exceptionLines[lineIndex];
+            }
+
+            /// <summary> Updates ConsoleLine at given index, with given lineInfo </summary>
+            public static bool UpdateConsoleLine(ConsoleLine lineInfo, int lineIndex)
+            {
+                if (lineIndex < 1 || lineIndex >= debugStartIndex) return false;
+                consoleLines[lineIndex].Update(lineInfo);
+                return true;
+            }
+
+            /// <summary> Updates given lines animation settings, via the given ConsoleAnimatedLine. </summary>
+            public static bool UpdateLineAnimation(ConsoleAnimatedLine dynamicUpdate, int lineIndex)
+            {
+                if (lineIndex < 1 || lineIndex >= debugStartIndex) return false;
                 consoleLineUpdates[lineIndex].Update(dynamicUpdate);
+                return true;
             }
 
             /// <summary> Sends lineInfo into primary console area. </summary>
             public static void SendConsoleMessage(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo)
             {
-                UpdateEnclosedConsole(lineInfo, updateInfo, 2, consoleLines.Length - 9, ref consoleLineIndex);
-            }
-
-            /// <summary> Sends ConsoleLine into debug console area. </summary>
-            public static void SendDebugMessage(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo)
-            {
-                UpdateEnclosedConsole(lineInfo, updateInfo, bufferSize.height - 7, bufferSize.height - 2, ref debugLineIndex);
-            }
-
-            /// <summary> Updates ConsoleLine at given index, with given lineInfo </summary>
-            public static void UpdateConsoleLine(ConsoleLine lineInfo, int lineIndex)
-            {
-                consoleLines[lineIndex].Update(lineInfo);
+                UpdateEnclosedConsole(lineInfo, updateInfo, 2, consoleLines.Length - 9, ref primaryLineIndex);
             }
 
             /// <summary> Sends lineInfo into primary console area, also updating the animationInfo of the same line. </summary>
             public static void SendConsoleMessage(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo, ConsoleAnimatedLine animationInfo)
             {
-                consoleLineUpdates[consoleLineIndex].Update(animationInfo);
+                consoleLineUpdates[primaryLineIndex].Update(animationInfo);
                 SendConsoleMessage(lineInfo, updateInfo);
             }
             /// <summary> Sends lineInfo into primary console area, also updating the animationInfo of the same line. </summary>
@@ -53,6 +64,12 @@ namespace Revistone
             /// <summary> Sends lineInfo into primary console area. </summary>
             public static void SendConsoleMessage(string text, ConsoleLineUpdate updateIfno) { SendConsoleMessage(new ConsoleLine(text), updateIfno); } //just for ez of type
 
+
+            /// <summary> Sends ConsoleLine into debug console area. </summary>
+            public static void SendDebugMessage(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo)
+            {
+                UpdateEnclosedConsole(lineInfo, updateInfo, bufferSize.height - 7, bufferSize.height - 2, ref debugLineIndex);
+            }
 
             /// <summary> Sends ConsoleLine into debug console area. </summary>
             public static void SendDebugMessage(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo, ConsoleAnimatedLine animationInfo)
@@ -74,13 +91,28 @@ namespace Revistone
             {
                 if (consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return;
 
-                if (consoleIndex > consoleBot)
+                if (consoleIndex > consoleBot) //need to move back in console
                 {
                     for (int i = consoleTop; i <= consoleBot; i++)
                     {
-                        consoleLines[i - 1].Update(consoleLines[i]);
-                        consoleLineUpdates[i - 1].Update(consoleLineUpdates[i]);
+                        int traceBack = 1;
+                        while (true)
+                        {
+                            if (i - traceBack < consoleTop - 1) break;
+
+                            if (exceptionLines[i - traceBack])
+                            {
+                                traceBack++;
+                                continue;
+                            }
+
+                            consoleLines[i - traceBack].Update(consoleLines[i]);
+                            consoleLineUpdates[i - traceBack].Update(consoleLineUpdates[i]);
+
+                            break;
+                        }
                     }
+
                     consoleIndex = consoleBot;
                 }
 
@@ -90,10 +122,11 @@ namespace Revistone
                 }
                 else
                 {
+                    if (consoleIndex < 0) ConsoleAction.SendDebugMessage(consoleIndex.ToString());
                     consoleLines[consoleIndex].Update(lineInfo);
                 }
 
-                if (updateInfo.timeStamp) consoleLines[consoleIndex].Update($"[{DateTime.Now.ToString("HH:mm:ss")}] {consoleLines[consoleIndex].lineText}");
+                if (updateInfo.timeStamp) consoleLines[consoleIndex].Update($"[{DateTime.Now.ToString("HH:mm:ss:fff")}] {consoleLines[consoleIndex].lineText}");
 
                 if (updateInfo.newLine) consoleIndex++;
             }
@@ -101,7 +134,7 @@ namespace Revistone
             /// <summary> Marks all consoleLines in primary console for update, useful for minimizing screen errors. </summary>
             public static void MarkPrimaryConsoleForUpdate()
             {
-                for (int i = 1; i < consoleLines.Length - 8; i++) {consoleLines[i].MarkForUpdate();}
+                for (int i = 1; i < debugStartIndex; i++) { consoleLines[i].MarkForUpdate(); }
             }
 
             /// <summary> Clears primary console area. </summary>
@@ -113,48 +146,51 @@ namespace Revistone
                     consoleLines[i].Update("");
                 }
 
-                consoleLineIndex = 1;
+                primaryLineIndex = 1;
             }
 
             /// <summary> Clears debug console area. </summary>
             public static void ClearDebugConsole()
             {
-                for (int i = debugStartIndex; i < bufferSize.height - 1; i++)
+                for (int i = debugStartIndex + 1; i < bufferSize.height - 1; i++)
                 {
-                    consoleLines[i].Update("");
                     consoleLineUpdates[i].Update();
+                    consoleLines[i].Update("");
                 }
 
-                debugLineIndex = debugStartIndex;
+                debugLineIndex = debugStartIndex + 1;
             }
 
             // <summary> Clears previous [count] lines. </summary>
             public static void ClearLines(int count = 1, bool updateCurrentLine = false)
             {
-                for (int i = consoleLineIndex; i > consoleLineIndex - count; i--)
+                consoleLineUpdates[primaryLineIndex].Update();
+                for (int i = primaryLineIndex; i >= primaryLineIndex - count; i--)
                 {
+                    if (i < 1 || i >= debugStartIndex) continue;
+                    consoleLineUpdates[i].Update();
                     consoleLines[i].Update("");
                 }
 
-                if (updateCurrentLine) consoleLineIndex -= count;
+                if (updateCurrentLine) primaryLineIndex -= count;
             }
 
             /// <summary> Shifts consoleLineIndex via given shift. </summary>
             public static void ShiftLine(int shift = 1)
             {
-                consoleLineIndex = Math.Clamp(consoleLineIndex + shift, 1, debugStartIndex);
+                primaryLineIndex = Math.Clamp(primaryLineIndex + shift, 1, debugStartIndex);
             }
 
             /// <summary> Sets consoleLineIndex to given line. </summary>
             public static void GoToLine(int index)
             {
-                consoleLineIndex = Math.Clamp(index, 1, consoleLines.Length - 9);
+                primaryLineIndex = Math.Clamp(index, 1, debugStartIndex);
             }
 
             /// <summary> Gets current value of consoleLineIndex. </summary>
             public static int GetConsoleLineIndex()
             {
-                return consoleLineIndex;
+                return primaryLineIndex;
             }
 
             /// <summary> Gets current value of debugLineIndex. </summary>

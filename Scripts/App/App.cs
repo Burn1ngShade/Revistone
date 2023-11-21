@@ -18,8 +18,8 @@ namespace Revistone
         {
             public string name;
 
-            public ConsoleColor[] borderColours;
-            public int borderColourSpeed;
+            public (ConsoleColor primaryColour, ConsoleColor[] secondaryColour, int speed) colourScheme;
+            public (ConsoleColor[] colours, int speed) borderColourScheme;
 
             public int minWidthBuffer; //app only displays with atleast this width
             public int minHeightBuffer; //app only displays with atleast this height
@@ -30,11 +30,12 @@ namespace Revistone
             //--- CONSTRUCTORS ---
 
             /// <summary> Base class for apps to inherit. </summary>
-            public App(string name, ConsoleColor[] borderColours, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int borderColourSpeed = 5, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true)
+            public App(string name, (ConsoleColor primaryColour, ConsoleColor[] secondaryColours, int speed) colourScheme, (ConsoleColor[] colours, int speed) borderColourScheme, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true)
             {
                 this.name = name;
-                this.borderColours = borderColours;
-                this.borderColourSpeed = borderColourSpeed;
+
+                this.colourScheme = colourScheme;
+                this.borderColourScheme = borderColourScheme;
 
                 this.minWidthBuffer = minAppWidth;
                 this.minHeightBuffer = Math.Max(minAppHeight, 15);
@@ -44,14 +45,14 @@ namespace Revistone
             }
 
             /// <summary> Base class for apps to inherit. </summary>
-            public App() : this("app", new ConsoleColor[0], new (UserInputProfile, Action<string>, string)[0]) { }
+            public App() : this("app", (ConsoleColor.DarkBlue, new ConsoleColor[0], 5), (new ConsoleColor[0], 5), new (UserInputProfile, Action<string>, string)[0]) { }
 
             //--- METHODS ---
 
             /// <summary> Called on app initalisation. </summary>
             public virtual void OnAppInitalisation()
             {
-
+                
             }
 
             /// <summary> Called just before user is asked for input, use to interact with user. </summary>
@@ -67,11 +68,11 @@ namespace Revistone
             }
 
             //--- Register ---
-            
+
             /// <summary> Called on console startup, return all instances of class you want registered to console. </summary>
             public virtual App[] OnRegister()
             {
-                return new App[0];    
+                return new App[0];
             }
         }
     }

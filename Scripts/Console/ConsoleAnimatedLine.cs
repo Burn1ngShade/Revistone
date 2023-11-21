@@ -1,3 +1,4 @@
+using Revistone.Apps;
 using Revistone.Functions;
 
 namespace Revistone
@@ -34,6 +35,9 @@ namespace Revistone
             /// <summary> The configuration for dynamically updating a ConsoleLine, every tickMod ticks. </summary>
             public ConsoleAnimatedLine() : this(None, "", 5, false) { }
 
+            /// <summary> The configuration for dynamically updating a ConsoleLine, based on . </summary>
+            public static ConsoleAnimatedLine AppTheme => new ConsoleAnimatedLine(UpdateAppTheme, AppRegistry.activeApp.colourScheme.speed, true);
+
             /// <summary> Update configuration for dynamically updating a ConsoleLine, every tickMod ticks. </summary>
             public void Update(Action<ConsoleLine, ConsoleAnimatedLine, int> update, object metaInfo, int tickMod = 5, bool enabled = false)
             {
@@ -49,6 +53,7 @@ namespace Revistone
             /// <summary> Update configuration for dynamically updating a ConsoleLine, every tickMod ticks. </summary>
             public void Update(ConsoleAnimatedLine dynamicUpdate) { Update(dynamicUpdate.update, dynamicUpdate.metaInfo, dynamicUpdate.tickMod, dynamicUpdate.enabled); }
             public void Update() { Update(None, "", 5, false); }
+
             // --- PREMADE UPDATE TYPES ---
 
             /// <summary> Does nothing... </summary>
@@ -83,9 +88,11 @@ namespace Revistone
             }
 
             /// <summary> Updates text colours, via switching cyan and dark cyan. </summary>
-            public static void ConsoleTheme(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
+            public static void UpdateAppTheme(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
             {
-                lineInfo.Update(ColourFunctions.Replace(lineInfo.lineColour, new (ConsoleColor, ConsoleColor)[] { (ConsoleColor.Cyan, ConsoleColor.DarkCyan), (ConsoleColor.DarkCyan, ConsoleColor.Cyan) }));
+                (ConsoleColor oldColour, ConsoleColor newColour)[] colourPairs;
+                colourPairs = Enumerable.Range(0, AppRegistry.activeApp.colourScheme.secondaryColour.Length).Select(i => (AppRegistry.activeApp.colourScheme.secondaryColour[i], AppRegistry.activeApp.colourScheme.secondaryColour.Flip()[i])).ToArray();
+                lineInfo.Update(ColourFunctions.Replace(lineInfo.lineColour, colourPairs));
             }
         }
     }

@@ -1,5 +1,6 @@
 using Revistone.Console;
 using Revistone.Functions;
+using Revistone.Apps;
 using static Revistone.Functions.StringFunctions;
 
 namespace Revistone
@@ -92,10 +93,11 @@ namespace Revistone
 
                 if (errors.Count == 0 || outputFormat == OutputFormat.NoOutput) return errors.Count == 0;
 
-                ConsoleAction.SendConsoleMessage(new ConsoleLine("--- Input Invalid --- ", ColourFunctions.CyanGradient.Extend(22)), new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, tickMod: 10, enabled: true));
+                ConsoleAction.SendConsoleMessage(new ConsoleLine("--- Input Invalid --- ", AppRegistry.activeApp.colourScheme.secondaryColour.Extend(22)), 
+                ConsoleAnimatedLine.AppTheme);
                 for (int i = 0; i < errors.Count; i++)
                 {
-                    ConsoleAction.SendConsoleMessage(new ConsoleLine($"{i + 1}. {errors[i]}", ConsoleColor.DarkBlue));
+                    ConsoleAction.SendConsoleMessage(new ConsoleLine($"{i + 1}. {errors[i]}", AppRegistry.activeApp.colourScheme.primaryColour));
                 }
 
                 UserInput.WaitForUserInput(space: true);

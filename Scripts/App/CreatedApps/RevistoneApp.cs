@@ -3,6 +3,7 @@ using Revistone.Console;
 using static Revistone.Functions.ColourFunctions;
 using Revistone.Functions;
 using Revistone.Console.Image;
+using Revistone.Console.Data;
 
 namespace Revistone
 {
@@ -10,20 +11,25 @@ namespace Revistone
     {
         public class RevistoneApp : App
         {
-            public RevistoneApp() : base() {}
-            public RevistoneApp(string name, ConsoleColor[] borderColours, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int borderColourSpeed = 5, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, borderColours, appCommands, borderColourSpeed, minAppWidth, minAppHeight, baseCommands) { }
+            public RevistoneApp() : base() { }
+            public RevistoneApp(string name, (ConsoleColor primaryColour, ConsoleColor[] secondaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
 
             public override void OnAppInitalisation()
             {
                 base.OnAppInitalisation();
 
-                ConsoleColor[] c = AdvancedHighlight(63, ConsoleColor.Blue.ToArray(), CyanGradient, (17, 10), (34, 6));
+                ConsoleColor[] c = AdvancedHighlight(63, AppRegistry.activeApp.colourScheme.primaryColour.ToArray(), AppRegistry.activeApp.colourScheme.secondaryColour, (17, 10), (34, 6));
 
                 ConsoleAction.SendConsoleMessage(new ConsoleLine("More Than Just A [Console!] Input 'Help' For List Of Commands. ", c),
-                new ConsoleAnimatedLine(UpdateUI, 10, true));
+                new ConsoleAnimatedLine(UpdateUI, AppRegistry.activeApp.colourScheme.speed, true));
                 string[] s = new string[] {
                     @" o /|\/ \", @"_ o /\| \", @"       ___\o/)  | ", @"__|    \o   ( \", @"\ / | /o\", @"   |__ o/   / )   ", @"     o/__ |  (\", @"o _/\ / |"
                 };
+
+                for (int i = 0; i <= 4; i++)
+                {
+                    ConsoleAction.UpdateLineExceptionStatus(true, i);
+                }
 
                 ConsoleVideo stickMan = new ConsoleVideo(new ConsoleImage[0], 7);
 

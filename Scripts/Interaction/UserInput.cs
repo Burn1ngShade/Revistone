@@ -2,6 +2,7 @@ using static Revistone.Console.Data.ConsoleData;
 using static Revistone.Console.ConsoleAction;
 using Revistone.Console;
 using Revistone.Functions;
+using Revistone.Apps;
 
 namespace Revistone
 {
@@ -22,7 +23,7 @@ namespace Revistone
                 {
                     bool breakLoop = false;
 
-                    ConsoleKeyInfo c = System.Console.ReadKey(true);
+                    ConsoleKeyInfo c = UserRealtimeInput.GetKey();
 
                     switch (c.Key)
                     {
@@ -70,34 +71,31 @@ namespace Revistone
             public static void WaitForUserInput(ConsoleKey key = ConsoleKey.Enter, bool clear = true, bool space = false, bool goNextLine = false)
             {
                 if (space) ShiftLine();
-                int tick = 0, dotCount = 1, index = -1;
+                int dotCount = 1, index = -1;
 
-                ConsoleColor[] colours = ColourFunctions.AdvancedHighlight(30, ConsoleColor.DarkBlue, (ColourFunctions.CyanGradient, 6, 2 + key.ToString().Length));
+                ConsoleColor[] colours = ColourFunctions.AdvancedHighlight(30, AppRegistry.activeApp.colourScheme.primaryColour, (AppRegistry.activeApp.colourScheme.secondaryColour, 6, 2 + key.ToString().Length));
+
+                SendConsoleMessage(new ConsoleLine($"Press [{key}] To Continue{new string('.', dotCount)}", colours), ConsoleLineUpdate.SameLine,
+                new ConsoleAnimatedLine(WaitForUserInputUpdate, tickMod: AppRegistry.activeApp.colourScheme.speed, enabled: true));
 
                 while (true)
                 {
-                    if (tick % 10 == 0)
+                    ConsoleKeyInfo c = UserRealtimeInput.GetKey();
+                    if (c.Key == key)
                     {
-                        index = consoleLineIndex;
-                        SendConsoleMessage(new ConsoleLine($"Press [{key}] To Continue{new string('.', dotCount)}", colours), ConsoleLineUpdate.SameLine);
-                        colours = colours.Shift(1, 6, 2 + key.ToString().Length);
-                        dotCount = dotCount < 3 ? dotCount + 1 : 0;
+                        GoToLine(index); //prevents other functions and tasks messing with clear
+                        if (clear) UpdateConsoleLine(new ConsoleLine(""), GetConsoleLineIndex());
+                        if (goNextLine) ShiftLine();
+                        return;
                     }
+                }
 
-                    if (System.Console.KeyAvailable)
-                    {
-                        ConsoleKeyInfo c = System.Console.ReadKey(true);
-                        if (c.Key == key)
-                        {
-                            GoToLine(index); //prevents other functions and tasks messing with clear
-                            if (clear) UpdateConsoleLine(new ConsoleLine(""), GetConsoleLineIndex());
-                            if (goNextLine) ShiftLine();
-                            return;
-                        }
-                    }
-
-                    tick++;
-                    Thread.Sleep(25);
+                void WaitForUserInputUpdate(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
+                {
+                    index = primaryLineIndex;
+                    SendConsoleMessage(new ConsoleLine($"Press [{key}] To Continue{new string('.', dotCount)}", colours), ConsoleLineUpdate.SameLine);
+                    colours = colours.Shift(1, 6, 2 + key.ToString().Length);
+                    dotCount = dotCount < 3 ? dotCount + 1 : 0;
                 }
             }
 
@@ -106,10 +104,10 @@ namespace Revistone
             {
                 if (options.Length < 2) return 0;
 
-                SendConsoleMessage(new ConsoleLine(title, ConsoleColor.DarkBlue));
+                SendConsoleMessage(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour));
 
-                int shift = Math.Clamp(options.Length - (debugStartIndex - consoleLineIndex), 0, int.MaxValue);
-                (int min, int max) pointerRange = (consoleLineIndex - shift, consoleLineIndex + options.Length - shift);
+                int shift = Math.Clamp(options.Length - (debugStartIndex - primaryLineIndex), 0, int.MaxValue);
+                (int min, int max) pointerRange = (primaryLineIndex - shift, primaryLineIndex + options.Length - shift);
 
                 for (int i = pointerRange.min; i < pointerRange.max; i++)
                 {
@@ -123,7 +121,7 @@ namespace Revistone
 
                 while (true)
                 {
-                    ConsoleKeyInfo c = System.Console.ReadKey(true);
+                    ConsoleKeyInfo c = UserRealtimeInput.GetKey();
 
                     if (c.Key == ConsoleKey.W || c.Key == ConsoleKey.UpArrow) pointer = Math.Clamp(pointer - 1, pointerRange.min, pointerRange.max - 1);
                     else if (c.Key == ConsoleKey.S || c.Key == ConsoleKey.DownArrow) pointer = Math.Clamp(pointer + 1, pointerRange.min, pointerRange.max - 1);

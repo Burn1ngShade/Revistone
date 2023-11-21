@@ -16,6 +16,7 @@ namespace Revistone
             public static object renderLockObject = new object();
 
             static Thread handleTickBehaviour = new Thread(HandleTickBehaviour);
+            static Thread handleRealTimeInput = new Thread(UserRealtimeInput.KeyRegistry);
 
             public static event TickEventHandler Tick = new TickEventHandler((tickNum) => { });
             public delegate void TickEventHandler(int tickNum);
@@ -69,8 +70,11 @@ namespace Revistone
             {
                 AppRegistry.InitializeAppRegistry();
 
+                System.Console.CursorVisible = false;
                 ConsoleDisplay.InitializeConsoleDisplay();
                 handleTickBehaviour.Start();
+                
+                handleRealTimeInput.Start();
 
                 Thread.Sleep(50); //delay allows time for first tick to setup console
                 HandleConsoleBehaviour();

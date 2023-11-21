@@ -1,4 +1,6 @@
+using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
+using Microsoft.Win32;
 using Revistone.Functions;
 
 namespace Revistone
@@ -29,7 +31,6 @@ namespace Revistone
                 this._lineColour = lineColour;
                 this._updated = false;
             }
-
             /// <summary> Class pertaining all info for a line in the console. </summary>
             public ConsoleLine() : this("", new ConsoleColor[] { ConsoleColor.White }) { }
             /// <summary> Class pertaining all info for a line in the console. </summary>
@@ -42,15 +43,6 @@ namespace Revistone
             //--- METHODS ---
 
             /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-            public void Update(ConsoleLine line) { Update(line.lineText, line.lineColour); }
-            /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-            public void Update(string lineText) { Update(lineText, _lineColour); }
-            /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-            public void Update(string lineText, ConsoleColor lineColour) { Update(lineText, new ConsoleColor[1] { lineColour }); }
-            /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-            public void Update(ConsoleColor[] lineColour) { Update(lineText, lineColour); }
-
-            /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
             public void Update(string lineText, ConsoleColor[] lineColour)
             {
                 lock (Management.Manager.renderLockObject)
@@ -60,6 +52,15 @@ namespace Revistone
                     this._updated = false;
                 }
             }
+
+            /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
+            public void Update(ConsoleLine lineInfo) { Update(lineInfo.lineText, lineInfo.lineColour); }
+            /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
+            public void Update(string lineText) { Update(lineText, _lineColour); }
+            /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
+            public void Update(string lineText, ConsoleColor lineColour) { Update(lineText, new ConsoleColor[1] { lineColour }); }
+            /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
+            public void Update(ConsoleColor[] lineColour) { Update(lineText, lineColour); }
 
             /// <summary> Marks ConsoleLine as updated (try to avoid). </summary>
             public void MarkAsUpToDate()

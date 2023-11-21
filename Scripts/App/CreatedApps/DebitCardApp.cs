@@ -5,7 +5,6 @@ using static Revistone.Console.ConsoleAction;
 using static Revistone.Interaction.UserInput;
 using static Revistone.Interaction.UserInputProfile;
 using static Revistone.Functions.ColourFunctions;
-using System.Collections;
 
 namespace Revistone
 {
@@ -15,13 +14,13 @@ namespace Revistone
         {
             // --- APP BOILER PLATE ---
 
-            public DebitCardApp() : base() {}
-            public DebitCardApp(string name, ConsoleColor[] borderColours, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int borderColourSpeed = 5, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, borderColours, appCommands, borderColourSpeed, minAppWidth, minAppHeight, baseCommands) { }
+            public DebitCardApp() : base() { }
+            public DebitCardApp(string name, (ConsoleColor primaryColour, ConsoleColor[] secondaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
 
             public override App[] OnRegister()
-            { 
-                return new DebitCardApp[] { new DebitCardApp("Debit Card Manager", Alternate(DarkBlueAndMagenta.Flip(), 6, 3),
-                new (UserInputProfile format, Action<string> payload, string summary)[] {}, 5) };
+            {
+                return new DebitCardApp[] { new DebitCardApp("Debit Card Manager", (ConsoleColor.DarkBlue, DarkBlueAndMagenta, 10), (Alternate(DarkBlueAndMagenta.Flip(), 6, 3), 5),
+                new (UserInputProfile format, Action<string> payload, string summary)[] {}) };
             }
 
             public override void OnAppInitalisation()
@@ -62,6 +61,7 @@ namespace Revistone
 
             void AccessCard()
             {
+                //way to easily stop dynamic line 
                 string accountNumber = GetValidUserInput(new ConsoleLine("Account Number [Last 4 Digits Of The Card Number]: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.Int, charCount: 4));
                 for (int i = 0; i < DebitCard.db.Count; i++)
                 {

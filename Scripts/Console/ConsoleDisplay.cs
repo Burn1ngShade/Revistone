@@ -16,8 +16,7 @@ namespace Revistone
             /// <summary> [DO NOT CALL] Initializes ConsoleDisplay. </summary>
             internal static void InitializeConsoleDisplay()
             {
-                System.Console.CursorVisible = false;
-                consoleLineIndex = 1;
+                primaryLineIndex = 1;
                 debugLineIndex = debugBufferStartIndex;
                 consoleReload = true;
 
@@ -84,14 +83,16 @@ namespace Revistone
                 screenWarningUpdated = false;
 
                 System.Console.Clear();
-                consoleLineIndex = 1;
+                primaryLineIndex = 1;
                 debugLineIndex = debugBufferStartIndex;
 
+                exceptionLines = new bool[System.Console.WindowHeight - 1];
                 consoleLines = new ConsoleLine[System.Console.WindowHeight - 1];
                 consoleLinesBuffer = new ConsoleLine[System.Console.WindowHeight - 1];
                 consoleLineUpdates = new ConsoleAnimatedLine[System.Console.WindowHeight - 1];
                 for (int i = 0; i < consoleLines.Length; i++)
                 {
+                    exceptionLines[i] = false;   
                     consoleLines[i] = new ConsoleLine();
                     consoleLinesBuffer[i] = new ConsoleLine();
                     consoleLineUpdates[i] = new ConsoleAnimatedLine();
@@ -126,12 +127,14 @@ namespace Revistone
                     }
                 }
 
+                Array.Resize(ref exceptionLines, bufferSize.height - 1);
                 Array.Resize(ref consoleLines, bufferSize.height - 1);
                 Array.Resize(ref consoleLinesBuffer, bufferSize.height - 1);
                 Array.Resize(ref consoleLineUpdates, bufferSize.height - 1);
 
                 for (int i = 1; i < consoleLines.Length; i++)
                 {
+                    exceptionLines[i] = false;   
                     consoleLines[i] = new ConsoleLine();
                     consoleLinesBuffer[i] = new ConsoleLine();
                     consoleLineUpdates[i] = new ConsoleAnimatedLine();
@@ -149,7 +152,7 @@ namespace Revistone
                     consoleLineUpdates[i].Update(enclosedConsoleLinesDC[i - 1].animationInfo);
                 }
 
-                consoleLineIndex = Math.Clamp(consoleLineIndex, 1, debugStartIndex - 1);
+                primaryLineIndex = Math.Clamp(primaryLineIndex, 1, debugStartIndex - 1);
                 debugLineIndex = consoleLines.Length - debugDistanceFromEnd;
 
                 UpdateConsoleTitle();
@@ -162,8 +165,8 @@ namespace Revistone
                 if (consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return;
                 consoleLinesBuffer[0].Update(""); //stops buffer width
                 string title = AppRegistry.activeApp.name;
-                consoleLines[0].Update(new string('-', (bufferSize.width - title.Length) / 2 - 2) + $" [{title}] " + new string('-', (bufferSize.width - title.Length) / 2 - 2), ColourFunctions.Alternate(AppRegistry.activeApp.borderColours, bufferSize.width - 1, 1));
-                ConsoleAction.UpdateLineAnimation(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourSpeed, true), 0);
+                consoleLines[0].Update(new string('-', (bufferSize.width - title.Length) / 2 - 2) + $" [{title}] " + new string('-', (bufferSize.width - title.Length) / 2 - 2), ColourFunctions.Alternate(AppRegistry.activeApp.borderColourScheme.colours, bufferSize.width - 1, 1));
+                consoleLineUpdates[0].Update(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true));
             }
 
             /// <summary> Updates console border, with current app colour scheme. </summary>
@@ -171,8 +174,8 @@ namespace Revistone
             {
                 if (consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return;
                 consoleLinesBuffer[^8].Update(""); //stops buffer width
-                consoleLines[^8].Update(new string('-', bufferSize.width - 1), ColourFunctions.Alternate(AppRegistry.activeApp.borderColours, bufferSize.width - 1, 1));
-                ConsoleAction.UpdateLineAnimation(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourSpeed, true), debugStartIndex);
+                consoleLines[^8].Update(new string('-', bufferSize.width - 1), ColourFunctions.Alternate(AppRegistry.activeApp.borderColourScheme.colours, bufferSize.width - 1, 1));
+                consoleLineUpdates[^8].Update(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true));
             }
 
             /// <summary> Writes given line to screen, using value of consoleLines. </summary>

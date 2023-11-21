@@ -13,10 +13,10 @@ namespace Revistone
         {
             //must have Revistone assigned here so its first in list and loaded by default
             public static List<App> _appRegistry = new List<App>() {
-                new RevistoneApp("Revistone", ColourFunctions.CyanDarkBlueGradient.Extend(7, true),
+                new RevistoneApp("Revistone", (ConsoleColor.DarkBlue, ColourFunctions.CyanGradient, 10), (ColourFunctions.CyanDarkBlueGradient.Extend(7, true), 5),
                 new (UserInputProfile, Action<string>, string)[] 
                 {(new UserInputProfile(UserInputProfile.InputType.FullText, "boop", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop", ConsoleColor.DarkBlue)), "Boop!") }, 5)
+                (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop", activeApp.colourScheme.primaryColour)), "Boop!") })
             };
             public static List<App> appRegistry { get { return _appRegistry; } }
 
@@ -72,7 +72,7 @@ namespace Revistone
             }
 
             /// <summary> Registers apps to console [DO NOT CALL]. </summary>
-            public static void InitializeAppRegistry()
+            internal static void InitializeAppRegistry()
             {
                 // Get all types in the current assembly
                 Type[] types = Assembly.GetExecutingAssembly().GetTypes();
