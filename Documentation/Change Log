@@ -182,3 +182,57 @@ Exiting and reloading debit card manager resaves inital text in debitcard.text
 [Minor]
 Resizing windows causes ConsoleLineIndex to occasinaly move to far forward
 UserInputProfile outputed input.length rather than modInput.length
+
+--- Console Fix Patch --- [QuickFix] 0.2.1 (16/11/23)
+
+Bug Fixes:
+[Major] 
+Console would break on all non vs code consoles! now fixed (Actually lets go)
+
+--- RealTimeInput And ExceptionLines --- [Notable] 0.2.2 (21/11/23)
+
+Summary:
+Adds realtimeinput, allowing the user to more easily create realtime applications, as well exception lines, which while currentley limited
+only preventing scroll in enclosedconsoleupdate, will act very differnetly to a normal line.
+
++----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                       | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                          |         21 |      2,054 |        278 |        487 |      2,819 |
+| App                                                                        |          7 |        718 |         59 |        151 |        928 |
+| App (Files)                                                                |          3 |        232 |         35 |         50 |        317 |
+| App\CreatedApps                                                            |          3 |        400 |          9 |         76 |        485 |
+| App\PersistentData                                                         |          1 |         86 |         15 |         25 |        126 |
+| Console                                                                    |          8 |        674 |        118 |        164 |        956 |
+| Console (Files)                                                            |          6 |        486 |         91 |        108 |        685 |
+| Console\Imagery                                                            |          2 |        188 |         27 |         56 |        271 |
+| Functions                                                                  |          2 |        355 |         62 |         89 |        506 |
+| Interaction                                                                |          3 |        249 |         29 |         68 |        346 |
+| Management                                                                 |          1 |         58 |         10 |         15 |         83 |
++----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+ 
+Specifics:
+
+[Major]
+RealTimeUserInput -> allows user to easily get input for realtime projects, very limited rn, will add macro support as well as possibly
+GetKeyDown, GetKeyUp
+
+[Notable]
+added exceptions lines, currently only avoid scroll from console, but will do more later on
+new app control -> colourScheme, control speed and colours of all built in colour specific functions
+userrealtimeinput
+all methods now limited to within primary console stopping lots of bugs
+
+[Minor]
+new command -> Home
+timestamped messages now include milliseconds
+Revistone intro animation and text now pinned using exceptionlines
+
+Fixed Bugs:
+
+[Notable]
+Multiple calls to enclosedconsole at once broke it, not uses renderLockObject
+clear debug no longer clears border line, (glitched now debug uses 7 lines)
+clearLines(), now clears animatino data as well
+cursor no longer visable on certain console applications that it was before.
+

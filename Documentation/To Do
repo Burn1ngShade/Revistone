@@ -1,27 +1,25 @@
 --- TO DO ---
-[LostIt]
-[?] 3D renderer
+[AppIdeas]
+FlashCardApp 
+FlappyBird Style game
+Football Simulation
+Calcualtor
+Simulation Game
+PC/Assembley Sim
 
 [Major]
-[0.3] work on realtime user input support, support macros on input feed.
-[0.3] FlashCardApp 
-[0.3] FlappyBird Style game
-[0.4] Simulation Game
-[0.3] More fleshed out usage guide
+Macro support
+flesh out images and videos
+flesh out realtime user input
+flesh out exceptionLiens
+Better usage guide
 
 [Notable]
-[0.3] ability to pin lines to console
-[0.3/0.4] more options for video and image (from png/mp4)
-
-[Minor]
-[0.3] add option to resize removing top of console or bottom, dependent on app
-[0.3] Allow apps to customise consoleColourScheme
+add option to resize removing top of console or bottom, dependent on app
+add option to limit primary console between 2 points
+space between left side and console stuff
+option to add padding to stirng
 
 --- KNOWN BUGS ---
-[Major]
 
-[Notable] 
-[0.3] consoleanimationlines first update isnt instant, so can take while to start
-
-[Minor]
-
+--- DONE ---
