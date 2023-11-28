@@ -1,8 +1,5 @@
 using System.Reflection;
-
-using Revistone.Functions;
-using Revistone.Interaction;
-using Revistone.Console;
+using Revistone.Management;
 
 namespace Revistone
 {
@@ -12,12 +9,7 @@ namespace Revistone
         public static class AppRegistry
         {
             //must have Revistone assigned here so its first in list and loaded by default
-            public static List<App> _appRegistry = new List<App>() {
-                new RevistoneApp("Revistone", (ConsoleColor.DarkBlue, ColourFunctions.CyanGradient, 10), (ColourFunctions.CyanDarkBlueGradient.Extend(7, true), 5),
-                new (UserInputProfile, Action<string>, string)[] 
-                {(new UserInputProfile(UserInputProfile.InputType.FullText, "boop", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop", activeApp.colourScheme.primaryColour)), "Boop!") })
-            };
+            public static List<App> _appRegistry = new List<App>() { };
             public static List<App> appRegistry { get { return _appRegistry; } }
 
             static int _activeAppIndex = 0;
@@ -56,7 +48,10 @@ namespace Revistone
             {
                 if (index < 0 || index >= _appRegistry.Count) return false;
 
+                Manager.Tick -= activeApp.OnUpdate;
                 _activeAppIndex = index;
+                Manager.Tick += activeApp.OnUpdate;
+
                 return true;
             }
 
@@ -66,6 +61,17 @@ namespace Revistone
                 for (int i = 0; i < _appRegistry.Count; i++)
                 {
                     if (_appRegistry[i].name.ToLower() == name.ToLower()) return SetActiveApp(i);
+                }
+
+                return false;
+            }
+
+            /// <summary> Returns if app of given name is registered. </summary>
+            public static bool AppExists(string name)
+            {
+                for (int i = 0; i < _appRegistry.Count; i++)
+                {
+                    if (_appRegistry[i].name.ToLower() == name.ToLower()) return true;
                 }
 
                 return false;

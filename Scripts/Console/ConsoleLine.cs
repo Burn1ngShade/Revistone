@@ -1,6 +1,3 @@
-using System.Net.NetworkInformation;
-using System.Runtime.CompilerServices;
-using Microsoft.Win32;
 using Revistone.Functions;
 
 namespace Revistone
@@ -72,6 +69,21 @@ namespace Revistone
             public void MarkForUpdate()
             {
                 this._updated = false;
+            }
+
+            //--- STATIC METHODS ---
+
+            /// <summary> Inserts a ConsoleLine into another, overwritting overlapping chars and colours. </summary>
+            public static ConsoleLine Overwrite(ConsoleLine baseLine, ConsoleLine overwriteLine, int overwriteIndex)
+            {
+                string s = baseLine.lineText;
+                s += new string(' ', Math.Clamp(overwriteIndex + overwriteLine.lineText.Length - s.Length, 0, int.MaxValue));
+                s = s.ReplaceAt(overwriteIndex, overwriteLine.lineText.Length, overwriteLine.lineText);
+
+                ConsoleColor[] cl = baseLine.lineColour.Extend(ConsoleColor.White, s.Length);
+                for (int i = overwriteIndex; i < overwriteIndex + overwriteLine.lineText.Length; i++) cl[i] = overwriteLine.lineColour[i - overwriteIndex];
+
+                return new ConsoleLine(s, cl);
             }
         }
     }

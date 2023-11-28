@@ -1,8 +1,7 @@
-using System.Reflection;
-using System.Reflection.Emit;
 using Revistone.Apps;
 using Revistone.Functions;
 using Revistone.Management;
+
 using static Revistone.Console.Data.ConsoleData;
 
 namespace Revistone
@@ -20,17 +19,17 @@ namespace Revistone
                 debugLineIndex = debugBufferStartIndex;
                 consoleReload = true;
 
-                Management.Manager.Tick += HandleConsoleDisplayBehaviour;
+                Manager.Tick += HandleConsoleDisplayBehaviour;
             }
 
             /// <summary> Main loop for ConsoleDisplay, handles dynamic lines and rendering console. </summary>
             static void HandleConsoleDisplayBehaviour(int tickNum)
             {
                 //if console display resized
-                if (bufferSize.width != System.Console.WindowWidth || bufferSize.height != System.Console.WindowHeight || consoleReload)
+                if (bufferSize.width != System.Console.WindowWidth || bufferSize.height != System.Console.WindowHeight || (consoleReload && bufferSize.height > AppRegistry.activeApp.minHeightBuffer && bufferSize.width > AppRegistry.activeApp.minWidthBuffer))
                 {
                     bufferSize = (System.Console.WindowWidth, System.Console.WindowHeight);
-                    if (!consoleReload) SoftReloadConsoleDisplay();
+                    if (!(consoleReload && bufferSize.height > AppRegistry.activeApp.minHeightBuffer && bufferSize.width > AppRegistry.activeApp.minWidthBuffer)) SoftReloadConsoleDisplay();
                     else if (!(bufferSize.height <= AppRegistry.activeApp.minHeightBuffer || bufferSize.width <= AppRegistry.activeApp.minWidthBuffer))
                     {
                         ResetConsoleDisplay();
@@ -69,7 +68,7 @@ namespace Revistone
             {
                 for (int i = 0; i < consoleLines.Length; i++)
                 {
-                    if (!consoleLineUpdates[i].enabled || tickNum % consoleLineUpdates[i].tickMod != 0) continue; //not dynamic or not right tick
+                    if (!consoleLineUpdates[i].enabled || (tickNum - consoleLineUpdates[i].initTick) % consoleLineUpdates[i].tickMod != 0) continue; //not dynamic or not right tick
                     consoleLineUpdates[i].update.Invoke(consoleLines[i], consoleLineUpdates[i], tickNum);
                 }
 
@@ -92,7 +91,7 @@ namespace Revistone
                 consoleLineUpdates = new ConsoleAnimatedLine[System.Console.WindowHeight - 1];
                 for (int i = 0; i < consoleLines.Length; i++)
                 {
-                    exceptionLines[i] = false;   
+                    exceptionLines[i] = false;
                     consoleLines[i] = new ConsoleLine();
                     consoleLinesBuffer[i] = new ConsoleLine();
                     consoleLineUpdates[i] = new ConsoleAnimatedLine();
@@ -134,7 +133,6 @@ namespace Revistone
 
                 for (int i = 1; i < consoleLines.Length; i++)
                 {
-                    exceptionLines[i] = false;   
                     consoleLines[i] = new ConsoleLine();
                     consoleLinesBuffer[i] = new ConsoleLine();
                     consoleLineUpdates[i] = new ConsoleAnimatedLine();
@@ -166,7 +164,7 @@ namespace Revistone
                 consoleLinesBuffer[0].Update(""); //stops buffer width
                 string title = AppRegistry.activeApp.name;
                 consoleLines[0].Update(new string('-', (bufferSize.width - title.Length) / 2 - 2) + $" [{title}] " + new string('-', (bufferSize.width - title.Length) / 2 - 2), ColourFunctions.Alternate(AppRegistry.activeApp.borderColourScheme.colours, bufferSize.width - 1, 1));
-                consoleLineUpdates[0].Update(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true));
+                consoleLineUpdates[0].Update(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "1", AppRegistry.activeApp.borderColourScheme.speed, true));
             }
 
             /// <summary> Updates console border, with current app colour scheme. </summary>
@@ -175,7 +173,7 @@ namespace Revistone
                 if (consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return;
                 consoleLinesBuffer[^8].Update(""); //stops buffer width
                 consoleLines[^8].Update(new string('-', bufferSize.width - 1), ColourFunctions.Alternate(AppRegistry.activeApp.borderColourScheme.colours, bufferSize.width - 1, 1));
-                consoleLineUpdates[^8].Update(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true));
+                consoleLineUpdates[^8].Update(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "1", AppRegistry.activeApp.borderColourScheme.speed, true));
             }
 
             /// <summary> Writes given line to screen, using value of consoleLines. </summary>
@@ -191,8 +189,8 @@ namespace Revistone
 
                 if (bc.lineText.Length > c.lineText.Length) //clears line between end of currentline and buffer line
                 {
-                    System.Console.SetCursorPosition(c.lineText.Length, cursorTop);
-                    System.Console.Write(new string(' ', System.Console.WindowWidth - c.lineText.Length));
+                    System.Console.SetCursorPosition(Math.Min(c.lineText.Length, System.Console.BufferWidth - 1), cursorTop);
+                    System.Console.Write(new string(' ', Math.Max(System.Console.WindowWidth - c.lineText.Length, 0)));
                     System.Console.SetCursorPosition(0, cursorTop);
                 }
 

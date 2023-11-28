@@ -26,8 +26,8 @@ namespace Revistone
                 public static (int width, int height) bufferSize = (-1, -1);
 
                 //--- Shorthand values ---
-                public static int debugBufferStartIndex { get { return bufferSize.height - 8; } }
-                public static int debugStartIndex { get { return consoleLines.Length - 8; } }
+                public static int debugBufferStartIndex { get { return bufferSize.height - 8; } } //used in reload
+                public static int debugStartIndex { get { return consoleLines.Length - 8; } } //use this one
             }
         }
     }

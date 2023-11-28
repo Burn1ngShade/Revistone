@@ -1,5 +1,6 @@
 using Revistone.Apps;
 using Revistone.Functions;
+using Revistone.Management;
 
 namespace Revistone
 {
@@ -15,6 +16,7 @@ namespace Revistone
             public Action<ConsoleLine, ConsoleAnimatedLine, int> update; //called on update
             public object metaInfo;
 
+            public int initTick; //tick updated
             public int tickMod; //ticks per update
 
             // --- CONSTRUCTORS ---
@@ -24,6 +26,7 @@ namespace Revistone
             {
                 this.enabled = enabled;
                 this.update = update;
+                this.initTick = Manager.currentTick - 1;
                 this.metaInfo = metaInfo;
                 this.tickMod = tickMod;
             }
@@ -45,6 +48,7 @@ namespace Revistone
                 {
                     this.enabled = enabled;
                     this.update = update;
+                    this.initTick = Manager.currentTick - 1;
                     this.metaInfo = metaInfo;
                     this.tickMod = tickMod;
                 }

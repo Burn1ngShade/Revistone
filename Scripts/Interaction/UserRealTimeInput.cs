@@ -1,6 +1,4 @@
-using System.Data;
 using System.Runtime.InteropServices;
-using Revistone.Console;
 
 namespace Revistone
 {
@@ -41,7 +39,7 @@ namespace Revistone
             /// <summary> Returns if key currently pressed down. </summary>
             public static bool KeyPressed(int key)
             {
-                return GetAsyncKeyState((int)key) >= 1 ? true : false;
+                return GetAsyncKeyState(key) > 1;
             }
 
             /// <summary> Returns if key currently pressed down. </summary>

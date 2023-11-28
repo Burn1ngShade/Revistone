@@ -1,6 +1,5 @@
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters;
 using Revistone.Console;
+
 using static System.ConsoleColor;
 
 namespace Revistone
@@ -32,10 +31,12 @@ namespace Revistone
             public static ConsoleColor[] RedAndYellow { get { return new ConsoleColor[2] { Red, Yellow }; } }
             /// <summary> Colour gradient, [Red, Green]. </summary>
             public static ConsoleColor[] RedAndGreen { get { return new ConsoleColor[2] { Red, Green }; } }
-             /// <summary> Colour gradient, [Red, Yellow, Green]. </summary>
+            /// <summary> Colour gradient, [Red, Yellow, Green]. </summary>
             public static ConsoleColor[] RedAndYellowAndGreen { get { return new ConsoleColor[3] { Red, Yellow, Green }; } }
             /// <summary> Colour gradient, [Green, Blue]. </summary>
             public static ConsoleColor[] GreenAndBlue { get { return new ConsoleColor[2] { Green, Blue }; } }
+            /// <summary> Colour gradient, [Green, Blue]. </summary>
+            public static ConsoleColor[] DarkGreenAndDarkBlue { get { return new ConsoleColor[2] { DarkGreen, DarkBlue }; } }
             /// <summary> Colour gradient, [Dark Blue, Magenta]. </summary>
             public static ConsoleColor[] DarkBlueAndMagenta { get { return new ConsoleColor[2] { DarkBlue, Magenta }; } }
             /// <summary> Colour gradient, [White, Black]. </summary>
@@ -206,6 +207,21 @@ namespace Revistone
                     {
                         colour.index = colour.index + 1 >= colours.Length ? 0 : colour.index + 1;
                     }
+                }
+
+                return c;
+            }
+
+            /// <summary> Extends ConsoleColour array to given length, by appending given extendColour. </summary>
+            public static ConsoleColor[] Extend(this ConsoleColor[] colours, ConsoleColor extendColour, int length)
+            {
+                if (colours.Length == 0) return colours;
+
+                ConsoleColor[] c = new ConsoleColor[length];
+
+                for (int i = 0; i < c.Length; i++)
+                {
+                    c[i] = colours.Length > i ? colours[i] : extendColour;
                 }
 
                 return c;

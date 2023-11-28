@@ -1,9 +1,9 @@
 using Revistone.Interaction;
 using Revistone.Console;
-using static Revistone.Functions.ColourFunctions;
 using Revistone.Functions;
-using Revistone.Console.Image;
-using Revistone.Console.Data;
+
+using static Revistone.Functions.ColourFunctions;
+
 
 namespace Revistone
 {
@@ -14,41 +14,35 @@ namespace Revistone
             public RevistoneApp() : base() { }
             public RevistoneApp(string name, (ConsoleColor primaryColour, ConsoleColor[] secondaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
 
+            public override App[] OnRegister()
+            {
+                return new RevistoneApp[] { new RevistoneApp("Revistone", (ConsoleColor.DarkBlue, ConsoleColor.Cyan.ToArray(), 10), (CyanDarkBlueGradient.Extend(7, true), 5),
+                new (UserInputProfile, Action<string>, string)[] 
+                {(new UserInputProfile(UserInputProfile.InputType.FullText, "boop", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop", AppRegistry.activeApp.colourScheme.primaryColour)), "Boop!") },
+                98, 23) };
+            }
+
             public override void OnAppInitalisation()
             {
                 base.OnAppInitalisation();
 
-                ConsoleColor[] c = AdvancedHighlight(63, AppRegistry.activeApp.colourScheme.primaryColour.ToArray(), AppRegistry.activeApp.colourScheme.secondaryColour, (17, 10), (34, 6));
+                ConsoleLine[] title = TitleFunctions.CreateTitle("REVISTONE", AdvancedHighlight(97, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10), (ConsoleColor.Cyan.ToArray(), 48, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1);
 
+                ConsoleAction.ShiftLine();
+                ConsoleAction.SendConsoleMessages(title,
+                Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), 97).ToArray());
+
+                ConsoleAction.ShiftLine();
+
+                ConsoleColor[] c = AdvancedHighlight(63, AppRegistry.activeApp.colourScheme.primaryColour.ToArray(), AppRegistry.activeApp.colourScheme.secondaryColour, (17, 10), (34, 6));
                 ConsoleAction.SendConsoleMessage(new ConsoleLine("More Than Just A [Console!] Input 'Help' For List Of Commands. ", c),
                 new ConsoleAnimatedLine(UpdateUI, AppRegistry.activeApp.colourScheme.speed, true));
-                string[] s = new string[] {
-                    @" o /|\/ \", @"_ o /\| \", @"       ___\o/)  | ", @"__|    \o   ( \", @"\ / | /o\", @"   |__ o/   / )   ", @"     o/__ |  (\", @"o _/\ / |"
-                };
 
-                for (int i = 0; i <= 4; i++)
+                for (int i = 0; i <= 11; i++)
                 {
                     ConsoleAction.UpdateLineExceptionStatus(true, i);
                 }
-
-                ConsoleVideo stickMan = new ConsoleVideo(new ConsoleImage[0], 7);
-
-                for (int i = 0; i <= 56; i++)
-                {
-                    int sIndex = i % 8;
-                    int lineLength = s[sIndex].Length / 3;
-                    stickMan.AddFrame(new ConsoleImage($"{new string(' ', i)}{s[sIndex].Substring(0, lineLength)}\n{new string(' ', i)}{s[sIndex].Substring(lineLength, lineLength)}\n{new string(' ', i)}{s[sIndex].Substring(lineLength * 2, lineLength)}"));
-                }
-
-                for (int i = 56; i >= 0; i--)
-                {
-                    int sIndex = i % 8;
-                    int lineLength = s[sIndex].Length / 3;
-                    stickMan.AddFrame(new ConsoleImage($"{new string(' ', i)}{s[sIndex].Substring(0, lineLength)}\n{new string(' ', i)}{s[sIndex].Substring(lineLength, lineLength)}\n{new string(' ', i)}{s[sIndex].Substring(lineLength * 2, lineLength)}"));
-                }
-
-                stickMan.SendToConsole(true);
-
             }
 
             static string[] keyword = new string[] {

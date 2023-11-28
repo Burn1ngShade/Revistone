@@ -236,3 +236,83 @@ clear debug no longer clears border line, (glitched now debug uses 7 lines)
 clearLines(), now clears animatino data as well
 cursor no longer visable on certain console applications that it was before.
 
+--- The Graphical And App Update --- [Major] 0.3 (28/11/23)
+
+Summary:
+Over 1000 new lines of code! adding 2 new apps, complete rehaul to graphics, TitleFunctions, 
+major overhaul to images videos app persistend data and more, left the console somewhere im quite happy with
+addressing all issues ive seen so far, next update will focus on fixing performance as well as cleaning parts 
+of code, with a few features and perhaps a new app. 
+
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                   |         23 |      2,836 |        390 |        674 |      3,900 |
+| App                                                                 |          8 |      1,274 |        119 |        268 |      1,661 |
+| App (Files)                                                         |          4 |        349 |         58 |         86 |        493 |
+| App\CreatedApps                                                     |          4 |        925 |         61 |        182 |      1,168 |
+| Console                                                             |          8 |        799 |        157 |        204 |      1,160 |
+| Console (Files)                                                     |          6 |        567 |        119 |        135 |        821 |
+| Console\Imagery                                                     |          2 |        232 |         38 |         69 |        339 |
+| Functions                                                           |          3 |        410 |         71 |        106 |        587 |
+| Interaction                                                         |          3 |        292 |         33 |         80 |        405 |
+| Management                                                          |          1 |         61 |         10 |         16 |         87 |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Specifics:
+
+[Major]
+TitleFunctions -> NEW, allowing for special text to be created, currently features [16] fonts
+AppPersistentData -> Redone, to use paths, rather than directory and name, added GetSubFiles and GetSubDirectorys function
+App -> Updated ExitApp() method and Update() method called once a tick
+ConsoleImage -> Updated can edit with consoleImage and string, as well as positional arguments
+ConsoleVideo -> Updated funcationality, positional arguments and remove and modify frame functions, as well as go to frame option
+ConseolAction -> Redone, lots of methods added and sorted, generic methods, exceptions line now are not effected by clear primary and clear debug console,
+exception lines now work with updating window, markPrimaryConsoleForUpdate [DEPRECATED]
+Manager -> Ticks now account for time taken to run tick, stops slowdown (until ticks take longer than tick speed), current tick now public, random function
+Pong -> NEW, pong lol
+Flash Card Manager -> NEW, revision tool
+Graphics -> Redone overhaul to titles and colour schemes throughout console, more accurate min width and height for apps
+
+[Notable]
+General -> References sorted, unused references removed, Moved persistent data into its own folder, Colours toned down for apps, option menus use colour theme, typos fixed, words captilised, missing summarys added
+UserInputProfile -> Added checks for empty, banned chars 
+UserInput -> New overloads, now uses console colur themeing, option menus can have multiple pages / dynamic arguemnts
+StringFunctions -> a few new functinos, such as ReplaceAt and SplitAtCapital, this functions
+ConsoleLine -> new Overwrite function
+
+[Minor]
+ConsoleColour -> new gradient and overload for extend
+Debit Card Manager -> Added summarys to debit card manager
+AppRegistry -> New App exsits method, revistone moved to no longer be specially registerd
+
+Fixed Bugs:
+
+[Major]
+reducing console width can cause error when console line smaller than before.
+ConsoleAnimatedLines now start timer based on init tick, removing sudo random delay
+fixed bug where opening app on buffer height 2 small could cause crash 
+
+[Notable]
+fixed console intro message not being excpetion line
+fixed bug causing keypressed to return true when not actually true
+fixed weird save data path for exe files
+fixed titleFonts not workign in exe versions
+fixed bug loading new app regardless of descion on load app
+fixed bug incorectlley loadingf app if decling app load
+videos no longer play first frame for 2x as long as the rest
+resizing screen skips to next frame in animatedLineUdpates
+
+[Minor]
+option menu colour bug fixedas
+fixed typos in consoleAction with updateInfo
+
+
+
+
+
+
+
+
+
+

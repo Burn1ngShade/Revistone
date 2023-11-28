@@ -1,7 +1,8 @@
 using Revistone.Console;
 using Revistone.Functions;
-using static Revistone.Console.ConsoleAction;
 using Revistone.Interaction;
+
+using static Revistone.Console.ConsoleAction;
 
 namespace Revistone
 {
@@ -37,6 +38,9 @@ namespace Revistone
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "apps", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { SendConsoleMessage(new ConsoleLine(StringFunctions.ToElementString(AppRegistry.appRegistry.Select(app => app.name).ToArray()), AppRegistry.activeApp.colourScheme.primaryColour)); },
                 "Prints A List Of The Names Of All Apps."),
+                (new UserInputProfile(UserInputProfile.InputType.FullText, "time", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => { SendConsoleMessage(new ConsoleLine(DateTime.Now.ToString(), AppRegistry.activeApp.colourScheme.primaryColour)); },
+                "Prints The Current System Time."),
 
                 //test commands
                 (new UserInputProfile(new UserInputProfile.InputType[] {}, "debug[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
@@ -79,22 +83,24 @@ namespace Revistone
             static void ReloadApp(string userInput)
             {
                 int clearConsole = UserInput.CreateOptionMenu("Reload App?", new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") });
-                if (clearConsole == 0) ResetConsole();
+                if (clearConsole == 0) ReloadConsole();
                 else SendConsoleMessage(new ConsoleLine("App Reload Cancelled!", AppRegistry.activeApp.colourScheme.primaryColour), new ConsoleLineUpdate());
             }
 
             /// <summary> Gives user Y/N option to load given app. </summary>
             static void LoadApp(string userInput)
             {
-                int cindex = AppRegistry.activeAppIndex;
-                string appName = userInput.Substring(4).TrimStart();
-                if (AppRegistry.SetActiveApp(appName))
+                string appName = userInput.Substring(4).TrimStart().AdjustCapitalisation(StringFunctions.CapitalCasing.FirstLetterUpper);
+                if (AppRegistry.AppExists(appName))
                 {
                     int closeApp = UserInput.CreateOptionMenu($"Load {appName}?", new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") });
-                    if (closeApp == 0) ResetConsole();
+                    if (closeApp == 0)
+                    {
+                        AppRegistry.SetActiveApp(appName);
+                        ReloadConsole();
+                    }
                     else
                     {
-                        AppRegistry.SetActiveApp(cindex);
                         SendConsoleMessage(new ConsoleLine($"App Load Cancelled!", AppRegistry.activeApp.colourScheme.primaryColour), new ConsoleLineUpdate());
                     }
                 }

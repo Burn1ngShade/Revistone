@@ -1,6 +1,3 @@
-using System.Collections;
-using Colorful;
-using Revistone.Console;
 using System.Text.RegularExpressions;
 
 namespace Revistone
@@ -8,7 +5,7 @@ namespace Revistone
     namespace Functions
     {
         /// <summary>
-        /// Class filled with functions unrelated to console, but useful for development.
+        /// Class filled with functions unrelated to console, but useful for string manipulation.
         /// </summary>
         public static class StringFunctions
         {
@@ -23,7 +20,7 @@ namespace Revistone
 
                 foreach (T element in t)
                 {
-                    if (element != null) s += $"{element.ToString()}, ";
+                    if (element != null) s += $"{element}, ";
                 }
 
                 s = s.Substring(0, s.Length - 2) + "]";
@@ -34,11 +31,18 @@ namespace Revistone
             /// <summary> Takes list of type T and returns array as a string in format [element, element...]. </summary>
             public static string ToElementString<T>(this List<T> t) { return ToElementString(t.ToArray()); }
 
+            /// <summary> Remove part of string at given index and length, and replace with replacementString. </summary>
+            public static string ReplaceAt(this string str, int index, int length, string replace)
+            {
+                return str.Remove(index, Math.Min(length, str.Length - index))
+                        .Insert(index, replace);
+            }
+
             /// <summary> Modifications to the captilisation of a string. </summary>
             public enum CapitalCasing { None, Upper, Lower, FirstLetterUpper }
 
             /// <summary> Returns a copy of given string modified to the captilisation of given casing. </summary>
-            public static string AdjustCapitalisation(string input, CapitalCasing casing)
+            public static string AdjustCapitalisation(this string input, CapitalCasing casing)
             {
                 switch (casing)
                 {
@@ -63,38 +67,44 @@ namespace Revistone
             }
 
             /// <summary> Determines if given string matches CapitalCasing preset given. </summary>
-            public static bool MatchesCapitalisation(string input, CapitalCasing casing)
+            public static bool MatchesCapitalisation(this string input, CapitalCasing casing)
             {
                 return input == AdjustCapitalisation(input, casing);
             }
 
+            /// <summary> Splits at string at each capital letter, and inserts a space. </summary>
+            public static string SplitAtCapitalisation(this string input)
+            {
+                return Regex.Replace(input, "([a-z])([A-Z])", "$1 $2");
+            }
+
             /// <summary> Checks if string is in given format, [C4] -> 4 char, [N7] -> 7 digit number, [N:] -> any digit number. Can not use [] in format. </summary>
-            public static bool Formatted(string input, string format)
+            public static bool Formatted(this string input, string format)
             {
                 // Replace [N4] with \d{4} for numeric checks and [C2] with [A-Za-z]{2} for character checks
                 format = Regex.Replace(format, @"\[N(\d+)]", m =>
                 {
-                   if (int.TryParse(m.Groups[1].Value, out int numberOfDigits))
-                   {
+                    if (int.TryParse(m.Groups[1].Value, out int numberOfDigits))
+                    {
                         return @"\d{" + numberOfDigits + "}";
-                   }
-                   return m.Value; // Return the original string if parsing fails
+                    }
+                    return m.Value; // Return the original string if parsing fails
                 });
                 format = Regex.Replace(format, @"\[C(\d+)]", m =>
                 {
-                   if (int.TryParse(m.Groups[1].Value, out int numberOfDigits))
-                   {
+                    if (int.TryParse(m.Groups[1].Value, out int numberOfDigits))
+                    {
                         return @"[A-Za-z]{" + numberOfDigits + "}";
-                   }
-                   return m.Value; // Return the original string if parsing fails
+                    }
+                    return m.Value; // Return the original string if parsing fails
                 });
                 format = Regex.Replace(format, @"\[A(\d+)]", m =>
                 {
-                   if (int.TryParse(m.Groups[1].Value, out int numberOfDigits))
-                   {
+                    if (int.TryParse(m.Groups[1].Value, out int numberOfDigits))
+                    {
                         return @".{" + numberOfDigits + "}";
-                   }
-                   return m.Value; // Return the original string if parsing fails
+                    }
+                    return m.Value; // Return the original string if parsing fails
                 });
 
                 format = Regex.Replace(format, @"\[N:\]", @"\d+");

@@ -1,11 +1,5 @@
-using Revistone.Functions;
 using Revistone.Console;
 using Revistone.Interaction;
-using Revistone.Console.Image;
-using Revistone.Console.Data;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Data;
 
 namespace Revistone
 {
@@ -67,12 +61,27 @@ namespace Revistone
                 AppCommands.Commands(userInput);
             }
 
+            /// <summary> Called once a tick (25ms). </summary>
+            public virtual void OnUpdate(int tickNum)
+            {
+
+            }
+
             //--- Register ---
 
             /// <summary> Called on console startup, return all instances of class you want registered to console. </summary>
             public virtual App[] OnRegister()
             {
                 return new App[0];
+            }
+
+            //--- Useful Functions ---
+
+            /// <summary> Sets active app to Revistone, and resets console (must return out of function after). </summary>
+            public void ExitApp()
+            {
+                AppRegistry.SetActiveApp("Revistone");
+                ConsoleAction.ReloadConsole();
             }
         }
     }

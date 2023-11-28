@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using Revistone.Apps;
+﻿using Revistone.Apps;
 using Revistone.Console;
 using Revistone.Console.Data;
 using Revistone.Interaction;
@@ -15,6 +14,10 @@ namespace Revistone
         {
             public static object renderLockObject = new object();
 
+            public static int currentTick = 0;
+
+            public static Random rnd = new Random();
+
             static Thread handleTickBehaviour = new Thread(HandleTickBehaviour);
             static Thread handleRealTimeInput = new Thread(UserRealtimeInput.KeyRegistry);
 
@@ -26,13 +29,12 @@ namespace Revistone
             /// </summary>
             static void HandleTickBehaviour() //controls tick based events
             {
-                int tickNum = 0;
-
                 while (true)
                 {
-                    Tick.Invoke(tickNum);
-                    Thread.Sleep(25);
-                    tickNum++;
+                    DateTime tickStartTime = DateTime.Now; //time tick starts
+                    Tick.Invoke(currentTick);
+                    Thread.Sleep(Math.Max(25 - (int)(DateTime.Now - tickStartTime).TotalMilliseconds, 0));
+                    currentTick++;
                 }
             }
 
@@ -69,6 +71,7 @@ namespace Revistone
             public static void Main(string[] args)
             {
                 AppRegistry.InitializeAppRegistry();
+                AppRegistry.SetActiveApp("Revistone");
 
                 System.Console.CursorVisible = false;
                 ConsoleDisplay.InitializeConsoleDisplay();

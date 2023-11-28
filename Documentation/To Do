@@ -1,24 +1,25 @@
 --- TO DO ---
 [AppIdeas]
-FlashCardApp 
-FlappyBird Style game
 Football Simulation
 Calcualtor
 Simulation Game
 PC/Assembley Sim
 
-[Major]
+[Features]
 Macro support
-flesh out images and videos
-flesh out realtime user input
-flesh out exceptionLiens
 Better usage guide
-
-[Notable]
-add option to resize removing top of console or bottom, dependent on app
-add option to limit primary console between 2 points
-space between left side and console stuff
-option to add padding to stirng
+screenshot funvationality
+Add userInput output that replaces [C:] with more acurate description
+Encryption for saving
+add cursor
+add abilty to go back in texts
+fps counter
+profiler
+more debug console options, images and what not
+performance fix (smart rendering optionss)
+way to create menus easily
+way to highlight colour between 2 chars / index and char
+improve and clean up flash card manager
 
 --- KNOWN BUGS ---
 

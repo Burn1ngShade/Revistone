@@ -1,6 +1,7 @@
 using Revistone.Console;
 using Revistone.Functions;
 using Revistone.Interaction;
+
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Interaction.UserInput;
 using static Revistone.Interaction.UserInputProfile;
@@ -19,38 +20,27 @@ namespace Revistone
 
             public override App[] OnRegister()
             {
-                return new DebitCardApp[] { new DebitCardApp("Debit Card Manager", (ConsoleColor.DarkBlue, DarkBlueAndMagenta, 10), (Alternate(DarkBlueAndMagenta.Flip(), 6, 3), 5),
-                new (UserInputProfile format, Action<string> payload, string summary)[] {}) };
+                return new DebitCardApp[] { new DebitCardApp("Debit Card Manager", (ConsoleColor.DarkBlue, ConsoleColor.Magenta.ToArray(), 10), (Alternate(DarkBlueAndMagenta.Flip(), 6, 3), 5),
+                new (UserInputProfile format, Action<string> payload, string summary)[] {}, 94) };
             }
 
             public override void OnAppInitalisation()
             {
-                DebitCard.accountID = int.TryParse(AppPersistentData.LoadFile("DebitCard", "Data", 0), out int i) ? i : 0;
+                DebitCard.accountID = int.TryParse(AppPersistentData.LoadFile("DebitCard/Data", 0), out int i) ? i : 0;
                 DebitCard.LoadDataBase();
                 MainMenu();
             }
 
             // --- MAIN MENU OPTIONS ---
 
+            /// <summary> Main loop for debit card manager.</summary>
             void MainMenu()
             {
                 ClearPrimaryConsole();
 
-                string[] title = new string[] {
-                    " _   _ _____ _   _  _______   __   ______  ___   _   _  _   __",
-                    @"| | | |  _  | \ | ||  ___\ \ / /   | ___ \/ _ \ | \ | || | / /",
-                    @"| |_| | | | |  \| || |__  \ V /    | |_/ / /_\ \|  \| || |/ / ",
-                    @"|  _  | | | | . ` ||  __|  \ /     | ___ \  _  || . ` ||    \ ",
-                    @"| | | \ \_/ / |\  || |___  | |     | |_/ / | | || |\  || |\  \",
-                    @"\_| |_/\___/\_| \_/\____/  \_/     \____/\_| |_/\_| \_/\_| \_/"
-                };
-
-                for (int i = 1; i < 7; i++)
-                {
-                    SendConsoleMessage(new ConsoleLine(title[i - 1], ColourFunctions.Extend(CyanDarkMagentaGradient, 62, true)),
-                new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", 10, true));
-                }
                 ShiftLine();
+                ConsoleLine[] title = TitleFunctions.CreateTitle("Honey Bank", ColourFunctions.Extend(CyanDarkMagentaGradient, 93, true), TitleFunctions.AsciiFont.BigMoneyNW);
+                SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", 10, true), title.Length).ToArray());
 
                 CreateOptionMenu($"Options", new (string, Action)[] { ("Access Debit Card", AccessCard), ("Create Debit Card", CreateCard),
                 ("View All Accounts", ViewAllCards), ("Verify Long Card Number", ValidateCardNumber), ("Exit", ExitApp) }, true);
@@ -59,6 +49,7 @@ namespace Revistone
                 MainMenu();
             }
 
+            /// <summary> Menu to access a card.</summary>
             void AccessCard()
             {
                 //way to easily stop dynamic line 
@@ -99,6 +90,7 @@ namespace Revistone
                 return;
             }
 
+            /// <summary> Logic for creating a card.</summary>
             void CreateCard()
             {
                 string dob = GetValidUserInput(new ConsoleLine("DOB [dd/mm/yyyy]: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.DateOnly));
@@ -141,6 +133,7 @@ namespace Revistone
                 WaitForUserInput(space: true);
             }
 
+            /// <summary> Logic for displaying all cards.</summary>
             void ViewAllCards()
             {
                 if (DebitCard.db.Count == 0) return;
@@ -165,6 +158,7 @@ namespace Revistone
                 }
             }
 
+            /// <summary> Takes card number and validates according to Luhn code.</summary>
             void ValidateCardNumber()
             {
                 string card = GetValidUserInput(new ConsoleLine("Enter A Card Number", ConsoleColor.DarkBlue), new UserInputProfile(InputType.Int, charCount: 16, removeWhitespace: true));
@@ -177,14 +171,9 @@ namespace Revistone
                 WaitForUserInput(ConsoleKey.Enter, true, true);
             }
 
-            void ExitApp()
-            {
-                AppRegistry.SetActiveApp("Revistone");
-                ResetConsole();
-            }
-
             // --- MENU OPTIONS ---
 
+            /// <summary> Menu to edit and view specific card.</summary>
             void CardMenu(DebitCard c)
             {
                 ClearPrimaryConsole();
@@ -218,7 +207,7 @@ namespace Revistone
                                 c.funds += fundChange;
                                 SendConsoleMessage($"Funds Updated, Your New Balance Is £{Math.Round(c.funds, 2)}");
                                 funds = $"You Currently Have £{Math.Round(c.funds, 2)}";
-                                UpdateConsoleLine(new ConsoleLine(funds), 2);
+                                UpdatePrimaryConsoleLine(new ConsoleLine(funds), 2);
                                 DebitCard.SaveDataBase();
                                 WaitForUserInput(space: true);
                                 ClearLines(3, true);
@@ -275,6 +264,7 @@ namespace Revistone
                 }
             }
 
+            /// <summary> Checks if card number valid according to Luhn algorithim.</summary>
             bool IsValidLuhn(int[] digits)
             {
                 int checkDigits = 0;
@@ -290,6 +280,7 @@ namespace Revistone
 
             // --- DEBIT CARD CLASS
 
+            /// <summary> Class for info to do with a debit card.</summary>
             class DebitCard
             {
                 //static 
@@ -317,6 +308,7 @@ namespace Revistone
                 public bool masterCard;
                 public bool contactless;
 
+                /// <summary> Class for info to do with a debit card.</summary>
                 public DebitCard(string holderName, DateOnly dob, DateOnly expiryDate, int pin, List<ConsoleColor> accountColours, bool masterCard, bool contactless, AccountType accountType)
                 {
                     this.holderName = holderName;
@@ -330,6 +322,7 @@ namespace Revistone
                     CompleteAccountSetup(pin);
                 }
 
+                /// <summary> Class for info to do with a debit card.</summary>
                 public DebitCard(string[] cardString)
                 {
                     holderName = cardString[0];
@@ -350,6 +343,7 @@ namespace Revistone
                     return $"{holderName}\n{dob}\n{pin}\n{masterCard}\n{contactless}\n{string.Join(",", accountColours.Select(colour => (int)colour))}\n{accountNumber}\n{accountType}\n{funds}\n";
                 }
 
+                /// <summary> Displays card in console </summary>
                 public void DisplayCard(bool censored = false)
                 {
                     ConsoleColor[] c = Alternate(accountColours.ToArray(), 60, 2);
@@ -370,6 +364,7 @@ namespace Revistone
                     for (int i = 0; i < cardLines.Length; i++) { SendConsoleMessage(new ConsoleLine(cardLines[i], c), new ConsoleLineUpdate(), new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "1", 10, true)); }
                 }
 
+                /// <summary> Completes additional tasks for card setup </summary>
                 public void CompleteAccountSetup(int pin)
                 {
                     this.pin = (pin * pin) + 1452342;
@@ -383,15 +378,16 @@ namespace Revistone
                 public static void LoadDataBase()
                 {
                     db.Clear();
-                    string[][] lines = AppPersistentData.LoadFile("DebitCard", "Data", 9, true, 1);
+                    string[][] lines = AppPersistentData.LoadFile("DebitCard/Data", 9, true, 1);
                     for (int i = 0; i < lines.Length; i++) { db.Add(new DebitCard(lines[i])); }
                 }
 
+                /// <summary> Saves DebitCard info to text file </summary>
                 public static void SaveDataBase()
                 {
                     string s = $"{accountID}\n";
                     for (int i = 0; i < db.Count; i++) { s += db[i].ToString(); }
-                    AppPersistentData.SaveFile("DebitCard", "Data", s.Split("\n"));
+                    AppPersistentData.SaveFile("DebitCard/Data", s.Split("\n"));
                 }
             }
         }
