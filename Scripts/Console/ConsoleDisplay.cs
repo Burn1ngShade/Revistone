@@ -28,6 +28,7 @@ namespace Revistone
                 //if console display resized
                 if (bufferSize.width != System.Console.WindowWidth || bufferSize.height != System.Console.WindowHeight || (consoleReload && bufferSize.height > AppRegistry.activeApp.minHeightBuffer && bufferSize.width > AppRegistry.activeApp.minWidthBuffer))
                 {
+                    System.Console.CursorVisible = false;
                     bufferSize = (System.Console.WindowWidth, System.Console.WindowHeight);
                     if (!(consoleReload && bufferSize.height > AppRegistry.activeApp.minHeightBuffer && bufferSize.width > AppRegistry.activeApp.minWidthBuffer)) SoftReloadConsoleDisplay();
                     else if (!(bufferSize.height <= AppRegistry.activeApp.minHeightBuffer || bufferSize.width <= AppRegistry.activeApp.minWidthBuffer))
