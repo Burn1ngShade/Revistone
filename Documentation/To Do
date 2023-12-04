@@ -1,25 +1,17 @@
 --- TO DO ---
 [AppIdeas]
-Football Simulation
-Calcualtor
-Simulation Game
-PC/Assembley Sim
+PC/Assembly Sim [???]
+Caculator [0.5]
+3D Rendered Game [0.5]
 
 [Features]
-Macro support
-Better usage guide
-screenshot funvationality
-Add userInput output that replaces [C:] with more acurate description
-Encryption for saving
-add cursor
-add abilty to go back in texts
-fps counter
-profiler
-more debug console options, images and what not
-performance fix (smart rendering optionss)
-way to create menus easily
-way to highlight colour between 2 chars / index and char
-improve and clean up flash card manager
+Code Recomp [0.5/0.6] [IMPORTANT]
+Macro support [0.5]
+screenshot funcationality [0.5]
+UI Review [0.5]
+improve look of console readjustment [0.5]
+Encryption for saving [???]
+way to highlight colour between 2 chars / index and char [???]
 
 --- KNOWN BUGS ---
 

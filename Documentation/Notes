@@ -7,16 +7,3 @@ Update Magnitudes:
 [QuickFix] -> update that was console breaking, required immediate fix (couldnt wait)
 
 //note magnitude does not mean the same for parts of an update, e.g a major bug may not be the same as to a major feature or update in size
-
---- To Do Info ---
-
-Update Magnitudes:
-[Minor] -> small update, typically visual or non intrusive bugs
-[Notable] -> medium update, new function, or constructors, or decent bug fixes
-[Major] -> big update, used for rehauls, or exspansions to mechanics
-
-//note magnitude does not mean the same for parts of an update, e.g a major bug may not be the same as to a major feature or update in size
-
-Update Time:
-[X.X.X] -> version
-[?] -> no solid time frame for adding

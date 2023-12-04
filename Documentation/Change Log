@@ -307,8 +307,83 @@ resizing screen skips to next frame in animatedLineUdpates
 option menu colour bug fixedas
 fixed typos in consoleAction with updateInfo
 
+--- No More Cursor --- [QuickFix] 0.3.1 (28/11/23)
 
+Bug Fixes:
 
+[Major] 
+Console cursor no longer reapears on full screen
+
+--- Performance And Rendering --- [Major] 0.4.0 (4/12/23)
+
+Summary:
+Massive performance improvements via the usage of custom rendering (like 12 * faster at peak) (replacing ConsoleLine) as well
+a new profiler, allowing for easy testing! this version of the console is capable of handling 2d 
+games easily (and possibly more advanced rendering) and is first version id consider possible for 1.0
+on user side (though code base needs update, coming soon). And BG colour support!
+As far as i know this version is the first without any rendering crashes (im 100% wrong)
+
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                   |         25 |      3,335 |        439 |        763 |      4,537 |
+| App                                                                 |          8 |      1,281 |        120 |        264 |      1,665 |
+| App (Files)                                                         |          4 |        353 |         59 |         82 |        494 |
+| App\CreatedApps                                                     |          4 |        928 |         61 |        182 |      1,171 |
+| Console                                                             |          9 |      1,034 |        192 |        249 |      1,475 |
+| Console (Files)                                                     |          7 |        802 |        154 |        180 |      1,136 |
+| Console\Imagery                                                     |          2 |        232 |         38 |         69 |        339 |
+| Functions                                                           |          3 |        414 |         72 |        106 |        592 |
+| Interaction                                                         |          3 |        446 |         40 |        108 |        594 |
+| Management                                                          |          2 |        160 |         15 |         36 |        211 |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Specifics:
+
+[Major]
+Profiler -> NEW, allows for debugging performance, toggle using Ctrl Shift P (Added hotkey suport) 
+ConsoleRenderer -> NEW, custom logic for rendering (very fast)
+ConsoleRendererLogic -> RENAMED (ConsoleDisplay), now uses ConsoleRenderer, clamps to top of window, so many crashes fixed, 
+new widgets for console, exceptions line now skipped in clear line, title and border now exceptions lines, 
+updatd console dimensions exceptions, fixing typo and giving more information
+ConsoleLine -> Support for BG colours!, new constructs
+UserRealTimeInput -> New GetKeyDown() and GetKeyUp() methods, GetKey() now interruptable, Ctrl Shift inputs blocked
+UserInput -> menus redone, and cursor with options to go back and forth in user, titeless menus, start index for curosr, added ReadMenus()
+Manager -> Redone, ticks now react to performance of frame and data log, removed start up delay
+
+[Notable]
+Revistone -> Menus redone, base set added to flash card manager
+General -> Debug Calls left over removed
+ConsoleAction -> All SendConsoleMessage now return int, Added clamp methods for line indexes
+ConsoleColour -> New Extend Overload
+TitleFunctions -> 2 New Fonts 'Epic', And 'Ascii3D', as well as new bottomspace argument for titles
+ConsoleAnimatedLine -> new constructors, deprecated ShiftLetter()
+Pong -> small graphics update, nerfed to be easier
+
+[Minor]
+General -> min height modifications to certian apps
+
+Fixed Bugs (lots lol):
+
+[Major]
+opening console 2 small would crash 
+saftey checks for rendering with 0 colour arrays
+trying to load app with empty string results in crash
+readjusting console up breaks exception lines
+fixed bug where extending with gradient pattern on one long colour array cause Crash
+so many rendering crash bugs...
+
+[Notable]
+ConsoleAnimatedLines updated incorrect line when console full 
+ConsoleAnimatedLines updated incorrect when using clearLines(), while console full
+border breaks options menu
+border breaks get user input
+border breaks on wait for user input
+
+[Minor]
+bug in option menu at end of console, clear line goes one to far back
+boop didnt have an ! mark
+resizing window cleared bottom line of primary console
 
 
 
