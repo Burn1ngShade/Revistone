@@ -1,0 +1,393 @@
+--- The Summary Update --- 0.1.0 [Major] (07/11/23)
+
+Summary:
+First full version, which is fairly bug free im fairly happy with,
+still a lot more i want to and need to do with this but a good start
+
+Stats:
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                         | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                            |         16 |      1,362 |        173 |        313 |      1,848 |
+| App                                                                          |          4 |        597 |         29 |        123 |        749 |
+| App (Files)                                                                  |          2 |        169 |         24 |         40 |        233 |
+| App\CreatedApps                                                              |          2 |        428 |          5 |         83 |        516 |
+| App\CreatedApps (Files)                                                      |          1 |         18 |          0 |          3 |         21 |
+| App\CreatedApps\DebitCard                                                    |          1 |        410 |          5 |         80 |        495 |
+| Console                                                                      |          6 |        345 |         73 |         75 |        493 |
+| Functions                                                                    |          2 |        155 |         36 |         43 |        234 |
+| Interaction                                                                  |          3 |        212 |         25 |         60 |        297 |
+| Management                                                                   |          1 |         53 |         10 |         12 |         75 |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Overview:
+
+Simplified Process Down To 2 Threads (From 3)
+Added Summarys To All Scripts!
+More Consitent Name Conventions!
+Lots of recompiled scripts!
+User interaction greatly improved
+lots of bug fixes
+and much more
+
+Specifics:
+
+[Major] 
+StringFunctions -> Renamed (prev: UtilityScripts) and renames, added support for capital modifications, and formated strings
+ColourFunctions -> Renamed (prev: ColourCreator), all functions Rewritten and renamed
+UserInputProfile -> Added, handles all requirements for user input and checks, cleaner and more options than before, easily expandable
+UserInput -> Renamed (prev: ConsoleInteraction), completely redone, all functions cleaned up, clear is now true by default, implements UserInputPorfile 
+ConsoleAnimatedLine -> Renamed (prev: ConsoleLineDynamicUpdate) Completley redone, now array like console lines, instead of refercening a console lien and index, fixes lots
+ConsoleDisplay -> Refactored, added summarys, redid dynamic update logic, header and boundary now use dynamic lines
+AppCommands -> Completley redid to use UserInputProfiles, now much more intutive and supports app specific commands
+
+[Notable] 
+App -> Summarys, added OnInitalisation option, more custom options like min buffer width and height, and custom commands
+
+[Minor]
+ConsoleData -> Added, contains all static data around console, moved into seperate class so user less likley to interact with (THEY SHOULDNT)
+ConsoleAction -> Added summarys, redid a copule functions and names 
+ConsoleLineUpdate -> Added declerations for all possible permutations, renamed old declerations
+ConsoleLine -> Refactored Declerations
+UserRealtimeInputProfile -> Added, will be used for realtime input for more control (NOT IMPLEMENTED)
+Manger -> Slight code clean up and renames
+
+Fixed Bugs:
+
+[Major]
+Big issue with rendering breaking at line randomly
+ColourWords function did not work (at all)
+Trying to backspace on large amounts of text (> than window buffer causes error)
+
+[Notable]
+Windows 2 small cause certain apps to malfunction
+Error on resizing window width or height 2 zero
+when exiting app based in promt, new app promt wont show / start messages 
+
+[Minor]
+Menus wouldnt shift correctly on full buffer
+very rarely dynamic colours do not clear from list
+very rarely dynamic colours remain on screen
+
+--- The Resize Update --- 0.1.1 [Notable] (09/11/23)
+
+Summary:
+Adds, abilty to freely resize console, aswell as custom functions for ConsoleAnimatedLines, 
+setting up groundwork for images, videos and a colourCreator overhaul
+
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                         | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                            |         16 |      1,521 |        197 |        345 |      2,063 |
+| App                                                                          |          4 |        616 |         30 |        127 |        773 |
+| App (Files)                                                                  |          2 |        173 |         25 |         41 |        239 |
+| App\CreatedApps                                                              |          2 |        443 |          5 |         86 |        534 |
+| App\CreatedApps (Files)                                                      |          1 |         33 |          0 |          6 |         39 |
+| App\CreatedApps\DebitCard                                                    |          1 |        410 |          5 |         80 |        495 |
+| Console                                                                      |          6 |        431 |         87 |        101 |        619 |
+| Functions                                                                    |          2 |        211 |         45 |         46 |        302 |
+| Interaction                                                                  |          3 |        210 |         25 |         59 |        294 |
+| Management                                                                   |          1 |         53 |         10 |         12 |         75 |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Specifics:
+
+[Major]
+ConsoleDisplay -> Resizing window added
+ConsoleAnimatedLine -> Redid script, instead of using predefinded methods, uses action with consoleLine and metadata of the animatedLine, Deep Copys, []Predefinded methods added (shiftColour, shiftLetters, consoletheme)
+
+[Notable]
+UserInputProfile -> Added [A:] and [A_number], allowing to specify any type of charchter digit or puncation, new whitespace options
+ColourFuctions -> Create gradient without length (one gradient long), Create ConsoleColor[] from colours and lengths, 
+
+[Minor]
+Revistone -> slight graphical changes
+ConsoleAction -> GetDebugLine(), options for editing animatedLine on SendingMessage, option for string and consoleLineUpdate on SendingMessage
+AppCommands -> debug[A:] sends debug message
+
+Fixed Bugs:
+
+[Major]
+Length dependent types in formatting did not work, and would allow and length 
+Resizing window breaks program until input (yay)
+
+[Notable]
+Resizing window caused debug console to shrink by one
+Resizing window caused debug console index to be moved
+Clear debug did not clear last consoleline
+
+[Minor] 
+borders dont have righht length colour[]
+resizing borders width wont update title and border length
+consoleLineIndex would be shifted when resizing window
+EnclosedConsole shift will not cause dynamic line to change (intentional behaviour but not good ygm)
+
+--- The Visual And Ease Of Use Update --- [Major] 0.2.0 (16/11/23)
+
+Summary: 
+Add the ability to create images and videos! Also changes to App structure, allowing for apps to be created within script, 
+and to easily save data for apps, as well as a ColourFunction overhaul, reducing colour code by up to 8x!
+
++----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                       | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                          |         21 |      1,966 |        272 |        468 |      2,706 |
+| App                                                                        |          7 |        704 |         58 |        148 |        910 |
+| App (Files)                                                                |          3 |        229 |         35 |         49 |        313 |
+| App\CreatedApps                                                            |          3 |        389 |          8 |         74 |        471 |
+| App\PersistentData                                                         |          1 |         86 |         15 |         25 |        126 |
+| Console                                                                    |          8 |        633 |        117 |        156 |        906 |
+| Console (Files)                                                            |          6 |        445 |         90 |        100 |        635 |
+| Console\Imagery                                                            |          2 |        188 |         27 |         56 |        271 |
+| Functions                                                                  |          2 |        354 |         61 |         89 |        504 |
+| Interaction                                                                |          3 |        219 |         26 |         61 |        306 |
+| Management                                                                 |          1 |         56 |         10 |         14 |         80 |
++----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Specifics:
+
+[Major]
+Added starts of usage guide to github read me 
+ConsoleImage -> Image support added to the console (limited rn but will be improved)
+ConsoleVideo -> Video support for console (limited rn but will be improved)
+App Registry -> Added, controls registry apps and allows app to be directly added from script
+AppPersistentData -> Added, whole new system for apps to save data with, easy and intutivate to use
+ColourFunctions -> Complete Redo: 17 built in gradients, Flip(), ToArray(), ToJaggedArray(), Repeat(), Extend(), Replace(prevColourReplace), AdvancedHighlight(prev Colourwords), Shift(prev Colourwords), Shift(prev Shift Colours), Alternate(prev AlternatingColours/AlternatingWords)
+
+[Notable]
+Moved documentation into own folder out of scripts
+ConsoleAnimatedLine -> Now uses object for metaData instead of string, (no clue why i didnt do this before), also sends AnimatedLineData in action to increase dynamic nature
+DebitCardManager -> Updated, Cleaned up and updated to use newer methods, still easily worse written class in project, but no longer complete s*** (mostly)
+App -> Redone to have its main and only function to be the parent class for apps
+Revistone -> Console look refreshed!
+Manager -> Added renderLockobjcet, preventing all errors with rendering, as well as call to AppRegistry
+
+[Minor]
+ConsoleData -> Added debugStartIndex, and debugBufferStartIndex to reduce aribtrey values, removed consoleUpdated as it was always false
+ConsoleAction -> MarkPrimaryConsoleForUpdate()
+ConsoleDisplay -> Changes to renderOrder and intruduction of renderLockObject
+UserInput -> Modifided to prevent errors, now matches consoleColourScheme, Added optionMenu wich excutes actions
+StringFunctions -> Reanmes and change to exstentions
+
+Fixed Bugs:
+
+[Major]
+App ui breaks if origanlly loaded with min height / width 2 small
+dynamic lines break on screen change (LAST MAJOR VISUAL UPDATE BYE BYE)
+
+[Notable]
+fixed bug with renderLockObject, causing animatedLines to update a tick late
+Exiting and reloading debit card manager resaves inital text in debitcard.text
+
+[Minor]
+Resizing windows causes ConsoleLineIndex to occasinaly move to far forward
+UserInputProfile outputed input.length rather than modInput.length
+
+--- Console Fix Patch --- [QuickFix] 0.2.1 (16/11/23)
+
+Bug Fixes:
+[Major] 
+Console would break on all non vs code consoles! now fixed (Actually lets go)
+
+--- RealTimeInput And ExceptionLines --- [Notable] 0.2.2 (21/11/23)
+
+Summary:
+Adds realtimeinput, allowing the user to more easily create realtime applications, as well exception lines, which while currentley limited
+only preventing scroll in enclosedconsoleupdate, will act very differnetly to a normal line.
+
++----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                       | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                          |         21 |      2,054 |        278 |        487 |      2,819 |
+| App                                                                        |          7 |        718 |         59 |        151 |        928 |
+| App (Files)                                                                |          3 |        232 |         35 |         50 |        317 |
+| App\CreatedApps                                                            |          3 |        400 |          9 |         76 |        485 |
+| App\PersistentData                                                         |          1 |         86 |         15 |         25 |        126 |
+| Console                                                                    |          8 |        674 |        118 |        164 |        956 |
+| Console (Files)                                                            |          6 |        486 |         91 |        108 |        685 |
+| Console\Imagery                                                            |          2 |        188 |         27 |         56 |        271 |
+| Functions                                                                  |          2 |        355 |         62 |         89 |        506 |
+| Interaction                                                                |          3 |        249 |         29 |         68 |        346 |
+| Management                                                                 |          1 |         58 |         10 |         15 |         83 |
++----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+ 
+Specifics:
+
+[Major]
+RealTimeUserInput -> allows user to easily get input for realtime projects, very limited rn, will add macro support as well as possibly
+GetKeyDown, GetKeyUp
+
+[Notable]
+added exceptions lines, currently only avoid scroll from console, but will do more later on
+new app control -> colourScheme, control speed and colours of all built in colour specific functions
+userrealtimeinput
+all methods now limited to within primary console stopping lots of bugs
+
+[Minor]
+new command -> Home
+timestamped messages now include milliseconds
+Revistone intro animation and text now pinned using exceptionlines
+
+Fixed Bugs:
+
+[Notable]
+Multiple calls to enclosedconsole at once broke it, not uses renderLockObject
+clear debug no longer clears border line, (glitched now debug uses 7 lines)
+clearLines(), now clears animatino data as well
+cursor no longer visable on certain console applications that it was before.
+
+--- The Graphical And App Update --- [Major] 0.3 (28/11/23)
+
+Summary:
+Over 1000 new lines of code! adding 2 new apps, complete rehaul to graphics, TitleFunctions, 
+major overhaul to images videos app persistend data and more, left the console somewhere im quite happy with
+addressing all issues ive seen so far, next update will focus on fixing performance as well as cleaning parts 
+of code, with a few features and perhaps a new app. 
+
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                   |         23 |      2,836 |        390 |        674 |      3,900 |
+| App                                                                 |          8 |      1,274 |        119 |        268 |      1,661 |
+| App (Files)                                                         |          4 |        349 |         58 |         86 |        493 |
+| App\CreatedApps                                                     |          4 |        925 |         61 |        182 |      1,168 |
+| Console                                                             |          8 |        799 |        157 |        204 |      1,160 |
+| Console (Files)                                                     |          6 |        567 |        119 |        135 |        821 |
+| Console\Imagery                                                     |          2 |        232 |         38 |         69 |        339 |
+| Functions                                                           |          3 |        410 |         71 |        106 |        587 |
+| Interaction                                                         |          3 |        292 |         33 |         80 |        405 |
+| Management                                                          |          1 |         61 |         10 |         16 |         87 |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Specifics:
+
+[Major]
+TitleFunctions -> NEW, allowing for special text to be created, currently features [16] fonts
+AppPersistentData -> Redone, to use paths, rather than directory and name, added GetSubFiles and GetSubDirectorys function
+App -> Updated ExitApp() method and Update() method called once a tick
+ConsoleImage -> Updated can edit with consoleImage and string, as well as positional arguments
+ConsoleVideo -> Updated funcationality, positional arguments and remove and modify frame functions, as well as go to frame option
+ConseolAction -> Redone, lots of methods added and sorted, generic methods, exceptions line now are not effected by clear primary and clear debug console,
+exception lines now work with updating window, markPrimaryConsoleForUpdate [DEPRECATED]
+Manager -> Ticks now account for time taken to run tick, stops slowdown (until ticks take longer than tick speed), current tick now public, random function
+Pong -> NEW, pong lol
+Flash Card Manager -> NEW, revision tool
+Graphics -> Redone overhaul to titles and colour schemes throughout console, more accurate min width and height for apps
+
+[Notable]
+General -> References sorted, unused references removed, Moved persistent data into its own folder, Colours toned down for apps, option menus use colour theme, typos fixed, words captilised, missing summarys added
+UserInputProfile -> Added checks for empty, banned chars 
+UserInput -> New overloads, now uses console colur themeing, option menus can have multiple pages / dynamic arguemnts
+StringFunctions -> a few new functinos, such as ReplaceAt and SplitAtCapital, this functions
+ConsoleLine -> new Overwrite function
+
+[Minor]
+ConsoleColour -> new gradient and overload for extend
+Debit Card Manager -> Added summarys to debit card manager
+AppRegistry -> New App exsits method, revistone moved to no longer be specially registerd
+
+Fixed Bugs:
+
+[Major]
+reducing console width can cause error when console line smaller than before.
+ConsoleAnimatedLines now start timer based on init tick, removing sudo random delay
+fixed bug where opening app on buffer height 2 small could cause crash 
+
+[Notable]
+fixed console intro message not being excpetion line
+fixed bug causing keypressed to return true when not actually true
+fixed weird save data path for exe files
+fixed titleFonts not workign in exe versions
+fixed bug loading new app regardless of descion on load app
+fixed bug incorectlley loadingf app if decling app load
+videos no longer play first frame for 2x as long as the rest
+resizing screen skips to next frame in animatedLineUdpates
+
+[Minor]
+option menu colour bug fixedas
+fixed typos in consoleAction with updateInfo
+
+--- No More Cursor --- [QuickFix] 0.3.1 (28/11/23)
+
+Bug Fixes:
+
+[Major] 
+Console cursor no longer reapears on full screen
+
+--- Performance And Rendering --- [Major] 0.4.0 (4/12/23)
+
+Summary:
+Massive performance improvements via the usage of custom rendering (like 12 * faster at peak) (replacing ConsoleLine) as well
+a new profiler, allowing for easy testing! this version of the console is capable of handling 2d 
+games easily (and possibly more advanced rendering) and is first version id consider possible for 1.0
+on user side (though code base needs update, coming soon). And BG colour support!
+As far as i know this version is the first without any rendering crashes (im 100% wrong)
+
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                   |         25 |      3,335 |        439 |        763 |      4,537 |
+| App                                                                 |          8 |      1,281 |        120 |        264 |      1,665 |
+| App (Files)                                                         |          4 |        353 |         59 |         82 |        494 |
+| App\CreatedApps                                                     |          4 |        928 |         61 |        182 |      1,171 |
+| Console                                                             |          9 |      1,034 |        192 |        249 |      1,475 |
+| Console (Files)                                                     |          7 |        802 |        154 |        180 |      1,136 |
+| Console\Imagery                                                     |          2 |        232 |         38 |         69 |        339 |
+| Functions                                                           |          3 |        414 |         72 |        106 |        592 |
+| Interaction                                                         |          3 |        446 |         40 |        108 |        594 |
+| Management                                                          |          2 |        160 |         15 |         36 |        211 |
++---------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Specifics:
+
+[Major]
+Profiler -> NEW, allows for debugging performance, toggle using Ctrl Shift P (Added hotkey suport) 
+ConsoleRenderer -> NEW, custom logic for rendering (very fast)
+ConsoleRendererLogic -> RENAMED (ConsoleDisplay), now uses ConsoleRenderer, clamps to top of window, so many crashes fixed, 
+new widgets for console, exceptions line now skipped in clear line, title and border now exceptions lines, 
+updatd console dimensions exceptions, fixing typo and giving more information
+ConsoleLine -> Support for BG colours!, new constructs
+UserRealTimeInput -> New GetKeyDown() and GetKeyUp() methods, GetKey() now interruptable, Ctrl Shift inputs blocked
+UserInput -> menus redone, and cursor with options to go back and forth in user, titeless menus, start index for curosr, added ReadMenus()
+Manager -> Redone, ticks now react to performance of frame and data log, removed start up delay
+
+[Notable]
+Revistone -> Menus redone, base set added to flash card manager
+General -> Debug Calls left over removed
+ConsoleAction -> All SendConsoleMessage now return int, Added clamp methods for line indexes
+ConsoleColour -> New Extend Overload
+TitleFunctions -> 2 New Fonts 'Epic', And 'Ascii3D', as well as new bottomspace argument for titles
+ConsoleAnimatedLine -> new constructors, deprecated ShiftLetter()
+Pong -> small graphics update, nerfed to be easier
+
+[Minor]
+General -> min height modifications to certian apps
+
+Fixed Bugs (lots lol):
+
+[Major]
+opening console 2 small would crash 
+saftey checks for rendering with 0 colour arrays
+trying to load app with empty string results in crash
+readjusting console up breaks exception lines
+fixed bug where extending with gradient pattern on one long colour array cause Crash
+so many rendering crash bugs...
+
+[Notable]
+ConsoleAnimatedLines updated incorrect line when console full 
+ConsoleAnimatedLines updated incorrect when using clearLines(), while console full
+border breaks options menu
+border breaks get user input
+border breaks on wait for user input
+
+[Minor]
+bug in option menu at end of console, clear line goes one to far back
+boop didnt have an ! mark
+resizing window cleared bottom line of primary console
+
+
+
+
+
+
+
