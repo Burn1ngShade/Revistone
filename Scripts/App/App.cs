@@ -1,5 +1,6 @@
 using Revistone.Console;
 using Revistone.Interaction;
+using Revistone.Management;
 
 namespace Revistone
 {
@@ -46,13 +47,13 @@ namespace Revistone
             /// <summary> Called on app initalisation. </summary>
             public virtual void OnAppInitalisation()
             {
-                
+
             }
 
             /// <summary> Called just before user is asked for input, use to interact with user. </summary>
             public virtual void OnUserPromt()
             {
-
+                
             }
 
             /// <summary> Called after user input, use to respond to user input. </summary>
@@ -64,7 +65,7 @@ namespace Revistone
             /// <summary> Called once a tick (25ms). </summary>
             public virtual void OnUpdate(int tickNum)
             {
-
+                if (UserRealtimeInput.KeyPressed(0x11) && UserRealtimeInput.KeyPressed(0x10) && UserRealtimeInput.KeyPressedDown(80)) Profiler.SetEnabled(!Profiler.enabled);
             }
 
             //--- Register ---

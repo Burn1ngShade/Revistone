@@ -5,6 +5,9 @@ using Revistone.Apps;
 using static Revistone.Console.Data.ConsoleData;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
+using System.Runtime.InteropServices;
+using Revistone.Management;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Revistone
 {
@@ -20,38 +23,81 @@ namespace Revistone
 
                 ConsoleColor[] cc = BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour, ConsoleColor.White.ToArray());
 
-                SendConsoleMessage(new ConsoleLine("> ", cc), ConsoleLineUpdate.SameLine);
+                int cursorIndex = 2;
+                bool cursorActive = true;
+
+                SendConsoleMessage(new ConsoleLine(">  ", cc, AdvancedHighlight(3, ConsoleColor.Black, ConsoleColor.White, (cursorIndex, 1))),
+                ConsoleLineUpdate.SameLine, new ConsoleAnimatedLine(UpdateUserCursorAnimation, 20, true));
 
                 string userInput = "";
+                bool breakLoop = false;
                 while (true)
                 {
-                    bool breakLoop = false;
+                    breakLoop = false;
 
-                    ConsoleKeyInfo c = UserRealtimeInput.GetKey();
+                    (ConsoleKeyInfo keyInfo, bool interrupted) c = UserRealtimeInput.GetKey();
+                    if (c.interrupted)
+                    {
+                        SendConsoleMessage(new ConsoleLine($"> {userInput} ", cc),
+                        ConsoleLineUpdate.SameLine, new ConsoleAnimatedLine(UpdateUserCursorAnimation, 20, true));
+                        continue;
+                    }
 
-                    switch (c.Key)
+                    switch (c.keyInfo.Key)
                     {
                         default:
-                            if (userInput.Length <= System.Console.BufferWidth - 5) userInput += c.KeyChar; //stops from exceeding console buffer (-5 to be safe)
-                            SendConsoleMessage(new ConsoleLine($"> {userInput}", cc), ConsoleLineUpdate.SameLine);
+                            if (userInput.Length > System.Console.BufferWidth - 5) continue; //stops from exceeding console buffer (-5 to be safe)
+                            userInput = userInput.Insert(cursorIndex - 2, c.keyInfo.KeyChar.ToString());
+                            cursorIndex++;
+                            SendConsoleMessage(new ConsoleLine($"> {userInput} ", cc, UpdateUserCursor()), ConsoleLineUpdate.SameLine);
                             break;
                         case ConsoleKey.Enter:
                             breakLoop = true;
                             break;
                         case ConsoleKey.Backspace:
-                            if (userInput.Length > 0) userInput = userInput.Substring(0, userInput.Length - 1);
-                            SendConsoleMessage(new ConsoleLine($"> {userInput}", cc), ConsoleLineUpdate.SameLine);
+                            if (userInput.Length == 0 || cursorIndex == 2) continue;
+                            userInput = userInput.Substring(0, cursorIndex - 3) + userInput.Substring(cursorIndex - 2);
+                            cursorIndex--;
+                            SendConsoleMessage(new ConsoleLine($"> {userInput} ", cc, UpdateUserCursor()), ConsoleLineUpdate.SameLine);
+                            break;
+                        case ConsoleKey.LeftArrow:
+                            cursorIndex = Math.Clamp(cursorIndex - 1, 2, userInput.Length + 2);
+                            GetConsoleLine(primaryLineIndex).Update(cc, UpdateUserCursor());
+                            break;
+                        case ConsoleKey.RightArrow:
+                            cursorIndex = Math.Clamp(cursorIndex + 1, 2, userInput.Length + 2);
+                            GetConsoleLine(primaryLineIndex).Update(cc, UpdateUserCursor());
                             break;
                     }
 
                     if (breakLoop) break;
                 }
 
+                SendConsoleMessage(new ConsoleLine($"> {userInput}", cc, ConsoleColor.Black.Extend(userInput.Length + 3)), ConsoleLineUpdate.SameLine, ConsoleAnimatedLine.None);
                 if (clear) ClearLines(promt.lineText != "" ? 1 : 0, true);
 
                 ShiftLine(goNextLine ? 1 : 0);
 
                 return userInput;
+
+                void UpdateUserCursorAnimation(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
+                {
+                    if (cursorActive)
+                    {
+                        lineInfo.Update(lineInfo.lineColour, ConsoleColor.Black.ToArray());
+                    }
+                    else
+                    {
+                        lineInfo.Update(lineInfo.lineColour, AdvancedHighlight(lineInfo.lineText.Length, ConsoleColor.Black, ConsoleColor.White, (cursorIndex, 1)));
+                    }
+                    cursorActive = !cursorActive;
+                }
+
+                ConsoleColor[] UpdateUserCursor()
+                {
+                    return cursorActive ? AdvancedHighlight(userInput.Length + 3, ConsoleColor.Black, ConsoleColor.White, (cursorIndex, 1)) : GetConsoleLine(primaryLineIndex).lineColourBG.Extend(ConsoleColor.Black, userInput.Length + 3);
+                }
+
             }
 
             /// <summary> Gets input from the user (input length capped at buffer width). </summary>
@@ -84,8 +130,14 @@ namespace Revistone
 
                 while (true)
                 {
-                    ConsoleKeyInfo c = UserRealtimeInput.GetKey();
-                    if (c.Key == key)
+                    (ConsoleKeyInfo keyInfo, bool interrupted) c = UserRealtimeInput.GetKey();
+                    if (c.interrupted)
+                    {
+                        SendConsoleMessage(new ConsoleLine($"Press [{key}] To Continue{new string('.', dotCount)}", colours), ConsoleLineUpdate.SameLine,
+                        new ConsoleAnimatedLine(WaitForUserInputUpdate, tickMod: AppRegistry.activeApp.colourScheme.speed, enabled: true));
+                        continue;
+                    }
+                    if (c.keyInfo.Key == key)
                     {
                         GoToLine(index); //prevents other functions and tasks messing with clear
                         if (clear) UpdatePrimaryConsoleLine(new ConsoleLine(""), GetConsoleLineIndex());
@@ -103,77 +155,108 @@ namespace Revistone
                 }
             }
 
+            //extras associated with menus
+            static int metaOptionsLines = 0;
+
             /// <summary> Creates menu from given options, allowing user to pick one. </summary>
-            public static int CreateOptionMenu(string title, ConsoleLine[] options, bool clear = true)
+            public static int CreateOptionMenu(string title, ConsoleLine[] options, bool clear = true, int cursorStartIndex = 0)
             {
                 if (options.Length < 2) return 0;
 
-                SendConsoleMessage(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour));
+                if (title != "") SendConsoleMessage(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour));
 
-                int shift = Math.Clamp(options.Length - (debugStartIndex - primaryLineIndex), 0, int.MaxValue);
-                (int min, int max) pointerRange = (primaryLineIndex - shift, primaryLineIndex + options.Length - shift);
+                int[] optionLines = new int[options.Length];
 
-                for (int i = pointerRange.min; i < pointerRange.max; i++)
+                for (int i = 0; i < options.Length; i++)
                 {
-                    int j = i - pointerRange.min;
-                    options[j].Update("> " + options[j].lineText,
-                    BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour.Extend(2), options[j].lineColour.Extend(options[j].lineText.Length), AppRegistry.activeApp.colourScheme.secondaryColour.Extend(3)));
-                    SendConsoleMessage(options[j], ConsoleAnimatedLine.AppTheme);
+                    options[i].Update("> " + options[i].lineText,
+                    BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour.Extend(2), options[i].lineColour.Extend(options[i].lineText.Length), AppRegistry.activeApp.colourScheme.secondaryColour.Extend(3)));
+                    optionLines[i] = SendConsoleMessage(options[i], ConsoleAnimatedLine.AppTheme);
                 }
 
-                consoleLines[pointerRange.min].Update(options[0].lineText + " <-");
+                for (int i = 0; i < options.Length; i++)
+                {
+                    optionLines[i] -= optionLines.Where(num => num == optionLines[i]).Count() - 1;
+                }
 
-                int pointer = pointerRange.min;
+                consoleLines[optionLines[0 + Math.Clamp(cursorStartIndex, 0, options.Length - 1)]].Update(options[0 + Math.Clamp(cursorStartIndex, 0, options.Length - 1)].lineText + " <-");
+                int pointer = optionLines[0];
+
+                ConsoleLine[] metaOptions = new ConsoleLine[(title != "" ? 1 : 0) + metaOptionsLines];
+                for (int i = 0; i < metaOptions.Length; i++)
+                {
+                    metaOptions[i] = consoleLines[optionLines[0] - metaOptions.Length + i];
+                }
+
 
                 while (true)
                 {
-                    ConsoleKeyInfo c = UserRealtimeInput.GetKey();
+                    (ConsoleKeyInfo keyInfo, bool interrupted) c = UserRealtimeInput.GetKey();
 
-                    if (c.Key == ConsoleKey.W || c.Key == ConsoleKey.UpArrow) pointer = Math.Clamp(pointer - 1, pointerRange.min, pointerRange.max - 1);
-                    else if (c.Key == ConsoleKey.S || c.Key == ConsoleKey.DownArrow) pointer = Math.Clamp(pointer + 1, pointerRange.min, pointerRange.max - 1);
-                    else if (c.Key == ConsoleKey.Enter)
+                    if (c.interrupted)
+                    {
+                        int relativePointerPos = pointer - optionLines[0];
+
+                        ClearLines(options.Length + metaOptions.Length, true, true);
+                        for (int i = 0; i < options.Length + metaOptions.Length; i++)
+                        {
+                            if (i < metaOptions.Length) SendConsoleMessage(metaOptions[i]);
+                            else
+                            {
+                                optionLines[i - metaOptions.Length] = primaryLineIndex;
+                                SendConsoleMessage(options[i - metaOptions.Length]);
+                            }
+                        }
+                        pointer = optionLines[0] + relativePointerPos;
+                        consoleLines[pointer].Update(consoleLines[pointer].lineText + " <-");
+                        continue;
+                    }
+
+                    if (c.keyInfo.Key == ConsoleKey.W || c.keyInfo.Key == ConsoleKey.UpArrow) pointer = Math.Clamp(pointer - 1, optionLines[0], optionLines[^1]);
+                    else if (c.keyInfo.Key == ConsoleKey.S || c.keyInfo.Key == ConsoleKey.DownArrow) pointer = Math.Clamp(pointer + 1, optionLines[0], optionLines[^1]);
+                    else if (c.keyInfo.Key == ConsoleKey.Enter)
                     {
                         if (clear)
                         {
-                            GoToLine(pointerRange.max);
-                            ClearLines(pointerRange.max - (pointerRange.min - 1), true);
+                            GoToLine(optionLines[^1]);
+                            ClearLines(optionLines[^1] - (optionLines[0] - 1 + (title == "" ? 1 : 0)), true, true);
                         }
-                        return pointer - pointerRange.min;
+                        return pointer - optionLines[0];
                     }
 
-                    for (int i = pointerRange.min; i < pointerRange.max; i++)
+                    for (int i = optionLines[0]; i <= optionLines[^1]; i++)
                     {
-                        consoleLines[i].Update(options[i - pointerRange.min].lineText + (pointer == i ? " <-" : ""));
+                        consoleLines[i].Update(options[i - optionLines[0]].lineText + (pointer == i ? " <-" : ""));
                     }
                 }
             }
 
             /// <summary> Creates menu from given consoleLine options, allowing user to pick one, and invoking the associated action. </summary>
-            public static int CreateOptionMenu(string title, (ConsoleLine name, Action action)[] options, bool clear = true)
+            public static int CreateOptionMenu(string title, (ConsoleLine name, Action action)[] options, bool clear = true, int cursorStartIndex = 0)
             {
-                int option = CreateOptionMenu(title, options.Select(option => option.name).ToArray(), clear);
+                int option = CreateOptionMenu(title, options.Select(option => option.name).ToArray(), clear, cursorStartIndex);
                 options[option].action.Invoke();
                 return option;
             }
 
             /// <summary> Creates menu from given text options, allowing user to pick one, and invoking the associated action. </summary>
-            public static int CreateOptionMenu(string title, (string name, Action action)[] options, bool clear = true)
+            public static int CreateOptionMenu(string title, (string name, Action action)[] options, bool clear = true, int cursorStartIndex = 0)
             {
-                int option = CreateOptionMenu(title, options.Select(option => new ConsoleLine(option.name)).ToArray(), clear);
+                int option = CreateOptionMenu(title, options.Select(option => new ConsoleLine(option.name)).ToArray(), clear, cursorStartIndex);
                 options[option].action.Invoke();
                 return option;
             }
 
             /// <summary> Creates menu from given text options, allowing user to pick one. </summary>
-            public static int CreateOptionMenu(string title, string[] options, bool clear = true)
+            public static int CreateOptionMenu(string title, string[] options, bool clear = true, int cursorStartIndex = 0)
             {
-                return CreateOptionMenu(title, options.Select(option => new ConsoleLine(option)).ToArray(), clear);
+                return CreateOptionMenu(title, options.Select(option => new ConsoleLine(option)).ToArray(), clear, cursorStartIndex);
             }
 
             /// <summary> Creates menu, allowing user to select either yes or no. </summary>
-            public static bool CreateOptionMenu(string title, bool clear = true)
+            public static bool CreateOptionMenu(string title, bool clear = true, int cursorStartIndex = 0)
             {
-                if (CreateOptionMenu(title, new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") }, clear) == 0) return true;
+                if (CreateOptionMenu(title, new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") }, clear, cursorStartIndex) == 0) return true;
                 return false;
             }
 
@@ -182,7 +265,7 @@ namespace Revistone
             {
                 if (options.Length + pinnedOptions.Length < 2) return 0;
 
-                for (int i = 0; i < pinnedOptions.Length; i++) {pinnedOptions[i].Update(AppRegistry.activeApp.colourScheme.primaryColour.ToArray());}
+                for (int i = 0; i < pinnedOptions.Length; i++) { pinnedOptions[i].Update(AppRegistry.activeApp.colourScheme.primaryColour.ToArray()); }
 
                 ConsoleLine[] pgExtraOptions = new ConsoleLine[] {
                     new ConsoleLine("Next Page", AppRegistry.activeApp.colourScheme.primaryColour),
@@ -190,25 +273,88 @@ namespace Revistone
                 }.Concat(pinnedOptions).ToArray();
 
                 int currentPage = 0, totalPages = (options.Length - 1) / optionsPerPage;
+
+                metaOptionsLines = 1;
                 while (true)
                 {
-                    string pgTitle = $"{title} [{currentPage + 1}/{totalPages + 1}]";
                     ConsoleLine[] pgOptions = options.Skip(currentPage * optionsPerPage).Take(Math.Min(optionsPerPage, options.Length - currentPage * optionsPerPage)).Concat(pgExtraOptions).ToArray();
 
-                    int result = CreateOptionMenu(pgTitle, pgOptions.Select(o => new ConsoleLine(o)).ToArray());
+                    SendConsoleMessage(new ConsoleLine($"--- {title} Page [{currentPage + 1}/{totalPages + 1}] ---",
+                    BuildArray(AppRegistry.activeApp.colourScheme.primaryColour.Extend(title.Length + 10),
+                    AppRegistry.activeApp.colourScheme.secondaryColour.Extend($"[{currentPage + 1}/{currentPage + 1}]".Length, true),
+                    AppRegistry.activeApp.colourScheme.primaryColour.Extend(4))));
 
-                    if (result == pgOptions.Length - 2 - pinnedOptions.Length) currentPage = currentPage < totalPages ? currentPage + 1 : 0;
-                    else if (result == pgOptions.Length - 1 - pinnedOptions.Length) currentPage = currentPage > 0 ? currentPage - 1 : totalPages;
+                    int result = CreateOptionMenu("", pgOptions.Select(o => new ConsoleLine(o)).ToArray());
+
+                    if (result == pgOptions.Length - 2 - pinnedOptions.Length)
+                    {
+                        currentPage = currentPage < totalPages ? currentPage + 1 : 0;
+                    }
+                    else if (result == pgOptions.Length - 1 - pinnedOptions.Length)
+                    {
+                        currentPage = currentPage > 0 ? currentPage - 1 : totalPages;
+                    }
                     else if (result > pgOptions.Length - 2 - pinnedOptions.Length)
                     {
+                        ClearLines(updateCurrentLine: true);
+                        metaOptionsLines = 0;
                         return -result + (pgOptions.Length - (pgExtraOptions.Length - 1));
                     }
-                    else return result + currentPage * optionsPerPage;
+                    else
+                    {
+                        ClearLines(updateCurrentLine: true);
+                        metaOptionsLines = 0;
+                        return result + currentPage * optionsPerPage;
+                    }
+
+                    ClearLines(updateCurrentLine: true);
                 }
             }
 
             /// <summary> Creates menu from given options, spliting into pages, allowing user to pick one. </summary>
             public static int CreateMultiPageOptionMenu(string title, ConsoleLine[] options, int optionsPerPage) { return CreateMultiPageOptionMenu(title, options, new ConsoleLine[0], optionsPerPage); }
+
+            /// <summary> Creates menu from given messages, spliting into pages, allowing user to view. </summary>
+            public static void CreateReadMenu(string title, params ConsoleLine[] messages)
+            {
+                int page = 0, pages = messages.Length / 5, pageLength;
+
+                while (true)
+                {
+                    SendConsoleMessage(new ConsoleLine($"--- {title} Page [{page + 1}/{pages + 1}] ---",
+                    BuildArray(AppRegistry.activeApp.colourScheme.primaryColour.Extend(title.Length + 10),
+                    AppRegistry.activeApp.colourScheme.secondaryColour.Extend($"[{page + 1}/{pages + 1}]".Length, true),
+                    AppRegistry.activeApp.colourScheme.primaryColour.Extend(4))));
+
+
+                    pageLength = Math.Min(page * 5 + 5, messages.Length) - page * 5;
+                    metaOptionsLines = 1 + pageLength;
+
+                    for (int i = page * 5; i < Math.Min(page * 5 + 5, messages.Length); i++)
+                    {
+                        SendConsoleMessage(messages[i], ConsoleAnimatedLine.AppTheme);
+                    }
+
+                    if (CreateOptionMenu("", new (ConsoleLine, Action)[] {
+                    (new ConsoleLine("Next Page", AppRegistry.activeApp.colourScheme.primaryColour), () => page = page < pages ? page + 1 : 0),
+                    (new ConsoleLine("Last Page", AppRegistry.activeApp.colourScheme.primaryColour), () => page = page > 0 ? page - 1 : pages),
+                    (new ConsoleLine("Exit", AppRegistry.activeApp.colourScheme.primaryColour), () => {})}) == 2)
+                    {
+                        ClearLines(pageLength + 1, true);
+                        break;
+                    }
+
+                    ClearLines(pageLength + 1, true);
+                }
+
+                metaOptionsLines = 0;
+            }
+
+            /// <summary> Creates menu from given messages, spliting into pages, allowing user to view. </summary>
+            public static void CreateReadMenu(string title, params string[] messages)
+            {
+                CreateReadMenu(title, messages.Select(s => new ConsoleLine(s)).ToArray());
+            }
         }
     }
 }

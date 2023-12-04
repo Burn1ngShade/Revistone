@@ -1,7 +1,7 @@
 using Revistone.Console;
 using Revistone.Functions;
 using Revistone.Interaction;
-
+using Revistone.Management;
 using static Revistone.Console.ConsoleAction;
 
 namespace Revistone
@@ -15,17 +15,23 @@ namespace Revistone
             static (UserInputProfile format, Action<string> payload, string summary)[] baseCommands = new (UserInputProfile, Action<string>, string summary)[] {
                 //useful commands
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "help", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => {Help(); },
+                (s) => {if (baseCommands != null) Help((baseCommands.Select(cmd => StringFunctions.AdjustCapitalisation(cmd.format.inputFormat, StringFunctions.CapitalCasing.FirstLetterUpper)).ToArray(), baseCommands.Select(cmd => cmd.summary).ToArray())); },
                 "List Of All Base Commands And Their Descriptions."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "app help", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => {AppHelp(); },
                 "List Of All App Specfic Commands And Their Descriptions."),
-                (new UserInputProfile(UserInputProfile.InputType.FullText, "reload", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => { ReloadApp(s); },
-                "Reloads The Current App."),
+                (new UserInputProfile(UserInputProfile.InputType.FullText, "apps", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => {
+                    int i = UserInput.CreateMultiPageOptionMenu("Apps:", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray(), new ConsoleLine[] {new ConsoleLine("Exit")}, 3);
+                    if (i >= 0) LoadApp($"Load{AppRegistry.appRegistry[i].name}");
+                },
+                "Menu To Load Apps."),
                 (new UserInputProfile(new UserInputProfile.InputType[] {}, "load[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { LoadApp(s); },
                 "Loads App With The Given Name ([A:] meaning name of app)."),
+                (new UserInputProfile(UserInputProfile.InputType.FullText, "reload", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => { ReloadApp(s); },
+                "Reloads The Current App."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "hub", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { LoadApp("LoadRevistone"); },
                 "Loads Hub Revistone App."),
@@ -35,9 +41,6 @@ namespace Revistone
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "clear debug", caseSettings: StringFunctions.CapitalCasing.Lower,  removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => { ClearDebugConsole(); },
                 "Clears Debug Console."),
-                (new UserInputProfile(UserInputProfile.InputType.FullText, "apps", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => { SendConsoleMessage(new ConsoleLine(StringFunctions.ToElementString(AppRegistry.appRegistry.Select(app => app.name).ToArray()), AppRegistry.activeApp.colourScheme.primaryColour)); },
-                "Prints A List Of The Names Of All Apps."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "time", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { SendConsoleMessage(new ConsoleLine(DateTime.Now.ToString(), AppRegistry.activeApp.colourScheme.primaryColour)); },
                 "Prints The Current System Time."),
@@ -45,38 +48,29 @@ namespace Revistone
                 //test commands
                 (new UserInputProfile(new UserInputProfile.InputType[] {}, "debug[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { SendDebugMessage(s.Substring(5).TrimStart()); }, "Sends Debug Message [A:] ([A:] being the message)"),
+                //test commands
+                (new UserInputProfile(new UserInputProfile.InputType[] {}, "profiler toggle", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => { Profiler.SetEnabled(!Profiler.enabled); }, "Toggles Profiler On Or Off"),
+
             };
 
             // --- BASE COMMANDS ---
 
             /// <summary> Displays list of base commands and descriptions. </summary>
-            static void Help()
+            static void Help((string[] name, string[] summary) commands)
             {
-                (string[] name, string[] summary) commands = (baseCommands.Select(cmd => StringFunctions.AdjustCapitalisation(cmd.format.inputFormat, StringFunctions.CapitalCasing.FirstLetterUpper)).ToArray(), baseCommands.Select(cmd => cmd.summary).ToArray());
-
-                for (int i = 0; i < commands.name.Length; i++)
-                {
-                    SendConsoleMessage(new ConsoleLine($"{commands.name[i]}: {commands.summary[i]}",
-                    ColourFunctions.AdvancedHighlight(
-                    $"{commands.name[i]}: {commands.summary[i]}".Length, AppRegistry.activeApp.colourScheme.primaryColour, (AppRegistry.activeApp.colourScheme.secondaryColour, 0, commands.name[i].Length + 1))),
-                    ConsoleAnimatedLine.AppTheme);
-                }
+                UserInput.CreateReadMenu("Help",
+                commands.name.Select((s, i) => new ConsoleLine($"{s}: {commands.summary[i]}",
+                ColourFunctions.AdvancedHighlight($"{commands.name[i]}: {commands.summary[i]}".Length, AppRegistry.activeApp.colourScheme.primaryColour,
+                (AppRegistry.activeApp.colourScheme.secondaryColour, 0, commands.name[i].Length + 1)))).ToArray());
             }
 
             /// <summary> Displays list of app specfic commands and descriptions. </summary>
             static void AppHelp()
             {
                 (string[] name, string[] summary) commands = (AppRegistry.activeApp.appCommands.Select(cmd => StringFunctions.AdjustCapitalisation(cmd.format.inputFormat, StringFunctions.CapitalCasing.FirstLetterUpper)).ToArray(), AppRegistry.activeApp.appCommands.Select(cmd => cmd.summary).ToArray());
-
-                for (int i = 0; i < commands.name.Length; i++)
-                {
-                    SendConsoleMessage(new ConsoleLine($"{commands.name[i]}: {commands.summary[i]}",
-                    ColourFunctions.AdvancedHighlight(
-                    $"{commands.name[i]}: {commands.summary[i]}".Length, AppRegistry.activeApp.colourScheme.primaryColour, (AppRegistry.activeApp.colourScheme.secondaryColour, 0, commands.name[i].Length + 1))),
-                    ConsoleAnimatedLine.AppTheme);
-                }
-
                 if (commands.name.Length == 0) SendConsoleMessage(new ConsoleLine("This App Has No Custom Commands!", AppRegistry.activeApp.colourScheme.primaryColour));
+                else Help(commands);
             }
 
             /// <summary> Gives user Y/N option to reload current app. </summary>
@@ -90,6 +84,12 @@ namespace Revistone
             /// <summary> Gives user Y/N option to load given app. </summary>
             static void LoadApp(string userInput)
             {
+                if (userInput.Trim().Length == 4) //submitted empty load request
+                {
+                    int i = UserInput.CreateMultiPageOptionMenu("Apps:", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray(), new ConsoleLine[] {new ConsoleLine("Exit")}, 3);
+                    if (i >= 0) LoadApp($"Load{AppRegistry.appRegistry[i].name}");
+                    return;
+                }
                 string appName = userInput.Substring(4).TrimStart().AdjustCapitalisation(StringFunctions.CapitalCasing.FirstLetterUpper);
                 if (AppRegistry.AppExists(appName))
                 {

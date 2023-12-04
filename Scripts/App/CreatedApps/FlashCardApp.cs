@@ -64,7 +64,7 @@ namespace Revistone
                     UserInput.WaitForUserInput(space: true);
                     return;
                 }
-                int i = UserInput.CreateMultiPageOptionMenu("Flash Card Sets:", flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s))).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 8);
+                int i = UserInput.CreateMultiPageOptionMenu("Flash Card Sets", flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s))).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 8);
                 if (i >= 0) UseFCS(new FlashCardSet($"FlashCard/{flashNames[i]}"));
             }
 
@@ -72,7 +72,7 @@ namespace Revistone
             void MainMenuEditFCS()
             {
                 string[] flashNames = AppPersistentData.GetSubFiles("FlashCard");
-                int i = UserInput.CreateMultiPageOptionMenu("Flash Card Sets:", new ConsoleLine[] { new ConsoleLine("New Flash Card Set") }.Concat(flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s)))).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 8);
+                int i = UserInput.CreateMultiPageOptionMenu("Flash Card Sets", new ConsoleLine[] { new ConsoleLine("New Flash Card Set") }.Concat(flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s)))).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 8);
 
                 if (i == 0) CreateFCS();
                 else if (i > 0)
@@ -113,7 +113,7 @@ namespace Revistone
                         MainMenuStats();
                         return;
                     }
-                    int k = UserInput.CreateMultiPageOptionMenu("Flash Card Sets:", flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s))).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 8);
+                    int k = UserInput.CreateMultiPageOptionMenu("Flash Card Sets", flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s))).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 8);
                     if (k < 0)
                     {
                         MainMenuStats();
@@ -132,7 +132,7 @@ namespace Revistone
 
             void UseFCS(FlashCardSet s)
             {
-                FlashCard[] shuffledQuestions = s.questions.OrderBy(a => Manager.rnd.Next()).ToArray();
+                FlashCard[] shuffledQuestions = s.questions.OrderBy(a => Manager.rng.Next()).ToArray();
                 List<int> correctQuestions = new List<int>();
 
                 DateTime startTime = DateTime.Now;
@@ -519,7 +519,7 @@ namespace Revistone
 
                 public string FormattedQuestion()
                 {
-                    chosenIndex = questionIndexes[Manager.rnd.Next(0, questionIndexes.Count)];
+                    chosenIndex = questionIndexes[Manager.rng.Next(0, questionIndexes.Count)];
                     return string.Join(' ', promt.Split(' ').Select((s, index) => chosenIndex == index ? new string('_', s.Length) : s).ToArray());
                 }
 

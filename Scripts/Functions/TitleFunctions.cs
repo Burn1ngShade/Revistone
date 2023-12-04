@@ -9,12 +9,16 @@ namespace Revistone
         public static class TitleFunctions
         {
             /// <summary> Ascii Font Of Text. </summary>
-            public enum AsciiFont { Standard, Big, BigMoneyNW, Graceful, Graffiti, Slant, SmallSlant, Small, AnsiRegular, Block, Colossal, Digital, Double, Merlin1, Blocks, DancingFont }
+            public enum AsciiFont { 
+                Standard, Big, BigMoneyNW, Graceful, Graffiti, 
+                Slant, SmallSlant, Small, AnsiRegular, Block, 
+                Colossal, Digital, Double, Merlin1, Blocks, 
+                DancingFont, Epic, Ascii3D }
 
             static string validChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.!?';:()[]{}-_+=*&^<>%@£";
 
             /// <summary> Creates an array of strings that forms a title of given text, and given font. </summary>
-            public static string[] CreateTitle(string text, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true)
+            public static string[] CreateTitle(string text, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true, int bottomSpace = 0)
             {
                 string path = FontFilePath(font);
 
@@ -40,13 +44,13 @@ namespace Revistone
                 }
 
                 if (removeEmptyLines) title = title.Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
-                return title;
+                return title.Concat(Enumerable.Repeat(" ", bottomSpace)).ToArray();
             }
 
             /// <summary> Creates an array of consolecolour that forms a title of given text, colour, and given font. </summary>
-            public static ConsoleLine[] CreateTitle(string text, ConsoleColor[] colours, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true)
+            public static ConsoleLine[] CreateTitle(string text, ConsoleColor[] colours, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true, int bottomSpace = 0)
             {
-                return CreateTitle(text, font, emptySpacing, letterSpacing, removeEmptyLines).Select(s => new ConsoleLine(s, colours)).ToArray();
+                return CreateTitle(text, font, emptySpacing, letterSpacing, removeEmptyLines, bottomSpace).Select(s => new ConsoleLine(s, colours)).ToArray();
             }
 
             public static string FontFilePath(AsciiFont font) { return $"TitleFont/{font}.txt"; }

@@ -1,4 +1,5 @@
-﻿using Revistone.Apps;
+﻿using System.Diagnostics;
+using Revistone.Apps;
 using Revistone.Console;
 using Revistone.Console.Data;
 using Revistone.Interaction;
@@ -14,9 +15,7 @@ namespace Revistone
         {
             public static object renderLockObject = new object();
 
-            public static int currentTick = 0;
-
-            public static Random rnd = new Random();
+            public static Random rng = new Random();
 
             static Thread handleTickBehaviour = new Thread(HandleTickBehaviour);
             static Thread handleRealTimeInput = new Thread(UserRealtimeInput.KeyRegistry);
@@ -24,16 +23,38 @@ namespace Revistone
             public static event TickEventHandler Tick = new TickEventHandler((tickNum) => { });
             public delegate void TickEventHandler(int tickNum);
 
+            public static int currentTick = 0;
+
             /// <summary>
             /// Calls the Tick event, occours every 25ms (40 calls per seconds).
             /// </summary>
             static void HandleTickBehaviour() //controls tick based events
             {
+                Stopwatch tickStartTime = new Stopwatch(); //time tick starts
+                Stopwatch tickSleepStart = new Stopwatch(); //tick delay start
+                tickStartTime.Start();
+
+                long lastTickTime = 0;
+
                 while (true)
                 {
-                    DateTime tickStartTime = DateTime.Now; //time tick starts
                     Tick.Invoke(currentTick);
-                    Thread.Sleep(Math.Max(25 - (int)(DateTime.Now - tickStartTime).TotalMilliseconds, 0));
+                    Profiler.tickCaculationTime.Add(tickStartTime.ElapsedMilliseconds);
+
+                    tickSleepStart.Start();
+                    long targetThreadDelay = Math.Max(25 - (tickStartTime.ElapsedMilliseconds + Math.Max(lastTickTime - 25, 0)), 0);
+                    while (true)
+                    {
+                        if (tickSleepStart.ElapsedMilliseconds >= targetThreadDelay - 0.25) //0.25 is error miminmising
+                        {
+                            tickSleepStart.Reset();
+                            break;
+                        }
+                    }
+
+                    lastTickTime = tickStartTime.ElapsedMilliseconds;
+                    Profiler.tickCompletionTime.Add(lastTickTime);
+                    tickStartTime.Restart();
                     currentTick++;
                 }
             }
@@ -49,6 +70,7 @@ namespace Revistone
 
                     if (ConsoleData.appInitalisation)
                     {
+                        Profiler.SetEnabled(Profiler.enabled);
                         AppRegistry.activeApp.OnAppInitalisation();
                         ConsoleData.appInitalisation = false;
                     }
@@ -73,13 +95,13 @@ namespace Revistone
                 AppRegistry.InitializeAppRegistry();
                 AppRegistry.SetActiveApp("Revistone");
 
-                System.Console.CursorVisible = false;
-                ConsoleDisplay.InitializeConsoleDisplay();
+                ConsoleRenderer.InitializeRenderer();
+                ConsoleRendererLogic.InitializeConsoleRendererLogic();
+                Profiler.InitializeProfiler();
+
                 handleTickBehaviour.Start();
-                
                 handleRealTimeInput.Start();
 
-                Thread.Sleep(50); //delay allows time for first tick to setup console
                 HandleConsoleBehaviour();
             }
         }

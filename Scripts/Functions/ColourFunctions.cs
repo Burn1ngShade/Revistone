@@ -197,7 +197,7 @@ namespace Revistone
                 {
                     c[i] = colours[colour.index];
 
-                    if (gradientPattern)
+                    if (gradientPattern && colours.Length != 1)
                     {
                         if ((colour.index >= colours.Length - 1 && colour.direction) || (colour.index <= 0 && !colour.direction)) colour.direction = !colour.direction;
 
@@ -226,6 +226,9 @@ namespace Revistone
 
                 return c;
             }
+
+            /// <summary> Extends ConsoleColour to given length. </summary>
+            public static ConsoleColor[] Extend(this ConsoleColor colour, int length) { return Extend(colour.ToArray(), length, false); }
 
             // --- NEW ARRAY ---
 
@@ -388,8 +391,6 @@ namespace Revistone
                 wordsCount.Add(workText.Length - wordStartIndex);
 
                 if (workText.Length != text.Length) wordsCount.Insert(0, text.Length - workText.Length);
-
-                ConsoleAction.SendDebugMessage(StringFunctions.ToElementString(wordsCount));
 
                 return Alternate(colours, text.Length, wordsCount.ToArray());
             }

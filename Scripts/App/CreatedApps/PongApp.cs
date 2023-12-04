@@ -41,16 +41,16 @@ namespace Revistone
 
                 if (gameState == 0) return;
 
-                if (UserRealtimeInput.KeyPressed(ConsoleKey.W)) player1.pos = Math.Clamp(player1.pos + 1, 0, 12);
-                if (UserRealtimeInput.KeyPressed(ConsoleKey.S)) player1.pos = Math.Clamp(player1.pos - 1, 0, 12);
+                if (UserRealtimeInput.KeyPressed(ConsoleKey.W)) player1.pos = Math.Clamp(player1.pos + 1, 0, 11);
+                if (UserRealtimeInput.KeyPressed(ConsoleKey.S)) player1.pos = Math.Clamp(player1.pos - 1, 0, 11);
 
-                if (UserRealtimeInput.KeyPressed(ConsoleKey.UpArrow) && gameState == 2) player2.pos = Math.Clamp(player2.pos + 1, 0, 12);
-                if (UserRealtimeInput.KeyPressed(ConsoleKey.DownArrow) && gameState == 2) player2.pos = Math.Clamp(player2.pos - 1, 0, 12);
+                if (UserRealtimeInput.KeyPressed(ConsoleKey.UpArrow) && gameState == 2) player2.pos = Math.Clamp(player2.pos + 1, 0, 11);
+                if (UserRealtimeInput.KeyPressed(ConsoleKey.DownArrow) && gameState == 2) player2.pos = Math.Clamp(player2.pos - 1, 0, 11);
 
                 if (gameState == 1 && tickNum % 2 == 0 && ball.cooldown < 3)
                 {
-                    if (player2.pos + 1 < ball.NextPos.y) player2.pos = Math.Clamp(player2.pos + 1, 0, 12);
-                    if (player2.pos + 1 > ball.NextPos.y) player2.pos = Math.Clamp(player2.pos - 1, 0, 12);
+                    if (player2.pos + 1 < ball.NextPos.y) player2.pos = Math.Clamp(player2.pos + 1, 0, 11);
+                    if (player2.pos + 1 > ball.NextPos.y) player2.pos = Math.Clamp(player2.pos - 1, 0, 11);
                 }
 
                 if (ball.cooldown == 0)
@@ -71,7 +71,7 @@ namespace Revistone
                     if (ball.NextPos.y < 0 | ball.NextPos.y > 14) ball.velocity.y = -ball.velocity.y;
 
                     //bumper check
-                    if ((ball.NextPos.x == 1 && ball.NextPos.y - player1.pos < 3 && ball.NextPos.y - player1.pos >= 0) || (ball.NextPos.x == 57 && ball.NextPos.y - player2.pos < 3 && ball.NextPos.y - player2.pos >= 0))
+                    if ((ball.NextPos.x == 1 && ball.NextPos.y - player1.pos < 4 && ball.NextPos.y - player1.pos >= 0) || (ball.NextPos.x == 57 && ball.NextPos.y - player2.pos < 4 && ball.NextPos.y - player2.pos >= 0))
                     {
                         ball.speed = Math.Clamp(ball.speed - 1, 0, int.MaxValue);
                         ball.velocity.x = -ball.velocity.x;
@@ -90,7 +90,6 @@ namespace Revistone
                 if (player1.score == 3 || player2.score == 3)
                 {
                     gameState = 0;
-                    ClearPrimaryConsole();
                 }
             }
 
@@ -112,7 +111,11 @@ namespace Revistone
                 if (i == 2) return;
 
                 while (gameState != 0) { }
-                SendConsoleMessages(TitleFunctions.CreateTitle($"PLAYER {(player1.score == 3 ? '1' : '2')} WINS!", TitleFunctions.AsciiFont.Big, letterSpacing: 1).Select(s => new ConsoleLine(s)).ToArray());
+                GoToLine(1);
+                string[] title = TitleFunctions.CreateTitle($"P{(player1.score == 3 ? '1' : '2')} WINS!", TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1).ToArray();
+                ConsoleColor[] titleColours = AdvancedHighlight(title[0].Length, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), title[0].Length / 2, 10));
+                SendConsoleMessages(title.Select(s => new ConsoleLine(s, titleColours)).ToArray(), 
+                Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
                 UserInput.WaitForUserInput(space: true);
 
                 MainMenu();
@@ -136,8 +139,8 @@ namespace Revistone
                 player1.pos = 7;
                 player2.pos = 7;
                 ball.pos = (29, 7);
-                ball.speed = 1;
-                ball.velocity = new (int, int)[] { (-1, -1), (-1, 1), (1, -1), (1, 1) }[Manager.rnd.Next(0, 4)];
+                ball.speed = 2;
+                ball.velocity = new (int, int)[] { (-1, -1), (-1, 1), (1, -1), (1, 1) }[Manager.rng.Next(0, 4)];
                 ball.cooldown = 20;
             }
 
@@ -145,8 +148,8 @@ namespace Revistone
             void DrawFrame()
             {
                 ConsoleImage frame = new ConsoleImage(59, 15);
-                frame.SetPixels(1, player1.pos, 1, 3, '|', ConsoleColor.White);
-                frame.SetPixels(57, player2.pos, 1, 3, '|', ConsoleColor.White);
+                frame.SetPixels(1, player1.pos, 1, 4, '|', ConsoleColor.White);
+                frame.SetPixels(57, player2.pos, 1, 4, '|', ConsoleColor.White);
                 frame.SetPixels(10, 9, TitleFunctions.CreateTitle($"{player1.score}", ConsoleColor.White.ToArray(), TitleFunctions.AsciiFont.Small).Reverse().ToArray());
                 frame.SetPixels(47, 9, TitleFunctions.CreateTitle($"{player2.score}", ConsoleColor.White.ToArray(), TitleFunctions.AsciiFont.Small).Reverse().ToArray());
                 frame.SetPixel(ball.pos.x, ball.pos.y, '@', ConsoleColor.White);

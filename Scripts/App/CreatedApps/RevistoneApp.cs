@@ -19,8 +19,8 @@ namespace Revistone
                 return new RevistoneApp[] { new RevistoneApp("Revistone", (ConsoleColor.DarkBlue, ConsoleColor.Cyan.ToArray(), 10), (CyanDarkBlueGradient.Extend(7, true), 5),
                 new (UserInputProfile, Action<string>, string)[] 
                 {(new UserInputProfile(UserInputProfile.InputType.FullText, "boop", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop", AppRegistry.activeApp.colourScheme.primaryColour)), "Boop!") },
-                98, 23) };
+                (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop!", AppRegistry.activeApp.colourScheme.primaryColour)), "Boop!") },
+                98, 29) };
             }
 
             public override void OnAppInitalisation()
