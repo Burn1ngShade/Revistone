@@ -385,9 +385,9 @@ bug in option menu at end of console, clear line goes one to far back
 boop didnt have an ! mark
 resizing window cleared bottom line of primary console
 
+--- Options Menu Bug --- [QuickFix] 0.4.1 (4/12/23)
 
+Bug Fixes:
 
-
-
-
-
+[Major] 
+Option menus would break if opened where not fully free and not fully against consoleBorder
