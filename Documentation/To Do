@@ -15,6 +15,10 @@ way to highlight colour between 2 chars / index and char [???]
 
 --- KNOWN BUGS ---
 
---- DONE ---
-
 --- FIXED BUGS ---
+pong win title showing incorrectley
+
+--- DONE ---
+UserInput -> option menus now indented
+ConsoleLine -> PadLeft and PadRight methods added
+ConsoleImage -> Images and videos now support bg colour, images can now be overlayed onto one another

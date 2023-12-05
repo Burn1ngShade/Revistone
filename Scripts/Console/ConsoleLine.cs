@@ -88,19 +88,40 @@ namespace Revistone
                 this._updated = false;
             }
 
+            //--- MOD METHODS ---
+
+            /// <summary> Pads the left side of line with empty space, foreground colour white, and bg colour black. </summary>
+            public void PadLeft(int padding = 1, bool padColour = true, bool padBGColour = true)
+            {
+                Update(new string(' ', padding) + _lineText, 
+                ColourFunctions.BuildArray(padColour ? ConsoleColor.White.Extend(padding) : new ConsoleColor[0], _lineColour),
+                ColourFunctions.BuildArray(padBGColour ? ConsoleColor.Black.Extend(padding) : new ConsoleColor[0], _lineBGColour));
+            }
+
+            /// <summary> Pads the right side of line with empty space, foreground colour white, and bg colour black. </summary>
+            public void PadRight(int padding = 1, bool padColour = true, bool padBGColour = true)
+            {
+                Update(_lineText + new string(' ', padding), 
+                ColourFunctions.BuildArray(_lineColour, padColour ? ConsoleColor.White.Extend(padding) : new ConsoleColor[0]),
+                ColourFunctions.BuildArray(_lineBGColour, padBGColour ? ConsoleColor.Black.Extend(padding) : new ConsoleColor[0]));
+            }
+
             //--- STATIC METHODS ---
 
             /// <summary> Inserts a ConsoleLine into another, overwritting overlapping chars and colours. </summary>
-            public static ConsoleLine Overwrite(ConsoleLine baseLine, ConsoleLine overwriteLine, int overwriteIndex)
+            public static ConsoleLine Overlay(ConsoleLine baseLine, ConsoleLine overwriteLine, int overwriteIndex)
             {
                 string s = baseLine.lineText;
                 s += new string(' ', Math.Clamp(overwriteIndex + overwriteLine.lineText.Length - s.Length, 0, int.MaxValue));
                 s = s.ReplaceAt(overwriteIndex, overwriteLine.lineText.Length, overwriteLine.lineText);
 
-                ConsoleColor[] cl = baseLine.lineColour.Extend(ConsoleColor.White, s.Length);
-                for (int i = overwriteIndex; i < overwriteIndex + overwriteLine.lineText.Length; i++) cl[i] = overwriteLine.lineColour[i - overwriteIndex];
+                ConsoleColor[] c = baseLine.lineColour.Extend(ConsoleColor.White, s.Length);
+                for (int i = overwriteIndex; i < overwriteIndex + overwriteLine.lineText.Length; i++) c[i] = overwriteLine.lineColour[i - overwriteIndex];
 
-                return new ConsoleLine(s, cl);
+                ConsoleColor[] bgC = baseLine.lineColourBG.Extend(ConsoleColor.Black, s.Length);
+                for (int i = overwriteIndex; i < overwriteIndex + overwriteLine.lineText.Length; i++) bgC[i] = overwriteLine.lineColourBG[i - overwriteIndex];
+
+                return new ConsoleLine(s, c, bgC);
             }
         }
     }

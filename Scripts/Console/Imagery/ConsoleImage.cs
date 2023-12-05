@@ -18,23 +18,38 @@ namespace Revistone
                 (char charchter, ConsoleColor colour)[,] _pixels;
                 public (char charchter, ConsoleColor colour)[,] pixels { get { return _pixels; } }
 
+                ConsoleColor[,] _bgPixels;
+                public ConsoleColor[,] bgPixels { get { return _bgPixels; } }
+
                 /// <summary> Class pertaining all logic for creating images in the console. </summary>
-                public ConsoleImage(int width = 10, int height = 10, char character = ' ', ConsoleColor colour = ConsoleColor.White)
+                public ConsoleImage(int width = 10, int height = 10, char character = ' ', ConsoleColor colour = ConsoleColor.White, ConsoleColor bgColour = ConsoleColor.Black)
                 {
                     _size.width = Math.Clamp(width, 1, int.MaxValue);
                     _size.height = Math.Clamp(height, 1, int.MaxValue);
 
                     _pixels = new (char charchter, ConsoleColor colour)[width, height];
+                    _bgPixels = new ConsoleColor[width, height];
 
                     SetPixels(character, colour);
+                    SetBGPixels(bgColour);
                 }
 
                 /// <summary> Class pertaining all logic for creating images in the console. </summary>
-                public ConsoleImage(string asciiArt)
+                public ConsoleImage(ConsoleImage image)
+                {
+                    _size = image.size;
+                    _pixels = image.pixels;
+                    _bgPixels = image._bgPixels;
+                }
+
+                /// <summary> Class pertaining all logic for creating images in the console. </summary>
+                public ConsoleImage(string asciiArt, ConsoleColor colour = ConsoleColor.White, ConsoleColor bgColour = ConsoleColor.Black)
                 {
                     //not actually needed but stops null error yapping
                     _pixels = new (char charchter, ConsoleColor colour)[_size.width, _size.height];
-                    SetPixels(asciiArt);
+                    _bgPixels = new ConsoleColor[_size.width, _size.height];
+                    SetPixels(asciiArt, colour);
+                    SetBGPixels(bgColour);
                 }
 
                 // --- IMAGE CONTROL ---
@@ -55,6 +70,12 @@ namespace Revistone
                             else newPixels[x, y] = (' ', ConsoleColor.White);
                         }
                     }
+                }
+
+                public void OverlayImage(int x, int y, ConsoleImage image)
+                {
+                    SetPixels(x, y, image.size.width, image.size.height, image.pixels.Cast<(char, ConsoleColor)>().ToArray());
+                    SetBGPixels(x, y, image.size.width, image.size.height, image.bgPixels.Cast<ConsoleColor>().ToArray());
                 }
 
                 // --- PIXEL CONTROL ---
@@ -86,8 +107,8 @@ namespace Revistone
                     return true;
                 }
 
-                /// <summary> Set all pixels to gicen asciiArt </summary>
-                public bool SetPixels(string asciiArt)
+                /// <summary> Set all pixels to given asciiArt </summary>
+                public bool SetPixels(string asciiArt, ConsoleColor colour = ConsoleColor.White)
                 {
                     string[] lines = asciiArt.Split('\n');
 
@@ -103,7 +124,7 @@ namespace Revistone
                         int lineIndex = lines.Length - 1 - y;
                         for (int x = 0; x < _size.width; x++)
                         {
-                            if (lines[lineIndex].Length > x) _pixels[x, y] = (lines[lineIndex][x], ConsoleColor.White);
+                            if (lines[lineIndex].Length > x) _pixels[x, y] = (lines[lineIndex][x], colour);
                         }
                     }
 
@@ -139,6 +160,57 @@ namespace Revistone
 
                 public bool SetPixels(char character, ConsoleColor colour) { return SetPixels(0, 0, _size.width, _size.height, character, colour); }
 
+                // --- BG PIXEL CONTROL ---
+
+                /// <summary> Set given BG pixel position, to given charchter and colour. </summary>
+                public bool SetBGPixel(int x, int y, ConsoleColor colour = ConsoleColor.White)
+                {
+                    if (x < 0 || x >= _size.width || y < 0 || y >= _size.height) return false;
+
+                    _bgPixels[x, y] = colour;
+                    return true;
+                }
+
+                /// <summary> Set given BG pixel positions, to given charchters and colours (array size must = width * height). </summary>
+                public bool SetBGPixels(int startX, int startY, int width, int height, ConsoleColor[] setPixels)
+                {
+                    if (setPixels.Length != width * height) return false;
+
+                    for (int x = startX; x < startX + width; x++)
+                    {
+                        for (int y = startY; y < startY + height; y++)
+                        {
+                            if (x < 0 || x >= _size.width || y < 0 || y >= _size.height) continue;
+
+                            _bgPixels[x, y] = setPixels[(y - startY) * width + (x - startX)];
+                        }
+                    }
+
+                    return true;
+                }
+
+                /// <summary> Set given BG pixel positions, to give ConsoleLine. </summary>
+                public bool SetBGPixels(int x, int y, ConsoleLine consoleLine)
+                {
+                    return SetBGPixels(x, y, consoleLine.lineColourBG.Length, 1, consoleLine.lineColourBG);
+                }
+
+                /// <summary> Set given BG pixel positions, to give ConsoleLines. </summary>
+                public bool SetBGPixels(int x, int y, ConsoleLine[] consoleLines)
+                {
+                    bool successfulLine = false;
+                    for (int i = 0; i < consoleLines.Length; i++)
+                    {
+                        if (SetBGPixels(x, y + i, consoleLines[i])) successfulLine = true;
+                    }
+                    return successfulLine;
+                }
+
+                /// <summary> Set given BG pixel positions, to given colour. </summary>
+                public bool SetBGPixels(int startX, int startY, int width, int height, ConsoleColor colour = ConsoleColor.White) { return SetBGPixels(startX, startY, width, height, Enumerable.Repeat(colour, width * height).ToArray()); }
+                /// <summary> Sets all BG pixels to given colour. </summary>
+                public bool SetBGPixels(ConsoleColor colour) { return SetBGPixels(0, 0, _size.width, _size.height, colour); }
+
                 // --- OUTPUT ---
 
                 /// <summary> Outputs image to console. </summary>
@@ -158,7 +230,7 @@ namespace Revistone
 
                     for (int lineIndex = y; lineIndex < Math.Min(y + c.Length, ConsoleData.debugStartIndex); lineIndex++)
                     {
-                        ConsoleAction.UpdatePrimaryConsoleLine(ConsoleLine.Overwrite(ConsoleAction.GetConsoleLine(lineIndex), c[lineIndex - y], x), lineIndex);
+                        ConsoleAction.UpdatePrimaryConsoleLine(ConsoleLine.Overlay(ConsoleAction.GetConsoleLine(lineIndex), c[lineIndex - y], x), lineIndex);
                     }
 
                     return true;
@@ -171,14 +243,16 @@ namespace Revistone
 
                     string s = "";
                     ConsoleColor[] c = new ConsoleColor[_size.width];
+                    ConsoleColor[] bgC = new ConsoleColor[_size.width];
 
                     for (int x = 0; x < _size.width; x++)
                     {
                         s += _pixels[x, rowIndex].charchter;
                         c[x] = colourless ? ConsoleColor.White : _pixels[x, rowIndex].colour;
+                        bgC[x] = _bgPixels[x, rowIndex];
                     }
 
-                    return new ConsoleLine(s, c);
+                    return new ConsoleLine(s, c, bgC);
                 }
 
                 /// <summary> Returns a column of the image as a ConsoleLine. </summary>
@@ -188,14 +262,16 @@ namespace Revistone
 
                     string s = "";
                     ConsoleColor[] c = new ConsoleColor[_size.height];
+                    ConsoleColor[] bgC = new ConsoleColor[_size.height];
 
                     for (int y = 0; y < _size.height; y++)
                     {
                         s += _pixels[columIndex, y].charchter;
                         c[y] = colourless ? ConsoleColor.White : _pixels[columIndex, y].colour;
+                        bgC[y] = _bgPixels[columIndex, y];
                     }
 
-                    return new ConsoleLine(s, c);
+                    return new ConsoleLine(s, c, bgC);
                 }
 
                 /// <summary> Converts image to ConsoleLines array. </summary>

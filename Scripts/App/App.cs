@@ -1,4 +1,6 @@
+using System.Numerics;
 using Revistone.Console;
+using Revistone.Console.Image;
 using Revistone.Interaction;
 using Revistone.Management;
 
@@ -47,13 +49,13 @@ namespace Revistone
             /// <summary> Called on app initalisation. </summary>
             public virtual void OnAppInitalisation()
             {
-
+                
             }
 
             /// <summary> Called just before user is asked for input, use to interact with user. </summary>
             public virtual void OnUserPromt()
             {
-                
+
             }
 
             /// <summary> Called after user input, use to respond to user input. </summary>

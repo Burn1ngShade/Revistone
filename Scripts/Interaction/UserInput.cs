@@ -169,8 +169,8 @@ namespace Revistone
 
                 for (int i = 0; i < options.Length; i++)
                 {
-                    options[i].Update("> " + options[i].lineText,
-                    BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour.Extend(2), options[i].lineColour.Extend(options[i].lineText.Length), AppRegistry.activeApp.colourScheme.secondaryColour.Extend(3)));
+                    options[i].Update(" > " + options[i].lineText,
+                    BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour.Extend(3), options[i].lineColour.Extend(options[i].lineText.Length), AppRegistry.activeApp.colourScheme.secondaryColour.Extend(3)));
                     optionLines[i] = SendConsoleMessage(options[i], ConsoleAnimatedLine.AppTheme);
                 }
 
@@ -279,10 +279,9 @@ namespace Revistone
                 {
                     ConsoleLine[] pgOptions = options.Skip(currentPage * optionsPerPage).Take(Math.Min(optionsPerPage, options.Length - currentPage * optionsPerPage)).Concat(pgExtraOptions).ToArray();
 
-                    SendConsoleMessage(new ConsoleLine($"--- {title} Page [{currentPage + 1}/{totalPages + 1}] ---",
-                    BuildArray(AppRegistry.activeApp.colourScheme.primaryColour.Extend(title.Length + 10),
-                    AppRegistry.activeApp.colourScheme.secondaryColour.Extend($"[{currentPage + 1}/{currentPage + 1}]".Length, true),
-                    AppRegistry.activeApp.colourScheme.primaryColour.Extend(4))));
+                    SendConsoleMessage(new ConsoleLine($"{title} Page [{currentPage + 1}/{totalPages + 1}]:",
+                    BuildArray(AppRegistry.activeApp.colourScheme.primaryColour.Extend(title.Length + 6),
+                    AppRegistry.activeApp.colourScheme.secondaryColour.Extend($"[{currentPage + 1}/{currentPage + 1}]".Length, true))));
 
                     int result = CreateOptionMenu("", pgOptions.Select(o => new ConsoleLine(o)).ToArray());
 
@@ -319,21 +318,19 @@ namespace Revistone
             {
                 int page = 0, pages = messages.Length / 5, pageLength;
 
+                for (int i = 0; i < messages.Length; i++) {messages[i].PadLeft(1);}
+
                 while (true)
                 {
-                    SendConsoleMessage(new ConsoleLine($"--- {title} Page [{page + 1}/{pages + 1}] ---",
-                    BuildArray(AppRegistry.activeApp.colourScheme.primaryColour.Extend(title.Length + 10),
-                    AppRegistry.activeApp.colourScheme.secondaryColour.Extend($"[{page + 1}/{pages + 1}]".Length, true),
-                    AppRegistry.activeApp.colourScheme.primaryColour.Extend(4))));
+                    SendConsoleMessage(new ConsoleLine($"{title} Page [{page + 1}/{pages + 1}]:",
+                    BuildArray(AppRegistry.activeApp.colourScheme.primaryColour.Extend(title.Length + 6),
+                    AppRegistry.activeApp.colourScheme.secondaryColour.Extend($"[{page + 1}/{page + 1}]".Length, true))));
 
 
                     pageLength = Math.Min(page * 5 + 5, messages.Length) - page * 5;
                     metaOptionsLines = 1 + pageLength;
 
-                    for (int i = page * 5; i < Math.Min(page * 5 + 5, messages.Length); i++)
-                    {
-                        SendConsoleMessage(messages[i], ConsoleAnimatedLine.AppTheme);
-                    }
+                    SendConsoleMessages(messages.Skip(page * 5).Take(Math.Min(5, messages.Length - page * 5)).ToArray());
 
                     if (CreateOptionMenu("", new (ConsoleLine, Action)[] {
                     (new ConsoleLine("Next Page", AppRegistry.activeApp.colourScheme.primaryColour), () => page = page < pages ? page + 1 : 0),

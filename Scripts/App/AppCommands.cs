@@ -22,7 +22,7 @@ namespace Revistone
                 "List Of All App Specfic Commands And Their Descriptions."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "apps", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => {
-                    int i = UserInput.CreateMultiPageOptionMenu("Apps:", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray(), new ConsoleLine[] {new ConsoleLine("Exit")}, 3);
+                    int i = UserInput.CreateMultiPageOptionMenu("Apps", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray(), new ConsoleLine[] {new ConsoleLine("Exit")}, 3);
                     if (i >= 0) LoadApp($"Load{AppRegistry.appRegistry[i].name}");
                 },
                 "Menu To Load Apps."),
@@ -76,7 +76,7 @@ namespace Revistone
             /// <summary> Gives user Y/N option to reload current app. </summary>
             static void ReloadApp(string userInput)
             {
-                int clearConsole = UserInput.CreateOptionMenu("Reload App?", new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") });
+                int clearConsole = UserInput.CreateOptionMenu("Reload App:", new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") });
                 if (clearConsole == 0) ReloadConsole();
                 else SendConsoleMessage(new ConsoleLine("App Reload Cancelled!", AppRegistry.activeApp.colourScheme.primaryColour), new ConsoleLineUpdate());
             }
@@ -86,14 +86,14 @@ namespace Revistone
             {
                 if (userInput.Trim().Length == 4) //submitted empty load request
                 {
-                    int i = UserInput.CreateMultiPageOptionMenu("Apps:", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray(), new ConsoleLine[] {new ConsoleLine("Exit")}, 3);
+                    int i = UserInput.CreateMultiPageOptionMenu("Apps", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray(), new ConsoleLine[] {new ConsoleLine("Exit")}, 3);
                     if (i >= 0) LoadApp($"Load{AppRegistry.appRegistry[i].name}");
                     return;
                 }
                 string appName = userInput.Substring(4).TrimStart().AdjustCapitalisation(StringFunctions.CapitalCasing.FirstLetterUpper);
                 if (AppRegistry.AppExists(appName))
                 {
-                    int closeApp = UserInput.CreateOptionMenu($"Load {appName}?", new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") });
+                    int closeApp = UserInput.CreateOptionMenu($"Load {appName}:", new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") });
                     if (closeApp == 0)
                     {
                         AppRegistry.SetActiveApp(appName);

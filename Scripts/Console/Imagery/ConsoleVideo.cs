@@ -80,7 +80,7 @@ namespace Revistone
 
                     for (int i = y; i < c.Length + y; i++)
                     {
-                        ConsoleAction.UpdatePrimaryConsoleLine(ConsoleLine.Overwrite(ConsoleAction.GetConsoleLine(i), c[i - y], x),
+                        ConsoleAction.UpdatePrimaryConsoleLine(ConsoleLine.Overlay(ConsoleAction.GetConsoleLine(i), c[i - y], x),
                         new ConsoleAnimatedLine(UpdateImage, (this, 1, i - y, x, y, new bool[] { looping, colourless }), ticksPerFrame, true), i);
                     }
 
@@ -97,7 +97,7 @@ namespace Revistone
                     (ConsoleVideo video, int frameIndex, int lineIndex, int x, int y, bool[] modifications) info = ((ConsoleVideo, int, int, int, int y, bool[]))animationInfo.metaInfo;
 
                     if (info.x == -1) consoleLine.Update(info.video.frames[info.frameIndex].RowToConsoleLine(info.video.frames[info.frameIndex].size.height - 1 - info.lineIndex, info.modifications[1]));
-                    else consoleLine.Update(ConsoleLine.Overwrite(consoleLine,info.video.frames[info.frameIndex].RowToConsoleLine(info.video.frames[info.frameIndex].size.height - 1 - info.lineIndex, info.modifications[1]), info.x));
+                    else consoleLine.Update(ConsoleLine.Overlay(consoleLine,info.video.frames[info.frameIndex].RowToConsoleLine(info.video.frames[info.frameIndex].size.height - 1 - info.lineIndex, info.modifications[1]), info.x));
 
                     if (info.video.frames.Length - 1 <= info.frameIndex)
                     {
