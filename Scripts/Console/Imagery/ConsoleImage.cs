@@ -31,6 +31,7 @@ namespace Revistone
                     _bgPixels = new ConsoleColor[width, height];
 
                     SetPixels(character, colour);
+                    ConsoleAction.SendDebugMessage(bgColour);
                     SetBGPixels(bgColour);
                 }
 
@@ -181,7 +182,6 @@ namespace Revistone
                         for (int y = startY; y < startY + height; y++)
                         {
                             if (x < 0 || x >= _size.width || y < 0 || y >= _size.height) continue;
-
                             _bgPixels[x, y] = setPixels[(y - startY) * width + (x - startX)];
                         }
                     }
