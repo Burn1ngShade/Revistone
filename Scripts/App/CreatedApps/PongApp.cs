@@ -111,12 +111,12 @@ namespace Revistone
                 if (i == 2) return;
 
                 while (gameState != 0) { }
-                GoToLine(1);
+                GoToLine(2);
                 string[] title = TitleFunctions.CreateTitle($"P{(player1.score == 3 ? '1' : '2')} WINS!", TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1).ToArray();
                 ConsoleColor[] titleColours = AdvancedHighlight(title[0].Length, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), title[0].Length / 2, 10));
                 SendConsoleMessages(title.Select(s => new ConsoleLine(s, titleColours)).ToArray(), 
                 Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
-                UserInput.WaitForUserInput(space: true);
+                UserInput.WaitForUserInput();
 
                 MainMenu();
             }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7cR+CLZUVAU9lTywLhOKTcqlqapiqGV5fpdsH5ARfxHD9e45NbWaXohDDdkigYpgmqzFyhFUA0wyQUhxxTFhCw==",
+  "dgSpecHash": "vzBFxZdlp7708Zdq0UQPXns39KEHHddR2kQzBLYlehjz7izFRPSTBg7nhsYBmWKhXU0AVsmi2iDy7YW+lCvu8A==",
   "success": true,
-  "projectFilePath": "E:\\A-Level\\Tools\\Revistone\\Revistone.csproj",
+  "projectFilePath": "E:\\A-Level\\Tools\\RevistoneClone\\Revistone.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\isaac\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
     "C:\\Users\\isaac\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",

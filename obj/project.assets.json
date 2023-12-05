@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\A-Level\\Tools\\Revistone\\Revistone.csproj",
+      "projectUniqueName": "E:\\A-Level\\Tools\\RevistoneClone\\Revistone.csproj",
       "projectName": "Revistone",
-      "projectPath": "E:\\A-Level\\Tools\\Revistone\\Revistone.csproj",
+      "projectPath": "E:\\A-Level\\Tools\\RevistoneClone\\Revistone.csproj",
       "packagesPath": "C:\\Users\\isaac\\.nuget\\packages\\",
-      "outputPath": "E:\\A-Level\\Tools\\Revistone\\obj\\",
+      "outputPath": "E:\\A-Level\\Tools\\RevistoneClone\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\isaac\\AppData\\Roaming\\NuGet\\NuGet.Config",
