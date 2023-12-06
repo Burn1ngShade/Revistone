@@ -22,10 +22,4 @@ pong win title showing incorrectley
 UserInput -> option menus now indented
 ConsoleLine -> PadLeft and PadRight methods added
 ConsoleImage -> Images and videos now support bg colour, images can now be overlayed onto one another, stretch functions
-
-each char has width 7, and height 17 
-7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105, 112, 119
-17, 34, 51, 68, 85, 102, 119
-
-17:7 (square pixels)
-width pixel = 7/17 of a height pixel
+Manager -> Added deltatime (time taken for last frame), OnUpdate() added, moved hotkeys to it so cant be overriden in apps

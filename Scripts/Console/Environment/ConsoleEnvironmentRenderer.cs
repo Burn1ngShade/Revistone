@@ -12,6 +12,7 @@ namespace Revistone
                 public static void Render(this ConsoleEnvironment2D env, (int x, int y) outputPosition, (double x, double y) environmentPosition, (int width, int height) size, double proportional = 1)
                 {
                     ConsoleImage renderImage = new ConsoleImage(size.width, size.height, bgColour: env.bgColour);
+                    ConsoleAction.SendDebugMessage(renderImage.bgPixels[0, 0]);
 
                     ConsoleObject2D[] orderedObjs = env.objects.OrderBy(obj => obj.spriteOrder).ToArray();
 

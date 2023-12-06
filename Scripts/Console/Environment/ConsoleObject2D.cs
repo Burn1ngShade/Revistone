@@ -16,6 +16,7 @@ namespace Revistone
                 public int id { get; }
 
                 public (double x, double y) position;
+                public (double x, double y) velocity;
 
                 public ConsoleImage sprite;
                 public int spriteOrder;
@@ -29,6 +30,8 @@ namespace Revistone
                     this.position = position;
                     this.sprite = sprite;
                     this.spriteOrder = spriteOrder;
+
+                    this.velocity = (0, 0);
 
                     AssignID();
                 }

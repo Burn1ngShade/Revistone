@@ -50,10 +50,7 @@ namespace Revistone
             /// <summary> Called on app initalisation. </summary>
             public virtual void OnAppInitalisation()
             {
-                // ConsoleEnvironment2D test = new ConsoleEnvironment2D(ConsoleColor.Cyan);
-                // test.AddObject(new ConsoleObject2D("Cube 1", new ConsoleImage(5, 5, bgColour: ConsoleColor.Red), 5, 5));
-                // test.AddObject(new ConsoleObject2D("Cube 2", new ConsoleImage(5, 5, bgColour: ConsoleColor.Yellow), (6, 6), -1));
-                // test.Render((0, 12), (0, 0), (20, 20), 2.2d);
+                
             }
 
             /// <summary> Called just before user is asked for input, use to interact with user. </summary>
@@ -71,7 +68,7 @@ namespace Revistone
             /// <summary> Called once a tick (25ms). </summary>
             public virtual void OnUpdate(int tickNum)
             {
-                if (UserRealtimeInput.KeyPressed(0x11) && UserRealtimeInput.KeyPressed(0x10) && UserRealtimeInput.KeyPressedDown(80)) Profiler.SetEnabled(!Profiler.enabled);
+
             }
 
             //--- Register ---

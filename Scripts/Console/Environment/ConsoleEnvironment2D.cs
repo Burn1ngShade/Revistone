@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using Revistone.Console.Image;
+using Revistone.Management;
 
 namespace Revistone
 {
@@ -14,10 +15,31 @@ namespace Revistone
 
                 public ConsoleColor bgColour;
 
+                // --- CONSTRUCTORS ---
+
                 /// <summary> Pertains environment for console application. </summary>
-                public ConsoleEnvironment2D(ConsoleColor bgColour)
+                public ConsoleEnvironment2D(ConsoleColor bgColour = ConsoleColor.White)
                 {
                     this.bgColour = bgColour;
+                }
+
+                // --- SIMS ---
+
+                /// <summary> Steps the physics of the environment by a given time. </summary>
+                public void PhysicStep(double stepTime)
+                {
+                    ConsoleAction.SendDebugMessage(Manager.deltaTime);
+                    for (int i = 0; i < objects.Count; i++)
+                    {
+                        objects[i].position.x += objects[i].velocity.x * Manager.deltaTime;
+                        objects[i].position.y += objects[i].velocity.y * Manager.deltaTime;
+                    }
+                }
+
+                /// <summary> Steps the physics of the environment by delta time. </summary>
+                public void PhysicStep()
+                {
+                    PhysicStep(Manager.deltaTime);
                 }
 
                 //--- OBJ MODIFICATIONS ---

@@ -25,16 +25,21 @@ namespace Revistone
 
             public static int currentTick = 0;
 
+            static long deltaMillisecondTime;
+            public static double deltaTime { get {return deltaMillisecondTime / 1000d; } }
+
             /// <summary>
             /// Calls the Tick event, occours every 25ms (40 calls per seconds).
             /// </summary>
             static void HandleTickBehaviour() //controls tick based events
             {
+                Tick += OnUpdate;
+
                 Stopwatch tickStartTime = new Stopwatch(); //time tick starts
                 Stopwatch tickSleepStart = new Stopwatch(); //tick delay start
                 tickStartTime.Start();
 
-                long lastTickTime = 0;
+                deltaMillisecondTime = 0;
 
                 while (true)
                 {
@@ -42,7 +47,7 @@ namespace Revistone
                     Profiler.tickCaculationTime.Add(tickStartTime.ElapsedMilliseconds);
 
                     tickSleepStart.Start();
-                    long targetThreadDelay = Math.Max(25 - (tickStartTime.ElapsedMilliseconds + Math.Max(lastTickTime - 25, 0)), 0);
+                    long targetThreadDelay = Math.Max(25 - (tickStartTime.ElapsedMilliseconds + Math.Max(deltaMillisecondTime - 25, 0)), 0);
                     while (true)
                     {
                         if (tickSleepStart.ElapsedMilliseconds >= targetThreadDelay - 0.25) //0.25 is error miminmising
@@ -52,11 +57,17 @@ namespace Revistone
                         }
                     }
 
-                    lastTickTime = tickStartTime.ElapsedMilliseconds;
-                    Profiler.tickCompletionTime.Add(lastTickTime);
+                    deltaMillisecondTime = tickStartTime.ElapsedMilliseconds;
+                    Profiler.tickCompletionTime.Add(deltaMillisecondTime);
                     tickStartTime.Restart();
                     currentTick++;
                 }
+            }
+
+            /// <summary> Called once a tick (25ms). </summary>
+            static void OnUpdate(int tickNum)
+            {
+                if (UserRealtimeInput.KeyPressed(0x11) && UserRealtimeInput.KeyPressed(0x10) && UserRealtimeInput.KeyPressedDown(80)) Profiler.SetEnabled(!Profiler.enabled);
             }
 
             /// <summary>
