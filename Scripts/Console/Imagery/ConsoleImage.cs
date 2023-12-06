@@ -31,7 +31,6 @@ namespace Revistone
                     _bgPixels = new ConsoleColor[width, height];
 
                     SetPixels(character, colour);
-                    ConsoleAction.SendDebugMessage(bgColour);
                     SetBGPixels(bgColour);
                 }
 
@@ -56,12 +55,13 @@ namespace Revistone
                 // --- IMAGE CONTROL ---
 
                 /// <summary> Resizes image to given width and height. </summary>
-                public void ResizeImage(int width, int height)
+                public void Resize(int width, int height)
                 {
                     _size.width = Math.Clamp(width, 1, int.MaxValue);
                     _size.height = Math.Clamp(height, 1, int.MaxValue);
 
                     (char character, ConsoleColor colour)[,] newPixels = new (char character, ConsoleColor colour)[width, height];
+                    ConsoleColor[,] newBGPixels = new ConsoleColor[width, height];
 
                     for (int x = 0; x < _size.width; x++)
                     {
@@ -69,9 +69,61 @@ namespace Revistone
                         {
                             if (x < _pixels.GetLength(0) && y < _pixels.GetLength(1)) newPixels[x, y] = _pixels[x, y];
                             else newPixels[x, y] = (' ', ConsoleColor.White);
+
+                            if (x < _bgPixels.GetLength(0) && y < _bgPixels.GetLength(1)) newBGPixels[x, y] = _bgPixels[x, y];
+                            else newBGPixels[x, y] = ConsoleColor.Black;
                         }
                     }
                 }
+
+                /// <summary> Stretch image in x axis by given scale factor. </summary>
+                public void StretchX(double scaleFactor)
+                {
+                    if (scaleFactor < 1) return;
+
+                    int newWidth = (int)(_size.width * scaleFactor);
+
+                    (char character, ConsoleColor colour)[,] newPixels = new (char character, ConsoleColor colour)[newWidth, _size.height];
+                    ConsoleColor[,] newBGPixels = new ConsoleColor[newWidth, _size.height];
+
+                    for (int x = 0; x < newWidth; x++)
+                    {
+                        for (int y = 0; y < _size.height; y++)
+                        {
+                            newPixels[x, y] = pixels[(int)(x / scaleFactor), y];
+                            newBGPixels[x, y] = bgPixels[(int)(x / scaleFactor), y];
+                        }
+                    }
+
+                    _size.width = newWidth;
+                    _pixels = newPixels;
+                    _bgPixels = newBGPixels;
+                }
+
+                /// <summary> Stretch image in x axis by given scale factor. </summary>
+                public void StretchY(double scaleFactor)
+                {
+                    if (scaleFactor < 1) return;
+
+                    int newHeight = (int)(_size.height * scaleFactor);
+
+                    (char character, ConsoleColor colour)[,] newPixels = new (char character, ConsoleColor colour)[_size.width, newHeight];
+                    ConsoleColor[,] newBGPixels = new ConsoleColor[_size.width, newHeight];
+
+                    for (int x = 0; x < _size.width; x++)
+                    {
+                        for (int y = 0; y < newHeight; y++)
+                        {
+                            newPixels[x, y] = pixels[(int)(x / scaleFactor), y];
+                            newBGPixels[x, y] = bgPixels[(int)(x / scaleFactor), y];
+                        }
+                    }
+
+                    _size.height = newHeight;
+                    _pixels = newPixels;
+                    _bgPixels = newBGPixels;
+                }
+
 
                 public void OverlayImage(int x, int y, ConsoleImage image)
                 {

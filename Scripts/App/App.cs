@@ -50,17 +50,10 @@ namespace Revistone
             /// <summary> Called on app initalisation. </summary>
             public virtual void OnAppInitalisation()
             {
-                // ConsoleImage image = new ConsoleImage(15, 15, '@', bgColour: ConsoleColor.Red);
-                // ConsoleAction.SendDebugMessage(image.bgPixels[0, 0]);
-                // image.OverlayImage(0, 2, new ConsoleImage(1, 1, bgColour: ConsoleColor.White));
-                // image.OverlayImage(0, 5, new ConsoleImage(2, 2, bgColour: ConsoleColor.Yellow));
-                // image.SendToConsole(0, 20);
-
-                // ConsoleEnvironment test = new ConsoleEnvironment(ConsoleColor.Cyan);
-                // test.AddObject(new ConsoleObject("Cube 1", new ConsoleImage(10, 10, bgColour: ConsoleColor.Red), 23, 3));
-                // test.AddObject(new ConsoleObject("Cube 2", new ConsoleImage(5, 10, bgColour: ConsoleColor.Yellow), 3, 3));
-                // test.AddObject(new ConsoleObject("Cube 3", new ConsoleImage(5, 5, bgColour: ConsoleColor.Red), 23, 30));
-                // test.Render((15, 30));
+                // ConsoleEnvironment2D test = new ConsoleEnvironment2D(ConsoleColor.Cyan);
+                // test.AddObject(new ConsoleObject2D("Cube 1", new ConsoleImage(5, 5, bgColour: ConsoleColor.Red), 5, 5));
+                // test.AddObject(new ConsoleObject2D("Cube 2", new ConsoleImage(5, 5, bgColour: ConsoleColor.Yellow), (6, 6), -1));
+                // test.Render((0, 12), (0, 0), (20, 20), 2.2d);
             }
 
             /// <summary> Called just before user is asked for input, use to interact with user. </summary>

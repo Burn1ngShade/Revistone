@@ -7,7 +7,7 @@ namespace Revistone
         namespace Environment
         {
             /// <summary> Object within a console environment. </summary>
-            public class ConsoleObject
+            public class ConsoleObject2D
             {
                 static int currentID;
 
@@ -15,7 +15,7 @@ namespace Revistone
                 int _id;
                 public int id { get; }
 
-                public (int x, int y) position;
+                public (double x, double y) position;
 
                 public ConsoleImage sprite;
                 public int spriteOrder;
@@ -23,7 +23,7 @@ namespace Revistone
                 // --- CONSTRUCTORS ---
 
                 /// <summary> Object within a console environment. </summary>
-                public ConsoleObject(string name, ConsoleImage sprite, (int x, int y) position, int spriteOrder = 0)
+                public ConsoleObject2D(string name, ConsoleImage sprite, (double x, double y) position, int spriteOrder = 0)
                 {
                     this.name = name;
                     this.position = position;
@@ -34,9 +34,9 @@ namespace Revistone
                 }
 
                 /// <summary> Object within a console environment. </summary>
-                public ConsoleObject(string name, ConsoleImage sprite, int x = 0, int y = 0) : this(name, sprite, (x, y)) { }
+                public ConsoleObject2D(string name, ConsoleImage sprite, double x = 0, double y = 0) : this(name, sprite, (x, y)) { }
                 /// <summary> Object within a console environment. </summary>
-                public ConsoleObject(string name = "New Object") : this(name, new ConsoleImage(bgColour: ConsoleColor.White), (0, 0)) { }
+                public ConsoleObject2D(string name = "New Object") : this(name, new ConsoleImage(bgColour: ConsoleColor.White), (0, 0)) { }
 
                 /// <summary> Assigns unique ID to obj, should not be called after inits</summary>
                 void AssignID()
