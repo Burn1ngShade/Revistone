@@ -4,7 +4,7 @@ Revistone, is a console based application, capable of managing and streamlining 
 ## Large Future Goals!
 **HoneyC (Sudo Language):** Built in sudo language: somewhere between a caculator and its own language, capable of interacting with code in the console through it (Call it HoneyC) [0.5-0.6]
 
-**3D Rendering:** 3D logic and rendering all built into the console, very ambitious but i think this would make the project really cool [0.5-0.6]
+**Game Engine:** game enginge to easily create scenes and render quickly, very ambitious but i think this would make the project really cool, possibly **3D** in future [0.5-0.6]
 
 **Complete Code Refactor:** complete code rewrite (in parts) and cleanup [0.6]
 
