@@ -21,5 +21,7 @@ pong win title showing incorrectley
 --- DONE ---
 UserInput -> option menus now indented
 ConsoleLine -> PadLeft and PadRight methods added
-ConsoleImage -> Images and videos now support bg colour, images can now be overlayed onto one another, stretch functions
+ConsoleImage -> Images and videos now support bg colour, images can now be overlayed onto one another, stretch functions, lots of new set options 
 Manager -> Added deltatime (time taken for last frame), OnUpdate() added, moved hotkeys to it so cant be overriden in apps
+ConsoleColour -> Deprecated ToJaggedArray (no reason for it 2 exsits), added ColourKey() which converts char to ConsoleColor[] given key
+UserRealTimeInput -> Now consoleKey arguments for GetKeyDown/Up

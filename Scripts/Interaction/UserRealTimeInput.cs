@@ -73,12 +73,14 @@ namespace Revistone
                 return keyInfo[key].currentState;
             }
 
+            /// <summary> Returns if key pressed down this tick. </summary>
             public static bool KeyPressedDown(byte key)
             {
                 if (keyInfo[key].currentState && !keyInfo[key].lastState) return true;
                 return false;
             }
 
+            /// <summary> Returns if key realsed this tick. </summary>
             public static bool KeyPressedUp(byte key)
             {
                 if (!keyInfo[key].currentState && keyInfo[key].lastState) return true;
@@ -87,6 +89,12 @@ namespace Revistone
 
             /// <summary> Returns if key currently pressed down. </summary>
             public static bool KeyPressed(ConsoleKey key) { return KeyPressed((byte)key); }
+
+            /// <summary> Returns if key pressed down this tick. </summary>
+            public static bool KeyPressedDown(ConsoleKey key) { return KeyPressedDown((byte)key); }
+
+            /// <summary> Returns if key realsed this tick. </summary>
+            public static bool KeyPressedUp(ConsoleKey key) { return KeyPressedUp((byte)key); }
         }
     }
 }

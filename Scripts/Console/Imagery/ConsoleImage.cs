@@ -39,7 +39,7 @@ namespace Revistone
                 {
                     _size = image.size;
                     _pixels = image.pixels;
-                    _bgPixels = image._bgPixels;
+                    _bgPixels = image.bgPixels;
                 }
 
                 /// <summary> Class pertaining all logic for creating images in the console. </summary>
@@ -100,7 +100,7 @@ namespace Revistone
                     _bgPixels = newBGPixels;
                 }
 
-                /// <summary> Stretch image in x axis by given scale factor. </summary>
+                /// <summary> Stretch image in y axis by given scale factor. </summary>
                 public void StretchY(double scaleFactor)
                 {
                     if (scaleFactor < 1) return;
@@ -124,11 +124,10 @@ namespace Revistone
                     _bgPixels = newBGPixels;
                 }
 
-
                 public void OverlayImage(int x, int y, ConsoleImage image)
                 {
-                    SetPixels(x, y, image.size.width, image.size.height, image.pixels.Cast<(char, ConsoleColor)>().ToArray());
-                    SetBGPixels(x, y, image.size.width, image.size.height, image.bgPixels.Cast<ConsoleColor>().ToArray());
+                    SetPixels(x, y, image.pixels);
+                    SetBGPixels(x, y, image.bgPixels);
                 }
 
                 // --- PIXEL CONTROL ---
@@ -154,6 +153,22 @@ namespace Revistone
                             if (x < 0 || x >= _size.width || y < 0 || y >= _size.height) continue;
 
                             _pixels[x, y] = setPixels[(y - startY) * width + (x - startX)];
+                        }
+                    }
+
+                    return true;
+                }
+
+                /// <summary> Set given pixel positions, to given charchters and colours (array size must = width * height). </summary>
+                public bool SetPixels(int startX, int startY, (char character, ConsoleColor colour)[,] setPixels)
+                {
+                    for (int x = startX; x < startX + setPixels.GetLength(0); x++)
+                    {
+                        for (int y = startY; y < startY + setPixels.GetLength(1); y++)
+                        {
+                            if (x < 0 || x >= _size.width || y < 0 || y >= _size.height) continue;
+
+                            _pixels[x, y] = setPixels[x - startX, y - startY];
                         }
                     }
 
@@ -221,6 +236,21 @@ namespace Revistone
                     if (x < 0 || x >= _size.width || y < 0 || y >= _size.height) return false;
 
                     _bgPixels[x, y] = colour;
+                    return true;
+                }
+
+                /// <summary> Set given BG pixel positions, to given charchters and colours (array size must = width * height). </summary>
+                public bool SetBGPixels(int startX, int startY, ConsoleColor[,] setPixels)
+                {
+                    for (int x = startX; x < startX + setPixels.GetLength(0); x++)
+                    {
+                        for (int y = startY; y < startY + setPixels.GetLength(1); y++)
+                        {
+                            if (x < 0 || x >= _size.width || y < 0 || y >= _size.height) continue;
+                            _bgPixels[x, y] = setPixels[x - startX, y - startY];
+                        }
+                    }
+
                     return true;
                 }
 

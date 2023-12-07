@@ -154,19 +154,6 @@ namespace Revistone
             /// <summary> Generates ConsoleColour to array of given length. </summary>
             public static ConsoleColor[] ToArray(this ConsoleColor colour, int length = 1) { return ToArray(new (ConsoleColor, int)[] { (colour, length) }); }
 
-            /// <summary> Generates ConsoleColour array to a jaged array of given length. </summary>
-            public static ConsoleColor[][] ToJaggedArray(this ConsoleColor[] colours, int length)
-            {
-                ConsoleColor[][] c = new ConsoleColor[length][];
-
-                for (int i = 0; i < length; i++)
-                {
-                    c[i] = colours;
-                }
-
-                return c;
-            }
-
             /// <summary> Repeats ConsoleColour array repeats number of times. </summary>
             public static ConsoleColor[] Repeat(this ConsoleColor[] colours, int repeats)
             {
@@ -398,6 +385,36 @@ namespace Revistone
             /// <summary> Generates a ConsoleColor array with cycing colours, changling every colourLength, for given length. </summary>
             public static ConsoleColor[] Alternate(ConsoleColor[] colours, int length, int colourLength = 1)
             { return Alternate(colours, length, new int[] { colourLength }); }
+
+            /// <summary> Generates a ConsoleColor from a string[], with each char representing a ConsoleColor. </summary>
+            public static ConsoleColor[] ColourKey(string[] colourData, Dictionary<char, ConsoleColor> key, ConsoleColor fallbackColour = White)
+            {
+                int maxLength = colourData.Max(s => s.Length);
+                ConsoleColor[] colours = new ConsoleColor[maxLength * colourData.Length];
+
+                for (int i = 0; i < colourData.Length; i++)
+                {
+                    colourData[i] = colourData[i].PadRight(maxLength, ((int)fallbackColour).ToString("X")[0]);
+                    for (int j = 0; j < colourData[i].Length; j++)
+                    {
+                        if (key.ContainsKey(colourData[i][j])) colours[i * maxLength + j] = key[colourData[i][j]];
+                        else
+                        {
+                            colours[i * maxLength + j] = fallbackColour;
+                        }
+                    }
+                }
+
+                return colours;
+            }
+            /// <summary> Generates a ConsoleColor from a string[] and key (using default hex values 0 = black, F = white...). </summary>
+            public static ConsoleColor[] ColourKey(string[] colourData, ConsoleColor fallbackColour = White)
+            {
+                return ColourKey(colourData, new Dictionary<char, ConsoleColor>() {
+                    {'0', Black}, {'1', DarkBlue}, {'2', DarkGreen}, {'3', DarkCyan}, {'4', DarkRed}, {'5', DarkMagenta}, {'6', DarkYellow}, {'7', Gray},
+                    {'8', DarkGray}, {'9', Blue}, {'A', Green}, {'B', Cyan}, {'C', Red}, {'D', Magenta}, {'E', Yellow}, {'F', White},
+                }, fallbackColour);
+            }
 
             public static ConsoleColor[] BuildArray(params ConsoleColor[][] colours)
             {
