@@ -23,9 +23,9 @@ namespace Revistone
                 98, 29) };
             }
 
-            public override void OnAppInitalisation()
+            public override void OnAppInitialisation()
             {
-                base.OnAppInitalisation();
+                base.OnAppInitialisation();
 
                 ConsoleLine[] title = TitleFunctions.CreateTitle("REVISTONE", AdvancedHighlight(97, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10), (ConsoleColor.Cyan.ToArray(), 48, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1);
 

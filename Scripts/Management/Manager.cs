@@ -82,7 +82,7 @@ namespace Revistone
                     if (ConsoleData.appInitalisation)
                     {
                         Profiler.SetEnabled(Profiler.enabled);
-                        AppRegistry.activeApp.OnAppInitalisation();
+                        AppRegistry.activeApp.OnAppInitialisation();
                         ConsoleData.appInitalisation = false;
                     }
 

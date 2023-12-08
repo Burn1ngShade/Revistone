@@ -1,6 +1,5 @@
 using System.Numerics;
 using Revistone.Console;
-using Revistone.Console.Environment;
 using Revistone.Console.Image;
 using Revistone.Interaction;
 using Revistone.Management;
@@ -48,9 +47,9 @@ namespace Revistone
             //--- METHODS ---
 
             /// <summary> Called on app initalisation. </summary>
-            public virtual void OnAppInitalisation()
+            public virtual void OnAppInitialisation()
             {
-                
+
             }
 
             /// <summary> Called just before user is asked for input, use to interact with user. </summary>

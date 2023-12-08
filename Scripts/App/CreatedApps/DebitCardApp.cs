@@ -24,7 +24,7 @@ namespace Revistone
                 new (UserInputProfile format, Action<string> payload, string summary)[] {}, 94) };
             }
 
-            public override void OnAppInitalisation()
+            public override void OnAppInitialisation()
             {
                 DebitCard.accountID = int.TryParse(AppPersistentData.LoadFile("DebitCard/Data", 0), out int i) ? i : 0;
                 DebitCard.LoadDataBase();

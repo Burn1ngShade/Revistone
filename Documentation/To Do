@@ -2,7 +2,8 @@
 [AppIdeas]
 PC/Assembly Sim [???]
 Caculator [0.5]
-3D Rendered Game [0.5]
+Flappy bird [0.5]
+paint app [0.5]
 
 [Features]
 Code Recomp [0.5/0.6] [IMPORTANT]
@@ -10,13 +11,15 @@ Macro support [0.5]
 screenshot funcationality [0.5]
 UI Review [0.5]
 improve look of console readjustment [0.5]
-Encryption for saving [???]
 way to highlight colour between 2 chars / index and char [???]
+profiler variable tracker
 
 --- KNOWN BUGS ---
 
 --- FIXED BUGS ---
 pong win title showing incorrectley
+fixed spelling mistake in app initilisation
+Debug console still updated when profiler enabled 
 
 --- DONE ---
 UserInput -> option menus now indented

@@ -26,9 +26,9 @@ namespace Revistone
                 };
             }
 
-            public override void OnAppInitalisation()
+            public override void OnAppInitialisation()
             {
-                base.OnAppInitalisation();
+                base.OnAppInitialisation();
 
                 for (int i = 0; i <= 10; i++) { UpdateLineExceptionStatus(true, i); }
 

@@ -29,9 +29,9 @@ namespace Revistone
                 };
             }
 
-            public override void OnAppInitalisation()
+            public override void OnAppInitialisation()
             {
-                base.OnAppInitalisation();
+                base.OnAppInitialisation();
                 MainMenu();
             }
 

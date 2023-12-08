@@ -1,4 +1,5 @@
-using System.Diagnostics;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using Revistone.Console;
@@ -23,7 +24,7 @@ namespace Revistone
             public static List<long> drawTime = new List<long>();
 
             public static int _fps = 40;
-            public static int fps { get { return _fps;} }
+            public static int fps { get { return _fps; } }
 
             /// <summary> [DO NOT CALL] Initializes Profiler. </summary>
             internal static void InitializeProfiler()
@@ -35,15 +36,18 @@ namespace Revistone
             public static void SetEnabled(bool state)
             {
                 ClearDebugConsole();
-                if (state) SendDebugMessage("Gathering Data...");
+                if (state)
+                {
+                    SendDebugMessage("Gathering Data...");
+                    for (int i = debugStartIndex + 1; i <= debugStartIndex + 5; i++) exceptionLines[i] = true;
+                }
+                else for (int i = debugStartIndex + 1; i <= debugStartIndex + 5; i++) exceptionLines[i] = false;
                 _enabled = state;
             }
 
             /// <summary> Main loop for profile behaviour. </summary>
             static void ProfileBehaviour(int tickNum)
             {
-
-
                 if (tickNum % 20 == 0)
                 {
                     if (tickCompletionTime.Count > 0) _fps = Math.Max((int)Math.Round(tickCompletionTime.Count / ((double)tickCompletionTime.Sum() / 1000)), 0);

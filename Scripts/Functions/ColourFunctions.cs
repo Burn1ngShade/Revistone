@@ -217,6 +217,21 @@ namespace Revistone
             /// <summary> Extends ConsoleColour to given length. </summary>
             public static ConsoleColor[] Extend(this ConsoleColor colour, int length) { return Extend(colour.ToArray(), length, false); }
 
+            /// <summary> Stretches length of ConsoleColour[] by given magnitude (Red, Blue, 2 -> Red, Red, Blue, Blue). </summary>
+            public static ConsoleColor[] Stretch(this ConsoleColor[] colours, int magnitude)
+            {
+                if (colours.Length == 0 || magnitude <= 1) return colours;
+
+                ConsoleColor[] c = new ConsoleColor[colours.Length * magnitude];
+
+                for (int i = 0; i < c.Length; i++)
+                {
+                    c[i] = colours[i/magnitude];
+                }
+
+                return c;
+            }
+
             // --- NEW ARRAY ---
 
             /// <summary> Generates a ConsoleColour array from a base colour array, and highlight areas. </summary>

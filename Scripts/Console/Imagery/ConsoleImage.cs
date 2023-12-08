@@ -76,54 +76,6 @@ namespace Revistone
                     }
                 }
 
-                /// <summary> Stretch image in x axis by given scale factor. </summary>
-                public void StretchX(double scaleFactor)
-                {
-                    if (scaleFactor < 1) return;
-
-                    int newWidth = (int)(_size.width * scaleFactor);
-
-                    (char character, ConsoleColor colour)[,] newPixels = new (char character, ConsoleColor colour)[newWidth, _size.height];
-                    ConsoleColor[,] newBGPixels = new ConsoleColor[newWidth, _size.height];
-
-                    for (int x = 0; x < newWidth; x++)
-                    {
-                        for (int y = 0; y < _size.height; y++)
-                        {
-                            newPixels[x, y] = pixels[(int)(x / scaleFactor), y];
-                            newBGPixels[x, y] = bgPixels[(int)(x / scaleFactor), y];
-                        }
-                    }
-
-                    _size.width = newWidth;
-                    _pixels = newPixels;
-                    _bgPixels = newBGPixels;
-                }
-
-                /// <summary> Stretch image in y axis by given scale factor. </summary>
-                public void StretchY(double scaleFactor)
-                {
-                    if (scaleFactor < 1) return;
-
-                    int newHeight = (int)(_size.height * scaleFactor);
-
-                    (char character, ConsoleColor colour)[,] newPixels = new (char character, ConsoleColor colour)[_size.width, newHeight];
-                    ConsoleColor[,] newBGPixels = new ConsoleColor[_size.width, newHeight];
-
-                    for (int x = 0; x < _size.width; x++)
-                    {
-                        for (int y = 0; y < newHeight; y++)
-                        {
-                            newPixels[x, y] = pixels[(int)(x / scaleFactor), y];
-                            newBGPixels[x, y] = bgPixels[(int)(x / scaleFactor), y];
-                        }
-                    }
-
-                    _size.height = newHeight;
-                    _pixels = newPixels;
-                    _bgPixels = newBGPixels;
-                }
-
                 public void OverlayImage(int x, int y, ConsoleImage image)
                 {
                     SetPixels(x, y, image.pixels);
