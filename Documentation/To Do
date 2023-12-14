@@ -20,9 +20,11 @@ profiler variable tracker
 pong win title showing incorrectley
 fixed spelling mistake in app initilisation
 Debug console still updated when profiler enabled 
+Add vectors 2
+startmenu start index didnt work
 
 --- DONE ---
-UserInput -> option menus now indented
+UserInput -> option menus now indented, read menu and multipage menus now take account last cursor position
 ConsoleLine -> PadLeft and PadRight methods added
 ConsoleImage -> Images and videos now support bg colour, images can now be overlayed onto one another, stretch functions, lots of new set options 
 Manager -> Added deltatime (time taken for last frame), OnUpdate() added, moved hotkeys to it so cant be overriden in apps

@@ -180,7 +180,7 @@ namespace Revistone
                 }
 
                 consoleLines[optionLines[0 + Math.Clamp(cursorStartIndex, 0, options.Length - 1)]].Update(options[0 + Math.Clamp(cursorStartIndex, 0, options.Length - 1)].lineText + " <-");
-                int pointer = optionLines[0];
+                int pointer = optionLines[0 + Math.Clamp(cursorStartIndex, 0, options.Length - 1)];
 
                 ConsoleLine[] metaOptions = new ConsoleLine[(title != "" ? 1 : 0) + metaOptionsLines];
                 for (int i = 0; i < metaOptions.Length; i++)
@@ -275,23 +275,28 @@ namespace Revistone
                 int currentPage = 0, totalPages = (options.Length - 1) / optionsPerPage;
 
                 metaOptionsLines = 1;
+
+                int cursorIndex = 0;
                 while (true)
                 {
                     ConsoleLine[] pgOptions = options.Skip(currentPage * optionsPerPage).Take(Math.Min(optionsPerPage, options.Length - currentPage * optionsPerPage)).Concat(pgExtraOptions).ToArray();
+                    cursorIndex = cursorIndex == 0 ? 0 : cursorIndex == 1 ? pgOptions.Length - 2 - pinnedOptions.Length : pgOptions.Length - 1 - pinnedOptions.Length;
 
                     SendConsoleMessage(new ConsoleLine($"{title} Page [{currentPage + 1}/{totalPages + 1}]:",
                     BuildArray(AppRegistry.activeApp.colourScheme.primaryColour.Extend(title.Length + 6),
                     AppRegistry.activeApp.colourScheme.secondaryColour.Extend($"[{currentPage + 1}/{currentPage + 1}]".Length, true))));
 
-                    int result = CreateOptionMenu("", pgOptions.Select(o => new ConsoleLine(o)).ToArray());
+                    int result = CreateOptionMenu("", pgOptions.Select(o => new ConsoleLine(o)).ToArray(), cursorStartIndex: cursorIndex);
 
                     if (result == pgOptions.Length - 2 - pinnedOptions.Length)
                     {
                         currentPage = currentPage < totalPages ? currentPage + 1 : 0;
+                        cursorIndex = 1;
                     }
                     else if (result == pgOptions.Length - 1 - pinnedOptions.Length)
                     {
                         currentPage = currentPage > 0 ? currentPage - 1 : totalPages;
+                        cursorIndex = 2;
                     }
                     else if (result > pgOptions.Length - 2 - pinnedOptions.Length)
                     {
@@ -320,6 +325,8 @@ namespace Revistone
 
                 for (int i = 0; i < messages.Length; i++) {messages[i].PadLeft(1);}
 
+                int cursorIndex = 0;
+
                 while (true)
                 {
                     SendConsoleMessage(new ConsoleLine($"{title} Page [{page + 1}/{pages + 1}]:",
@@ -333,9 +340,9 @@ namespace Revistone
                     SendConsoleMessages(messages.Skip(page * 5).Take(Math.Min(5, messages.Length - page * 5)).ToArray());
 
                     if (CreateOptionMenu("", new (ConsoleLine, Action)[] {
-                    (new ConsoleLine("Next Page", AppRegistry.activeApp.colourScheme.primaryColour), () => page = page < pages ? page + 1 : 0),
-                    (new ConsoleLine("Last Page", AppRegistry.activeApp.colourScheme.primaryColour), () => page = page > 0 ? page - 1 : pages),
-                    (new ConsoleLine("Exit", AppRegistry.activeApp.colourScheme.primaryColour), () => {})}) == 2)
+                    (new ConsoleLine("Next Page", AppRegistry.activeApp.colourScheme.primaryColour), () => { page = page < pages ? page + 1 : 0; cursorIndex = 0; }),
+                    (new ConsoleLine("Last Page", AppRegistry.activeApp.colourScheme.primaryColour), () => { page = page > 0 ? page - 1 : pages ; cursorIndex = 1; }),
+                    (new ConsoleLine("Exit", AppRegistry.activeApp.colourScheme.primaryColour), () => {})}, cursorStartIndex: cursorIndex) == 2)
                     {
                         ClearLines(metaOptionsLines, true);
                         break;

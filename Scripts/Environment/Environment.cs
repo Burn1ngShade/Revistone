@@ -5,7 +5,7 @@ namespace Revistone
     namespace Environment
     {
         /// <summary> Pertains environment for console application. </summary>
-        public class Environment
+        public class EnvironmentSpace
         {
             public List<EnvironmentObject> objects { get; private set; } = new List<EnvironmentObject>();
 
@@ -14,7 +14,7 @@ namespace Revistone
             // --- CONSTRUCTORS ---
 
             /// <summary> Pertains environment for console application. </summary>
-            public Environment(ConsoleColor bgColour = ConsoleColor.White)
+            public EnvironmentSpace(ConsoleColor bgColour = ConsoleColor.White)
             {
                 this.bgColour = bgColour;
             }

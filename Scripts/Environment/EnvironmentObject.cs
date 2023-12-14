@@ -1,3 +1,5 @@
+using System.Xml;
+
 namespace Revistone
 {
     namespace Environment
@@ -8,7 +10,7 @@ namespace Revistone
             static int currentID;
 
             public string name;
-            List<string> tags;
+            List<string> tags = new List<string>();
             public int id { get; private set; }
 
             public EnvironmentTransform transform;
@@ -18,16 +20,19 @@ namespace Revistone
             // --- CONSTRUCTORS ---
 
             /// <summary> Object within a console environment. </summary>
-            public EnvironmentObject(string name, EnvironmentTransform transform, params EnvironmentComponent[] components)
+            public EnvironmentObject(string name, EnvironmentTransform transform, List<string> tags, params EnvironmentComponent[] components)
             {
                 this.name = name;
                 this.transform = transform;
 
+                for (int i = 0; i < tags.Count; i++) AddTag(tags[i]);
                 for (int i = 0; i < components.Length; i++) AddComponent(components[i]);
 
                 AssignID();
             }
 
+            /// <summary> Object within a console environment. </summary>
+            public EnvironmentObject(string name, EnvironmentTransform transform, params EnvironmentComponent[] components) : this(name, transform, new List<string>(), components) { }
             /// <summary> Object within a console environment. </summary>
             public EnvironmentObject(string name, params EnvironmentComponent[] components) : this(name, new EnvironmentTransform((0, 0)), components) { }
             /// <summary> Object within a console environment. </summary>

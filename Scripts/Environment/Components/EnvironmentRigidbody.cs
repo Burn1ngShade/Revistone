@@ -1,4 +1,5 @@
 using Revistone.Console;
+using Revistone.Management;
 
 namespace Revistone
 {
@@ -11,20 +12,21 @@ namespace Revistone
 
             public double gravity = 0;
 
-            public bool interactive;
+            public enum RigidbodyType { Simple, Collision }
+            public RigidbodyType bodyType;
 
             public List<EnvironmentObject> collidingObj = new List<EnvironmentObject>();
 
-            public EnvironmentRigidbody((double x, double y) velocity, (double x, double y) acceleration, double gravity = 0, bool interactive = false)
+            public EnvironmentRigidbody((double x, double y) velocity, (double x, double y) acceleration, double gravity = 0, RigidbodyType bodyType = RigidbodyType.Simple)
             {
                 this.velocity = velocity;
                 this.acceleration = acceleration;
                 this.gravity = gravity;
 
-                this.interactive = interactive;
+                this.bodyType = bodyType;
             }
 
-            public void Step(Environment environment, EnvironmentObject obj, double stepTime)
+            public void Step(EnvironmentSpace environment, EnvironmentObject obj, double stepTime)
             {
                 velocity.x += acceleration.x * Management.Manager.deltaTime;
                 velocity.y += acceleration.y * Management.Manager.deltaTime;
@@ -33,28 +35,22 @@ namespace Revistone
 
                 (double x, double y) targetPos = (obj.transform.position.x + velocity.x * Management.Manager.deltaTime, obj.transform.position.y + velocity.y * Management.Manager.deltaTime);
 
-                if (obj.HasComponent<EnvironmentHitbox>() && interactive)
+                if (obj.HasComponent<EnvironmentHitbox>() && bodyType != RigidbodyType.Simple)
                 {
-                    (double, double)[] bounds = obj.GetComponent<EnvironmentHitbox>().GetBounds(new EnvironmentTransform(targetPos));
-                    List<EnvironmentObject> newCollidingObj = new List<EnvironmentObject>();
+                    EnvironmentRaycast.RaycastData r = EnvironmentRaycast.Raycast(environment, obj.transform.position, targetPos, obj.GetComponent<EnvironmentHitbox>(), new List<int>() { obj.id });
+                    collidingObj = r.collidingObjects;
 
-                    for (int i = 0; i < environment.objects.Count; i++)
-                    {
-                        if (!environment.objects[i].HasComponent<EnvironmentHitbox>() || obj.id == environment.objects[i].id) continue;
-
-                        if (EnvironmentHitbox.HitboxOverlap(bounds, environment.objects[i].GetComponent<EnvironmentHitbox>().GetBounds(environment.objects[i].transform)))
-                        {
-                            newCollidingObj.Add(environment.objects[i]);   
-                        }
-                    }
-
-                    collidingObj = newCollidingObj;
+                    if (collidingObj.Count == 0) obj.transform.position = targetPos;
+                    else if (r.lastPointIndex != 0) obj.transform.position = r.points[r.lastPointIndex - 1];
                 }
-                
-                if (collidingObj.Count == 0)
+                else
                 {
                     obj.transform.position = targetPos;
                 }
+
+                ConsoleAction.SendDebugMessage(obj.transform.position.y);
+
+
             }
         }
     }
