@@ -1,18 +1,15 @@
 --- TO DO ---
 [AppIdeas]
-PC/Assembly Sim [???]
-Caculator [0.5]
 Flappy bird [0.5]
 paint app [0.5]
 
 [Features]
-Code Recomp [0.5/0.6] [IMPORTANT]
-Macro support [0.5]
-screenshot funcationality [0.5]
-UI Review [0.5]
-improve look of console readjustment [0.5]
-way to highlight colour between 2 chars / index and char [???]
-profiler variable tracker
+Code Recomp [0.6] [IMPORTANT]
+Macro support [0.6]
+UI Review [0.6]
+improve look of console readjustment [0.6]
+save data update add types, binary saving
+new fonts for enviroment
 
 --- KNOWN BUGS ---
 

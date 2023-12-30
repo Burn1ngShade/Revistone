@@ -136,6 +136,7 @@ namespace Revistone
                     _size.height = lines.Length;
 
                     _pixels = new (char charchter, ConsoleColor colour)[_size.width, _size.height];
+                    _bgPixels = new ConsoleColor[_size.width, _size.height];
 
                     SetPixels(' ', ConsoleColor.White);
 

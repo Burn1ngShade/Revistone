@@ -422,6 +422,7 @@ namespace Revistone
 
                 return colours;
             }
+            
             /// <summary> Generates a ConsoleColor from a string[] and key (using default hex values 0 = black, F = white...). </summary>
             public static ConsoleColor[] ColourKey(string[] colourData, ConsoleColor fallbackColour = White)
             {

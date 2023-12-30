@@ -1,5 +1,6 @@
 using Revistone.Apps;
 using Revistone.Console;
+using Revistone.Console.Image;
 
 namespace Revistone
 {
@@ -9,11 +10,13 @@ namespace Revistone
         public static class TitleFunctions
         {
             /// <summary> Ascii Font Of Text. </summary>
-            public enum AsciiFont { 
-                Standard, Big, BigMoneyNW, Graceful, Graffiti, 
-                Slant, SmallSlant, Small, AnsiRegular, Block, 
-                Colossal, Digital, Double, Merlin1, Blocks, 
-                DancingFont, Epic, Ascii3D }
+            public enum AsciiFont
+            {
+                Standard, Big, BigMoneyNW, Graceful, Graffiti,
+                Slant, SmallSlant, Small, AnsiRegular, Block,
+                Colossal, Digital, Double, Merlin1, Blocks,
+                DancingFont, Epic, Ascii3D
+            }
 
             static string validChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.!?';:()[]{}-_+=*&^<>%@£";
 
@@ -51,6 +54,12 @@ namespace Revistone
             public static ConsoleLine[] CreateTitle(string text, ConsoleColor[] colours, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true, int bottomSpace = 0)
             {
                 return CreateTitle(text, font, emptySpacing, letterSpacing, removeEmptyLines, bottomSpace).Select(s => new ConsoleLine(s, colours)).ToArray();
+            }
+
+            /// <summary> Creates an array of consolecolour that forms a title of given text, colour, and given font. </summary>
+            public static ConsoleImage CreateTitle(string text, ConsoleColor fgColour, ConsoleColor bgColour, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true, int bottomSpace = 0)
+            {
+                return new ConsoleImage(string.Join('\n', CreateTitle(text, font, emptySpacing, letterSpacing, removeEmptyLines, bottomSpace)), fgColour, bgColour);
             }
 
             public static string FontFilePath(AsciiFont font) { return $"TitleFont/{font}.txt"; }

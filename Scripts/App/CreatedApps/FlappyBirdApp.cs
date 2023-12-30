@@ -55,6 +55,7 @@ namespace Revistone
                 game.AddObject(bird);
                 game.AddObject(new EnvironmentObject("Floor", new EnvironmentTransform((0, 1)), new EnvironmentHitbox((20, 1), (0, 0))));
                 game.AddObject(new EnvironmentObject("Roof", new EnvironmentTransform((0, 48)), new EnvironmentHitbox((20, 1), (0, 0))));
+                game.AddObject(new EnvironmentObject("Score", new EnvironmentTransform((20, 20)), new EnvironmentText("Score: ", -100)));
 
                 gameState = 2;
 
@@ -122,7 +123,7 @@ namespace Revistone
 
                         pipeCount++;
                         ticksTillPipeSpawn = Math.Max(195 - pipeCount * 5, 100);
-                        pipeSpacing = Math.Clamp(pipeSpacing - 0.5, 5, 12);
+                        pipeSpacing = Math.Clamp(pipeSpacing - 0.5, 4, 12);
                     }
 
                     ticksTillPipeSpawn--;

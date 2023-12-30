@@ -1,4 +1,6 @@
+using Revistone.Console;
 using Revistone.Console.Image;
+using Revistone.Functions;
 
 namespace Revistone
 {
@@ -11,16 +13,29 @@ namespace Revistone
             {
                 ConsoleImage renderImage = new ConsoleImage(size.width, size.height, bgColour: env.bgColour);
 
-                EnvironmentObject[] orderedObjs = env.objects.Where(obj => obj.HasComponent<EnvironmentSprite>()).
-                OrderBy(obj => obj.GetComponent<EnvironmentSprite>()?.spriteOrder).ToArray();
+                List<(EnvironmentObject obj, ConsoleImage image, int order)> objImages = new List<(EnvironmentObject obj, ConsoleImage image, int order)>();
 
-                for (int i = 0; i < orderedObjs.Length; i++)
+                foreach (EnvironmentObject obj in env.objects)
                 {
-                    ConsoleImage outputImage = new ConsoleImage(orderedObjs[i].GetComponent<EnvironmentSprite>().sprite);
+                    if (obj.HasComponent<EnvironmentSprite>())
+                    {
+                        EnvironmentSprite s = obj.GetComponent<EnvironmentSprite>();
+                        objImages.Add((obj, new ConsoleImage(s.sprite), s.spriteOrder));
+                    }
+                    if (obj.HasComponent<EnvironmentText>())
+                    {
+                        EnvironmentText t = obj.GetComponent<EnvironmentText>();
+                        objImages.Add((obj, TitleFunctions.CreateTitle($"{t.text}", ConsoleColor.Black, ConsoleColor.Cyan, TitleFunctions.AsciiFont.Standard), t.textOrder));
+                    }
+                }
 
+                objImages = objImages.OrderBy(obj => obj.order).ToList();
+
+                for (int i = 0; i < objImages.Count; i++)
+                {
                     renderImage.OverlayImage(
-                    (int)Math.Round(orderedObjs[i].transform.position.x - environmentPosition.x),
-                    (int)Math.Round(orderedObjs[i].transform.position.y - environmentPosition.y), outputImage);
+                    (int)Math.Round(objImages[i].obj.transform.position.x - environmentPosition.x),
+                    (int)Math.Round(objImages[i].obj.transform.position.y - environmentPosition.y), objImages[i].image);
                 }
 
                 if (borderColour >= 0 && borderColour < 16)
@@ -29,7 +44,7 @@ namespace Revistone
                     renderImage.SetBGPixels(0, renderImage.size.height - 1, renderImage.size.width, 1, (ConsoleColor)borderColour);
                     renderImage.SetBGPixels(0, 0, 2, renderImage.size.height, (ConsoleColor)borderColour);
                     renderImage.SetBGPixels(renderImage.size.width - 2, 0, 2, renderImage.size.height, (ConsoleColor)borderColour);
-                    
+
                 }
 
                 renderImage.SendToConsole(outputPosition.x, outputPosition.y);
