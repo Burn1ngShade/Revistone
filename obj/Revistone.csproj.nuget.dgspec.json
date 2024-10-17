@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "E:\\A-Level\\Tools\\Revistone\\Revistone.csproj": {}
+    "D:\\A-Level\\Tools\\RevistoneClone\\Revistone.csproj": {}
   },
   "projects": {
-    "E:\\A-Level\\Tools\\Revistone\\Revistone.csproj": {
+    "D:\\A-Level\\Tools\\RevistoneClone\\Revistone.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\A-Level\\Tools\\Revistone\\Revistone.csproj",
+        "projectUniqueName": "D:\\A-Level\\Tools\\RevistoneClone\\Revistone.csproj",
         "projectName": "Revistone",
-        "projectPath": "E:\\A-Level\\Tools\\Revistone\\Revistone.csproj",
-        "packagesPath": "C:\\Users\\isaac\\.nuget\\packages\\",
-        "outputPath": "E:\\A-Level\\Tools\\Revistone\\obj\\",
+        "projectPath": "D:\\A-Level\\Tools\\RevistoneClone\\Revistone.csproj",
+        "packagesPath": "C:\\Users\\Isaac\\.nuget\\packages\\",
+        "outputPath": "D:\\A-Level\\Tools\\RevistoneClone\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\isaac\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Isaac\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

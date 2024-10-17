@@ -1,18 +1,31 @@
 --- TO DO ---
-[AppIdeas]
-PC/Assembly Sim [???]
-Caculator [0.5]
-3D Rendered Game [0.5]
+[App Ideas]
 
 [Features]
-Code Recomp [0.5/0.6] [IMPORTANT]
-Macro support [0.5]
-screenshot funcationality [0.5]
-UI Review [0.5]
-improve look of console readjustment [0.5]
-Encryption for saving [???]
-way to highlight colour between 2 chars / index and char [???]
+Better Navigation,
+flags for commands,
+Autocomplete, 
+Bit of a code optimisation rehaul
+Theme customisation
+User accounts?
+System Settings
+More calculator func, e.g let x = 5; sinx
 
 --- KNOWN BUGS ---
 
+
 --- DONE ---
+Revistone console text not updating properly
+Modifications to Userinput
+Fixed pointer not moving properly if been set to non zero on select menu
+Fixed userinput not be removed properly if screen not full cleared
+Fixed bug in saving that stopped multi folder directory and file creations
+not intercepting certain keypresses, escape arrow right arrow left
+Fixed bug where read menus could show an extra empty page
+Fixed bug where flash cards best time wouldnt update if score remained the same
+Fixed pong title spacin
+fixed puncation in commands being inconsitent
+
+--- ADDED ---
+Tracker App yayayayay
+new features to userinput
