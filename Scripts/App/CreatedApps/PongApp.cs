@@ -18,12 +18,12 @@ public class PongApp : App
     (int score, int pos) player2;
 
     public PongApp() : base() { }
-    public PongApp(string name, (ConsoleColor primaryColour, ConsoleColor[] secondaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public PongApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
 
     public override App[] OnRegister()
     {
         return new PongApp[] {
-                    new PongApp("Pong", (ConsoleColor.DarkBlue, CyanGradient, 10), (CyanDarkBlueGradient, 5), new (UserInputProfile format, Action<string> payload, string summary)[0], 60, 40)
+                    new PongApp("Pong", (ConsoleColor.DarkBlue.ToArray(), CyanGradient, BlueGradient, 10), (CyanDarkBlueGradient, 5), new (UserInputProfile format, Action<string> payload, string summary)[0], 60, 40)
                 };
     }
 

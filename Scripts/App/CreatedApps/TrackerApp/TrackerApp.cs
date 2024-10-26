@@ -8,6 +8,8 @@ using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.NumericalFunctions;
 using static Revistone.Functions.StringFunctions;
 
+using static Revistone.Interaction.UserInputProfile.InputType;
+
 namespace Revistone.Apps;
 
 public class TrackerApp : App
@@ -19,12 +21,12 @@ public class TrackerApp : App
     // --- APP BOILER ---
 
     public TrackerApp() : base() { }
-    public TrackerApp(string name, (ConsoleColor primaryColour, ConsoleColor[] secondaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public TrackerApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
 
     public override App[] OnRegister()
     {
         return new TrackerApp[] {
-            new TrackerApp("Tracker", (ConsoleColor.DarkBlue, ConsoleColor.Cyan.ToArray(), 10), (CyanDarkBlueGradient.Extend(7, true), 5), new (UserInputProfile format, Action<string> payload, string summary)[0], 70, 50)
+            new TrackerApp("Tracker", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.DarkCyan.ToArray(), 10), (CyanDarkBlueGradient.Extend(7, true), 5), new (UserInputProfile format, Action<string> payload, string summary)[0], 70, 50)
         };
     }
 
@@ -53,7 +55,7 @@ public class TrackerApp : App
         ConsoleLine[] title = TitleFunctions.CreateTitle("FOCUS", AdvancedHighlight(97, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10), (ConsoleColor.Cyan.ToArray(), 48, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1);
         SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), 99).ToArray());
 
-        data.GetDayTrackerData(data.today).Display();
+        data.GetDayTrackerData(data.today).Display(data);
         ShiftLine();
 
         int cursorPointer = 0;
@@ -85,10 +87,10 @@ public class TrackerApp : App
                 x => new ConsoleLine($"{x.statName} - {x.value} ", BuildArray(ConsoleColor.Cyan.Extend(x.statName.Length + 2), ConsoleColor.White.ToArray(1000)))).ToArray();
             dayStatsSelect = dayStatsSelect.Concat(new ConsoleLine[] { new ConsoleLine("Exit", ConsoleColor.DarkBlue) }).ToArray();
 
-            cursorPointer = UserInput.CreateOptionMenu($"--- Day [{data.selectedDate}] ---", dayStatsSelect, cursorStartIndex: cursorPointer);
+            cursorPointer = UserInput.CreateOptionMenu($"--- Day {data.selectedDate.DayNumber - data.startDate.DayNumber + 1} - [{data.selectedDate}] ---", dayStatsSelect, cursorStartIndex: cursorPointer);
             if (cursorPointer == day.stats.Count)
             {
-                day.Display();
+                day.Display(data);
                 ShiftLine();
                 return;
             }
@@ -118,10 +120,10 @@ public class TrackerApp : App
                 x => new ConsoleLine($"{x.statName} - {x.value} ", BuildArray(ConsoleColor.Cyan.Extend(x.statName.Length + 2), ConsoleColor.White.ToArray(1000)))).ToArray();
             dayStatsSelect = dayStatsSelect.Concat(new ConsoleLine[] { new ConsoleLine("Exit", ConsoleColor.DarkBlue) }).ToArray();
 
-            cursorPointer = UserInput.CreateOptionMenu($"--- Day [{data.selectedDate}] ---", dayStatsSelect, cursorStartIndex: cursorPointer);
+            cursorPointer = UserInput.CreateOptionMenu($"--- Day {data.selectedDate.DayNumber - data.startDate.DayNumber + 1} - [{data.selectedDate}] ---", dayStatsSelect, cursorStartIndex: cursorPointer);
             if (cursorPointer == day.stats.Count)
             {
-                day.Display();
+                day.Display(data);
                 ShiftLine();
                 return;
             }
@@ -136,7 +138,7 @@ public class TrackerApp : App
                 DayTrackerData d = data.GetDayTrackerData(data.startDate.AddDays(i));
                 foreach (TrackerStat s in d.stats)
                 {
-                    if (s.IdentificationString() == stat.IdentificationString() && s.value != "Not Tracked")
+                    if (s.ToTypeString() == stat.ToTypeString() && s.value != "Not Tracked")
                     {
                         statList.Add(s);
                         break;
@@ -157,12 +159,12 @@ public class TrackerApp : App
                     SendConsoleMessage(new ConsoleLine($"--- Distribution [Total {statList.Count}] ---", ConsoleColor.DarkBlue));
                     SendConsoleMessage(new ConsoleLine($"Mean - {Math.Round(values.Sum() / values.Count, 2)}", ConsoleColor.Cyan));
                     SendConsoleMessage(new ConsoleLine($"Min - {values[0]}", ConsoleColor.Cyan));
-                    SendConsoleMessage(new ConsoleLine($"Lower Quartile - {GetMedian(values.Take(values.Count / 2).ToList())}", ConsoleColor.Cyan));
+                    SendConsoleMessage(new ConsoleLine($"Lower Quartile - {GetMedian(values.Count == 1 ? values : values.Take(values.Count / 2).ToList())}", ConsoleColor.Cyan));
                     SendConsoleMessage(new ConsoleLine($"Medium - {GetMedian(values)}", ConsoleColor.Cyan));
-                    SendConsoleMessage(new ConsoleLine($"Upper Quartile - {GetMedian(values.Skip((values.Count + 1) / 2).ToList())}", ConsoleColor.Cyan));
+                    SendConsoleMessage(new ConsoleLine($"Upper Quartile - {GetMedian(values.Count == 1 ? values : values.Skip((values.Count + 1) / 2).ToList())}", ConsoleColor.Cyan));
                     SendConsoleMessage(new ConsoleLine($"Max - {values[^1]}", ConsoleColor.Cyan));
                     ShiftLine();
-                    SendConsoleMessage(new ConsoleLine($"Last 5 Days - {statList.TakeLast(Math.Min(5, values.Count)).ToList().ToElementString()}", ConsoleColor.Cyan));
+                    SendConsoleMessage(new ConsoleLine($"Last 7 Days - {statList.TakeLast(Math.Min(7, values.Count)).Select(x => x.value).ToList().ToElementString()}", ConsoleColor.Cyan));
                     ShiftLine();
                     SendConsoleMessage(new ConsoleLine("--- Frequency [Value - Count] ---", ConsoleColor.DarkBlue));
 
@@ -198,6 +200,7 @@ public class TrackerApp : App
                     SendConsoleMessage(new ConsoleLine($"{dKey} - {d[dKey]} ({Math.Round((double)d[dKey] / statList.Count * 100)}%)", ConsoleColor.Cyan));
                 }
                 ShiftLine();
+                SendConsoleMessage(new ConsoleLine($"Last 7 Days - {statList.TakeLast(Math.Min(7, statList.Count)).Select(x => x.value).ToList().ToElementString()}", ConsoleColor.Cyan));
                 SendConsoleMessage(new ConsoleLine($"Completion Rate - {successCount} / {statList.Count} ({Math.Round((double)successCount / statList.Count * 100)}%)", ConsoleColor.Cyan));
             }
 
@@ -210,33 +213,126 @@ public class TrackerApp : App
         while (true)
         {
             int settingsMenuIndex = UserInput.CreateOptionMenu("--- Settings ---", new ConsoleLine[] {
-                new ConsoleLine("Manual Saves", ConsoleColor.Cyan), new ConsoleLine("Tracked Stats", ConsoleColor.Cyan), new ConsoleLine("Exit", ConsoleColor.DarkBlue) });
+                new ConsoleLine("Tracked Stats", ConsoleColor.Cyan), new ConsoleLine("Manual Saves", ConsoleColor.Cyan), new ConsoleLine("Exit", ConsoleColor.DarkBlue) });
 
-            if (settingsMenuIndex == 0)
+            if (settingsMenuIndex == 1)
             {
                 while (true)
                 {
-                    if (UserInput.CreateOptionMenu("--- Options ---", new (ConsoleLine, Action)[] {
-                (new ConsoleLine("Create Manual Save", ConsoleColor.Cyan), () => {
-                    data.SaveData($"Saves/Data {DateTime.Now.ToString("[yyyy-MM-dd_HH-mm-ss]")}");
-                    SendConsoleMessage(new ConsoleLine("Manual Save Created!", ConsoleColor.DarkBlue));
-                    UserInput.WaitForUserInput(space: true);
-                    ShiftLine(-2);
-                }),
-                (new ConsoleLine("Load Manual Save", ConsoleColor.Cyan), LoadManualSave),
-                (new ConsoleLine("Delete Manual Save", ConsoleColor.Cyan), DeleteManualSave),
-                (new ConsoleLine("Exit", ConsoleColor.DarkBlue), () => {})}) == 3) break;
+                    if (UserInput.CreateOptionMenu("--- Options ---", [
+                    (new ConsoleLine("Create Manual Save", ConsoleColor.Cyan), () => {
+                        data.SaveData($"Saves/Data {DateTime.Now.ToString("[yyyy-MM-dd_HH-mm-ss]")}");
+                        SendConsoleMessage(new ConsoleLine("Manual Save Created!", ConsoleColor.DarkBlue));
+                        UserInput.WaitForUserInput(space: true);
+                        ShiftLine(-2);
+                    }),
+                    (new ConsoleLine("Load Manual Save", ConsoleColor.Cyan), LoadManualSave),
+                    (new ConsoleLine("Delete Manual Save", ConsoleColor.Cyan), DeleteManualSave),
+                    (new ConsoleLine("Exit", ConsoleColor.DarkBlue), () => {})]) == 3) break;
                 }
             }
-            else if (settingsMenuIndex == 1)
+            else if (settingsMenuIndex == 0)
             {
-
+                while (true)
+                {
+                    if (UserInput.CreateOptionMenu("--- Options ---", [
+                        (new ConsoleLine("Add Stat", ConsoleColor.Cyan), AddStat),
+                        (new ConsoleLine("Remove Stat", ConsoleColor.Cyan), DeleteStat),
+                        (new ConsoleLine("Exit", ConsoleColor.DarkBlue), () => {})
+                    ]) == 2) break;
+                }
             }
             else
             {
                 return;
             }
         }
+    }
+
+    void AddStat()
+    {
+        UserInput.CreateOptionMenu("--- Options ---", [
+            (new ConsoleLine("Add Input Stat", ConsoleColor.Cyan), AddInputStat),
+            (new ConsoleLine("Add Dropdown Stat", ConsoleColor.Cyan), AddDropdownStat),
+            (new ConsoleLine("Exit", ConsoleColor.DarkBlue), () => {}) ]);
+    }
+
+    void AddInputStat()
+    {
+        string statName = UserInput.GetValidUserInput(new ConsoleLine("--- Enter Stat Name ---", ConsoleColor.DarkBlue), new UserInputProfile(UserInputProfile.InputType.FullText));
+        if (DayTrackerData.trackedStats.Select(x => x.statName).Contains(statName))
+        {
+            SendConsoleMessage(new ConsoleLine("--- Input Invalid ---", ConsoleColor.Cyan));
+            SendConsoleMessage(new ConsoleLine($"1. Stat Name [{statName}] Is Already In Use!", ConsoleColor.DarkBlue));
+            UserInput.WaitForUserInput(space: true);
+            ShiftLine(-3);
+            AddInputStat();
+        }
+
+        int validType = UserInput.CreateOptionMenu("Valid Inputs", [
+            new ConsoleLine("Int", ConsoleColor.DarkBlue),
+            new ConsoleLine("Number", ConsoleColor.DarkBlue),
+            new ConsoleLine("Text", ConsoleColor.DarkBlue),
+        ]);
+
+        DayTrackerData.trackedStats.Add(new TrackerInputStat(statName, validType == 0 ? [Int] : validType == 1 ? [Float, Int] : [FullText, PartialText]));
+        data.GetDayTrackerData(data.today).stats.Add(new TrackerInputStat(statName, validType == 0 ? [Int] : validType == 1 ? [Float, Int] : [FullText, PartialText]));
+
+        ClearPrimaryConsole();
+        data.GetDayTrackerData(data.today).Display(data);
+        ShiftLine();
+
+    }
+
+    void AddDropdownStat()
+    {
+        string statName = UserInput.GetValidUserInput(new ConsoleLine("--- Enter Stat Name ---", ConsoleColor.DarkBlue), new UserInputProfile(FullText));
+        if (DayTrackerData.trackedStats.Select(x => x.statName).Contains(statName))
+        {
+            SendConsoleMessage(new ConsoleLine("--- Input Invalid ---", ConsoleColor.Cyan));
+            SendConsoleMessage(new ConsoleLine($"1. Stat Name [{statName}] Is Already In Use!", ConsoleColor.DarkBlue));
+            UserInput.WaitForUserInput(space: true);
+            ShiftLine(-3);
+            AddInputStat();
+        }
+
+        List<(string option, bool success)> options = [];
+        while (true)
+        {
+            string option = UserInput.GetValidUserInput(new ConsoleLine("--- Enter Dropdown Option ---", ConsoleColor.DarkBlue), new UserInputProfile([FullText, PartialText]));
+            bool success = UserInput.CreateTrueFalseOptionMenu($"--- Is [{option}] A Success? ---");
+            options.Add((option, success));
+
+            if (!UserInput.CreateTrueFalseOptionMenu("--- Options ---", "Add Dropdown Option", "Finish")) break;
+        }
+
+        DayTrackerData.trackedStats.Add(new TrackerDropdownStat(statName, options.ToArray()));
+        data.GetDayTrackerData(data.today).stats.Add(new TrackerDropdownStat(statName, options.ToArray()));
+
+        ClearPrimaryConsole();
+        data.GetDayTrackerData(data.today).Display(data);
+        ShiftLine();
+    }
+
+    void DeleteStat()
+    {
+        ClearPrimaryConsole();
+
+        DayTrackerData day = data.GetDayTrackerData(data.today);
+        ConsoleLine[] dayStatsSelect = day.stats.Select(
+            x => new ConsoleLine($"{x.statName} - {x.value} ", BuildArray(ConsoleColor.Cyan.Extend(x.statName.Length + 2), ConsoleColor.White.ToArray(1000)))).ToArray();
+        dayStatsSelect = dayStatsSelect.Concat(new ConsoleLine[] { new ConsoleLine("Exit", ConsoleColor.DarkBlue) }).ToArray();
+
+        int cursorPointer = UserInput.CreateOptionMenu($"--- Tracked Stats ---", dayStatsSelect, cursorStartIndex: 0);
+
+        if (cursorPointer < dayStatsSelect.Length - 1)
+        {
+            day.stats.RemoveAt(cursorPointer);
+            DayTrackerData.trackedStats.RemoveAt(cursorPointer);
+        }
+
+        data.GetDayTrackerData(data.selectedDate).Display(data);
+        ShiftLine();
     }
 
     void LoadManualSave()
@@ -256,7 +352,7 @@ public class TrackerApp : App
         {
             data = new TrackerData(AppPersistentData.LoadFile($"Tracker/Saves/{saves[saveIndex].lineText}"));
             ClearPrimaryConsole();
-            data.GetDayTrackerData(data.today).Display();
+            data.GetDayTrackerData(data.today).Display(data);
             ShiftLine();
         }
     }

@@ -3,10 +3,11 @@ using Revistone.Console;
 using static Revistone.Interaction.UserInputProfile;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
+using Revistone.Functions;
 
 namespace Revistone.Apps.Tracker;
 
-/// <summary> Main pertaining all information tracked by user. </summary>
+/// <summary> Main class pertaining all information tracked by user. </summary>
 class TrackerData
 {
     public DateOnly startDate { get; private set; } // first day of tracking
@@ -43,6 +44,13 @@ class TrackerData
         }
 
         dayData[GetDayIndex(DateOnly.Parse(data[lastDayStart].Substring(4)))] = new DayTrackerData(data.Skip(lastDayStart).Take(data.Length - lastDayStart).ToArray());
+       
+        DayTrackerData.trackedStats = new List<TrackerStat>();
+        foreach (TrackerStat stat in dayData[GetDayIndex(DateOnly.Parse(data[lastDayStart].Substring(4)))].stats)
+        {
+            if (stat is TrackerDropdownStat dropdownStat) DayTrackerData.trackedStats.Add(new TrackerDropdownStat(dropdownStat.statName, dropdownStat.options));
+            else if (stat is TrackerInputStat inputStat) DayTrackerData.trackedStats.Add(new TrackerInputStat(inputStat.statName, inputStat.inputTypes));
+        }
 
         for (int i = 0; i < dayData.Length; i++) if (dayData[i] == null) dayData[i] = new DayTrackerData(startDate.AddDays(i));
     }
@@ -52,7 +60,7 @@ class TrackerData
         if (date.DayNumber < startDate.DayNumber || date.DayNumber > startDate.DayNumber + dayData.Length - 1) return;
         selectedDate = date;
         ClearPrimaryConsole();
-        dayData[GetDayIndex(selectedDate)].Display();
+        dayData[GetDayIndex(selectedDate)].Display(this);
         ShiftLine();
     }
 
@@ -86,32 +94,30 @@ class TrackerData
     }
 }
 
+/// <summary> class pertaining all information tracked by user in a day. </summary>
 class DayTrackerData
 {
+    public static List<TrackerStat> trackedStats = [
+        new TrackerInputStat("Sleep (hours)", InputType.Float, InputType.Int),
+        new TrackerInputStat("Weight", InputType.Float, InputType.Int),
+        new TrackerInputStat("Calories (kcals)", InputType.Int),
+        new TrackerInputStat("Protein (g)", InputType.Int),
+        new TrackerInputStat("Water (ml)", InputType.Int),
+        new TrackerInputStat("Work (hours)", InputType.Float, InputType.Int),
+        new TrackerDropdownStat("Gym", ("Push", true), ("Pull", true), ("Legs", true), ("Rest", false)),
+        new TrackerInputStat("Happiness", InputType.Float, InputType.Int),
+        new TrackerInputStat("Motivation", InputType.Float, InputType.Int),
+        new TrackerInputStat("Grateful For", InputType.FullText, InputType.PartialText),
+        new TrackerInputStat("Summary", InputType.FullText, InputType.PartialText),
+    ];
+
     public DateOnly date { get; private set; }
     public List<TrackerStat> stats;
 
     public DayTrackerData(DateOnly date)
     {
         this.date = date;
-        stats = new List<TrackerStat>() {
-                new TrackerInputStat("Sleep (hours)", InputType.Float, InputType.Int),
-                new TrackerInputStat("Weight", InputType.Float, InputType.Int),
-                new TrackerInputStat("Calories (kcals)", InputType.Int),
-                new TrackerInputStat("Protein (g)", InputType.Int),
-                new TrackerInputStat("Water (ml)", InputType.Int),
-                new TrackerInputStat("Work (hours)", InputType.Float, InputType.Int),
-                new TrackerInputStat("Wanked", InputType.Int),
-                new TrackerDropdownStat("Vaped", ("Yes (Own)", false), ("Yes (Friends)", false), ("No", true)),
-                new TrackerDropdownStat("Gym", ("Push", true), ("Pull", true), ("Legs", true), ("Rest", false)),
-                new TrackerInputStat("Bible (pages)", InputType.Int),
-                new TrackerInputStat("Happiness", InputType.Float, InputType.Int),
-                new TrackerInputStat("Motivation", InputType.Float, InputType.Int),
-                new TrackerDropdownStat("Stress", ("None", true), ("Cried", false), ("Panic Attack", false), ("Breakdown", false)),
-                new TrackerDropdownStat("Derealization", ("None", true), ("A Few Moments", true), ("Parts Of The Day", false), ("Most Of The Day", false), ("I Was Not Me Today", false)),
-                new TrackerInputStat("Grateful For", InputType.FullText, InputType.PartialText),
-                new TrackerInputStat("Summary", InputType.FullText, InputType.PartialText),
-            };
+        stats = trackedStats;
     }
 
     public DayTrackerData(string[] data)
@@ -143,9 +149,9 @@ class DayTrackerData
         }
     }
 
-    public void Display()
+    public void Display(TrackerData data)
     {
-        SendConsoleMessage(new ConsoleLine($"--- Day [{date}] ---", ConsoleColor.DarkBlue));
+        SendConsoleMessage(new ConsoleLine($"--- Day {date.DayNumber - data.startDate.DayNumber + 1} - [{date}] ---", ConsoleColor.DarkBlue));
         foreach (TrackerStat stat in stats)
         {
             SendConsoleMessage(new ConsoleLine(stat.ToString(), BuildArray(ConsoleColor.Cyan.Extend(stat.statName.Length + 2), ConsoleColor.White.ToArray())));

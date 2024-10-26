@@ -1,8 +1,11 @@
-namespace Revistone.Apps.Calculator;
+namespace Revistone.Apps.HoneyC;
 
-public static class CalculatorDefinitions
+public static class HoneyCDefinitions
 {
-    public static Dictionary<string, double> constants = new Dictionary<string, double>()
+    // keywords and their associated mode values
+    public static readonly string[] keyWords = ["calc", "let", "del"];
+
+    public static readonly Dictionary<string, double> constants = new()
     {
         {"pi", 3.1415926535},
         {"-pi", -3.1415926535},
@@ -13,7 +16,7 @@ public static class CalculatorDefinitions
     };
 
     // any mathematical operation that takes 2 values and creates 1 output
-    public static Dictionary<string, (Func<double, double, double> function, int priority)> operators = new Dictionary<string, (Func<double, double, double>, int)>()
+    public static readonly Dictionary<string, (Func<double, double, double> function, int priority)> operators = new()
     {
         {"+", ((x, y) => x + y, 0)},
         {"-", ((x, y) => x - y, 0)},
@@ -25,7 +28,7 @@ public static class CalculatorDefinitions
     };
 
     // any mathematical operation that takes 1 value and creates 1 output
-    public static Dictionary<string, Func<double, double>> functions = new Dictionary<string, Func<double, double>>()
+    public static readonly Dictionary<string, Func<double, double>> functions = new()
     {
         {"round", (x) => Math.Round(x)},
         {"floor", (x) => Math.Floor(x)},
@@ -42,5 +45,5 @@ public static class CalculatorDefinitions
     };
 
     // variables that can be created by the user
-    public static Dictionary<string, double> variables = new Dictionary<string, double>() { };
+    public static Dictionary<string, double> variables = new() { };
 }

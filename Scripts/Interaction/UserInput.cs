@@ -387,11 +387,28 @@ public static class UserInput
     }
 
     /// <summary> Creates menu, allowing user to select either yes or no. </summary>
-    public static bool CreateOptionMenu(string title, bool clear = true, int cursorStartIndex = 0)
+    public static bool CreateTrueFalseOptionMenu(string title, string trueOption = "Yes", string falseOption = "No", bool clear = true, int cursorStartIndex = 0)
     {
-        if (CreateOptionMenu(title, new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") }, clear, cursorStartIndex) == 0) return true;
+        if (CreateOptionMenu(title, new ConsoleLine[] { new ConsoleLine(trueOption), new ConsoleLine(falseOption) }, clear, cursorStartIndex) == 0) return true;
         return false;
     }
+
+    // /// <summary> Creates menu, allowing user to select any number of options. </summary>
+    // public static int[] CreateMultiOptionMenu(string title, ConsoleLine[] options)
+    // {
+    //     bool[] optionSelected = new bool[options.Length];
+
+    //     int optionIndex = -1;
+    //     while (optionIndex != options.Length) {
+    //         ConsoleLine[] menu = options.Select((x, i) => new ConsoleLine($"{(optionSelected[i] ? "✓" : "✗")} {x.lineText}", 
+    //         BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour.Extend(1), x.lineColour))).Append(
+    //         new ConsoleLine("Finish", AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray();
+
+    //         optionIndex = CreateOptionMenu(title, menu);
+    //     }
+
+    //     return [];
+    // }
 
     /// <summary> Creates menu from given options, spliting into pages, allowing user to pick one (pinnedOptions return negative index). </summary>
     public static int CreateMultiPageOptionMenu(string title, ConsoleLine[] options, ConsoleLine[] pinnedOptions, int optionsPerPage)

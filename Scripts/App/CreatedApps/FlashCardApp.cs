@@ -15,12 +15,12 @@ public class FlashCardApp : App
     // --- APP BOILER ---
 
     public FlashCardApp() : base() { }
-    public FlashCardApp(string name, (ConsoleColor primaryColour, ConsoleColor[] secondaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public FlashCardApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
 
     public override App[] OnRegister()
     {
         return new FlashCardApp[] {
-                    new FlashCardApp("Flash Card Manager", (ConsoleColor.DarkBlue, ConsoleColor.DarkGreen.ToArray(), 10), (Alternate(DarkGreenAndDarkBlue, 6, 3), 5), new (UserInputProfile format, Action<string> payload, string summary)[0], 70, 40)
+                    new FlashCardApp("Flash Card Manager", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.DarkGreen.ToArray(), ConsoleColor.Green.ToArray(), 10), (Alternate(DarkGreenAndDarkBlue, 6, 3), 5), new (UserInputProfile format, Action<string> payload, string summary)[0], 70, 40)
                 };
     }
 
@@ -246,7 +246,7 @@ public class FlashCardApp : App
     /// <summary> Deletes given FCS file.</summary>
     bool DeleteFCS(FlashCardSet s)
     {
-        if (UserInput.CreateOptionMenu($"Are You Sure You Want To Delete '{StringFunctions.SplitAtCapitalisation(s.name)}'?"))
+        if (UserInput.CreateTrueFalseOptionMenu($"Are You Sure You Want To Delete '{StringFunctions.SplitAtCapitalisation(s.name)}'?"))
         {
             AppPersistentData.DeleteFile($"FlashCard/{s.name}");
             SendConsoleMessage($"'{StringFunctions.SplitAtCapitalisation(s.name)}' Deleted!");
@@ -355,8 +355,8 @@ public class FlashCardApp : App
 
 
             pointer = UserInput.CreateOptionMenu("Options: ", new (ConsoleLine, Action)[] {
-                        (new ConsoleLine("Edit Question"), () => { if (UserInput.CreateOptionMenu("Edit Question:")) { s.questions[cq] = CreateQuestion(s); reload = true;}} ),
-                        (new ConsoleLine("Delete Question"), () => { if (UserInput.CreateOptionMenu("Delete Question:")) { s.questions.RemoveAt(cq); reload = true;}}),
+                        (new ConsoleLine("Edit Question"), () => { if (UserInput.CreateTrueFalseOptionMenu("Edit Question:")) { s.questions[cq] = CreateQuestion(s); reload = true;}} ),
+                        (new ConsoleLine("Delete Question"), () => { if (UserInput.CreateTrueFalseOptionMenu("Delete Question:")) { s.questions.RemoveAt(cq); reload = true;}}),
                         (new ConsoleLine("Next Question", ConsoleColor.DarkBlue), () => cq = cq < s.questions.Count - 1 ? cq + 1 : 0),
                         (new ConsoleLine("Previous Question", ConsoleColor.DarkBlue), () => cq = cq > 0 ? cq - 1 : s.questions.Count - 1),
                         (new ConsoleLine("Exit", ConsoleColor.DarkBlue), () => {}),

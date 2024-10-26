@@ -400,7 +400,7 @@ UserInputProfile -> added new "dump" output format
 UserInput -> Redone user input, now supports shift select, input history, ctrl + <-/-> for movement, and shift + alt + c/x/v for copy, cutting and pasting
 StringFunctions -> Added low level functions for setting and getting data from system clipboard (may move)
 NumericalFunctions -> Added class for additional maths functions to be used within revistone console
-AppCommands -> 4 new commands, runtime and calculator based commands
+AppCommands -> 2 new commands, runtime and calculator based commands
 TrackerApp -> new app for tracking day to day stats [WIP]
 CalculatorApp -> new calculator app useable throughout entire console, capable of functions variables and defentions, will felsh out more overtime
 General -> Removed unused depedencys, switched to modern namesapce formatting

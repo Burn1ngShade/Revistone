@@ -1,3 +1,4 @@
+using Revistone.Apps.HoneyC;
 using Revistone.Console;
 using Revistone.Functions;
 using Revistone.Interaction;
@@ -46,9 +47,7 @@ public static class AppCommands
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "runtime", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { SendConsoleMessage(new ConsoleLine($"Revistone Has Been Running For {(Manager.currentTick / 40d).ToString("0.00")} Seconds.", AppRegistry.activeApp.colourScheme.primaryColour)); },
                 "Prints The Runtime Of The Current Session."),
-                (new UserInputProfile("calc[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true), (s) => {CalculatorApp.IntepretString(s); }, "Carries Out Given Calculation."),
-                (new UserInputProfile("let[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true), (s) => {CalculatorApp.IntepretString(s); }, "Carries Out Given Assignment."),
-                (new UserInputProfile("del[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true), (s) => {CalculatorApp.IntepretString(s); }, "Removes Given Variable From Calculator Memory."),
+                (new UserInputProfile("comp[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true), (s) => {HoneyCInterpreter.Intepret(s[4..]); }, "Carries Out Given HoneyC Promt."),
                 //test commands
                 (new UserInputProfile(new UserInputProfile.InputType[] {}, "debug[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { SendDebugMessage(s.Substring(5).TrimStart()); }, "Sends Debug Message [A:] ([A:] being the message)."),

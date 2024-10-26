@@ -2,6 +2,7 @@ using static Revistone.Interaction.UserInputProfile;
 
 namespace Revistone.Apps.Tracker;
 
+/// <summary> Abstract representation of a stat for tracker application. </summary>
 abstract class TrackerStat
 {
     public string statName { get; private set; }
@@ -13,7 +14,7 @@ abstract class TrackerStat
         this.value = value;
     }
 
-    public abstract string IdentificationString();
+    public abstract string ToTypeString();
 
     public override string ToString()
     {
@@ -21,6 +22,7 @@ abstract class TrackerStat
     }
 }
 
+/// <summary> Representation of a input stat for tracker application. </summary>
 class TrackerInputStat : TrackerStat
 {
     public InputType[] inputTypes { get; private set; }
@@ -35,12 +37,13 @@ class TrackerInputStat : TrackerStat
         this.inputTypes = inputTypes;
     }
 
-    public override string IdentificationString()
+    public override string ToTypeString()
     {
         return $"{statName}{string.Join("", inputTypes)}";
     }
 }
 
+/// <summary> Representation of a dropdown stat for tracker application. </summary>
 class TrackerDropdownStat : TrackerStat
 {
     public (string option, bool success)[] options;
@@ -55,7 +58,7 @@ class TrackerDropdownStat : TrackerStat
         this.options = options;
     }
 
-    public override string IdentificationString()
+    public override string ToTypeString()
     {
         return $"{statName}dropdown";
     }
