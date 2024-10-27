@@ -1,0 +1,130 @@
+TMUA
+00:00:00
+00:00:00
+0
+0
+0
+0
+0
+Converse Of "If A Then B"
+If B Then A
+0
+Contrapostive Of "If A Then B"
+If Not B Then Not A
+0
+Negation Of "If A Then B" 
+If A Then Not B
+10
+"A If B" ->
+If B Then A:If A Then B:If A Then B AND If B Then A
+11
+"A Only If B"
+If B Then A:If A Then B:If A Then B AND If B Then A
+12
+"A If And Only If B" ->
+If B Then A:If A Then B:If A Then B AND If B Then A
+0
+The Sum Of Interior Angles In A N Sided Polygon =
+180(n-2)
+0
+U_n Of An Arithmetic Sequence
+a+(n-1)d
+0
+U_n Of A Geometric Sequence
+ar^(n-1)
+0
+S_n Of An Arithmetic Series
+(n/2)(2a+(n-1)d)
+0
+S_n Of A Geometric Series
+(a(r^n-1))/(r-1)
+0
+S_infinity Of A Geometric Series
+a/(1-r)
+0
+n Choose c =
+(n!)/(c!(n-c)!)
+0
+n Perm p
+(n!)/(n-p)!
+0
+Trinomial Formula = 
+(n!)/(i!j!k!)
+0
+Sector Area = 
+(r^2/2)theta
+0
+Segment Area
+(r^2/2)(theta-sin(theta))
+0
+If f(x)/(ax-b), Remainder =
+f(b/a)
+0
+If (x-a) Is A Factor, f(a) = 
+0
+10
+A Sector Is The Area Bounded By
+A Minor Arc:A Chord
+11
+A Segment Is The Area Bounded By
+A Minor Arc:A Chord
+0
+Arc length = 
+rtheta
+0
+sin(pi/6) = 
+1/2
+0
+sin(pi/4) =
+sqrt(2)/2
+0
+sin(pi/3) =
+sqrt(3)/2
+0
+cos(pi/6) = 
+sqrt(3)/2
+0
+cos(pi/4) = 
+sqrt(2)/2
+0
+cos(pi/3) =
+1/2
+0
+tan(pi/6) =
+sqrt(3)/3
+0
+tan(pi/4) = 
+1
+0
+tan(pi/3) =
+sqrt(3)
+2
+A Concave Graph Where f''(x) < 0 Causes The Trapesium Rule To Underestimate
+1:6:12
+2
+A Convex Graph Where f''(x) > 0 Causes The Trapesium Rule To Overestimate
+1:6:12
+0
+log_a(x) + log_a(y) =
+log_a(xy)
+0
+log_a(x) - log_a(y) = 
+log_a(x/y)
+0
+log_a(b) =
+log_x(b)/log_x(a)
+0
+Shape With 2 Sets Of Equal And Opposingly Parallel Sides, That Bisect
+Parallelogram
+0
+Shape With 4 Equal Sides, Which Opposingly Parallel, And Bisect At 90 Degrees
+Rhombus
+0
+Shape With 2 Sets Of Equal Sides, With Diagonals That Meet At 90 Degrees
+Kite
+0
+Shape With One Pair Of Parallel Sides
+Trapesium
+0
+Sum Of n Integers
+(n/2)(n+1)
