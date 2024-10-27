@@ -9,6 +9,7 @@ using static Revistone.Functions.NumericalFunctions;
 using static Revistone.Functions.StringFunctions;
 
 using static Revistone.Interaction.UserInputProfile.InputType;
+using System.Numerics;
 
 namespace Revistone.Apps;
 
@@ -188,10 +189,15 @@ public class TrackerApp : App
                 Dictionary<string, int> d = statList.SelectMany(s => ((TrackerDropdownStat)s).options).Select(s => s.option).Distinct().ToDictionary(s => s, s => 0);
 
                 int successCount = 0;
+                int currentStreak = 0;
+                int bestStreak = 0;
                 foreach (TrackerDropdownStat s in statList)
                 {
                     d[s.value] += 1;
-                    successCount += s.options.Where(st => st.option == s.value).Select(s => s.success).ToList()[0] ? 1 : 0;
+                    bool isSuccess = s.options.Where(st => st.option == s.value).Select(s => s.success).ToList()[0];
+                    successCount += isSuccess ? 1 : 0;
+                    currentStreak = isSuccess ? currentStreak + 1 : 0;
+                    bestStreak = currentStreak > bestStreak ? currentStreak : bestStreak;
                 }
 
                 SendConsoleMessage(new ConsoleLine($"--- Distribution [Total {statList.Count}] ---", ConsoleColor.DarkBlue));
@@ -202,6 +208,8 @@ public class TrackerApp : App
                 ShiftLine();
                 SendConsoleMessage(new ConsoleLine($"Last 7 Days - {statList.TakeLast(Math.Min(7, statList.Count)).Select(x => x.value).ToList().ToElementString()}", ConsoleColor.Cyan));
                 SendConsoleMessage(new ConsoleLine($"Completion Rate - {successCount} / {statList.Count} ({Math.Round((double)successCount / statList.Count * 100)}%)", ConsoleColor.Cyan));
+                SendConsoleMessage(new ConsoleLine($"Current Streak - {currentStreak} Days", ConsoleColor.Cyan));
+                SendConsoleMessage(new ConsoleLine($"Best Streak - {bestStreak} Days", ConsoleColor.Cyan));
             }
 
             UserInput.WaitForUserInput(space: true);

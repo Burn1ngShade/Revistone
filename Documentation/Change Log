@@ -392,18 +392,43 @@ Bug Fixes:
 [Major] 
 Option menus would break if opened where not fully free and not fully against consoleBorder
 
---- Input And Calculation --- [Major] 0.5.0 (17/10/24)
+--- Back To Work --- [Major] 0.5.0 (27/10/24)
+
+Summary:
+Finally working on the project again after 10 months and some failed prototypes. Slightly smaller update adding far more func
+to the user cursor, and 2 larger multiscript apps. HoneyC will be greatly expanded within 0.6, with plans of bytecode format and a
+far more advance commands and terminal
+
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                 | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                    |         34 |      4,577 |        489 |      1,116 |      6,182 |
+| App                                                                                  |         16 |      2,409 |        140 |        533 |      3,082 |
+| App (Files)                                                                          |          4 |        340 |         58 |         87 |        485 |
+| App\CreatedApps                                                                      |         12 |      2,069 |         82 |        446 |      2,597 |
+| App\CreatedApps (Files)                                                              |          4 |        909 |         60 |        186 |      1,155 |
+| App\CreatedApps\HoneyC                                                               |          5 |        652 |         14 |        158 |        824 |
+| App\CreatedApps\TrackerApp                                                           |          3 |        508 |          8 |        102 |        618 |
+| Console                                                                              |          9 |        979 |        192 |        264 |      1,435 |
+| Console (Files)                                                                      |          7 |        763 |        154 |        193 |      1,110 |
+| Console\Imagery                                                                      |          2 |        216 |         38 |         71 |        325 |
+| Functions                                                                            |          4 |        500 |         93 |        137 |        730 |
+| Interaction                                                                          |          3 |        537 |         49 |        142 |        728 |
+| Management                                                                           |          2 |        152 |         15 |         40 |        207 |
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 
 Specifics:
-Manager - Added catch exception to ctrl+c killing the application
+Manager -> Added catch exception to ctrl+c killing the application
+App -> apps now have tertiary colour, and primary colour update to array to match secondary and tertiary colour
 UserInputProfile -> added new "dump" output format
-UserInput -> Redone user input, now supports shift select, input history, ctrl + <-/-> for movement, and shift + alt + c/x/v for copy, cutting and pasting
+UserInput -> Redone user input, now supports shift select, input history, ctrl + <-/-> for movement, and shift + alt + c/x/v for copy, cutting and pasting,
+added true false prefab menu
 StringFunctions -> Added low level functions for setting and getting data from system clipboard (may move)
 NumericalFunctions -> Added class for additional maths functions to be used within revistone console
-AppCommands -> 2 new commands, runtime and calculator based commands
-TrackerApp -> new app for tracking day to day stats [WIP]
-CalculatorApp -> new calculator app useable throughout entire console, capable of functions variables and defentions, will felsh out more overtime
-General -> Removed unused depedencys, switched to modern namesapce formatting
+AppCommands -> 2 new commands, runtime and comp to run honey c within the terminal
+TrackerApp -> new app for tracking day to day stats
+HoneyC -> new honeyC sudo programming language, to run calculations and soon much more, will flesh out far more in the next update
+General -> Removed unused depedencys, switched to modern namesapce formatting, update to Dotnet Version 8.0 and C# Version 12
 FlashCardManager -> Added new TMUA flashcard set
 
 BugFixes:

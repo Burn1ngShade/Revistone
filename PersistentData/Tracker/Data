@@ -1262,36 +1262,71 @@ Float-Int-
 Coding (hours) - 0
 DAY 26/10/2024
 Float-Int-
-Sleep (hours) - 9
+Sleep (hours) - 8
 Float-Int-
 Weight - Not Tracked
 Int-
-Calories (kcals) - 2800
+Calories (kcals) - 2200
 Int-
-Protein (g) - 130
+Protein (g) - 80
 Int-
-Water (ml) - 4000
+Water (ml) - 3000
 Float-Int-
-Work (hours) - 1.5
+Work (hours) - 0
 Int-
-Wanked - 1
+Wanked - 2
 (Yes (Own), False)-(Yes (Friends), False)-(No, True)
 Vaped - No
 (Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
-Gym - Push
+Gym - Legs
 Int-
 Bible (pages) - 0
 Float-Int-
-Happiness - 7
+Happiness - 4
 Float-Int-
-Motivation - 7
+Motivation - 5
 (None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
 Stress - None
 (None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
-Derealization - Most Of The Day
+Derealization - None
 FullText-PartialText-
-Grateful For - Nature
+Grateful For - Having to wipe my whole pc
 FullText-PartialText-
-Summary - Decent day, skl bit of work gym and chilled, no vaping really getting to me and gender shit sorta but we doing all right YOU ARE ENOUGH GNG
+Summary - Just a day of existing, hit the gym chilled, had to reset my whole ass pc and got drunk, still no vaping though so yh
+Float-Int-
+Coding (hours) - 0
+DAY 27/10/2024
+Float-Int-
+Sleep (hours) - 7
+Float-Int-
+Weight - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Grateful For - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
 Float-Int-
 Coding (hours) - 0

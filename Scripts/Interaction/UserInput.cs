@@ -393,23 +393,6 @@ public static class UserInput
         return false;
     }
 
-    // /// <summary> Creates menu, allowing user to select any number of options. </summary>
-    // public static int[] CreateMultiOptionMenu(string title, ConsoleLine[] options)
-    // {
-    //     bool[] optionSelected = new bool[options.Length];
-
-    //     int optionIndex = -1;
-    //     while (optionIndex != options.Length) {
-    //         ConsoleLine[] menu = options.Select((x, i) => new ConsoleLine($"{(optionSelected[i] ? "✓" : "✗")} {x.lineText}", 
-    //         BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour.Extend(1), x.lineColour))).Append(
-    //         new ConsoleLine("Finish", AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray();
-
-    //         optionIndex = CreateOptionMenu(title, menu);
-    //     }
-
-    //     return [];
-    // }
-
     /// <summary> Creates menu from given options, spliting into pages, allowing user to pick one (pinnedOptions return negative index). </summary>
     public static int CreateMultiPageOptionMenu(string title, ConsoleLine[] options, ConsoleLine[] pinnedOptions, int optionsPerPage)
     {
