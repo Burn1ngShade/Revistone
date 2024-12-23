@@ -11,243 +11,401 @@ namespace Revistone.Interaction;
 /// <summary> Handles all user input within the console. </summary>
 public static class UserInput
 {
+    // --- GET USER INPUT ---
+
     // keys that will be stopped from processing in user input 
-    static ConsoleKey[] exceptionKeys = [
+    static readonly ConsoleKey[] exceptionKeys = [
         ConsoleKey.Escape, ConsoleKey.Delete, ConsoleKey.End,
-                ConsoleKey.Insert, ConsoleKey.Home, ConsoleKey.PageUp,
-                ConsoleKey.PageDown, ConsoleKey.Tab,
-            ];
+        ConsoleKey.Insert, ConsoleKey.Home, ConsoleKey.PageUp,
+        ConsoleKey.PageDown, ConsoleKey.Tab,
+    ];
 
-    // previous inputs from the user
-    static List<string> userInputMemory = new List<string>();
+    // previous user inputs file path
+    static readonly string inputHistoryFilePath = "Settings/Data/UserInput.txt";
 
-    /// <summary> Gets input from the user (input length capped at buffer width). </summary>
-    public static string GetUserInput(ConsoleLine promt, bool clear = false, bool goNextLine = false, string prefilledText = "")
+    /// <summary> Gets input from the user (supports multiline input).  </summary>
+    public static string GetUserInput(ConsoleLine prompt, bool clear = false, bool skipLine = false, string prefilledText = "", int maxLineCount = 1)
     {
-        if (promt.lineText.Length > 0) SendConsoleMessage(new ConsoleLine(promt));
+        if (!prompt.IsEmpty()) SendConsoleMessage(prompt); // send out promt
 
-        string userInput = prefilledText;
-
-        int pointerIndex = 2 + userInput.Length;
-        int pointerExtend = 0;
-        int userInputPointer = userInputMemory.Count;
-
-        ConsoleColor[] fgColour = BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour, ConsoleColor.White.ToArray());
-        ConsoleColor[] bgColour = GenerateCursorFrame();
-
-        //SendConsoleMessage(new ConsoleLine($"> {userInput} ", fgColour, bgColour), ConsoleLineUpdate.SameLine, new ConsoleAnimatedLine(PointerAnimation, 20, true));
-        SendConsoleMessage(new ConsoleLine($"> {userInput} ", fgColour, bgColour), ConsoleLineUpdate.SameLine, new ConsoleAnimatedLine(PointerAnimation, 20, true));
+        InputData data = new InputData(prefilledText, maxLineCount);
+        UpdatePrimaryConsoleLineAnimation(new ConsoleAnimatedLine(data.AnimationLoop, 20, true), data.lines.startIndex); // init anim
 
         bool endUserInput = false;
         while (!endUserInput)
         {
-            int currentLine = primaryLineIndex;
-            (ConsoleKeyInfo keyInfo, bool interrupted) c = UserRealtimeInput.GetKey();
+            (ConsoleKeyInfo keyInfo, bool interrupted) = UserRealtimeInput.GetKey();
+            (bool tab, bool shift, bool ctrl, bool alt) = (UserRealtimeInput.KeyPressed(0x09), UserRealtimeInput.KeyPressed(0x10), UserRealtimeInput.KeyPressed(0x11), UserRealtimeInput.KeyPressed(0x12));
 
-            if (c.interrupted) // the console has been interrupted and line must be redrawn
+            if (interrupted) // the console has been interrupted and line must be redrawn
             {
-                SendConsoleMessage(new ConsoleLine($"> {userInput} ", fgColour, GetPointerAnimationFrame()), ConsoleLineUpdate.SameLine);
+                data.Resize();
                 continue;
             }
-            if (exceptionKeys.Contains(c.keyInfo.Key)) continue; // keys mess with console so are just voided
+            if (exceptionKeys.Contains(keyInfo.Key)) continue; // keys mess with console so are just voided
 
-            bool shiftPressed = UserRealtimeInput.KeyPressed(0x10);
-            bool ctrlPressed = UserRealtimeInput.KeyPressed(0x11);
-            bool altPressed = UserRealtimeInput.KeyPressed(0x12);
-            (int last, int next) wordIndex = GetWordIndex();
+            // handle key
 
-            switch (c.keyInfo.Key)
+            (int leftPointerJumpIndex, int rightPointerJumpIndex) = data.GetPointerJumpInfo(); // get the index of the last and next word based on pointer pos
+
+            switch (keyInfo.Key) // main key handle loop
             {
                 case ConsoleKey.Enter:
                     endUserInput = true;
                     break;
                 case ConsoleKey.Backspace:
-                    if (pointerIndex == 2 && pointerExtend == 0) break; // we cant get rid of nothing
-
-                    if (pointerExtend == 0)
+                    if (tab && data.pointer.extension == 0)
                     {
-                        userInput = userInput.Remove(pointerIndex - 3, 1);
-                        pointerIndex--;
-                    }
-                    else
-                    {
-                        userInput = userInput.Remove(GetPointerStart() - 2, Math.Min(userInput.Length - (GetPointerStart() - 2), GetPointerLength()));
-                        pointerIndex = pointerExtend > 0 ? pointerIndex : pointerIndex - (GetPointerLength() - 1);
-                        pointerExtend = 0;
+                        data.pointer.extension = leftPointerJumpIndex - data.pointer.index;
+                        data.Remove();
+                        break;
                     }
 
-                    SendConsoleMessage(new ConsoleLine($"> {userInput} ", fgColour, GetPointerAnimationFrame()), ConsoleLineUpdate.SameLine);
-                    break;
-                case ConsoleKey.LeftArrow:
-                    if (shiftPressed) pointerExtend = pointerIndex > 2 ? pointerExtend + 1 : pointerExtend;
-                    else pointerExtend = 0;
-
-                    if (ctrlPressed) pointerIndex = 2 + wordIndex.last;
-                    else pointerIndex = Math.Max(pointerIndex - 1, 2);
-                    GetConsoleLine(primaryLineIndex).Update(fgColour, GetPointerAnimationFrame());
-                    break;
-                case ConsoleKey.RightArrow:
-                    if (shiftPressed) pointerExtend = pointerIndex < userInput.Length + 2 ? pointerExtend - 1 : pointerExtend;
-                    else pointerExtend = 0;
-
-                    if (ctrlPressed) pointerIndex = 2 + wordIndex.next;
-                    else pointerIndex = Math.Min(pointerIndex + 1, userInput.Length + 2);
-                    GetConsoleLine(primaryLineIndex).Update(fgColour, GetPointerAnimationFrame());
-
+                    data.Remove();
                     break;
                 case ConsoleKey.UpArrow:
-                    if (userInputPointer - 1 < 0) break; // reached end of user input
+                    if (data.history.index == 0) break; // reached end of history
+                    if (data.history.index >= data.history.data.Count && data.input.Length > 0) data.history.data.Add(data.input); // entering history so store current input
 
-                    if (userInputPointer >= userInputMemory.Count && userInput.Length > 0) userInputMemory.Add(userInput); // add current userinput to memory
-                    userInputPointer--;
-                    userInput = userInputMemory[userInputPointer];
-                    pointerIndex = 2 + userInput.Length;
+                    data.history.index = shift ? 0 : data.history.index - 1;
+                    data.pointer = (0, 0);
 
-                    SendConsoleMessage(new ConsoleLine($"> {userInput} ", fgColour, GetPointerAnimationFrame()), ConsoleLineUpdate.SameLine);
+                    data.input = "";
+                    data.Add(data.history.data[data.history.index]);
                     break;
                 case ConsoleKey.DownArrow:
-                    if (userInputPointer >= userInputMemory.Count - 1) break; // reached end of user input
+                    if (data.history.index >= data.history.data.Count - 1) break; // reached end of history
 
-                    userInputPointer++;
-                    userInput = userInputMemory[userInputPointer];
-                    pointerIndex = 2 + userInput.Length;
+                    data.history.index = shift ? data.history.data.Count - 1 : data.history.index + 1;
+                    data.pointer = (0, 0);
 
-                    SendConsoleMessage(new ConsoleLine($"> {userInput} ", fgColour, GetPointerAnimationFrame()), ConsoleLineUpdate.SameLine);
+                    data.input = "";
+                    data.Add(data.history.data[data.history.index]);
+                    break;
+                case ConsoleKey.LeftArrow:
+                    if (tab) data.UpdatePointer(data.pointer.index, leftPointerJumpIndex - data.pointer.index, true);
+                    else if (ctrl) data.UpdatePointer(leftPointerJumpIndex, 0, true);
+                    else if (shift) data.UpdatePointer(data.pointer.index, Math.Clamp(data.pointer.extension - 1, -data.pointer.index, data.input.Length - data.pointer.index), true);
+                    if (tab || ctrl || shift) break;
+
+                    data.ShiftPointerIndex(-1);
+                    break;
+                case ConsoleKey.RightArrow:
+                    if (tab) data.UpdatePointer(data.pointer.index, rightPointerJumpIndex - data.pointer.index, true);
+                    else if (ctrl) data.UpdatePointer(rightPointerJumpIndex, 0, true);
+                    else if (shift) data.UpdatePointer(data.pointer.index, Math.Clamp(data.pointer.extension + 1, -data.pointer.index, data.input.Length - data.pointer.index), true);
+                    if (tab || ctrl || shift) break;
+
+                    data.ShiftPointerIndex(1);
                     break;
                 default:
-                    if (UserRealtimeInput.KeyPressed(0x11)) break; //ctrl pressed
+                    if (ctrl) break; // ctrl blocks keys
 
-                    if (shiftPressed && altPressed)
+                    if (alt)
                     {
-                        if (c.keyInfo.Key == ConsoleKey.C && pointerExtend != 0)
+                        switch (keyInfo.Key)
                         {
-                            StringFunctions.CopyToClipboard(userInput.Substring(GetPointerStart() - 2, Math.Min(userInput.Length - (GetPointerStart() - 2), GetPointerLength())));
-                            SendDebugMessage(new ConsoleLine("Contents Copied To Clipboard.", ConsoleColor.DarkBlue));
-                            break;
+                            case ConsoleKey.S: // jump to start of line
+                                data.UpdatePointer(data.GetLineInfo().startIndex, 0, true);
+                                break;
+                            case ConsoleKey.E: // jump to end of line
+                                data.UpdatePointer(data.GetLineInfo().endIndex, 0, true);
+                                break;
+                            case ConsoleKey.D: // jump to end of input
+                                data.UpdatePointer(data.input.Length, 0, true);
+                                break;
+                            case ConsoleKey.B: // jump to start of input
+                                data.UpdatePointer(0, 0, true);
+                                break;
+                            case ConsoleKey.L: // select line
+                                (int startIndex, int endIndex, int length) = data.GetLineInfo();
+                                data.UpdatePointer(startIndex, length, true);
+                                break;
+                            case ConsoleKey.A: // select all
+                                data.UpdatePointer(0, data.input.Length, true);
+                                break;
+                            case ConsoleKey.X: // cut
+                                (int index, int length) cutPointer = data.GetPointerFromLeft();
+                                StringFunctions.CopyToClipboard($"{data.input} ".Substring(cutPointer.index, cutPointer.length));
+                                data.Remove();
+                                SendDebugMessage("Contents Cut To Clipboard.");
+                                break;
+                            case ConsoleKey.C: // copy
+                                (int index, int length) copyPointer = data.GetPointerFromLeft();
+                                StringFunctions.CopyToClipboard($"{data.input} ".Substring(copyPointer.index, copyPointer.length));
+                                SendDebugMessage("Contents Copied To Clipboard.");
+                                break;
+                            case ConsoleKey.V: // paste
+                                if (data.pointer.extension != 0) data.Remove();
+                                data.Add(ConsoleLine.Clean(new ConsoleLine(StringFunctions.GetClipboardText())).lineText);
+                                SendDebugMessage("Clipboard Contents Pasted.");
+                                break;
                         }
-                        else if (c.keyInfo.Key == ConsoleKey.X && pointerExtend != 0)
-                        {
-                            StringFunctions.CopyToClipboard(userInput.Substring(GetPointerStart() - 2, Math.Min(userInput.Length - (GetPointerStart() - 2), GetPointerLength())));
-                            SendDebugMessage(new ConsoleLine("Contents Cut To Clipboard.", ConsoleColor.DarkBlue));
-                            userInput = userInput.Remove(GetPointerStart() - 2, Math.Min(userInput.Length - (GetPointerStart() - 2), GetPointerLength()));
-                            pointerIndex = pointerExtend > 0 ? pointerIndex : pointerIndex - (GetPointerLength() - 1);
-                            pointerExtend = 0;
-                            SendConsoleMessage(new ConsoleLine($"> {userInput} ", fgColour, GetPointerAnimationFrame()), ConsoleLineUpdate.SameLine);
-                            break;
-                        }
-                        else if (c.keyInfo.Key == ConsoleKey.V)
-                        {
-                            string clipboardContents = StringFunctions.GetClipboardText().Replace('\n', ' ');
-                            if (clipboardContents.Length + userInput.Length > System.Console.BufferWidth - 5)
-                            {
-                                SendDebugMessage(new ConsoleLine("Clipboard Contents Are To Long To Paste.", ConsoleColor.DarkBlue));
-                                break; // to long to paste
-                            }
 
-                            if (pointerExtend != 0)
-                            {
-                                userInput = userInput.Remove(GetPointerStart() - 2, Math.Min(userInput.Length - (GetPointerStart() - 2), GetPointerLength()));
-                                pointerIndex = pointerExtend > 0 ? pointerIndex : pointerIndex - (GetPointerLength() - 1);
-                                pointerExtend = 0;
-                            }
-
-                            userInput = userInput.Insert(pointerIndex - 2, clipboardContents);
-                            pointerIndex += clipboardContents.Length;
-                            SendConsoleMessage(new ConsoleLine($"> {userInput} ", fgColour, GetPointerAnimationFrame()), ConsoleLineUpdate.SameLine);
-                            SendDebugMessage(new ConsoleLine("Clipboard Contents Pasted.", ConsoleColor.DarkBlue));
-                            break;
-                        }
+                        break; //alt blocks keys
                     }
 
-                    if (userInput.Length > System.Console.BufferWidth - 5) break; // we dont want to overflow to the next line of the console
+                    if (data.pointer.extension != 0) data.Remove();
 
-                    if (pointerExtend != 0)
-                    {
-                        userInput = userInput.Remove(GetPointerStart() - 2, Math.Min(userInput.Length - (GetPointerStart() - 2), GetPointerLength()));
-                        pointerIndex = pointerExtend > 0 ? pointerIndex : pointerIndex - (GetPointerLength() - 1);
-                        pointerExtend = 0;
-                    }
-
-                    userInput = userInput.Insert(pointerIndex - 2, c.keyInfo.KeyChar.ToString());
-                    pointerIndex++;
-                    SendConsoleMessage(new ConsoleLine($"> {userInput} ", fgColour, GetPointerAnimationFrame()), ConsoleLineUpdate.SameLine);
+                    data.Add(keyInfo.KeyChar.ToString());
                     break;
             }
+            data.Output();
         }
 
-        SendConsoleMessage(new ConsoleLine($"> {userInput}", fgColour, ConsoleColor.Black.ToArray()), ConsoleLineUpdate.SameLine, ConsoleAnimatedLine.None);
+        if (data.history.data[^1] != data.input) data.history.data.Add(data.input);
+        AppPersistentData.SaveFile(inputHistoryFilePath, data.history.data.TakeLast(Math.Min(data.history.data.Count, int.Parse(SettingsApp.GetValue("Input History")))).ToArray());
 
-        if (clear) ClearLines(promt.lineText != "" ? 1 : 0, true);
-        ShiftLine(goNextLine ? 1 : 0);
+        data.Clean(clear);
+        ShiftLine(skipLine ? 1 : 0);
 
-        if (!(userInputPointer == userInputMemory.Count - 1 && userInput == userInputMemory[^1])) userInputMemory.Add(userInput);
-        return userInput;
-
-        // --- POINTER ANIMATION ---
-
-        // animation for updating the pointer
-        void PointerAnimation(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
-        {
-            if ((tickNum - animationInfo.initTick) % 40 != 0) bgColour = ConsoleColor.Black.ToArray();
-            else bgColour = GenerateCursorFrame();
-
-            lineInfo.Update(lineInfo.lineColour, bgColour);
-        }
-
-        // get the current cursor animation frame
-        ConsoleColor[] GetPointerAnimationFrame()
-        {
-            return bgColour.Length == 1 ? bgColour : GenerateCursorFrame();
-        }
-
-        ConsoleColor[] GenerateCursorFrame()
-        {
-            return AdvancedHighlight(3 + userInput.Length, ConsoleColor.Black, ConsoleColor.White, (GetPointerStart(), GetPointerLength()));
-        }
-
-        // --- POINTER EXTENSION MATH ---
-
-        int GetPointerStart() { return pointerIndex + (pointerExtend < 0 ? pointerExtend : 0); }
-        int GetPointerLength() { return 1 + Math.Abs(pointerExtend); }
-
-        // --- WORD INFO ---
-
-        (int last, int next) GetWordIndex()
-        {
-            List<int> wordIndex = new List<int>();
-
-            for (int i = 1; i < userInput.Length; i++)
-            {
-                if (userInput[i - 1] == ' ' && userInput[i] != ' ') wordIndex.Add(i);
-            }
-
-            int last = 0, next = userInput.Length;
-
-            for (int i = 0; i < wordIndex.Count; i++)
-            {
-                if (wordIndex[i] < pointerIndex - 2) last = wordIndex[i];
-                else if (wordIndex[i] > pointerIndex - 2 && next == userInput.Length) next = wordIndex[i];
-            }
-
-            return (last, next);
-        }
+        return data.input;
     }
 
     /// <summary> Gets input from the user (input length capped at buffer width). </summary>
-    public static string GetUserInput(string promt = "", bool clear = false, bool goNextLine = false) { return GetUserInput(new ConsoleLine(promt, AppRegistry.activeApp.colourScheme.primaryColour), clear, goNextLine); }
+    public static string GetUserInput(string promt = "", bool clear = false, bool goNextLine = false, int maxLineCount = 1) { return GetUserInput(new ConsoleLine(promt, AppRegistry.activeApp.colourScheme.primaryColour), clear, goNextLine, "", maxLineCount); }
+
+    /// <summary> Class responsible all of the data and it's manipulation while taking a user's input. </summary>
+    class InputData
+    {
+        public string input = "";
+
+        public (int index, int extension) pointer;
+        public (int startIndex, int lastCount, int maxCount) lines;
+        public (int index, List<string> data) history;
+        public (bool show, bool skipUpdate, ConsoleColor[][] data) anim; //animation
+
+        public int PointerLength => Math.Abs(pointer.extension) + 1;
+        public int PointerRelativeIndex => pointer.index + pointer.extension;
+        public int LineLength => windowSize.width - 5;
+
+        public InputData(string input, int maxLineCount)
+        {
+            this.input = input;
+            this.pointer = (input.Length, 0);
+            this.lines = (primaryLineIndex, 1, maxLineCount);
+
+            this.history.data = [.. AppPersistentData.LoadFile(inputHistoryFilePath)];
+            this.history.index = history.data.Count;
+
+            this.anim = (true, false, new ConsoleColor[maxLineCount][]);
+
+            Output();
+        }
+
+        // --- POINTER ---
+
+        // updates the index and extension of the pointer, and if the animation should be forced.
+        public void UpdatePointer(int index, int extension, bool forceShowAnimation = false)
+        {
+            pointer = (index, extension);
+            if (forceShowAnimation) ForceShowAnimation();
+        }
+
+        // shifts position of the pointer, reseting and applying any extension.
+        public void ShiftPointerIndex(int shift)
+        {
+            if (pointer.extension != 0) pointer.index = Math.Clamp(PointerRelativeIndex, 0, input.Length);
+            pointer = (Math.Min(Math.Max(0, pointer.index + shift), input.Length), 0);
+        }
+
+        // gets the pointer in the form of the left most index, and the total length of the pointer. 
+        public (int index, int length) GetPointerFromLeft()
+        {
+            return (pointer.extension < 0 ? PointerRelativeIndex : pointer.index, PointerLength);
+        }
+
+        // --- INPUT --
+
+        // Adds given string to input string, based on the current location of the pointer.
+        public void Add(string s)
+        {
+            s = s[..Math.Min(LineLength * lines.maxCount - (input.Length + 3), s.Length)];
+
+            input = input.Insert(pointer.index, s);
+            ShiftPointerIndex(s.Length);
+        }
+
+        // Removes currently targeted text from the input string (via the pointer). 
+        public void Remove()
+        {
+            if (pointer.extension == 0)
+            {
+                input = input[..(pointer.index - Math.Min(pointer.index, 1))] + input[pointer.index..];
+                ShiftPointerIndex(-1);
+                return;
+            }
+
+            (int index, int length) cur = GetPointerFromLeft();
+            ShiftPointerIndex(-1);
+            input = input[..cur.index] + ((cur.index + cur.length >= input.Length) ? "" : input[(cur.index + cur.length)..]);
+            pointer.index = cur.index;
+        }
+
+        // Resizes the input to fit current terminal constraints.
+        public void Resize()
+        {
+            int maxLength = LineLength * lines.maxCount - 3;
+            if (maxLength < input.Length) input = input[..maxLength];
+
+            pointer.index = Math.Min(pointer.index, input.Length);
+            Output();
+        }
+
+        // --- OUTPUT ---
+
+        public void Output()
+        {
+            string whiteSpacedInput = input + " ";
+            int index = 0, lineCount = 0;
+
+            GoToLine(lines.startIndex);
+            while (index < whiteSpacedInput.Length)
+            {
+                int len = Math.Min(index == 0 ? LineLength - 2 : LineLength, whiteSpacedInput.Length - index);
+                SendConsoleMessage(CreateConsoleLineData(whiteSpacedInput, index, len, lineCount));
+
+                index += len;
+                lineCount += 1;
+            }
+
+            if (primaryLineIndex - lineCount != lines.startIndex) lines.startIndex = primaryLineIndex - lineCount; // we hit bottom of console so need to adjust
+            if (lines.lastCount > lineCount)
+            {
+                for (int i = 0; i < lines.lastCount - lineCount; i++) SendConsoleMessage(new ConsoleLine(), ConsoleAnimatedLine.None);
+                ShiftLine(-(lines.lastCount - lineCount));
+            }
+
+            ShiftLine(-1);
+
+            lines.lastCount = lineCount;
+        }
+
+        // Creates a console line based of the input.
+        ConsoleLine CreateConsoleLineData(string whiteSpacedInput, int startIndex, int length, int index)
+        {
+            anim.data[index] = startIndex == 0 ? BuildArray(ConsoleColor.Black.Extend(2), CreateAnimationLineData(whiteSpacedInput, startIndex)) : CreateAnimationLineData(whiteSpacedInput, startIndex);
+
+            return startIndex == 0 ?
+            new ConsoleLine($"> {whiteSpacedInput.Substring(startIndex, length)}", BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour, ConsoleColor.White.ToArray()), GetLineAnimationData(index)) :
+            new ConsoleLine(whiteSpacedInput.Substring(startIndex, length), ConsoleColor.White.ToArray(), GetLineAnimationData(index));
+        }
+
+        // removes cursor animation, and clears input if required.
+        public void Clean(bool clear)
+        {
+            GoToLine(lines.startIndex);
+            for (int i = 0; i < lines.lastCount; i++)
+            {
+                ConsoleLine cl = ConsoleAction.GetConsoleLine(lines.startIndex + i);
+                SendConsoleMessage(clear ? new ConsoleLine() : new ConsoleLine(cl.lineText, cl.lineColour, [ConsoleColor.Black]), ConsoleAnimatedLine.None);
+
+                if (i == lines.lastCount - 1 && cl.lineText == " ") ShiftLine(-1); // edge case where no text on last line but cursor is
+            }
+            ShiftLine(clear ? -lines.lastCount - 1 : -1);
+        }
+
+        // --- INFO ---
+
+        // Gets information about the locations of the left and right jump points for the pointer.
+        public (int left, int right) GetPointerJumpInfo()
+        {
+            string spaceChars = SettingsApp.GetValue("Cursor Jump Separators");
+
+            string s = input + " ";
+            int i = PointerRelativeIndex, j = PointerRelativeIndex - 1;
+
+            while (i < s.Length - 1)
+            {
+                if (!spaceChars.Contains(s[i]) && spaceChars.Contains(s[i + 1])) break;
+                i++;
+            }
+            i++;
+
+            while (j > 0)
+            {
+                if (!spaceChars.Contains(s[j]) && spaceChars.Contains(s[j - 1])) break;
+                j--;
+            }
+
+            return (Math.Max(j, 0), Math.Min(i, input.Length));
+        }
+
+        // Gets information about the current line based on the pointer.
+        public (int startIndex, int endIndex, int length) GetLineInfo()
+        {
+            int lineIndex = (PointerRelativeIndex + 2) / LineLength;
+            int lineStartIndex = lineIndex == 0 ? 0 : lineIndex * LineLength - 2;
+            int lineLength = lineIndex == 0 ? Math.Min(LineLength - 3, input.Length - lineStartIndex) : Math.Min(LineLength - 1, input.Length - lineStartIndex);
+            return (lineStartIndex, lineStartIndex + lineLength, lineLength);
+        }
+
+        // --- ANIMATION ---
+
+        // updates the animation of the input line(s)
+        public void AnimationLoop(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
+        {
+            if (!anim.skipUpdate) anim.show = !anim.show;
+            anim.skipUpdate = false;
+
+            for (int i = lines.startIndex; i < lines.startIndex + lines.lastCount; i++)
+            {
+                ConsoleLine cl = ConsoleAction.GetConsoleLine(i);
+                if (!anim.show) UpdatePrimaryConsoleLine(new ConsoleLine(cl.lineText, cl.lineColour, [ConsoleColor.Black]), i);
+                else UpdatePrimaryConsoleLine(new ConsoleLine(cl.lineText, cl.lineColour, anim.data[i - lines.startIndex]), i);
+            }
+        }
+
+        // Creates animation data for a given line.
+        ConsoleColor[] CreateAnimationLineData(string s, int startIndex)
+        {
+            bool partialPointer = false; // if the pointer passes through the line without ending.
+
+            (int index, int length) cur = GetPointerFromLeft();
+
+            if (cur.index < startIndex && cur.index + cur.length > startIndex)
+            {
+                cur = (startIndex, cur.length - (startIndex - cur.index));
+                partialPointer = true;
+            }
+
+            List<(ConsoleColor[] arr, int i, int len)> highlights = [];
+            if (cur.length == 1) highlights = [(ConsoleColor.White.ToArray(), cur.index - startIndex, 1)];
+            else if (pointer.extension < 0) highlights = [(partialPointer ? ConsoleColor.DarkGray.ToArray() : ConsoleColor.White.ToArray(), cur.index - startIndex, 1), (ConsoleColor.DarkGray.ToArray(), cur.index + 1 - startIndex, cur.length - 1)];
+            else highlights = [(ConsoleColor.DarkGray.ToArray(), cur.index - startIndex, cur.length - 1), (ConsoleColor.White.ToArray(), cur.index + cur.length - 1 - startIndex, 1)];
+
+            return AdvancedHighlight(s.Length, ConsoleColor.Black, highlights.ToArray());
+        }
+
+        // gets the current animation data for a given line
+        public ConsoleColor[] GetLineAnimationData(int lineIndex)
+        {
+            if (anim.show) return anim.data[lineIndex];
+            else return [ConsoleColor.Black];
+        }
+
+        // forces the animation to show for the rest of the current frame, and the next frame
+        public void ForceShowAnimation()
+        {
+            anim.show = true;
+            anim.skipUpdate = true;
+        }
+    }
+
+    // --- ALL OTHER INPUT FUNCTIONS ---
 
     /// <summary> Gets input from the user, verifying it matches the conditions of given UserInputProfile. </summary>
-    public static string GetValidUserInput(ConsoleLine promt, UserInputProfile inputProfile, string prefilledText = "")
+    public static string GetValidUserInput(ConsoleLine promt, UserInputProfile inputProfile, string prefilledText = "", int maxLineCount = 1)
     {
         while (true)
         {
-            string input = GetUserInput(promt, true, false, prefilledText);
+            string input = GetUserInput(promt, true, false, prefilledText, maxLineCount);
             if (inputProfile.InputValid(input)) return input;
         }
     }
 
     /// <summary> Gets input from the user, verifying it matches the conditions of given UserInputProfile. </summary>
-    public static string GetValidUserInput(string promt, UserInputProfile inputProfile, string prefilledText = "") { return GetValidUserInput(new ConsoleLine(promt, AppRegistry.activeApp.colourScheme.primaryColour), inputProfile, prefilledText); }
+    public static string GetValidUserInput(string promt, UserInputProfile inputProfile, string prefilledText = "", int maxLineCount = 1) { return GetValidUserInput(new ConsoleLine(promt, AppRegistry.activeApp.colourScheme.primaryColour), inputProfile, prefilledText, maxLineCount); }
 
     /// <summary> Waits for user to input given key, pausing program until pressed. </summary>
     // will update once dynamic lines get updated
@@ -292,11 +450,11 @@ public static class UserInput
     static int metaOptionsLines = 0;
 
     /// <summary> Creates menu from given options, allowing user to pick one. </summary>
-    public static int CreateOptionMenu(string title, ConsoleLine[] options, bool clear = true, int cursorStartIndex = 0)
+    public static int CreateOptionMenu(ConsoleLine title, ConsoleLine[] options, bool clear = true, int cursorStartIndex = 0)
     {
         if (options.Length < 2) return 0;
 
-        if (title != "") SendConsoleMessage(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour));
+        if (title.lineText != "") SendConsoleMessage(title);
 
         int[] optionLines = new int[options.Length];
 
@@ -315,7 +473,7 @@ public static class UserInput
         consoleLines[optionLines[0 + Math.Clamp(cursorStartIndex, 0, options.Length - 1)]].Update(options[0 + Math.Clamp(cursorStartIndex, 0, options.Length - 1)].lineText + " <-");
         int pointer = optionLines[cursorStartIndex];
 
-        ConsoleLine[] metaOptions = new ConsoleLine[(title != "" ? 1 : 0) + metaOptionsLines];
+        ConsoleLine[] metaOptions = new ConsoleLine[(title.lineText != "" ? 1 : 0) + metaOptionsLines];
         for (int i = 0; i < metaOptions.Length; i++)
         {
             metaOptions[i] = consoleLines[optionLines[0] - metaOptions.Length + i];
@@ -352,7 +510,7 @@ public static class UserInput
                 if (clear)
                 {
                     GoToLine(optionLines[^1]);
-                    ClearLines(optionLines[^1] - (optionLines[0] - 1 + (title == "" ? 1 : 0)), true, true);
+                    ClearLines(optionLines[^1] - (optionLines[0] - 1 + (title.lineText == "" ? 1 : 0)), true, true);
                 }
                 return pointer - optionLines[0];
             }
@@ -364,10 +522,24 @@ public static class UserInput
         }
     }
 
+    /// <summary> Creates menu from given options, allowing user to pick one. </summary>
+    public static int CreateOptionMenu(string title, ConsoleLine[] options, bool clear = true, int cursorStartIndex = 0)
+    {
+        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour), options, clear, cursorStartIndex);
+    }
+
     /// <summary> Creates menu from given consoleLine options, allowing user to pick one, and invoking the associated action. </summary>
     public static int CreateOptionMenu(string title, (ConsoleLine name, Action action)[] options, bool clear = true, int cursorStartIndex = 0)
     {
-        int option = CreateOptionMenu(title, options.Select(option => option.name).ToArray(), clear, cursorStartIndex);
+        int option = CreateOptionMenu(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour), options.Select(option => option.name).ToArray(), clear, cursorStartIndex);
+        options[option].action.Invoke();
+        return option;
+    }
+
+    /// <summary> Creates menu from given text options, allowing user to pick one, and invoking the associated action. </summary>
+    public static int CreateOptionMenu(ConsoleLine title, (string name, Action action)[] options, bool clear = true, int cursorStartIndex = 0)
+    {
+        int option = CreateOptionMenu(title, options.Select(option => new ConsoleLine(option.name)).ToArray(), clear, cursorStartIndex);
         options[option].action.Invoke();
         return option;
     }
@@ -375,26 +547,24 @@ public static class UserInput
     /// <summary> Creates menu from given text options, allowing user to pick one, and invoking the associated action. </summary>
     public static int CreateOptionMenu(string title, (string name, Action action)[] options, bool clear = true, int cursorStartIndex = 0)
     {
-        int option = CreateOptionMenu(title, options.Select(option => new ConsoleLine(option.name)).ToArray(), clear, cursorStartIndex);
-        options[option].action.Invoke();
-        return option;
+        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour), options, clear, cursorStartIndex);
     }
 
     /// <summary> Creates menu from given text options, allowing user to pick one. </summary>
     public static int CreateOptionMenu(string title, string[] options, bool clear = true, int cursorStartIndex = 0)
     {
-        return CreateOptionMenu(title, options.Select(option => new ConsoleLine(option)).ToArray(), clear, cursorStartIndex);
+        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour), options.Select(option => new ConsoleLine(option)).ToArray(), clear, cursorStartIndex);
     }
 
     /// <summary> Creates menu, allowing user to select either yes or no. </summary>
     public static bool CreateTrueFalseOptionMenu(string title, string trueOption = "Yes", string falseOption = "No", bool clear = true, int cursorStartIndex = 0)
     {
-        if (CreateOptionMenu(title, new ConsoleLine[] { new ConsoleLine(trueOption), new ConsoleLine(falseOption) }, clear, cursorStartIndex) == 0) return true;
+        if (CreateOptionMenu(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour), [new ConsoleLine(trueOption, AppRegistry.activeApp.colourScheme.secondaryColour), new ConsoleLine(falseOption, AppRegistry.activeApp.colourScheme.secondaryColour)], clear, cursorStartIndex) == 0) return true;
         return false;
     }
 
     /// <summary> Creates menu from given options, spliting into pages, allowing user to pick one (pinnedOptions return negative index). </summary>
-    public static int CreateMultiPageOptionMenu(string title, ConsoleLine[] options, ConsoleLine[] pinnedOptions, int optionsPerPage)
+    public static int CreateMultiPageOptionMenu(string title, ConsoleLine[] options, ConsoleLine[] pinnedOptions, int optionsPerPage, int cursorStartIndex = 0)
     {
         if (options.Length + pinnedOptions.Length < 2) return 0;
 
@@ -405,7 +575,7 @@ public static class UserInput
                     new ConsoleLine("Previous Page", AppRegistry.activeApp.colourScheme.primaryColour)
                 }.Concat(pinnedOptions).ToArray();
 
-        int currentPage = 0, totalPages = (options.Length - 1) / optionsPerPage;
+        int currentPage = cursorStartIndex / optionsPerPage, totalPages = (options.Length - 1) / optionsPerPage, resultIndex = cursorStartIndex % optionsPerPage;
 
         metaOptionsLines = 1;
         while (true)
@@ -417,27 +587,29 @@ public static class UserInput
             AppRegistry.activeApp.colourScheme.secondaryColour.Extend($"[{currentPage + 1}/{currentPage + 1}]".Length, true),
             AppRegistry.activeApp.colourScheme.primaryColour.Extend(4))));
 
-            int result = CreateOptionMenu("", pgOptions.Select(o => new ConsoleLine(o)).ToArray());
+            resultIndex = CreateOptionMenu("", pgOptions.Select(o => new ConsoleLine(o)).ToArray(), cursorStartIndex: resultIndex);
 
-            if (result == pgOptions.Length - 2 - pinnedOptions.Length)
+            if (resultIndex == pgOptions.Length - 2 - pinnedOptions.Length)
             {
                 currentPage = currentPage < totalPages ? currentPage + 1 : 0;
+                resultIndex = 0;
             }
-            else if (result == pgOptions.Length - 1 - pinnedOptions.Length)
+            else if (resultIndex == pgOptions.Length - 1 - pinnedOptions.Length)
             {
                 currentPage = currentPage > 0 ? currentPage - 1 : totalPages;
+                resultIndex = 0;
             }
-            else if (result > pgOptions.Length - 2 - pinnedOptions.Length)
+            else if (resultIndex > pgOptions.Length - 2 - pinnedOptions.Length)
             {
                 ClearLines(updateCurrentLine: true);
                 metaOptionsLines = 0;
-                return -result + (pgOptions.Length - (pgExtraOptions.Length - 1));
+                return -resultIndex + (pgOptions.Length - (pgExtraOptions.Length - 1));
             }
             else
             {
                 ClearLines(updateCurrentLine: true);
                 metaOptionsLines = 0;
-                return result + currentPage * optionsPerPage;
+                return resultIndex + currentPage * optionsPerPage;
             }
 
             ClearLines(updateCurrentLine: true);
@@ -445,7 +617,7 @@ public static class UserInput
     }
 
     /// <summary> Creates menu from given options, spliting into pages, allowing user to pick one. </summary>
-    public static int CreateMultiPageOptionMenu(string title, ConsoleLine[] options, int optionsPerPage) { return CreateMultiPageOptionMenu(title, options, new ConsoleLine[0], optionsPerPage); }
+    public static int CreateMultiPageOptionMenu(string title, ConsoleLine[] options, int optionsPerPage, int cursorStartIndex = 0) { return CreateMultiPageOptionMenu(title, options, new ConsoleLine[0], optionsPerPage, cursorStartIndex); }
 
     /// <summary> Creates menu from given messages, spliting into pages, allowing user to view. </summary>
     public static void CreateReadMenu(string title, int messagesPerPage, (ConsoleLine name, Action action)[] extraOptions, params ConsoleLine[] messages)

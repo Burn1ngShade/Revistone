@@ -1,0 +1,97 @@
+Cambridge Interview Revision
+00:56:12.3496692
+00:02:37.3585622
+511
+498
+30
+22
+0
+1/sinx = 
+cosecx
+0
+1/cosx = 
+secx
+0
+1/tanx = 
+cotx
+0
+tanx =
+sinx/cosx
+0
+cotx = 
+cosx/sinx
+0
+sin^2(x)+cos^2(x) = 
+1
+0
+1+cot^2(x) =
+cosec^2(x)
+0
+tan^2(x)+1 =
+sec^2(x)
+0
+sin(A+B) =
+sinAcosB+cosAsinB
+0
+sin(A-B) =
+sinAcosB-cosAsinB
+0
+cos(A+B) =
+cosAcosB-sinAsinB
+0
+cos(A-B) =
+cosAcosB+sinAsinB
+0
+tan(A+B) =
+(tanA+tanB)/(1-tanAtanB)
+0
+tan(A-B) = 
+(tanA-tanB)/(1+tanAtanB)
+0
+sin(2A) =
+2sinAcosA
+0
+cos(2A) = 
+cos^2(A)-sin^2(A)
+0
+tan2A = 
+2tanA/(1-tan^2(A))
+0
+sinA+sinB = 
+2sin((A+B)/2)cos((A-B)/2)
+0
+sinA-sinB = 
+2cos((A+B)/2)sin((A-B)/2)
+0
+cosA+cosB = 
+2cos((A+B)/2)cos((A-B)/2)
+0
+cosA-cosB = 
+-2sin((A+B)/2)sin((A-B)/2)
+0
+nCr
+n!/(r!(n-r)!)
+0
+nPr
+n!/(n-r)!
+0
+sum(n) =
+(n/2)(n+1)
+0
+sum(n^2) = 
+(n/6)(n+1)(2n+1)
+0
+v^2 = 
+u^2+2as
+0
+v = 
+u+at
+0
+s = ut + 
+(1/2)at^2
+0
+s = vt - 
+(1/2)at^2
+0
+s = 
+((u+v)/2)t

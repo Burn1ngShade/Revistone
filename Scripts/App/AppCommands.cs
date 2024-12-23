@@ -1,3 +1,4 @@
+using Revistone.Apps.Calculator;
 using Revistone.Apps.HoneyC;
 using Revistone.Console;
 using Revistone.Functions;
@@ -5,6 +6,7 @@ using Revistone.Interaction;
 using Revistone.Management;
 
 using static Revistone.Console.ConsoleAction;
+using static Revistone.Functions.ColourFunctions;
 
 namespace Revistone.Apps;
 
@@ -12,7 +14,7 @@ namespace Revistone.Apps;
 public static class AppCommands
 {
     /// <summary> Array of all built in commands. </summary>
-    static (UserInputProfile format, Action<string> payload, string summary)[] baseCommands = new (UserInputProfile, Action<string>, string summary)[] {
+    public static (UserInputProfile format, Action<string> payload, string summary)[] baseCommands = new (UserInputProfile, Action<string>, string summary)[] {
                 //useful commands
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "help", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => {if (baseCommands != null) Help((baseCommands.Select(cmd => StringFunctions.AdjustCapitalisation(cmd.format.inputFormat, StringFunctions.CapitalCasing.FirstLetterUpper)).ToArray(), baseCommands.Select(cmd => cmd.summary).ToArray())); },
@@ -22,10 +24,12 @@ public static class AppCommands
                 "List Of All App Specfic Commands And Their Descriptions."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "apps", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => {
-                    int i = UserInput.CreateMultiPageOptionMenu("Apps:", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray(), new ConsoleLine[] {new ConsoleLine("Exit")}, 3);
+                    int i = UserInput.CreateMultiPageOptionMenu("Apps:", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray(), [new ConsoleLine("Exit")], 4);
                     if (i >= 0) LoadApp($"Load{AppRegistry.appRegistry[i].name}");
                 },
                 "Menu To Load Apps."),
+                (new UserInputProfile(UserInputProfile.InputType.FullText, "hotkeys", caseSettings: StringFunctions.CapitalCasing.Lower,  removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => { Hotkeys(); }, "Displays List Of Console Hotkeys."),
                 (new UserInputProfile(new UserInputProfile.InputType[] {}, "load[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { LoadApp(s); },
                 "Loads App With The Given Name ([A:] meaning name of app)."),
@@ -42,17 +46,28 @@ public static class AppCommands
                 (s) => { ClearDebugConsole(); },
                 "Clears Debug Console."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "time", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => { SendConsoleMessage(new ConsoleLine($"{DateTime.Now.ToString()}.", AppRegistry.activeApp.colourScheme.primaryColour)); },
+                (s) => { SendConsoleMessage(new ConsoleLine($"{DateTime.Now}.", AppRegistry.activeApp.colourScheme.primaryColour)); },
                 "Prints The Current System Time."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "runtime", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { SendConsoleMessage(new ConsoleLine($"Revistone Has Been Running For {(Manager.currentTick / 40d).ToString("0.00")} Seconds.", AppRegistry.activeApp.colourScheme.primaryColour)); },
                 "Prints The Runtime Of The Current Session."),
-                (new UserInputProfile("comp[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true), (s) => {HoneyCInterpreter.Intepret(s[4..]); }, "Carries Out Given HoneyC Promt."),
-                //test commands
-                (new UserInputProfile(new UserInputProfile.InputType[] {}, "debug[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (new UserInputProfile("comp[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true), (s) => {HoneyCInterpreter.Interpret(s[4..]); }, "Carries Out Given HoneyC Promt."),
+                (new UserInputProfile("calc[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true), (s) => {CalculatorInterpreter.Intepret(s[4..]); }, "Carries Out Given Calculator Promt."),
+                (new UserInputProfile("file comp[A:]", caseSettings: StringFunctions.CapitalCasing.Lower), (s) => {LoadHoneyCFile(s[9..]); }, "Loads And Carries Out Given HoneyCFile"),
+                (new UserInputProfile("debug[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { SendDebugMessage(s.Substring(5).TrimStart()); }, "Sends Debug Message [A:] ([A:] being the message)."),
-                (new UserInputProfile(new UserInputProfile.InputType[] {}, "profiler toggle", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (new UserInputProfile("profiler toggle", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => { Profiler.SetEnabled(!Profiler.enabled); }, "Toggles Profiler On Or Off."),
+                (new UserInputProfile("gpt[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => { GPTFunctions.Query(s[3..], true); }, "Interact With Custom Revistone ChatGPT Model, In A Back And Forth Conversation."),
+                (new UserInputProfile("snap gpt[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => { GPTFunctions.Query(s[8..], false); }, "Interact With Custom Revistone ChatGPT Model, In A Single Message."),
+                (new UserInputProfile("clear gpt", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => { GPTFunctions.ClearMessageHistory(); }, "Wipe Message History Of ChatGPT Model."),
+                (new UserInputProfile("get setting[A:]", removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => { GetSetting(s[11..]); }, "Get The Value Of Given Setting."),
+                (new UserInputProfile("set setting[A:]", removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => { SetSetting(s[11..]); }, "Get The Value Of Given Setting."),
 
             };
 
@@ -75,6 +90,36 @@ public static class AppCommands
         else Help(commands);
     }
 
+    static (string keyCombo, string description)[] hotkeys = [
+        ("Ctrl + Shift + P", "Toggles Profiler."),
+        ("Shift + Upwards Arrow", "Jump To Top Of Input History."),
+        ("Shift + Downwards Arrow", "Jump To End Of Input History."),
+        ("Shift + Leftwards Arrow", "Extend Selection To The Left."),
+        ("Shift + Rightwards Arrow", "Extend Selection To The Right."),
+        ("Ctrl + Leftwards Arrow", "Jump To Previous Seperator."),
+        ("Ctrl + Rightwards Arrow", "Jump To Next Seperator."),
+        ("Alt + Leftwards Arrow", "Extend Selection To The Previous Seperator."),
+        ("Alt + Rightwards Arrow", "Extend Selection To The Next Seperator."),
+        ("Alt + Backspace", "Delete Text Up To The Previous Seperator."),
+        ("Alt + X", "Cut Selected Text To Clipboard."),
+        ("Alt + C", "Copy Selected Text To Clipboard."),
+        ("Alt + V", "Paste Clipboard."),
+        ("Alt + S", "Jump To Start Of Line."),
+        ("Alt + E", "Jump To End Of Line."),
+        ("Alt + B", "Jump To Start Of Text."),
+        ("Alt + D", "Jump To End Of Text."),
+        ("Alt + L", "Select Line."),
+        ("Alt + A", "Select All."),
+    ];
+
+    /// <summary> Displays list of console hotkeys. </summary>
+    static void Hotkeys()
+    {
+        UserInput.CreateReadMenu("Hotkeys", 5,
+        hotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}]: {x.description}", 
+        BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour.Extend(x.keyCombo.Length + 3), AppRegistry.activeApp.colourScheme.primaryColour.ToArray()))).ToArray());
+    }
+
     /// <summary> Gives user Y/N option to reload current app. </summary>
     static void ReloadApp(string userInput)
     {
@@ -88,7 +133,7 @@ public static class AppCommands
     {
         if (userInput.Trim().Length == 4) //submitted empty load request
         {
-            int i = UserInput.CreateMultiPageOptionMenu("Apps:", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 3);
+            int i = UserInput.CreateMultiPageOptionMenu("Apps:", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 4);
             if (i >= 0) LoadApp($"Load{AppRegistry.appRegistry[i].name}");
             return;
         }
@@ -109,6 +154,43 @@ public static class AppCommands
         else
         {
             SendConsoleMessage(new ConsoleLine($"App Named [{appName}] Could Not Be Found!", AppRegistry.activeApp.colourScheme.primaryColour), new ConsoleLineUpdate());
+        }
+    }
+
+    /// <summary> Returns value of setting with a given name. </summary>
+    static void GetSetting(string userInput)
+    {
+        userInput = userInput.TrimStart();
+        if (SettingsApp.SettingExists(userInput))
+        {
+            SettingsApp.HandleSettingGet(userInput);
+        }
+        else SendConsoleMessage(new ConsoleLine($"Setting [{userInput}] Could Not Be Found!", AppRegistry.activeApp.colourScheme.primaryColour));
+    }
+
+    /// <summary> Allows user to set setting with a given name. </summary>
+    static void SetSetting(string userInput)
+    {
+        userInput = userInput.TrimStart();
+        if (SettingsApp.SettingExists(userInput))
+        {
+            SettingsApp.HandleSettingSet(userInput);
+        }
+        else SendConsoleMessage(new ConsoleLine($"Setting [{userInput}] Could Not Be Found!", AppRegistry.activeApp.colourScheme.primaryColour));
+    }
+
+    /// <summary> Loads HoneyC File. </summary>
+    static void LoadHoneyCFile(string userInput)
+    {
+        userInput = userInput.Trim();
+
+        if (AppPersistentData.FileExists($"HoneyC/{userInput}"))
+        {
+            HoneyCInterpreter.Interpret(string.Join(" ", AppPersistentData.LoadFile($"HoneyC/{userInput}")));
+        }
+        else
+        {
+            SendConsoleMessage(new ConsoleLine($"File [{userInput}] Could Not Be Found!", AppRegistry.activeApp.colourScheme.primaryColour));
         }
     }
 

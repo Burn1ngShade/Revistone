@@ -6,19 +6,26 @@ namespace Revistone.Functions;
 public static class NumericalFunctions
 {
     /// <summary> Returns the median value from a sorted numerical list. </summary>
-    public static T GetMedian<T>(List<T> values) where T : IComparable<T>
+    public static float GetMedian(List<float> values)
     {
-        if (values.Count == 0) return (dynamic)0;
+        if (values.Count == 0) return 0;
 
         // is even or odd number of elements
         if (values.Count % 2 == 0) return ((dynamic)values[(values.Count / 2) - 1] + values[values.Count / 2]) / 2;
         else return values[values.Count / 2];
     }
-
     /// <summary> Returns the median value from a sorted numerical list. </summary>
-    public static T GetMedian<T>(T[] values) where T : IComparable<T> { return GetMedian(values.ToList()); }
+    public static float GetMedian(float[] values) { return GetMedian(values.ToList()); }
 
-   
+    // <summary> Returns the variance of a numerical list. </summary>
+    public static float GetVariance(List<float> values)
+    {
+        float mean = values.Sum() / values.Count;
+        return (values.Sum(x => x * x) / values.Count) - mean * mean;
+    }
+    // <summary> Returns the variance of a numerical list. </summary>
+    public static float GetVariance(float[] values) { return GetVariance(values.ToList()); }
+
     /// <summary> Checks if given object is numerical, or in numerical representation. </summary>
     public static bool IsNumber<T>(T value)
     {

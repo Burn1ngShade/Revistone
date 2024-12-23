@@ -3,6 +3,7 @@ using Revistone.Functions;
 using Revistone.Apps;
 
 using static Revistone.Functions.StringFunctions;
+using OpenAI.Assistants;
 
 namespace Revistone.Interaction;
 
@@ -23,6 +24,9 @@ public class UserInputProfile //really happy with this script atm
     public int charCount;
     public int wordCount;
 
+    public float numericMin;
+    public float numericMax;
+
     public bool canBeEmpty;
 
     //--- MODIFICATIONS ---
@@ -42,7 +46,8 @@ public class UserInputProfile //really happy with this script atm
     /// <summary> The configuration of the requirements of user input. </summary>
     public UserInputProfile(InputType[] validTypes, string inputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
     int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
-    bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false, OutputFormat outputFormat = OutputFormat.Standard)
+    bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
+    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard)
     {
         this.validInputTypes = validTypes;
         this.inputFormat = inputFormat;
@@ -55,21 +60,25 @@ public class UserInputProfile //really happy with this script atm
         this.removeWhitespace = removeWhitespace;
         this.removeLeadingWhitespace = removeLeadingWhitespace;
         this.removeTrailingWhitespace = removeTrailingWhitespace;
+        this.numericMin = numericMin;
+        this.numericMax = numericMax;
         this.outputFormat = outputFormat;
     }
 
     /// <summary> The configuration of the requirements of user input. </summary>
     public UserInputProfile(InputType validType, string inputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
     int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
-    bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false, OutputFormat outputFormat = OutputFormat.Standard) :
-    this(new InputType[] { validType }, inputFormat, bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, outputFormat)
+    bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
+    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard) :
+    this([validType], inputFormat, bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, outputFormat)
     { }
 
     /// <summary> The configuration of the requirements of user input. </summary>
     public UserInputProfile(string inputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
     int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
-    bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false, OutputFormat outputFormat = OutputFormat.Standard) :
-    this(new InputType[0], inputFormat, bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, outputFormat)
+    bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
+    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard) :
+    this([], inputFormat, bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, outputFormat)
     { }
 
     //--- FUNCTIONS ---
@@ -93,7 +102,7 @@ public class UserInputProfile //really happy with this script atm
         InputType inputType = GetInputType(modInput);
         int words = modInput.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
 
-        if (inputFormat != "" && !StringFunctions.Formatted(modInput, inputFormat)) errors.Add($"Input Does Not Meet Required Format: {inputFormat}!");
+        if (inputFormat != "" && !StringFunctions.InFormat(modInput, inputFormat)) errors.Add($"Input Does Not Meet Required Format: {inputFormat}!");
         char[] bannedChar = modInput.Where(c => bannedChars.Contains(c.ToString())).ToArray();
         if (bannedChar.Length > 0) errors.Add($"Input Can Not Have Characters: {bannedChar.ToElementString()}!");
         if (validInputTypes.Length != 0 && !validInputTypes.Contains(inputType)) errors.Add($"Input Recognised As [{inputType}], Should Be {validInputTypes.ToElementString()}!");
@@ -101,6 +110,17 @@ public class UserInputProfile //really happy with this script atm
         if (!canBeEmpty && modInput.Length == 0) errors.Add("Input Can Not Be Empty!");
         if (charCount > 0 && modInput.Length != charCount) errors.Add($"Input To {(charCount > modInput.Length ? "Short" : "Long")} [{modInput.Length}], Expected Length [{charCount}]!");
         if (wordCount > 0 && words != wordCount) errors.Add($"Input Contans [{words}] Words, Expected Word Count [{wordCount}]!");
+        if (numericMin != float.NegativeInfinity || numericMax != float.PositiveInfinity)
+        {
+            if (float.TryParse(modInput, out float numericValue))
+            {
+                if (numericMin > numericValue || numericMax < numericValue) errors.Add($"Input [{numericValue}] Is Not Within Range {numericMin} - {numericMax}!");
+            }
+            else
+            {
+                errors.Add($"Input Must Range From {numericMin} - {numericMax}, But Is Not Recognised As A Number!");
+            }
+        }
 
         // Output
 

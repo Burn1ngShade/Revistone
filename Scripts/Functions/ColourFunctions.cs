@@ -1,3 +1,4 @@
+using Revistone.Console;
 using static System.ConsoleColor;
 
 namespace Revistone.Functions;
@@ -10,45 +11,47 @@ public static class ColourFunctions
     // --- GRADIENTS ---
 
     /// <summary> Colour gradient, [Cyan, Dark Cyan]. </summary>
-    public static ConsoleColor[] CyanGradient { get { return new ConsoleColor[2] { Cyan, DarkCyan }; } }
+    public static ConsoleColor[] CyanGradient { get { return [Cyan, DarkCyan]; } }
     /// <summary> Colour gradient, [Blue, Dark Blue]. </summary>
-    public static ConsoleColor[] BlueGradient { get { return new ConsoleColor[2] { Blue, DarkBlue }; } }
+    public static ConsoleColor[] BlueGradient { get { return [Blue, DarkBlue]; } }
     /// <summary> Colour gradient, [Cyan, Dark Cyan]. </summary>
-    public static ConsoleColor[] MagentaGradient { get { return new ConsoleColor[2] { Magenta, DarkMagenta }; } }
+    public static ConsoleColor[] MagentaGradient { get { return [Magenta, DarkMagenta]; } }
     /// <summary> Colour gradient, [Red, Dark Red]. </summary>
-    public static ConsoleColor[] RedGradient { get { return new ConsoleColor[2] { Red, DarkRed }; } }
+    public static ConsoleColor[] RedGradient { get { return [Red, DarkRed]; } }
     /// <summary> Colour gradient, [Green, Dark Green]. </summary>
-    public static ConsoleColor[] GreenGradient { get { return new ConsoleColor[2] { Green, DarkGreen }; } }
+    public static ConsoleColor[] GreenGradient { get { return [Green, DarkGreen]; } }
     /// <summary> Colour gradient, [Yellow, Dark Yellow]. </summary>
-    public static ConsoleColor[] YellowGradient { get { return new ConsoleColor[2] { Yellow, DarkYellow }; } }
+    public static ConsoleColor[] YellowGradient { get { return [Yellow, DarkYellow]; } }
     /// <summary> Colour gradient, [Grey, Dark Grey]. </summary>
-    public static ConsoleColor[] GrayGradient { get { return new ConsoleColor[2] { Gray, DarkGray }; } }
+    public static ConsoleColor[] GrayGradient { get { return [Gray, DarkGray]; } }
     /// <summary> Colour gradient, [Red, Yellow]. </summary>
-    public static ConsoleColor[] RedAndYellow { get { return new ConsoleColor[2] { Red, Yellow }; } }
+    public static ConsoleColor[] RedAndYellow { get { return [Red, Yellow]; } }
     /// <summary> Colour gradient, [Red, Green]. </summary>
-    public static ConsoleColor[] RedAndGreen { get { return new ConsoleColor[2] { Red, Green }; } }
+    public static ConsoleColor[] RedAndGreen { get { return [Red, Green]; } }
     /// <summary> Colour gradient, [Red, Yellow, Green]. </summary>
-    public static ConsoleColor[] RedAndYellowAndGreen { get { return new ConsoleColor[3] { Red, Yellow, Green }; } }
+    public static ConsoleColor[] RedAndYellowAndGreen { get { return [Red, Yellow, Green]; } }
     /// <summary> Colour gradient, [Green, Blue]. </summary>
-    public static ConsoleColor[] GreenAndBlue { get { return new ConsoleColor[2] { Green, Blue }; } }
+    public static ConsoleColor[] GreenAndBlue { get { return [Green, Blue]; } }
     /// <summary> Colour gradient, [Green, Blue]. </summary>
-    public static ConsoleColor[] DarkGreenAndDarkBlue { get { return new ConsoleColor[2] { DarkGreen, DarkBlue }; } }
+    public static ConsoleColor[] DarkGreenAndDarkBlue { get { return [DarkGreen, DarkBlue]; } }
     /// <summary> Colour gradient, [Dark Blue, Magenta]. </summary>
-    public static ConsoleColor[] DarkBlueAndMagenta { get { return new ConsoleColor[2] { DarkBlue, Magenta }; } }
+    public static ConsoleColor[] DarkBlueAndMagenta { get { return [DarkBlue, Magenta]; } }
     /// <summary> Colour gradient, [White, Black]. </summary>
-    public static ConsoleColor[] WhiteAndBlack { get { return new ConsoleColor[2] { White, Black }; } }
+    public static ConsoleColor[] WhiteAndBlack { get { return [White, Black]; } }
     /// <summary> Colour gradient, [White, Grey, Grey, Black]. </summary>
-    public static ConsoleColor[] WhiteBlackGradient { get { return new ConsoleColor[4] { White, Gray, DarkGray, Black }; } }
+    public static ConsoleColor[] WhiteBlackGradient { get { return [White, Gray, DarkGray, Black]; } }
     /// <summary> Colour gradient, [Cyan, Dark Cyan, Blue, Dark Blue]. </summary>
-    public static ConsoleColor[] CyanDarkBlueGradient { get { return new ConsoleColor[4] { Cyan, DarkCyan, Blue, DarkBlue }; } }
+    public static ConsoleColor[] CyanDarkBlueGradient { get { return [Cyan, DarkCyan, Blue, DarkBlue]; } }
     /// <summary> Colour gradient, [Blue, Dark Blue, Magenta, Dark Magenta]. </summary>
-    public static ConsoleColor[] BlueDarkMagentaGradient { get { return new ConsoleColor[4] { Blue, DarkBlue, Magenta, DarkMagenta }; } }
+    public static ConsoleColor[] BlueDarkMagentaGradient { get { return [Blue, DarkBlue, Magenta, DarkMagenta]; } }
     /// <summary> Colour gradient, [Cyan, Dark Cyan, Blue, Dark Blue, Magenta, Dark Magenta]. </summary>
-    public static ConsoleColor[] CyanDarkMagentaGradient { get { return new ConsoleColor[6] { Cyan, DarkCyan, Blue, DarkBlue, Magenta, DarkMagenta }; } }
+    public static ConsoleColor[] CyanDarkMagentaGradient { get { return [Cyan, DarkCyan, Blue, DarkBlue, Magenta, DarkMagenta]; } }
     /// <summary> Colour gradient, [Red, Yellow, Green, Cyan, Blue, Magenta]. </summary>
-    public static ConsoleColor[] RainbowGradient { get { return new ConsoleColor[6] { Red, Yellow, Green, Cyan, Blue, Magenta }; } }
+    public static ConsoleColor[] RainbowGradient { get { return [Red, Yellow, Green, Cyan, Blue, Magenta]; } }
     /// <summary> Colour gradient, [Red, Green, Cyan, Blue, Magenta]. </summary>
-    public static ConsoleColor[] RainbowWithoutYellowGradient { get { return new ConsoleColor[5] { Red, Green, Cyan, Blue, Magenta }; } }
+    public static ConsoleColor[] RainbowWithoutYellowGradient { get { return [Red, Green, Cyan, Blue, Magenta]; } }
+    /// <summary> Colour gradient, [Cyan, Magenta, White, Magenta, Cyan]. </summary>
+    public static ConsoleColor[] TransPattern { get { return [Cyan, Magenta, White, Magenta, Cyan ]; }}
 
     // --- MODIFY ARRAY ---
 
@@ -248,7 +251,7 @@ public static class ColourFunctions
             {
                 c[i] = baseColours[baseIndex];
                 baseIndex = baseIndex < baseColours.Length - 1 ? baseIndex + 1 : 0;
-            }
+            }   
             else
             {
                 (ConsoleColor[] colours, int startIndex, int length) h = highlights[highlightIndex];
@@ -301,6 +304,8 @@ public static class ColourFunctions
                 wordStartIndex = i;
             }
         }
+
+        if (wordStartIndex != -1) words.Add((wordStartIndex, text.Length - wordStartIndex));
 
         List<(ConsoleColor[] colours, int startIndex, int length)> indexes = new List<(ConsoleColor[] colours, int startIndex, int length)>();
 

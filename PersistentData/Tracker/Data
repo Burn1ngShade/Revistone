@@ -3,7 +3,7 @@ DAY 17/09/2024
 Float-Int-
 Sleep (hours) - 6.0
 Float-Int-
-Weight - 73.8
+Weight (kg) - 73.8
 Int-
 Calories (kcals) - 1750
 Int-
@@ -32,7 +32,7 @@ DAY 18/09/2024
 Float-Int-
 Sleep (hours) - 8.75
 Float-Int-
-Weight - 73.7
+Weight (kg) - 73.7
 Int-
 Calories (kcals) - 2000
 Int-
@@ -61,7 +61,7 @@ DAY 19/09/2024
 Float-Int-
 Sleep (hours) - 8
 Float-Int-
-Weight - 74.8
+Weight (kg) - 74.8
 Int-
 Calories (kcals) - 2250
 Int-
@@ -90,7 +90,7 @@ DAY 20/09/2024
 Float-Int-
 Sleep (hours) - 8
 Float-Int-
-Weight - 75
+Weight (kg) - 75
 Int-
 Calories (kcals) - 2300
 Int-
@@ -119,7 +119,7 @@ DAY 21/09/2024
 Float-Int-
 Sleep (hours) - 9
 Float-Int-
-Weight - 74.3
+Weight (kg) - 74.3
 Int-
 Calories (kcals) - 1950
 Int-
@@ -148,7 +148,7 @@ DAY 22/09/2024
 Float-Int-
 Sleep (hours) - 9
 Float-Int-
-Weight - 73.4
+Weight (kg) - 73.4
 Int-
 Calories (kcals) - 1650
 Int-
@@ -177,7 +177,7 @@ DAY 23/09/2024
 Float-Int-
 Sleep (hours) - 8
 Float-Int-
-Weight - 74.8
+Weight (kg) - 74.8
 Int-
 Calories (kcals) - 1800
 Int-
@@ -206,7 +206,7 @@ DAY 24/09/2024
 Float-Int-
 Sleep (hours) - 8
 Float-Int-
-Weight - 73.2
+Weight (kg) - 73.2
 Int-
 Calories (kcals) - 1950
 Int-
@@ -235,7 +235,7 @@ DAY 25/09/2024
 Float-Int-
 Sleep (hours) - 8.25
 Float-Int-
-Weight - 73.3
+Weight (kg) - 73.3
 Int-
 Calories (kcals) - 1600
 Int-
@@ -264,7 +264,7 @@ DAY 26/09/2024
 Float-Int-
 Sleep (hours) - 7
 Float-Int-
-Weight - 72.8
+Weight (kg) - 72.8
 Int-
 Calories (kcals) - 1300
 Int-
@@ -297,7 +297,7 @@ DAY 27/09/2024
 Float-Int-
 Sleep (hours) - 8
 Float-Int-
-Weight - 72.8
+Weight (kg) - 72.8
 Int-
 Calories (kcals) - 2000
 Int-
@@ -330,7 +330,7 @@ DAY 28/09/2024
 Float-Int-
 Sleep (hours) - 9
 Float-Int-
-Weight - 72.8
+Weight (kg) - 72.8
 Int-
 Calories (kcals) - 2000
 Int-
@@ -363,7 +363,7 @@ DAY 29/09/2024
 Float-Int-
 Sleep (hours) - 10
 Float-Int-
-Weight - 72.8
+Weight (kg) - 72.8
 Int-
 Calories (kcals) - 2400
 Int-
@@ -396,7 +396,7 @@ DAY 30/09/2024
 Float-Int-
 Sleep (hours) - 8.5
 Float-Int-
-Weight - 75.4
+Weight (kg) - 75.4
 Int-
 Calories (kcals) - 2000
 Int-
@@ -429,7 +429,7 @@ DAY 01/10/2024
 Float-Int-
 Sleep (hours) - 8
 Float-Int-
-Weight - 75
+Weight (kg) - 75
 Int-
 Calories (kcals) - 2400
 Int-
@@ -462,7 +462,7 @@ DAY 02/10/2024
 Float-Int-
 Sleep (hours) - 9
 Float-Int-
-Weight - 74.4
+Weight (kg) - 74.4
 Int-
 Calories (kcals) - 2100
 Int-
@@ -495,7 +495,7 @@ DAY 03/10/2024
 Float-Int-
 Sleep (hours) - 7
 Float-Int-
-Weight - 73.6
+Weight (kg) - 73.6
 Int-
 Calories (kcals) - 1900
 Int-
@@ -528,7 +528,7 @@ DAY 04/10/2024
 Float-Int-
 Sleep (hours) - 8
 Float-Int-
-Weight - 73.6
+Weight (kg) - 73.6
 Int-
 Calories (kcals) - 1800
 Int-
@@ -561,7 +561,7 @@ DAY 05/10/2024
 Float-Int-
 Sleep (hours) - 7.5
 Float-Int-
-Weight - 72.3
+Weight (kg) - 72.3
 Int-
 Calories (kcals) - 2000
 Int-
@@ -594,7 +594,7 @@ DAY 06/10/2024
 Float-Int-
 Sleep (hours) - 5
 Float-Int-
-Weight - 73.4
+Weight (kg) - 73.4
 Int-
 Calories (kcals) - 3000
 Int-
@@ -627,7 +627,7 @@ DAY 07/10/2024
 Float-Int-
 Sleep (hours) - 7
 Float-Int-
-Weight - 73.3
+Weight (kg) - 73.3
 Int-
 Calories (kcals) - 2200
 Int-
@@ -660,7 +660,7 @@ DAY 08/10/2024
 Float-Int-
 Sleep (hours) - 8.5
 Float-Int-
-Weight - 74.4
+Weight (kg) - 74.4
 Int-
 Calories (kcals) - 1700
 Int-
@@ -693,7 +693,7 @@ DAY 09/10/2024
 Float-Int-
 Sleep (hours) - 9.5
 Float-Int-
-Weight - 73.4
+Weight (kg) - 73.4
 Int-
 Calories (kcals) - 1700
 Int-
@@ -726,7 +726,7 @@ DAY 10/10/2024
 Float-Int-
 Sleep (hours) - 8
 Float-Int-
-Weight - 73.4
+Weight (kg) - 73.4
 Int-
 Calories (kcals) - 2000
 Int-
@@ -759,7 +759,7 @@ DAY 11/10/2024
 Float-Int-
 Sleep (hours) - 8.5
 Float-Int-
-Weight - 73.6
+Weight (kg) - 73.6
 Int-
 Calories (kcals) - 1950
 Int-
@@ -792,7 +792,7 @@ DAY 12/10/2024
 Float-Int-
 Sleep (hours) - 8
 Float-Int-
-Weight - Not Tracked
+Weight (kg) - Not Tracked
 Int-
 Calories (kcals) - 2300
 Int-
@@ -825,7 +825,7 @@ DAY 13/10/2024
 Float-Int-
 Sleep (hours) - 9.5
 Float-Int-
-Weight - Not Tracked
+Weight (kg) - Not Tracked
 Int-
 Calories (kcals) - 3000
 Int-
@@ -858,7 +858,7 @@ DAY 14/10/2024
 Float-Int-
 Sleep (hours) - 7
 Float-Int-
-Weight - Not Tracked
+Weight (kg) - Not Tracked
 Int-
 Calories (kcals) - 2000
 Int-
@@ -891,7 +891,7 @@ DAY 15/10/2024
 Float-Int-
 Sleep (hours) - 8.5
 Float-Int-
-Weight - 72.6
+Weight (kg) - 72.6
 Int-
 Calories (kcals) - 1600
 Int-
@@ -924,7 +924,7 @@ DAY 16/10/2024
 Float-Int-
 Sleep (hours) - 9
 Float-Int-
-Weight - 72.1
+Weight (kg) - 72.1
 Int-
 Calories (kcals) - Not Tracked
 Int-
@@ -957,7 +957,7 @@ DAY 17/10/2024
 Float-Int-
 Sleep (hours) - 8
 Float-Int-
-Weight - 75.4
+Weight (kg) - 75.4
 Int-
 Calories (kcals) - Not Tracked
 Int-
@@ -990,7 +990,7 @@ DAY 18/10/2024
 Float-Int-
 Sleep (hours) - 7
 Float-Int-
-Weight - 73.4
+Weight (kg) - 73.4
 Int-
 Calories (kcals) - 2000
 Int-
@@ -1023,7 +1023,7 @@ DAY 19/10/2024
 Float-Int-
 Sleep (hours) - 7
 Float-Int-
-Weight - 74.0
+Weight (kg) - 74.0
 Int-
 Calories (kcals) - 2100
 Int-
@@ -1056,7 +1056,7 @@ DAY 20/10/2024
 Float-Int-
 Sleep (hours) - 9
 Float-Int-
-Weight - Not Tracked
+Weight (kg) - Not Tracked
 Int-
 Calories (kcals) - 2300
 Int-
@@ -1089,7 +1089,7 @@ DAY 21/10/2024
 Float-Int-
 Sleep (hours) - 6
 Float-Int-
-Weight - 75.6
+Weight (kg) - 75.6
 Int-
 Calories (kcals) - 2200
 Int-
@@ -1124,7 +1124,7 @@ DAY 22/10/2024
 Float-Int-
 Sleep (hours) - 9
 Float-Int-
-Weight - 75
+Weight (kg) - 75
 Int-
 Calories (kcals) - 2013
 Int-
@@ -1159,7 +1159,7 @@ DAY 23/10/2024
 Float-Int-
 Sleep (hours) - 8.5
 Float-Int-
-Weight - 75.1
+Weight (kg) - 75.1
 Int-
 Calories (kcals) - 2000
 Int-
@@ -1194,7 +1194,7 @@ DAY 24/10/2024
 Float-Int-
 Sleep (hours) - 9
 Float-Int-
-Weight - 74.7
+Weight (kg) - 74.7
 Int-
 Calories (kcals) - 2200
 Int-
@@ -1229,7 +1229,7 @@ DAY 25/10/2024
 Float-Int-
 Sleep (hours) - 9
 Float-Int-
-Weight - Not Tracked
+Weight (kg) - Not Tracked
 Int-
 Calories (kcals) - 2800
 Int-
@@ -1264,7 +1264,7 @@ DAY 26/10/2024
 Float-Int-
 Sleep (hours) - 8
 Float-Int-
-Weight - Not Tracked
+Weight (kg) - Not Tracked
 Int-
 Calories (kcals) - 2200
 Int-
@@ -1299,7 +1299,77 @@ DAY 27/10/2024
 Float-Int-
 Sleep (hours) - 7
 Float-Int-
-Weight - Not Tracked
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 2
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - 7.5
+Float-Int-
+Motivation - 2
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - minecraft!
+FullText-PartialText-
+Summary - just a day of relaxing, back to work after half term ygm
+Float-Int-
+Coding (hours) - 0
+DAY 28/10/2024
+Float-Int-
+Sleep (hours) - 7
+Float-Int-
+Weight (kg) - 75.8
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 1
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Yes (Friends)
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Pull
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 8
+Float-Int-
+Motivation - 6
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - drugs!!!!!!!!
+FullText-PartialText-
+Summary - another semi chill day people coming round tn
+Float-Int-
+Coding (hours) - 1
+DAY 29/10/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
 Int-
 Calories (kcals) - Not Tracked
 Int-
@@ -1311,7 +1381,7 @@ Work (hours) - Not Tracked
 Int-
 Wanked - Not Tracked
 (Yes (Own), False)-(Yes (Friends), False)-(No, True)
-Vaped - No
+Vaped - Not Tracked
 (Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
 Gym - Not Tracked
 Int-
@@ -1329,4 +1399,1850 @@ Grateful For - Not Tracked
 FullText-PartialText-
 Summary - Not Tracked
 Float-Int-
+Coding (hours) - Not Tracked
+DAY 30/10/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Grateful For - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+DAY 31/10/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Grateful For - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+DAY 01/11/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Grateful For - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+DAY 02/11/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Grateful For - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+DAY 03/11/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Grateful For - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+DAY 04/11/2024
+Float-Int-
+Sleep (hours) - 7
+Float-Int-
+Weight (kg) - 76.5
+Int-
+Calories (kcals) - 2000
+Int-
+Protein (g) - 80
+Int-
+Water (ml) - 2500
+Float-Int-
+Work (hours) - 1
+Int-
+Wanked - 2
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Yes (Friends)
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Push
+Int-
+Bible (pages) - 2
+Float-Int-
+Happiness - 4
+Float-Int-
+Motivation - 7
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Cried
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Parts Of The Day
+FullText-PartialText-
+Grateful For - mangos mangos mangos
+FullText-PartialText-
+Summary - We are so back, for the winter arc chat
+Float-Int-
+Coding (hours) - 1
+DAY 05/11/2024
+Float-Int-
+Sleep (hours) - 9
+Float-Int-
+Weight (kg) - 76.1
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 2500
+Float-Int-
+Work (hours) - 1
+Int-
+Wanked - 1
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Legs
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 8
+Float-Int-
+Motivation - 8
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - squirtle
+FullText-PartialText-
+Summary - decent day, cheeky convo with the HUZZ need to get my cash up though sly, hit gym went skl no vaping just decent
+Float-Int-
+Coding (hours) - 2
+DAY 06/11/2024
+Float-Int-
+Sleep (hours) - 7.5
+Float-Int-
+Weight (kg) - 76.8
+Int-
+Calories (kcals) - 2500
+Int-
+Protein (g) - 140
+Int-
+Water (ml) - 2750
+Float-Int-
+Work (hours) - 2.5
+Int-
+Wanked - 0
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - 2
+Float-Int-
+Happiness - 7.25
+Float-Int-
+Motivation - 6.75
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - bacon bits!
+FullText-PartialText-
+Summary - chill day, kinda tired cause couldnt fall alseep last night cause of caffenie, lowkey withdrawling from snus but lock tf in. work on weight and nea and just being better innit!
+Float-Int-
+Coding (hours) - 0.5
+DAY 07/11/2024
+Float-Int-
+Sleep (hours) - 8.5
+Float-Int-
+Weight (kg) - 76.1
+Int-
+Calories (kcals) - 2100
+Int-
+Protein (g) - 80
+Int-
+Water (ml) - 2750
+Float-Int-
+Work (hours) - 3.5
+Int-
+Wanked - 0
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - 1
+Float-Int-
+Happiness - 7.5
+Float-Int-
+Motivation - 7.5
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - being me, serious i think im finding peace in just being me
+FullText-PartialText-
+Summary - chill day, decent amount of nea work and cap work, gym was not my fault, over weekend finish nea testing and revise from comp sci test, start academically cooking man
+Float-Int-
+Coding (hours) - 1
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mostly Boy
+DAY 08/11/2024
+Float-Int-
+Sleep (hours) - 7
+Float-Int-
+Weight (kg) - 76.6
+Int-
+Calories (kcals) - 2500
+Int-
+Protein (g) - 120
+Int-
+Water (ml) - 2500
+Float-Int-
+Work (hours) - 0.5
+Int-
+Wanked - 3
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Pull
+Int-
+Bible (pages) - 1
+Float-Int-
+Happiness - 7
+Float-Int-
+Motivation - 7
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - my sister
+FullText-PartialText-
+Summary - Decent day, skl gym chilled, try and bang out testing nea tmr and really work on gym and diet over the weekend, little bit rougher with happiness today cause tired but still doing decent i think
+Float-Int-
+Coding (hours) - 2.5
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mostly Boy
+DAY 09/11/2024
+Float-Int-
+Sleep (hours) - 7.5
+Float-Int-
+Weight (kg) - 75.7
+Int-
+Calories (kcals) - 2000
+Int-
+Protein (g) - 70
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 0
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Push
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 7
+Float-Int-
+Motivation - 5
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - moneyy
+FullText-PartialText-
+Summary - chill day, got new coat and clothes went gym played mc relaxed with cousions, lock in tmr for corusework
+Float-Int-
 Coding (hours) - 0
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mixed
+DAY 10/11/2024
+Float-Int-
+Sleep (hours) - 7.5
+Float-Int-
+Weight (kg) - 76.3
+Int-
+Calories (kcals) - 2200
+Int-
+Protein (g) - 80
+Int-
+Water (ml) - 3000
+Float-Int-
+Work (hours) - 4.5
+Int-
+Wanked - 1
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 8
+Float-Int-
+Motivation - 4
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - minecraft
+FullText-PartialText-
+Summary - ill be so honest i just played minecraft
+Float-Int-
+Coding (hours) - 0
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Boy
+DAY 11/11/2024
+Float-Int-
+Sleep (hours) - 4.5
+Float-Int-
+Weight (kg) - 76.3
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 3000
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 3
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Legs
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 7
+Float-Int-
+Motivation - 5
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - freedom
+FullText-PartialText-
+Summary - icl i clocked i cant be cis :(. not very fun
+Float-Int-
+Coding (hours) - 0
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Girl
+DAY 12/11/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 1000
+Float-Int-
+Work (hours) - 1
+Int-
+Wanked - 1
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 7.5
+Float-Int-
+Motivation - 3
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - minecraft!
+FullText-PartialText-
+Summary - icl this shit was not the winter arc my ass just played minecraft, really need to work on sleep and actually working, reconnected with elis and ik im genderfluid atleast
+Float-Int-
+Coding (hours) - 0
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Girl
+DAY 13/11/2024
+Float-Int-
+Sleep (hours) - 5.5
+Float-Int-
+Weight (kg) - 74.9
+Int-
+Calories (kcals) - 2500
+Int-
+Protein (g) - 1000
+Int-
+Water (ml) - 2500
+Float-Int-
+Work (hours) - 1
+Int-
+Wanked - 1
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Pull
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 6
+Float-Int-
+Motivation - 7
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Panic Attack
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - weekend
+FullText-PartialText-
+Summary - alright day, man im so not cis it's so peak, just bare tired need to lock in for the WINTER ARC
+Float-Int-
+Coding (hours) - 0
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Girl
+DAY 14/11/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 1
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Yes (Friends)
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 8.5
+Float-Int-
+Motivation - 2
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Parts Of The Day
+FullText-PartialText-
+Grateful For - life is weird
+FullText-PartialText-
+Summary - reset day, we backed to locked in tmr, so tired all day then did a bit of day drinking sly kissed abdu twice man idek
+Float-Int-
+Coding (hours) - 0
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mostly Girl
+DAY 15/11/2024
+Float-Int-
+Sleep (hours) - 7
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 1500
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 2
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Push
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 6
+Float-Int-
+Motivation - 6
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Parts Of The Day
+FullText-PartialText-
+Grateful For - Minecraft
+FullText-PartialText-
+Summary - drank drank drank, just chilling i sly need to lock in
+Float-Int-
+Coding (hours) - 0
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mostly Girl
+DAY 16/11/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 1500
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 1
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 8
+Float-Int-
+Motivation - 8
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - Minecraft
+FullText-PartialText-
+Summary - test
+Float-Int-
+Coding (hours) - 0
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Boy
+DAY 17/11/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - 76.4
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - 1.5
+Int-
+Wanked - 0
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - 7
+Float-Int-
+Motivation - 5
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Parts Of The Day
+FullText-PartialText-
+Grateful For - to keep on going
+FullText-PartialText-
+Summary - went driving, did some work chilled
+Float-Int-
+Coding (hours) - 0
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mostly Girl
+DAY 18/11/2024
+Float-Int-
+Sleep (hours) - 7
+Float-Int-
+Weight (kg) - 76.3
+Int-
+Calories (kcals) - 2400
+Int-
+Protein (g) - 120
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 2
+Int-
+Wanked - 0
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 6
+Float-Int-
+Motivation - 7
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - cambridge
+FullText-PartialText-
+Summary - got cambridge interview, now i need to lock tf in please
+Float-Int-
+Coding (hours) - 0
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Boy
+DAY 19/11/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - 76.4
+Int-
+Calories (kcals) - 2000
+Int-
+Protein (g) - 75
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 1.5
+Int-
+Wanked - 0
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Legs
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 7.5
+Float-Int-
+Motivation - 8
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Grateful For - locking back in
+FullText-PartialText-
+Summary - gotta lock in for cambridge, unlikely but im smart and got a chance!
+Float-Int-
+Coding (hours) - 0.2
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Boy
+DAY 20/11/2024
+Float-Int-
+Sleep (hours) - 9.5
+Float-Int-
+Weight (kg) - 76
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 2500
+Float-Int-
+Work (hours) - 2
+Int-
+Wanked - 1
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Yes (Friends)
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Pull
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 8
+Float-Int-
+Motivation - 6
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Summary - Decent day, played basket ball after skl hit gym had therapy
+Float-Int-
+Coding (hours) - 2
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mixed
+DAY 21/11/2024
+Float-Int-
+Sleep (hours) - 7.5
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - kinda sick got driving test tmr, man just gotta stop playing mc and lock in for a little
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Girl
+DAY 22/11/2024
+Float-Int-
+Sleep (hours) - 7.5
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - kinda sick got driving test tmr, man just gotta stop playing mc and lock in for a little
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Girl
+DAY 23/11/2024
+Float-Int-
+Sleep (hours) - 7.5
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - kinda sick got driving test tmr, man just gotta stop playing mc and lock in for a little
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Girl
+DAY 24/11/2024
+Float-Int-
+Sleep (hours) - 7.5
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - kinda sick got driving test tmr, man just gotta stop playing mc and lock in for a little
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Girl
+DAY 25/11/2024
+Float-Int-
+Sleep (hours) - 7.5
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - kinda sick got driving test tmr, man just gotta stop playing mc and lock in for a little
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Girl
+DAY 26/11/2024
+Float-Int-
+Sleep (hours) - 7.5
+Float-Int-
+Weight (kg) - 77.9
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 3000
+Float-Int-
+Work (hours) - 1
+Int-
+Wanked - 2
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 6
+Float-Int-
+Motivation - 6
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Parts Of The Day
+FullText-PartialText-
+Summary - kinda sick got driving test tmr, man just gotta stop playing mc and lock in for a little, feeling kinda lost
+Float-Int-
+Coding (hours) - 2.5
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Girl
+DAY 27/11/2024
+Float-Int-
+Sleep (hours) - 7
+Float-Int-
+Weight (kg) - 77.8
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 1000
+Float-Int-
+Work (hours) - 1
+Int-
+Wanked - 3
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 3
+Float-Int-
+Motivation - 1
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Panic Attack
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - I Was Not Me Today
+FullText-PartialText-
+Summary - Failed my driving test yikes, 6.2 on tmua and mock interview, sick and derealsing heavyyyyyy, but im just a girl so yk
+Float-Int-
+Coding (hours) - 1
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Girl
+DAY 28/11/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - 76
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 1000
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - been sick, played minecraft tried some coding though not any luck, over weekend recover and get back into grind
+Float-Int-
+Coding (hours) - 2
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 29/11/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 30/11/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 01/12/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 02/12/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 03/12/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 04/12/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 05/12/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 06/12/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 07/12/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 08/12/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 09/12/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 10/12/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 11/12/2024
+Float-Int-
+Sleep (hours) - Not Tracked
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 12/12/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 3
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Pull
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 6
+Float-Int-
+Motivation - 7
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Summary - Got back from london step (very good makeout with female omd!!!!) time to lock in for mocks and life and whatnot cause im kinda losing the plot, working on a bares for revistone project
+Float-Int-
+Coding (hours) - 4
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mostly Girl
+DAY 13/12/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 3
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Pull
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 6
+Float-Int-
+Motivation - 7
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Summary - Got back from london step (very good makeout with female omd!!!!) time to lock in for mocks and life and whatnot cause im kinda losing the plot, working on a bares for revistone project
+Float-Int-
+Coding (hours) - 4
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mostly Girl
+DAY 14/12/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 3
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Pull
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 6
+Float-Int-
+Motivation - 7
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Summary - Got back from london step (very good makeout with female omd!!!!) time to lock in for mocks and life and whatnot cause im kinda losing the plot, working on a bares for revistone project
+Float-Int-
+Coding (hours) - 4
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mostly Girl
+DAY 15/12/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 3
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Pull
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 6
+Float-Int-
+Motivation - 7
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Summary - Got back from london step (very good makeout with female omd!!!!) time to lock in for mocks and life and whatnot cause im kinda losing the plot, working on a bares for revistone project
+Float-Int-
+Coding (hours) - 4
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mostly Girl
+DAY 16/12/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 3
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Pull
+Int-
+Bible (pages) - 0
+Float-Int-
+Happiness - 6
+Float-Int-
+Motivation - 7
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Summary - Got back from london step (very good makeout with female omd!!!!) time to lock in for mocks and life and whatnot cause im kinda losing the plot, working on a bares for revistone project
+Float-Int-
+Coding (hours) - 4
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mostly Girl
+DAY 17/12/2024
+Float-Int-
+Sleep (hours) - 9
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - 2
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - 7.5
+Float-Int-
+Motivation - 8
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - None
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - None
+FullText-PartialText-
+Summary - Lot's more work getting this new cursor in place yayayayay, needs improvements and probs one more day to be considered done. Here is a test of the summary working over multiple lines atleast for taking input!
+Float-Int-
+Coding (hours) - 4
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mostly Boy
+DAY 18/12/2024
+Float-Int-
+Sleep (hours) - 7
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - 2000
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 0
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Went to town with sister, bunked skl, just finna make it to the holidays and start hitting gym more, finished working on the cursor for revistone so that good!!! now back to working on honeyC ig, app ideas of wpm thing and tetris to come soon tetris would be a good showcase i think.
+Float-Int-
+Coding (hours) - 3.5
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Mostly Girl
+DAY 19/12/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Not Tracked
+DAY 20/12/2024
+Float-Int-
+Sleep (hours) - 8
+Float-Int-
+Weight (kg) - Not Tracked
+Int-
+Calories (kcals) - Not Tracked
+Int-
+Protein (g) - Not Tracked
+Int-
+Water (ml) - Not Tracked
+Float-Int-
+Work (hours) - Not Tracked
+Int-
+Wanked - Not Tracked
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - Not Tracked
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Not Tracked
+Int-
+Bible (pages) - Not Tracked
+Float-Int-
+Happiness - Not Tracked
+Float-Int-
+Motivation - Not Tracked
+(None, True)-(Cried, False)-(Panic Attack, False)-(Breakdown, False)
+Stress - Not Tracked
+(None, True)-(A Few Moments, True)-(Parts Of The Day, False)-(Most Of The Day, False)-(I Was Not Me Today, False)
+Derealization - Not Tracked
+FullText-PartialText-
+Summary - Not Tracked
+Float-Int-
+Coding (hours) - Not Tracked
+(Boy, False)-(Mostly Boy, False)-(Mixed, True)-(Mostly Girl, True)-(Girl, True)
+Gender - Girl

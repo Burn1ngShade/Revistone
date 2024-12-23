@@ -99,5 +99,10 @@ public static class AppRegistry
                 }
             }
         }
+
+        foreach (App app in _appRegistry)
+        {
+            app.OnRevistoneStartup();
+        }
     }
 }

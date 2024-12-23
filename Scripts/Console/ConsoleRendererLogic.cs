@@ -10,6 +10,8 @@ namespace Revistone.Console;
 /// <summary> Class pertaining logic to update ConsoleRenderer. </summary>
 public static class ConsoleRendererLogic
 {
+    static bool blockRender = false;
+
     //--- CONSOLE LOOPS ---
 
     /// <summary> [DO NOT CALL] Initializes ConsoleRendererLogic. </summary>
@@ -19,7 +21,13 @@ public static class ConsoleRendererLogic
         debugLineIndex = debugBufferStartIndex;
         consoleReload = true;
 
+        AppDomain.CurrentDomain.UnhandledException += HandleGlobalException;
         Manager.Tick += HandleConsoleDisplayBehaviour;
+    }
+
+    static void HandleGlobalException(object sender, UnhandledExceptionEventArgs e)
+    {
+        blockRender = true;
     }
 
     /// <summary> Main loop for ConsoleDisplay, handles dynamic lines and rendering console. </summary>
@@ -232,7 +240,7 @@ public static class ConsoleRendererLogic
     {
         //if user decides to set an empty array for colours (please dont do this)
         if (consoleLines[lineIndex].lineColour.Length == 0) consoleLines[lineIndex].Update(ConsoleColor.White.ToArray());
-        if (consoleLines[lineIndex].lineColourBG.Length == 0) consoleLines[lineIndex].Update(consoleLines[lineIndex].lineText, consoleLines[lineIndex].lineColour, ConsoleColor.Black.ToArray());
+        if (consoleLines[lineIndex].lineBGColour.Length == 0) consoleLines[lineIndex].Update(consoleLines[lineIndex].lineText, consoleLines[lineIndex].lineColour, ConsoleColor.Black.ToArray());
 
         consoleLines[lineIndex].MarkAsUpToDate();
 
@@ -247,9 +255,9 @@ public static class ConsoleRendererLogic
             }
         }
 
-        for (int i = 0; i < c.lineText.Length; i++)
+        for (int i = 0; i < Math.Min(c.lineText.Length, System.Console.WindowWidth); i++)
         {
-            ConsoleRenderer.SetChar(i, lineIndex, c.lineText[i], c.lineColour.Length > i ? c.lineColour[i] : c.lineColour[^1], c.lineColourBG.Length > i ? c.lineColourBG[i] : c.lineColourBG[^1]);
+            ConsoleRenderer.SetChar(i, lineIndex, c.lineText[i], c.lineColour.Length > i ? c.lineColour[i] : c.lineColour[^1], c.lineBGColour.Length > i ? c.lineBGColour[i] : c.lineBGColour[^1]);
         }
 
         System.Console.ForegroundColor = ConsoleColor.White;
@@ -258,6 +266,8 @@ public static class ConsoleRendererLogic
     /// <summary> Updates the console display, based on current states of consoleLines, before updating consoleLinesBuffer. </summary>
     static void RenderConsole(int tickNum)
     {
+        if (blockRender) return;
+
         lock (Manager.renderLockObject)
         {
             Stopwatch s = new Stopwatch();
@@ -287,6 +297,5 @@ public static class ConsoleRendererLogic
             s.Stop();
             Profiler.drawTime.Add(s.ElapsedMilliseconds);
         }
-
     }
 }

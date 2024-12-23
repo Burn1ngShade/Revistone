@@ -12,7 +12,7 @@ public static class AppPersistentData
     /// <summary> Splits path into its components. </summary> 
     static string[] SplitPath(string path)
     {
-        return path.Split(new char[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
+        return path.Split(['/', '\\'], StringSplitOptions.RemoveEmptyEntries);
     }
 
     // --- Directorys ---

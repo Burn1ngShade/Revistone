@@ -11,4 +11,8 @@
   <ItemGroup>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="OpenAI" Version="2.0.0" />
+  </ItemGroup>
+
 </Project>

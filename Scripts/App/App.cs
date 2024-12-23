@@ -67,6 +67,12 @@ public abstract class App
         if (UserRealtimeInput.KeyPressed(0x11) && UserRealtimeInput.KeyPressed(0x10) && UserRealtimeInput.KeyPressedDown(80)) Profiler.SetEnabled(!Profiler.enabled);
     }
 
+    /// <summary> Called when revistone app is first started, just after OnRegister. </summary>
+    public virtual void OnRevistoneStartup()
+    {
+
+    }
+
     //--- Register ---
 
     /// <summary> Called on console startup, return all instances of class you want registered to console. </summary>

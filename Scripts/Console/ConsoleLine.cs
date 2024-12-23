@@ -1,3 +1,6 @@
+using System.Globalization;
+using OpenAI.VectorStores;
+using Revistone.Console.Data;
 using Revistone.Functions;
 
 namespace Revistone.Console;
@@ -14,7 +17,7 @@ public class ConsoleLine
     public ConsoleColor[] lineColour { get { return _lineColour; } }
     ConsoleColor[] _lineColour;
 
-    public ConsoleColor[] lineColourBG { get { return _lineBGColour; } }
+    public ConsoleColor[] lineBGColour { get { return _lineBGColour; } }
     ConsoleColor[] _lineBGColour;
 
     public bool updated { get { return _updated; } }
@@ -37,7 +40,7 @@ public class ConsoleLine
     /// <summary> Class pertaining all info for a line in the console. </summary>
     public ConsoleLine(string lineText, ConsoleColor lineColour) : this(lineText, new ConsoleColor[] { lineColour }) { }
     /// <summary> Class pertaining all info for a line in the console. </summary>
-    public ConsoleLine(ConsoleLine consoleLine) : this(consoleLine.lineText, consoleLine.lineColour, consoleLine.lineColourBG) { }
+    public ConsoleLine(ConsoleLine consoleLine) : this(consoleLine.lineText, consoleLine.lineColour, consoleLine.lineBGColour) { }
     /// <summary> Class pertaining all info for a line in the console. </summary>
     public ConsoleLine(string lineText, ConsoleColor[] lineColour) : this(lineText, lineColour, new ConsoleColor[] { ConsoleColor.Black }) { }
     /// <summary> Class pertaining all info for a line in the console. </summary>
@@ -58,7 +61,7 @@ public class ConsoleLine
     }
 
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(ConsoleLine lineInfo) { Update(lineInfo.lineText, lineInfo.lineColour, lineInfo.lineColourBG); }
+    public void Update(ConsoleLine lineInfo) { Update(lineInfo.lineText, lineInfo.lineColour, lineInfo.lineBGColour); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
     public void Update(string lineText) { Update(lineText, _lineColour); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
@@ -86,6 +89,9 @@ public class ConsoleLine
         this._updated = false;
     }
 
+    /// <summary> Checks if lineText has length 0. </summary>
+    public bool IsEmpty() { return lineText.Length == 0; }
+
     //--- STATIC METHODS ---
 
     /// <summary> Inserts a ConsoleLine into another, overwritting overlapping chars and colours. </summary>
@@ -99,5 +105,38 @@ public class ConsoleLine
         for (int i = overwriteIndex; i < overwriteIndex + overwriteLine.lineText.Length; i++) cl[i] = overwriteLine.lineColour[i - overwriteIndex];
 
         return new ConsoleLine(s, cl);
+    }
+
+    /// <summary> Removes invalid charchters, zero and double length charchters from a consoleLine </summary>
+    public static ConsoleLine Clean(ConsoleLine baseLine)
+    {
+        string validLineText = "";
+
+        TextElementEnumerator enumerator = StringInfo.GetTextElementEnumerator(baseLine.lineText);
+        while (enumerator.MoveNext())
+        {
+            string textElement = enumerator.GetTextElement();
+
+            if (textElement.Length == 1 && char.IsSurrogate(textElement[0]))
+            {
+                validLineText += enumerator.GetTextElement();
+                continue;
+            }
+
+            int lineWidth = StringFunctions.GetCharWidth(textElement);
+
+            if (textElement.Length == 2 && char.IsSurrogatePair(textElement[0], textElement[1]))
+            {
+                if (lineWidth == 2) validLineText += textElement;
+            }
+            else if (lineWidth == 1)
+            {
+                validLineText += enumerator.GetTextElement();
+            }
+        }
+
+        validLineText = validLineText.Replace("\n", "").Replace("\r", "");
+
+        return new ConsoleLine(validLineText, baseLine.lineColour, baseLine.lineBGColour);
     }
 }

@@ -77,7 +77,7 @@ public static class Manager
 
             if (ConsoleData.consoleReload) continue;
 
-            string userInput = UserInput.GetUserInput(clear: false);
+            string userInput = UserInput.GetUserInput(maxLineCount: 3);
 
             if (userInput != "")
             {
@@ -107,7 +107,7 @@ public static class Manager
 
     static void OnCancelKeyPress(object? sender, ConsoleCancelEventArgs args)
     {
-        ConsoleAction.SendDebugMessage(new ConsoleLine("Console Close Prevented, If Attempting To Copy Text Use Shift+Alt+C Instead.", ConsoleColor.DarkBlue));
+        ConsoleAction.SendDebugMessage(new ConsoleLine("Console Close Prevented, If Attempting To Copy Text Use Alt+C Instead.", ConsoleColor.DarkBlue));
 
         args.Cancel = true;
     }

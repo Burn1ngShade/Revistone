@@ -13,3 +13,8 @@ D:\A-Level\Tools\RevistoneClone\obj\Debug\net8.0\refint\Revistone.dll
 D:\A-Level\Tools\RevistoneClone\obj\Debug\net8.0\Revistone.pdb
 D:\A-Level\Tools\RevistoneClone\obj\Debug\net8.0\Revistone.genruntimeconfig.cache
 D:\A-Level\Tools\RevistoneClone\obj\Debug\net8.0\ref\Revistone.dll
+D:\A-Level\Tools\RevistoneClone\bin\Debug\net8.0\OpenAI.dll
+D:\A-Level\Tools\RevistoneClone\bin\Debug\net8.0\System.ClientModel.dll
+D:\A-Level\Tools\RevistoneClone\bin\Debug\net8.0\System.Memory.Data.dll
+D:\A-Level\Tools\RevistoneClone\obj\Debug\net8.0\Revistone.csproj.AssemblyReference.cache
+D:\A-Level\Tools\RevistoneClone\obj\Debug\net8.0\Revistone.csproj.Up2Date

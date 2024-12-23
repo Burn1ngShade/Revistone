@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using Revistone.Console;
 
 namespace Revistone.Functions;
 
@@ -78,7 +79,7 @@ public static class StringFunctions
     }
 
     /// <summary> Checks if string is in given format, [C4] -> 4 char, [N7] -> 7 digit number, [N:] -> any digit number. Can not use [] in format. </summary>
-    public static bool Formatted(this string input, string format)
+    public static bool InFormat(this string input, string format)
     {
         // Replace [N4] with \d{4} for numeric checks and [C2] with [A-Za-z]{2} for character checks
         format = Regex.Replace(format, @"\[N(\d+)]", m =>
@@ -112,6 +113,42 @@ public static class StringFunctions
 
         return Regex.IsMatch(input, $"^{format}$");
     }
+
+    /// <summary> Returns the standard CharWidth of given char. </summary>
+    public static int GetCharWidth(string c)
+    {
+        int codePoint = char.ConvertToUtf32(c, 0);
+
+        if (codePoint == 0x2060 || // Word Joiner
+        codePoint == 0xFEFF || // Zero Width No-Break Space
+        (codePoint >= 0xFE00 && codePoint <= 0xFE0F) || // Variation Selectors
+        (codePoint >= 0xE0000 && codePoint <= 0xE007F) || // Tags
+        (codePoint >= 0x200B && codePoint <= 0x200F) || // ZWSP, ZWNJ, ZWJ, L-t-R Mark, R-t-L Mark
+        (codePoint >= 0x2066 && codePoint <= 0x2069) || // Directional Isolates
+        (codePoint >= 0xFFF9 && codePoint <= 0xFFFB) || // Interlinear Annotation Characters.
+        codePoint == 0x2062 || // Invisible Times
+        codePoint == 0x2063) // Invisible Separator
+        {
+            return 0; // Zero-width character
+        }
+
+        // Check for wide characters
+        if ((codePoint >= 0x1100 && codePoint <= 0x115F) || // Hangul Jamo
+        (codePoint >= 0x2E80 && codePoint <= 0xA4CF) || // CJK Radicals
+        (codePoint >= 0xAC00 && codePoint <= 0xD7A3) || // Hangul Syllables
+        (codePoint >= 0x1F300 && codePoint <= 0x1F64F) || // Emojis
+        (codePoint >= 0x1F900 && codePoint <= 0x1FAFF) || // Supplemental Symbols
+        (codePoint >= 0x20000 && codePoint <= 0x2FFFD) || // CJK Ideographs
+        (codePoint >= 0x2700 && codePoint <= 0x27BF))    // Dingbats
+        {
+            return 2; // Wide characters
+        }
+
+        return 1; // Narrow characters
+    }
+
+    /// <summary> Returns the standard CharWidth of given char. </summary>
+    public static int GetCharWidth(char c) { return GetCharWidth(c.ToString()); }
 
     // --- CLIPBOARD LOGIC --- (LOW LEVEL STUFF YAY, im NOT importing window forms)
 

@@ -29,10 +29,10 @@ public class ConsoleLineUpdate
     /// <summary> Does not increment line number after update, and timestamps the line.</summary>
     public static ConsoleLineUpdate SameLineTimeStamped => new ConsoleLineUpdate(newLine: false, timeStamp: true);
     /// <summary> Does not increment line number after update, and appends onto current line.</summary>
-    public static ConsoleLineUpdate SameLineAppended => new ConsoleLineUpdate(timeStamp: true, append: true);
+    public static ConsoleLineUpdate SameLineAppended => new ConsoleLineUpdate(newLine: false, append: true);
 
     /// <summary> Appends the line onto current console line, and timestamps the line.</summary>
-    public static ConsoleLineUpdate NewLineAppendedTimeStamped => new ConsoleLineUpdate(timeStamp: true);
+    public static ConsoleLineUpdate NewLineAppendedTimeStamped => new ConsoleLineUpdate(timeStamp: true, append: true);
     /// <summary> Does not increment line number after update, appends the line onto current console line, and timestamps the line.</summary>
-    public static ConsoleLineUpdate SameLineAppendedTimeStamped => new ConsoleLineUpdate(timeStamp: true);
+    public static ConsoleLineUpdate SameLineAppendedTimeStamped => new ConsoleLineUpdate(timeStamp: true, append: true, newLine: false);
 }
