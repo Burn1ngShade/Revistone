@@ -51,7 +51,7 @@ public static class ColourFunctions
     /// <summary> Colour gradient, [Red, Green, Cyan, Blue, Magenta]. </summary>
     public static ConsoleColor[] RainbowWithoutYellowGradient { get { return [Red, Green, Cyan, Blue, Magenta]; } }
     /// <summary> Colour gradient, [Cyan, Magenta, White, Magenta, Cyan]. </summary>
-    public static ConsoleColor[] TransPattern { get { return [Cyan, Magenta, White, Magenta, Cyan ]; }}
+    public static ConsoleColor[] TransPattern { get { return [Cyan, Magenta, White, Magenta, Cyan]; } }
 
     // --- MODIFY ARRAY ---
 
@@ -226,6 +226,21 @@ public static class ColourFunctions
         return c;
     }
 
+    /// <summary> Stretchs ConsoleColour array by given factor. </summary>
+    public static ConsoleColor[] Stretch(this ConsoleColor[] colours, int factor)
+    {
+        if (factor <= 1) return colours;
+
+        ConsoleColor[] c = new ConsoleColor[colours.Length * factor];
+
+        for (int i = 0; i < c.Length; i++)
+        {
+            c[i] = colours[i / factor];
+        }
+
+        return c;
+    }
+
     /// <summary> Extends ConsoleColour to given length. </summary>
     public static ConsoleColor[] Extend(this ConsoleColor colour, int length) { return Extend(colour.ToArray(), length, false); }
 
@@ -251,7 +266,7 @@ public static class ColourFunctions
             {
                 c[i] = baseColours[baseIndex];
                 baseIndex = baseIndex < baseColours.Length - 1 ? baseIndex + 1 : 0;
-            }   
+            }
             else
             {
                 (ConsoleColor[] colours, int startIndex, int length) h = highlights[highlightIndex];

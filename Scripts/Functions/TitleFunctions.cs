@@ -18,7 +18,7 @@ public static class TitleFunctions
     static string validChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.!?';:()[]{}-_+=*&^<>%@£";
 
     /// <summary> Creates an array of strings that forms a title of given text, and given font. </summary>
-    public static string[] CreateTitle(string text, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true, int bottomSpace = 0)
+    public static string[] CreateTitle(string text, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true, int bottomSpace = 0, int topSpace = 0)
     {
         string path = FontFilePath(font);
 
@@ -44,13 +44,13 @@ public static class TitleFunctions
         }
 
         if (removeEmptyLines) title = title.Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
-        return title.Concat(Enumerable.Repeat(" ", bottomSpace)).ToArray();
+        return Enumerable.Repeat(" ", topSpace).Concat(title.Concat(Enumerable.Repeat(" ", bottomSpace))).ToArray();
     }
 
     /// <summary> Creates an array of consolecolour that forms a title of given text, colour, and given font. </summary>
-    public static ConsoleLine[] CreateTitle(string text, ConsoleColor[] colours, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true, int bottomSpace = 0)
+    public static ConsoleLine[] CreateTitle(string text, ConsoleColor[] colours, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true, int bottomSpace = 0, int topSpace = 0)
     {
-        return CreateTitle(text, font, emptySpacing, letterSpacing, removeEmptyLines, bottomSpace).Select(s => new ConsoleLine(s, colours)).ToArray();
+        return CreateTitle(text, font, emptySpacing, letterSpacing, removeEmptyLines, bottomSpace, topSpace).Select(s => new ConsoleLine(s, colours)).ToArray();
     }
 
     public static string FontFilePath(AsciiFont font) { return $"TitleFont/{font}.txt"; }

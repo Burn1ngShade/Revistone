@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using Revistone.Console;
 using Revistone.Console.Data;
 using Revistone.Management;
 
@@ -61,7 +62,7 @@ public static class UserRealtimeInput
     {
         for (int i = 0; i < 256; i++)
         {
-            keyInfo[i] = (keyInfo[i].currentState, GetAsyncKeyState(i) > 1);
+            keyInfo[i] = (keyInfo[i].currentState, Math.Abs(GetAsyncKeyState(i)) > 1);
         }
     }
 

@@ -32,7 +32,6 @@ public class SettingsApp : App
         new UserInputProfile([UserInputProfile.InputType.Float, UserInputProfile.InputType.Int], numericMin: 10, numericMax: 1000)),
         new DropdownSetting("Cursor Jump Separators", "The Charchters That The Cursor Uses To Divide Words.", ",. ", SettingCategory.Input,
         [",. ", ",.!?-_;: ", ",.!?-_;:(){}[] "]),
-        
     ];
 
     public SettingsApp() : base() { }

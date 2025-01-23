@@ -128,17 +128,17 @@ public static class UserInput
                                 (int index, int length) cutPointer = data.GetPointerFromLeft();
                                 StringFunctions.CopyToClipboard($"{data.input} ".Substring(cutPointer.index, cutPointer.length));
                                 data.Remove();
-                                SendDebugMessage("Contents Cut To Clipboard.");
+                                SendDebugMessage(new ConsoleLine("Contents Cut To Clipboard.", AppRegistry.activeApp.colourScheme.primaryColour));
                                 break;
                             case ConsoleKey.C: // copy
                                 (int index, int length) copyPointer = data.GetPointerFromLeft();
                                 StringFunctions.CopyToClipboard($"{data.input} ".Substring(copyPointer.index, copyPointer.length));
-                                SendDebugMessage("Contents Copied To Clipboard.");
+                                SendDebugMessage(new ConsoleLine("Contents Copied To Clipboard.", AppRegistry.activeApp.colourScheme.primaryColour));
                                 break;
                             case ConsoleKey.V: // paste
                                 if (data.pointer.extension != 0) data.Remove();
                                 data.Add(ConsoleLine.Clean(new ConsoleLine(StringFunctions.GetClipboardText())).lineText);
-                                SendDebugMessage("Clipboard Contents Pasted.");
+                                SendDebugMessage(new ConsoleLine("Clipboard Contents Pasted.", AppRegistry.activeApp.colourScheme.primaryColour));
                                 break;
                         }
 
