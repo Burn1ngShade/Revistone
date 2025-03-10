@@ -153,7 +153,7 @@ public static class UserInput
             data.Output();
         }
 
-        if (data.history.data[^1] != data.input) data.history.data.Add(data.input);
+        if (data.history.data.Count == 0 || data.history.data[^1] != data.input) data.history.data.Add(data.input);
         AppPersistentData.SaveFile(inputHistoryFilePath, data.history.data.TakeLast(Math.Min(data.history.data.Count, int.Parse(SettingsApp.GetValue("Input History")))).ToArray());
 
         data.Clean(clear);

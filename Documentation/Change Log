@@ -418,28 +418,111 @@ far more advance commands and terminal
 +--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 
 Specifics:
+
+[Major]
+UserInput -> Redone user input, now supports shift select, input history, ctrl + <-/-> for movement, and shift + alt + c/x/v for copy, cutting and pasting,
+added true false prefab menu
+TrackerApp -> new app for tracking day to day stats
+HoneyC -> new honeyC sudo programming language, to run calculations and soon much more, will flesh out far more in the next update
+
+[Notable]
+StringFunctions -> Added low level functions for setting and getting data from system clipboard (may move)
+NumericalFunctions -> Added class for additional maths functions to be used within revistone console
+General -> Removed unused depedencys, switched to modern namesapce formatting, update to Dotnet Version 8.0 and C# Version 12
+
+[Minor]
 Manager -> Added catch exception to ctrl+c killing the application
 App -> apps now have tertiary colour, and primary colour update to array to match secondary and tertiary colour
 UserInputProfile -> added new "dump" output format
-UserInput -> Redone user input, now supports shift select, input history, ctrl + <-/-> for movement, and shift + alt + c/x/v for copy, cutting and pasting,
-added true false prefab menu
-StringFunctions -> Added low level functions for setting and getting data from system clipboard (may move)
-NumericalFunctions -> Added class for additional maths functions to be used within revistone console
 AppCommands -> 2 new commands, runtime and comp to run honey c within the terminal
-TrackerApp -> new app for tracking day to day stats
-HoneyC -> new honeyC sudo programming language, to run calculations and soon much more, will flesh out far more in the next update
-General -> Removed unused depedencys, switched to modern namesapce formatting, update to Dotnet Version 8.0 and C# Version 12
 FlashCardManager -> Added new TMUA flashcard set
 
 BugFixes:
-Revistone intro text not updating,
-select menu pointer behaving incorrectly when given non 0 index
-fixed userinput not being properly removed
-fixed bug preventing multilevel folder trees
+
+[Major]
 now intercept harmful key presses in user input
+
+[Notable]
+fixed bug preventing multilevel folder trees
+fixed userinput not being properly removed
 fixed bug where read menu could have an extra empty page
+
+[Minor]
+Revistone intro text not updating
+select menu pointer behaving incorrectly when given non 0 index
 fixed bug where flash cards best time wouldn't update if beaten with the previous highscore
 fixed pong title spacing
 fixed puncation in commands
+
+--- The Everything App --- [Major] 0.6.0 (10/03/25)
+
+Summary:
+Biggest ever single update, as i use this project more in my daily life alot is added to make this project useful as a daily tool. Key additions are the 900 lines of work on the HoneyC programming language to fledge into a fully capable language, chatGPT support, a settings app allowing for customisation of the HoneyC application. new Tetris game app, overhaul to tracker app and much much more!!!! 1.0 planned to release with completion of the HoneyC language, though i've been working with this project for over a year and half, and plan to just keep working on it over time.
+
++----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                         | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                            |         48 |      6,587 |        581 |      1,511 |      8,679 |
+| App                                                                                          |         29 |      4,052 |        200 |        848 |      5,100 |
+| App (Files)                                                                                  |          4 |        420 |         62 |         96 |        578 |
+| App\CreatedApps                                                                              |         25 |      3,632 |        138 |        752 |      4,522 |
+| App\CreatedApps (Files)                                                                      |          5 |      1,125 |         75 |        236 |      1,436 |
+| App\CreatedApps\Calculator                                                                   |          4 |        592 |         12 |        142 |        746 |
+| App\CreatedApps\HoneyC                                                                       |          7 |        755 |         35 |        147 |        937 |
+| App\CreatedApps\HoneyC (Files)                                                               |          3 |        361 |         10 |         76 |        447 |
+| App\CreatedApps\HoneyC\DataTypes                                                             |          4 |        394 |         25 |         71 |        490 |
+| App\CreatedApps\Tetris                                                                       |          3 |        455 |          2 |         87 |        544 |
+| App\CreatedApps\TrackerApp                                                                   |          6 |        705 |         14 |        140 |        859 |
+| Console                                                                                      |          9 |      1,015 |        194 |        274 |      1,483 |
+| Console (Files)                                                                              |          7 |        799 |        156 |        203 |      1,158 |
+| Console\Imagery                                                                              |          2 |        216 |         38 |         71 |        325 |
+| Functions                                                                                    |          5 |        689 |        104 |        175 |        968 |
+| Interaction                                                                                  |          3 |        679 |         68 |        174 |        921 |
+| Management                                                                                   |          2 |        152 |         15 |         40 |        207 |
++----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Specifics:
+
+[Major]
+HoneyC [WIP] -> Over 900 lines working on new complete HoneyCLanguage, with classes objects, and capable of being a full programming language once complete, eventually want to spin off into it's own interpreter program so dependecys with revistone console at absoulute minimum, with only script talking to over parts of the console being Diagnostic, which handles displaying the output from the language. Language highlighting extension for VSCode https://github.com/Burn1ngShade/HoneyCLanguageFeatures
+User Input -> Rewrote user input (again xD), added many important features, MULTILINE INPUT!!!!!!, input history saved between sessions, far more traversal and select options (all keybinds found by running command 'Hotkeys'), now cleans user input to prevent console breaking
+Tetris -> Added colour tetris game to the console, as example of how to create games with background colours.
+Tracker -> Tracker app improvements and rewrite, including arcs, time settings for data collection, better data collection, visual overhaul, bug fixes and much more
+Settings -> Add settings app to allow users to customise and modify revistone to their preferences, allowing users to detail there name and pronouns, modify input settings, and chatGPT settings
+GPTFunctions -> Added chatGPT implementation to the project (First dependency but kinda needed), REQUIRES API KEY, fully customisable with plans to expand to voice control and implement the ability to interact with the console and more
+NumericalFunctions -> Simplifed functions, as well as adding a variance function
+String Functions -> added the ability to get a charchters console width, this is based on conventions and will not work with all fonts or cover all cases, USE WITH CAUTION.
+
+[Notable]
+FlashCardManager -> Added new cambridge revision, driving, and mechanics equations tests
+AppCommands -> 8 new commands, hotkeys -> list of revistone hotkeys, comp and file comp run HoneyC files (old comp renamed to calc), gpt to query chat gpt, snap gpt to query gpt without message memory, clear gpt to clear message memory, get setting to check the value of a setting, and set setting to set the value of a setting.
+ConsoleLine -> Added IsEmpty() checking if line has length of 0, and Clean() which removes invalid, zero and double length charchters from a console line
+ColourFunctions -> New trans pattern added, TRANS RIGHTS!, added Stretch function, stretches array by given factor
+
+[Minor]
+Calculator -> Renamed (prev: HoneyC) renamed orignal basic HoneyC to calculator, as it was only capable of basic maths, flags and loops
+Revistone -> Added welcome back message to users with set console name
+App -> Added new OnRevistoneStartup() called when revistone is first added
+User Input Profile -> Options to set a numericMin and numericMax,
+Manger -> Modified userinput to allow multiline input (max 3 lines), and updated close prevention warning to new keybind
+TitleFunctions -> Added ability to add topspace to a title
+
+
+BugFixes:
+
+[Major]
+Added blockRender to ConsoleRenderLogic, stopping rendering post error and allowing c# compiler and runtime errors to be viewed.
+
+[Notable]
+Optimised rendering to prevent lines from overflowwing
+Now take absoulute value of GetAsyncKeyState in comparision
+Fixed ConsoleLineUpdate static presets being incorrect
+
+[Minor]
+Fixed bug with AdvancedHighlight not correctly highlighting in certain cases
+Fixed 0.5.0 documentation missing [Major, Notable, Minor] tags.
+Fixed cash warning from 6.0 dotnet files
+
+
 
 

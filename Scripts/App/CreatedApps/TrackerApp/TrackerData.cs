@@ -20,7 +20,7 @@ class TrackerData
     {
         startDate = today;
         selectedDate = today;
-        dayData = [];
+        dayData = [new TrackerDayData(today)];
     }
 
     public TrackerData(string[] data)

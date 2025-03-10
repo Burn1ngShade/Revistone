@@ -1,5 +1,5 @@
 Username
-User
+Isaac
 Pronouns
 Prefer Not To Say
 API Key
@@ -10,3 +10,11 @@ Scenario
 
 Memory
 5
+Temperature
+1
+GPT Name
+GPT
+Input History
+100
+Cursor Jump Separators
+,. 

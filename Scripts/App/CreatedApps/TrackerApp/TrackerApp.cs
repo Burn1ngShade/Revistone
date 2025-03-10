@@ -30,6 +30,10 @@ public class TrackerApp : App
     public override void OnAppInitalisation()
     {
         if (AppPersistentData.FileExists("Tracker/Data")) DATA = new TrackerData(AppPersistentData.LoadFile("Tracker/Data"));
+        else {
+            AppPersistentData.CreateFile("Tracker/Data"); 
+            DATA = new TrackerData();
+        }
 
         for (int i = 0; i <= 10; i++) { UpdateLineExceptionStatus(true, i); }
 

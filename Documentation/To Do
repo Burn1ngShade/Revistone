@@ -5,10 +5,9 @@
 
 
 --- KNOWN BUGS ---
-
+If console refreshes without changing size, Tetris display can display twice in different positions.
 
 --- DONE ---
-Fixed cash warning from 6.0 dotnet files
+
 
 --- ADDED ---
-Cleaned up old dotnet 6.0 files
