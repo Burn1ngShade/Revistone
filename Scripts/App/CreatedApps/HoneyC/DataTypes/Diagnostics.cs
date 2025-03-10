@@ -31,12 +31,13 @@ public static class Diagnostics
     }
 
     /// <summary> Outputs t into the program log file, and optionally to the console. </summary>
-    public static void Output<T>(T t, bool header = false, bool showInConsole = false)
+    public static void Output<T>(T t, bool header = false, bool showInConsole = false, bool isWarning = false)
     {
         programLog += $"{(header ? "\n" : "")}{t}\n";
         if (header) programLog += $"Time Elapsed - {Math.Round(ElapsedTime, 2)} ms\n";
-        if (showInConsole) {
-            SendConsoleMessage(new ConsoleLine($"{t}", header ? AppRegistry.activeApp.colourScheme.secondaryColour : AppRegistry.activeApp.colourScheme.primaryColour));
+        if (showInConsole)
+        {
+            SendConsoleMessage(new ConsoleLine($"{t}", header ? AppRegistry.activeApp.colourScheme.secondaryColour : isWarning ? [ConsoleColor.Yellow] : AppRegistry.activeApp.colourScheme.primaryColour));
             if (header) SendConsoleMessage(new ConsoleLine($"Time Elapsed - {Math.Round(ElapsedTime, 2)} ms", AppRegistry.activeApp.colourScheme.primaryColour));
         }
     }
@@ -53,8 +54,8 @@ public static class Diagnostics
 
         int errorStartIndex = tokens.Take(index).Select(x => x.content.Length + 1).Sum() + 2;
         SendDebugMessage(errorStartIndex);
-        
-        SendConsoleMessages(errorStrings.Select((x, i) => new ConsoleLine(x, [ConsoleColor.Red], 
+
+        SendConsoleMessages(errorStrings.Select((x, i) => new ConsoleLine(x, [ConsoleColor.Red],
         i == 1 ? ColourFunctions.AdvancedHighlight(errorStrings[1].Length, ConsoleColor.Black, ConsoleColor.DarkGray, (errorStartIndex, tokens[index].content.Length)) : [ConsoleColor.Black])).ToArray());
 
         programLog += "\n--- Error ---\n";
@@ -62,6 +63,13 @@ public static class Diagnostics
 
         Finish();
         return [];
+    }
+
+    /// <summary> Throws project error, and ends diagnostics. </summary>
+    public static T? ThrowNullError<T>(string errorType, string error, int line, int index, List<Token> tokens)
+    {
+        ThrowError<object>(errorType, error, line, index, tokens);
+        return default;
     }
 
     /// <summary> Returns the elapsed time of the current program, in milliseconds. </summary>

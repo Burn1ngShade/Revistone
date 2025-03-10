@@ -1,5 +1,3 @@
-using System.Formats.Asn1;
-using System.Reflection.Metadata.Ecma335;
 using Revistone.Apps.HoneyC.Data;
 using Revistone.Functions;
 
@@ -11,7 +9,7 @@ namespace Revistone.Apps.HoneyC;
 public static class HoneyCLexer
 {
     /// <summary> Removes comments and joins together lines of a given query. </summary>
-    public static string Cleaned(string[] query)
+    public static string CleanQuery(string[] query)
     {
         string cleanedQuery = "";
 
@@ -49,10 +47,9 @@ public static class HoneyCLexer
         }
 
         return cleanedQuery;
-
-        // return string.Join(' ', query);
     }
 
+    /// <summary> Converts given query into a list of HoneyC Tokens. Returns [] if error occurs. </summary>
     public static List<Token> Lex(string query)
     {
         query = query.TrimStart();
@@ -106,7 +103,10 @@ public static class HoneyCLexer
             }
         }
 
-
+        Diagnostics.Output("--- Tokens Generated ---", true);
+        Diagnostics.Output($"Total - {tokens.Count}");
+        Diagnostics.Output(tokens.ToElementString());
+    
         return tokens;
     }
 

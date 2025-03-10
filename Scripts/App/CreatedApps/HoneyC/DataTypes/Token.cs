@@ -5,7 +5,7 @@ namespace Revistone.Apps.HoneyC.Data;
 public abstract class AbstractToken
 {
     public enum TokenType { None, Value, Identifier, Keyword, AssignmentOperator, ComparativeOperator, MathOperator, LogicalOperator, Scope, Split, Nest, Compound, BitwiseOperator };
-    public enum TokenGroupType { None, LineLoopEnd, Calculation, Function, FunctionCall, Assignment, Object, Enum, Import };
+    public enum TokenGroupType { None, LineLoopEnd, Calculation, Function, FunctionCall, Assignment, Object, Enum, Import, Array };
 
     public bool IsGroup { get; protected set; }
 }
@@ -121,6 +121,16 @@ public class TokenGroup : AbstractToken
         content.RemoveRange(start + 1, length - 1);
     }
 
+    public int GetNextIndexOf(int startIndex, string target)
+    {
+        for (int i = startIndex; i < content.Count; i++)
+        {
+            if (content[i] is Token t && t.content == target) return i;
+        }
+
+        return -1;
+    }
+
     /*
     Very important function calculates if a given line meets a given format syntax.
     : -> OR, [x] -> Command e.g. a loop, <x> -> Type, <X> -> GroupType
@@ -202,7 +212,8 @@ public class TokenGroup : AbstractToken
             if (!match)
             {
                 if (!fi.HandleNoMatch()) return false;
-                else{
+                else
+                {
                     fi.fIndex++;
                     continue;
                 }

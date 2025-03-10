@@ -1,0 +1,235 @@
+--- Tokens Generated ---
+Time Elapsed - 5.83 ms
+Total - 286
+[Keyword - import, Value - "BaseLib.hc", Scope - ;, Keyword - obj, Identifier - NumberGame, Scope - {, Keyword - val, Identifier - testOperators, AssignmentOperator - =, Compound - [, Value - 1, MathOperator - +, Value - 1, Split - ,, Identifier - Add, Nest - (, Value - 1, Split - ,, Value - 2, Nest - ), Compound - ], Scope - ;, Keyword - val, Identifier - operators, AssignmentOperator - =, Compound - [, Value - "+", Split - ,, Value - "-", Split - ,, Value - "*", Split - ,, Value - "/", Compound - ], Scope - ;, Keyword - var, Identifier - score, AssignmentOperator - =, Value - 0, Scope - ;, Keyword - var, Identifier - question, AssignmentOperator - =, Value - "", Scope - ;, Keyword - var, Identifier - answer, AssignmentOperator - =, Value - 0, Scope - ;, Keyword - func, Identifier - GenQuestion, Nest - (, Nest - ), Scope - {, Keyword - var, Identifier - numOne, AssignmentOperator - =, Identifier - Random, Split - ., Identifier - RangeInt, Nest - (, MathOperator - -, Value - 10, Split - ,, Value - 11, Nest - ), Scope - ;, Keyword - var, Identifier - numTwo, AssignmentOperator - =, Identifier - Random, Split - ., Identifier - RangeInt, Nest - (, MathOperator - -, Value - 10, Split - ,, Value - 11, Nest - ), Scope - ;, Keyword - var, Identifier - op, AssignmentOperator - =, Identifier - Random, Split - ., Identifier - RangeInt, Nest - (, Value - 0, Split - ,, Value - 3, Nest - ), Scope - ;, Keyword - if, Nest - (, Identifier - op, ComparativeOperator - ==, Value - 3, LogicalOperator - &&, Nest - (, Identifier - numOne, ComparativeOperator - ==, Value - 0, LogicalOperator - ||, Identifier - numTwo, ComparativeOperator - ==, Value - 0, Nest - ), Nest - ), Scope - {, Identifier - numTwo, AssignmentOperator - +=, Value - 1, Scope - ;, Scope - }, Identifier - question, AssignmentOperator - =, Value - "{numOne} {operators[op]} {numTwo} = ", Scope - ;, Keyword - if, Nest - (, Identifier - op, ComparativeOperator - ==, Value - 0, Nest - ), Scope - {, Identifier - answer, AssignmentOperator - =, Identifier - numOne, MathOperator - +, Identifier - numTwo, Scope - ;, Scope - }, Keyword - else, Keyword - if, Nest - (, Identifier - op, ComparativeOperator - ==, Value - 1, Nest - ), Scope - {, Identifier - answer, AssignmentOperator - =, Identifier - numOne, MathOperator - -, Identifier - numTwo, Scope - ;, Scope - }, Keyword - else, Keyword - if, Nest - (, Identifier - op, ComparativeOperator - ==, Value - 2, Nest - ), Scope - {, Identifier - answer, AssignmentOperator - =, Identifier - numOne, MathOperator - *, Identifier - numTwo, Scope - ;, Scope - }, Keyword - else, Keyword - if, Nest - (, Identifier - op, ComparativeOperator - ==, Value - 3, Nest - ), Scope - {, Identifier - answer, AssignmentOperator - =, Identifier - numOne, MathOperator - /, Identifier - numTwo, Scope - ;, Scope - }, Identifier - Out, Nest - (, Value - "### Question Generated ###", Nest - ), Scope - ;, Scope - }, Scope - }, Keyword - func, Identifier - Main, Nest - (, Nest - ), Scope - {, Identifier - Out, Nest - (, Value - "--- HoneyC Number Game ---", Split - ,, Identifier - Colour, Split - ., Identifier - Magenta, Nest - ), Scope - ;, Keyword - var, Identifier - numGame, AssignmentOperator - =, Identifier - NumberGame, Nest - (, Nest - ), Scope - ;, Keyword - while, Nest - (, Keyword - true, Nest - ), Scope - {, Identifier - numGame, Split - ., Identifier - GenQuestion, Nest - (, Nest - ), Scope - ;, Keyword - if, Nest - (, Identifier - In, Nest - (, Identifier - numGame, Split - ., Identifier - question, Split - ,, Identifier - Colour, Split - ., Identifier - DarkBlue, Nest - ), ComparativeOperator - !=, Identifier - numGame, Split - ., Identifier - answer, Nest - ), Scope - {, Identifier - Out, Nest - (, Value - "You Stupid Idiot You Got It Wrong! Answer: {numGame.answer}", Split - ,, Identifier - Colour, Split - ., Identifier - Magenta, Nest - ), Scope - ;, Identifier - Out, Nest - (, Value - "Final Score: {numGame.score}", Split - ,, Identifier - Colour, Split - ., Identifier - Magenta, Nest - ), Scope - ;, Identifier - In, Nest - (, Value - "Press Enter To Play Again...", Split - ,, Identifier - Colour, Split - ., Identifier - Magenta, Nest - ), Scope - ;, Identifier - Main, Nest - (, Nest - ), Scope - ;, Identifier - return, Scope - ;, Scope - }, Identifier - numGame, Split - ., Identifier - score, AssignmentOperator - +=, Value - 1, Scope - ;, Identifier - Out, Nest - (, Value - "Correct! Current Score: {numGame.score}", Nest - ), Scope - ;, Scope - }, Scope - }, Identifier - Main, Nest - (, Nest - ), Scope - ;]
+
+--- Token Lines ---
+Time Elapsed - 10.6 ms
+Total - 47
+      1. import "BaseLib.hc" ; 
+[S]   2. obj NumberGame { 
+      3. val testOperators = [ 1 + 1 , Add ( 1 , 2 ) ] ; 
+      4. val operators = [ "+" , "-" , "*" , "/" ] ; 
+      5. var score = 0 ; 
+      6. var question = "" ; 
+      7. var answer = 0 ; 
+[S]   8. func GenQuestion ( ) { 
+      9. var numOne = Random . RangeInt ( - 10 , 11 ) ; 
+     10. var numTwo = Random . RangeInt ( - 10 , 11 ) ; 
+     11. var op = Random . RangeInt ( 0 , 3 ) ; 
+[S]  12. if ( op == 3 && ( numOne == 0 || numTwo == 0 ) ) { 
+     13. numTwo += 1 ; 
+[E]  14. } 
+     15. question = "{numOne} {operators[op]} {numTwo} = " ; 
+[S]  16. if ( op == 0 ) { 
+     17. answer = numOne + numTwo ; 
+[E]  18. } 
+[S]  19. else if ( op == 1 ) { 
+     20. answer = numOne - numTwo ; 
+[E]  21. } 
+[S]  22. else if ( op == 2 ) { 
+     23. answer = numOne * numTwo ; 
+[E]  24. } 
+[S]  25. else if ( op == 3 ) { 
+     26. answer = numOne / numTwo ; 
+[E]  27. } 
+     28. Out ( "### Question Generated ###" ) ; 
+[E]  29. } 
+[E]  30. } 
+[S]  31. func Main ( ) { 
+     32. Out ( "--- HoneyC Number Game ---" , Colour . Magenta ) ; 
+     33. var numGame = NumberGame ( ) ; 
+[S]  34. while ( true ) { 
+     35. numGame . GenQuestion ( ) ; 
+[S]  36. if ( In ( numGame . question , Colour . DarkBlue ) != numGame . answer ) { 
+     37. Out ( "You Stupid Idiot You Got It Wrong! Answer: {numGame.answer}" , Colour . Magenta ) ; 
+     38. Out ( "Final Score: {numGame.score}" , Colour . Magenta ) ; 
+     39. In ( "Press Enter To Play Again..." , Colour . Magenta ) ; 
+     40. Main ( ) ; 
+     41. return ; 
+[E]  42. } 
+     43. numGame . score += 1 ; 
+     44. Out ( "Correct! Current Score: {numGame.score}" ) ; 
+[E]  45. } 
+[E]  46. } 
+     47. Main ( ) ; 
+
+--- Bracket Data ---
+Time Elapsed - 11.86 ms
+Bracket - Start: 9, End: 13, Line: 3, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 2, End: 3, Line: 8, IsFuncCall: True, IsFuncDef: True
+Bracket - Start: 4, End: 9, Line: 9, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 4, End: 9, Line: 10, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 4, End: 8, Line: 11, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 6, End: 14, Line: 12, IsFuncCall: False
+Bracket - Start: 1, End: 15, Line: 12, IsFuncCall: False
+Bracket - Start: 1, End: 5, Line: 16, IsFuncCall: False
+Bracket - Start: 2, End: 6, Line: 19, IsFuncCall: False
+Bracket - Start: 2, End: 6, Line: 22, IsFuncCall: False
+Bracket - Start: 2, End: 6, Line: 25, IsFuncCall: False
+Bracket - Start: 1, End: 3, Line: 28, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 2, End: 3, Line: 31, IsFuncCall: True, IsFuncDef: True
+Bracket - Start: 1, End: 5, Line: 32, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 4, End: 5, Line: 33, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 3, Line: 34, IsFuncCall: False
+Bracket - Start: 1, End: 2, Line: 35, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 3, End: 7, Line: 36, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 5, Line: 36, IsFuncCall: False
+Bracket - Start: 1, End: 5, Line: 37, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 5, Line: 38, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 5, Line: 39, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 2, Line: 40, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 3, Line: 44, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 2, Line: 47, IsFuncCall: True, IsFuncDef: False
+
+--- Grouped Token Lines ---
+Time Elapsed - 14.25 ms
+Total - 47
+      1. import "BaseLib.hc" ; 
+[S]   2. obj NumberGame { 
+      3. val testOperators = [ 1 + 1 , Add ( 1 , 2 ) ] ; 
+                               ^^^^^   ^^^^^^^^^^^^^     
+      4. val operators = [ "+" , "-" , "*" , "/" ] ; 
+      5. var score = 0 ; 
+      6. var question = "" ; 
+      7. var answer = 0 ; 
+[S]   8. func GenQuestion ( ) { 
+              ^^^^^^^^^^^^^^^   
+      9. var numOne = Random.RangeInt ( - 10 , 11 ) ; 
+                                        ^^^^        
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+     10. var numTwo = Random.RangeInt ( - 10 , 11 ) ; 
+                                        ^^^^        
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+     11. var op = Random.RangeInt ( 0 , 3 ) ; 
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^   
+[S]  12. if ( op == 3 && ( numOne == 0 || numTwo == 0 ) ) { 
+     13. numTwo += 1 ; 
+[E]  14. } 
+     15. question = "{numOne} {operators[op]} {numTwo} = " ; 
+[S]  16. if ( op == 0 ) { 
+     17. answer = numOne + numTwo ; 
+                  ^^^^^^^^^^^^^^^   
+[E]  18. } 
+[S]  19. else if ( op == 1 ) { 
+     20. answer = numOne - numTwo ; 
+                  ^^^^^^^^^^^^^^^   
+[E]  21. } 
+[S]  22. else if ( op == 2 ) { 
+     23. answer = numOne * numTwo ; 
+                  ^^^^^^^^^^^^^^^   
+[E]  24. } 
+[S]  25. else if ( op == 3 ) { 
+     26. answer = numOne / numTwo ; 
+                  ^^^^^^^^^^^^^^^   
+[E]  27. } 
+     28. Out ( "### Question Generated ###" ) ; 
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+[E]  29. } 
+[E]  30. } 
+[S]  31. func Main ( ) { 
+              ^^^^^^^^   
+     32. Out ( "--- HoneyC Number Game ---" , Colour.Magenta ) ; 
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+     33. var numGame = NumberGame ( ) ; 
+                       ^^^^^^^^^^^^^^   
+[S]  34. while ( true ) { 
+     35. numGame.GenQuestion ( ) ; 
+         ^^^^^^^^^^^^^^^^^^^^^^^   
+[S]  36. if ( In ( numGame.question , Colour.DarkBlue ) != numGame.answer ) { 
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                       
+     37. Out ( "You Stupid Idiot You Got It Wrong! Answer: {numGame.answer}" , Colour.Magenta ) ; 
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+     38. Out ( "Final Score: {numGame.score}" , Colour.Magenta ) ; 
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+     39. In ( "Press Enter To Play Again..." , Colour.Magenta ) ; 
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+     40. Main ( ) ; 
+         ^^^^^^^^   
+     41. return ; 
+[E]  42. } 
+     43. numGame.score += 1 ; 
+     44. Out ( "Correct! Current Score: {numGame.score}" ) ; 
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+[E]  45. } 
+[E]  46. } 
+     47. Main ( ) ; 
+         ^^^^^^^^   
+
+--- Purposed Token Lines ---
+Time Elapsed - 15.16 ms
+Total - 47
+Import              1. import "BaseLib.hc" ; 
+Object        [S]   2. obj NumberGame { 
+None                3. val testOperators = [ 1 + 1 , Add ( 1 , 2 ) ] ; 
+                                             ^^^^^   ^^^^^^^^^^^^^     
+None                4. val operators = [ "+" , "-" , "*" , "/" ] ; 
+Assignment          5. var score = 0 ; 
+Assignment          6. var question = "" ; 
+Assignment          7. var answer = 0 ; 
+Function      [S]   8. func GenQuestion ( ) { 
+                            ^^^^^^^^^^^^^^^   
+Assignment          9. var numOne = Random.RangeInt ( - 10 , 11 ) ; 
+                                                      ^^^^        
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+Assignment         10. var numTwo = Random.RangeInt ( - 10 , 11 ) ; 
+                                                      ^^^^        
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+Assignment         11. var op = Random.RangeInt ( 0 , 3 ) ; 
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^   
+None          [S]  12. if ( op == 3 && ( numOne == 0 || numTwo == 0 ) ) { 
+None               13. numTwo += 1 ; 
+LineLoopEnd   [E]  14. } 
+Assignment         15. question = "{numOne} {operators[op]} {numTwo} = " ; 
+None          [S]  16. if ( op == 0 ) { 
+Assignment         17. answer = numOne + numTwo ; 
+                                ^^^^^^^^^^^^^^^   
+LineLoopEnd   [E]  18. } 
+None          [S]  19. else if ( op == 1 ) { 
+Assignment         20. answer = numOne - numTwo ; 
+                                ^^^^^^^^^^^^^^^   
+LineLoopEnd   [E]  21. } 
+None          [S]  22. else if ( op == 2 ) { 
+Assignment         23. answer = numOne * numTwo ; 
+                                ^^^^^^^^^^^^^^^   
+LineLoopEnd   [E]  24. } 
+None          [S]  25. else if ( op == 3 ) { 
+Assignment         26. answer = numOne / numTwo ; 
+                                ^^^^^^^^^^^^^^^   
+LineLoopEnd   [E]  27. } 
+FunctionCall       28. Out ( "### Question Generated ###" ) ; 
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+LineLoopEnd   [E]  29. } 
+LineLoopEnd   [E]  30. } 
+Function      [S]  31. func Main ( ) { 
+                            ^^^^^^^^   
+FunctionCall       32. Out ( "--- HoneyC Number Game ---" , Colour.Magenta ) ; 
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+Assignment         33. var numGame = NumberGame ( ) ; 
+                                     ^^^^^^^^^^^^^^   
+None          [S]  34. while ( true ) { 
+FunctionCall       35. numGame.GenQuestion ( ) ; 
+                       ^^^^^^^^^^^^^^^^^^^^^^^   
+None          [S]  36. if ( In ( numGame.question , Colour.DarkBlue ) != numGame.answer ) { 
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                       
+FunctionCall       37. Out ( "You Stupid Idiot You Got It Wrong! Answer: {numGame.answer}" , Colour.Magenta ) ; 
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+FunctionCall       38. Out ( "Final Score: {numGame.score}" , Colour.Magenta ) ; 
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+FunctionCall       39. In ( "Press Enter To Play Again..." , Colour.Magenta ) ; 
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+FunctionCall       40. Main ( ) ; 
+                       ^^^^^^^^   
+None               41. return ; 
+LineLoopEnd   [E]  42. } 
+None               43. numGame.score += 1 ; 
+FunctionCall       44. Out ( "Correct! Current Score: {numGame.score}" ) ; 
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+LineLoopEnd   [E]  45. } 
+LineLoopEnd   [E]  46. } 
+FunctionCall       47. Main ( ) ; 
+                       ^^^^^^^^   
+
+--- Program Info ---
+Time Elapsed - 16.19 ms
+

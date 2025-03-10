@@ -1,0 +1,54 @@
+--- Tokens Generated ---
+Time Elapsed - 3.2 ms
+Total - 46
+[Keyword - import, Value - "BaseLib.hc", Scope - ;, Keyword - func, Identifier - Main, Nest - (, Nest - ), Scope - {, Keyword - var, Identifier - arr, AssignmentOperator - =, Compound - [, Value - 1, Split - ,, Value - 2, Split - ,, Value - 3, Split - ,, Value - 4, Split - ,, Value - 5, Compound - ], Scope - ;, Keyword - for, Identifier - i, Keyword - in, Identifier - arr, Scope - {, Identifier - Out, Nest - (, Identifier - arr, Compound - [, Identifier - i, Compound - ], Split - ,, Identifier - Colour, Split - ., Identifier - Green, Nest - ), Scope - ;, Scope - }, Scope - }, Identifier - Main, Nest - (, Nest - ), Scope - ;]
+
+--- Token Lines ---
+Time Elapsed - 7 ms
+Total - 8
+      1. import "BaseLib.hc" ; 
+[S]   2. func Main ( ) { 
+      3. var arr = [ 1 , 2 , 3 , 4 , 5 ] ; 
+[S]   4. for i in arr { 
+      5. Out ( arr [ i ] , Colour . Green ) ; 
+[E]   6. } 
+[E]   7. } 
+      8. Main ( ) ; 
+
+--- Bracket Data ---
+Time Elapsed - 7.97 ms
+Bracket - Start: 2, End: 3, Line: 2, IsFuncCall: True, IsFuncDef: True
+Bracket - Start: 1, End: 8, Line: 5, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 2, Line: 8, IsFuncCall: True, IsFuncDef: False
+
+--- Grouped Token Lines ---
+Time Elapsed - 10.03 ms
+Total - 8
+      1. import "BaseLib.hc" ; 
+[S]   2. func Main ( ) { 
+              ^^^^^^^^   
+      3. var arr = [ 1 , 2 , 3 , 4 , 5 ] ; 
+[S]   4. for i in arr { 
+      5. Out ( arr [ i ] , Colour.Green ) ; 
+[E]   6. } 
+[E]   7. } 
+      8. Main ( ) ; 
+         ^^^^^^^^   
+
+--- Purposed Token Lines ---
+Time Elapsed - 10.34 ms
+Total - 8
+Import              1. import "BaseLib.hc" ; 
+Function      [S]   2. func Main ( ) { 
+                            ^^^^^^^^   
+None                3. var arr = [ 1 , 2 , 3 , 4 , 5 ] ; 
+None          [S]   4. for i in arr { 
+None                5. Out ( arr [ i ] , Colour.Green ) ; 
+LineLoopEnd   [E]   6. } 
+LineLoopEnd   [E]   7. } 
+FunctionCall        8. Main ( ) ; 
+                       ^^^^^^^^   
+
+--- Program Info ---
+Time Elapsed - 10.67 ms
+

@@ -2,6 +2,7 @@ import "BaseLib.hc";
 
 obj NumberGame 
 { 
+    val testOperators = [1 + 1, Add(1, 2)];
     val operators = ["+", "-", "*", "/"]; # This is an example end of line comment  
     var score = 0;
     var question = "";

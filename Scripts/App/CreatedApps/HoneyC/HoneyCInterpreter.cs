@@ -9,17 +9,15 @@ public static class HoneyCInterpreter
 {
     public static void Interpret(string[] query)
     {
-        Diagnostics.Start();
-        ProgramData.Wipe();
+        Diagnostics.Start(); // start diagnositcs
+        ProgramData.Wipe(); // clear any previous variable and function data
 
-        string cleanedQuery = HoneyCLexer.Cleaned(query);
+        Diagnostics.Output("HoneyC Is Still In Development, So Expect Programs To Have Issues, Or Not Run Atall!", false, true, true);   
+
+        string cleanedQuery = HoneyCLexer.CleanQuery(query); // remove comments and join lines
 
         List<Token> tokenisedInput = HoneyCLexer.Lex(cleanedQuery);
         if (!Diagnostics.Running) return;  
-
-        Diagnostics.Output("--- Tokens Generated ---", true);
-        Diagnostics.Output($"Total - {tokenisedInput.Count()}");
-        Diagnostics.Output(tokenisedInput.ToElementString());
 
         List<TokenGroup> tokenGroups = HoneyCParser.Parse(tokenisedInput);
         if (!Diagnostics.Running) return;
