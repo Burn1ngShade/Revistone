@@ -1,3 +1,5 @@
+using System.Formats.Asn1;
+using System.Reflection.Metadata.Ecma335;
 using Revistone.Apps.HoneyC.Data;
 using Revistone.Functions;
 
@@ -8,6 +10,49 @@ namespace Revistone.Apps.HoneyC;
 /// <summary> Class responsible for converting user query to set of tokens. </summary>
 public static class HoneyCLexer
 {
+    /// <summary> Removes comments and joins together lines of a given query. </summary>
+    public static string Cleaned(string[] query)
+    {
+        string cleanedQuery = "";
+
+        int inComment = 0;
+        bool inString = false;
+        char? lastChar = null;
+
+        foreach (string s in query)
+        {
+            foreach (char c in s)
+            {
+                if (inComment == 0 && c == '"') inString = !inString;
+
+                if (!inString && inComment == 0 && c == '#')
+                {
+                    if (lastChar == '/')
+                    {
+                        inComment = 1;
+                        cleanedQuery = cleanedQuery[..^1];
+                        continue;
+                    }
+                    else break;
+                }
+                else if (inComment > 1 && c == '/' && lastChar == '#')
+                {
+                    inComment = 0;
+                    continue;
+                }
+
+                if (inComment == 0) cleanedQuery += c;
+                else inComment++;
+
+                lastChar = c;
+            }
+        }
+
+        return cleanedQuery;
+
+        // return string.Join(' ', query);
+    }
+
     public static List<Token> Lex(string query)
     {
         query = query.TrimStart();
@@ -32,11 +77,18 @@ public static class HoneyCLexer
                 tokens.Add(tk.Reset(query[i]));
                 if (tokens[^1].type == TokenType.None)
                 {
+                    Diagnostics.Output(tokens[^1] + "\n");
+                    foreach (Token t in tokens) Diagnostics.Output(t);
                     return Diagnostics.ThrowError<Token>("Token_Exception", "Invalid Token Type 'None'", -1, tokens.Count - 1, tokens);
                 }
             }
 
-            if (Definitions.GetSyntaxType(tk.content) != TokenType.None)
+            if (tokens.Count > 0 && Definitions.GetSyntaxType(tokens[^1].content + tk.content) != TokenType.None)
+            {
+                tokens[^1] = new Token(tokens[^1].content + tk.content, Definitions.GetSyntaxType(tokens[^1].content + tk.content));
+                tk = new();
+            }
+            else if (Definitions.GetSyntaxType(tk.content) != TokenType.None)
             {
                 tokens.Add(new Token(tk.content, Definitions.GetSyntaxType(tk.content)));
                 tk = new();
@@ -48,6 +100,8 @@ public static class HoneyCLexer
             tokens.Add(tk.Reset(' '));
             if (tokens[^1].type == TokenType.None)
             {
+                Diagnostics.Output(tokens[^1] + "\n");
+                foreach (Token t in tokens) Diagnostics.Output(t);
                 return Diagnostics.ThrowError<Token>("Token_Exception", "Invalid Token Type 'None'", -1, tokens.Count - 1, tokens);
             }
         }
@@ -87,11 +141,10 @@ public static class HoneyCLexer
             return t;
         }
 
-        // --- 
-
         static bool IsValue(string s)
         {
-            if (!s.Contains(' ') && float.TryParse(s, out float r)) return true;
+            if (!s.Contains(' ') && !s.Contains(',') && float.TryParse(s, out float r)) return true;
+            // Diagnostics.Output(s);
             if (s.StartsWith('"') && (s.LastIndexOf('"') == 0 || s.LastIndexOf('"') == s.Length - 1)) return true;
 
             return false;

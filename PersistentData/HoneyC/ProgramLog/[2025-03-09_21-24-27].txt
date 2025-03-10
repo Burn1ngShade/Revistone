@@ -1,0 +1,519 @@
+--- Tokens Generated ---
+Time Elapsed - 3.61 ms
+Total - 277
+Keyword - enum
+Identifier - Colour
+Scope - {
+Identifier - Black
+AssignmentOperator - =
+Value - 0
+Scope - ;
+Identifier - DarkBlue
+AssignmentOperator - =
+Value - 1
+Scope - ;
+Identifier - DarkGreen
+AssignmentOperator - =
+Value - 2
+Scope - ;
+Identifier - DarkCyan
+AssignmentOperator - =
+Value - 3
+Scope - ;
+Identifier - DarkRed
+AssignmentOperator - =
+Value - 4
+Scope - ;
+Identifier - DarkMagenta
+AssignmentOperator - =
+Value - 5
+Scope - ;
+Identifier - DarkYellow
+AssignmentOperator - =
+Value - 6
+Scope - ;
+Identifier - Gray
+AssignmentOperator - =
+Value - 7
+Scope - ;
+Identifier - DarkGray
+AssignmentOperator - =
+Value - 8
+Scope - ;
+Identifier - Blue
+AssignmentOperator - =
+Value - 9
+Scope - ;
+Identifier - Green
+AssignmentOperator - =
+Value - 10
+Scope - ;
+Identifier - Cyan
+AssignmentOperator - =
+Value - 11
+Scope - ;
+Identifier - Red
+AssignmentOperator - =
+Value - 12
+Scope - ;
+Identifier - Magenta
+AssignmentOperator - =
+Value - 13
+Scope - ;
+Identifier - Yellow
+AssignmentOperator - =
+Value - 14
+Scope - ;
+Identifier - White
+AssignmentOperator - =
+Value - 15
+Scope - ;
+Scope - }
+Keyword - obj
+Identifier - Cow
+Scope - {
+Keyword - var
+Identifier - x
+Scope - ;
+Keyword - val
+Identifier - y
+Scope - ;
+Keyword - var
+Identifier - z
+Scope - ;
+Keyword - var
+Identifier - babyCow
+Scope - ;
+Keyword - val
+Identifier - s
+AssignmentOperator - =
+Value - 5
+Scope - ;
+Keyword - obj
+Identifier - Cow
+Nest - (
+Identifier - x
+Split - ,
+Identifier - y
+Split - ,
+Identifier - z
+Nest - )
+Scope - {
+Keyword - this
+Split - .
+Identifier - x
+AssignmentOperator - =
+Identifier - x
+Scope - ;
+Keyword - this
+Split - .
+Identifier - y
+AssignmentOperator - =
+Identifier - y
+Scope - ;
+Keyword - this
+Split - .
+Identifier - z
+AssignmentOperator - =
+Identifier - z
+Scope - ;
+Keyword - this
+Split - .
+Identifier - babyCow
+AssignmentOperator - =
+Identifier - Cow
+Nest - (
+Value - 1
+Split - ,
+Value - 2
+Split - ,
+Value - 3
+Nest - )
+Scope - ;
+Scope - }
+Keyword - func
+Identifier - Moo
+Nest - (
+Nest - )
+Scope - {
+Keyword - for
+Identifier - i
+Keyword - in
+Identifier - Range
+Nest - (
+Nest - (
+Identifier - x
+MathOperator - +
+Identifier - y
+MathOperator - +
+Identifier - z
+Nest - )
+MathOperator - *
+Identifier - s
+Nest - )
+Scope - {
+Identifier - Out
+Nest - (
+Value - "Moooo!"
+Split - ,
+Identifier - Colour
+Split - .
+Identifier - Blue
+Nest - )
+Scope - ;
+Scope - }
+Scope - }
+Scope - }
+Keyword - func
+Identifier - Main
+Nest - (
+Nest - )
+Scope - {
+Identifier - Out
+Nest - (
+Value - "This Is My Test Script"
+Nest - )
+Scope - ;
+Keyword - val
+Identifier - cowNumber
+AssignmentOperator - =
+Value - 2
+MathOperator - *
+Value - 4
+MathOperator - -
+Nest - (
+Value - 2
+MathOperator - +
+Value - 2
+Nest - )
+Scope - ;
+Keyword - var
+Identifier - cow
+AssignmentOperator - =
+Identifier - Cow
+Nest - (
+Identifier - Add
+Nest - (
+Value - 1
+Split - ,
+Value - 1
+Nest - )
+Split - ,
+Nest - (
+MathOperator - -
+Value - 2
+MathOperator - +
+Identifier - cowNumber
+Nest - )
+MathOperator - *
+Value - 0.5
+Split - ,
+Value - 3
+Nest - )
+Scope - ;
+Identifier - cow
+Split - .
+Identifier - Moo
+Nest - (
+Nest - )
+Scope - ;
+Identifier - cow
+Split - .
+Identifier - babyCow
+Split - .
+Identifier - Moo
+Nest - (
+Nest - )
+Scope - ;
+Keyword - if
+Nest - (
+Identifier - true
+ComparativeOperator - ==
+Identifier - true
+Nest - )
+Scope - {
+Identifier - Out
+Nest - (
+Value - "WOW"
+Nest - )
+Scope - ;
+Scope - }
+Keyword - for
+Identifier - i
+Keyword - in
+Compound - [
+Value - 2
+Split - ,
+Value - 4
+Split - ,
+Value - 5
+Compound - ]
+Scope - {
+Identifier - Out
+Nest - (
+Identifier - i
+Split - ,
+Identifier - Colour
+Split - .
+Identifier - Green
+Nest - )
+Scope - ;
+Scope - }
+Scope - }
+Keyword - func
+Identifier - Add
+Nest - (
+Identifier - x
+Split - ,
+Identifier - y
+Nest - )
+Scope - {
+Identifier - return
+Identifier - x
+MathOperator - +
+Identifier - y
+Scope - ;
+Scope - }
+Identifier - Main
+Nest - (
+Nest - )
+Scope - ;
+
+--- Token Lines ---
+Time Elapsed - 3.76 ms
+Total - 53
+[S]   1. enum Colour { 
+      2. Black = 0 ; 
+      3. DarkBlue = 1 ; 
+      4. DarkGreen = 2 ; 
+      5. DarkCyan = 3 ; 
+      6. DarkRed = 4 ; 
+      7. DarkMagenta = 5 ; 
+      8. DarkYellow = 6 ; 
+      9. Gray = 7 ; 
+     10. DarkGray = 8 ; 
+     11. Blue = 9 ; 
+     12. Green = 10 ; 
+     13. Cyan = 11 ; 
+     14. Red = 12 ; 
+     15. Magenta = 13 ; 
+     16. Yellow = 14 ; 
+     17. White = 15 ; 
+[E]  18. } 
+[S]  19. obj Cow { 
+     20. var x ; 
+     21. val y ; 
+     22. var z ; 
+     23. var babyCow ; 
+     24. val s = 5 ; 
+[S]  25. obj Cow ( x , y , z ) { 
+     26. this . x = x ; 
+     27. this . y = y ; 
+     28. this . z = z ; 
+     29. this . babyCow = Cow ( 1 , 2 , 3 ) ; 
+[E]  30. } 
+[S]  31. func Moo ( ) { 
+[S]  32. for i in Range ( ( x + y + z ) * s ) { 
+     33. Out ( "Moooo!" , Colour . Blue ) ; 
+[E]  34. } 
+[E]  35. } 
+[E]  36. } 
+[S]  37. func Main ( ) { 
+     38. Out ( "This Is My Test Script" ) ; 
+     39. val cowNumber = 2 * 4 - ( 2 + 2 ) ; 
+     40. var cow = Cow ( Add ( 1 , 1 ) , ( - 2 + cowNumber ) * 0.5 , 3 ) ; 
+     41. cow . Moo ( ) ; 
+     42. cow . babyCow . Moo ( ) ; 
+[S]  43. if ( true == true ) { 
+     44. Out ( "WOW" ) ; 
+[E]  45. } 
+[S]  46. for i in [ 2 , 4 , 5 ] { 
+     47. Out ( i , Colour . Green ) ; 
+[E]  48. } 
+[E]  49. } 
+[S]  50. func Add ( x , y ) { 
+     51. return x + y ; 
+[E]  52. } 
+     53. Main ( ) ; 
+
+--- Bracket Data ---
+Time Elapsed - 3.87 ms
+Bracket - Start: 2, End: 8, Line: 25, IsFuncCall: True, IsFuncDef: True
+Bracket - Start: 3, End: 9, Line: 29, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 2, End: 3, Line: 31, IsFuncCall: True, IsFuncDef: True
+Bracket - Start: 5, End: 11, Line: 32, IsFuncCall: False
+Bracket - Start: 4, End: 8, Line: 32, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 5, Line: 33, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 2, End: 3, Line: 37, IsFuncCall: True, IsFuncDef: True
+Bracket - Start: 1, End: 3, Line: 38, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 7, End: 11, Line: 39, IsFuncCall: False
+Bracket - Start: 6, End: 10, Line: 40, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 7, End: 12, Line: 40, IsFuncCall: False
+Bracket - Start: 4, End: 12, Line: 40, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 2, Line: 41, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 2, Line: 42, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 5, Line: 43, IsFuncCall: False
+Bracket - Start: 1, End: 3, Line: 44, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 1, End: 5, Line: 47, IsFuncCall: True, IsFuncDef: False
+Bracket - Start: 2, End: 6, Line: 50, IsFuncCall: True, IsFuncDef: True
+Bracket - Start: 1, End: 2, Line: 53, IsFuncCall: True, IsFuncDef: False
+
+--- Grouped Token Lines ---
+Time Elapsed - 3.99 ms
+Total - 53
+[S]   1. enum Colour { 
+      2. Black = 0 ; 
+      3. DarkBlue = 1 ; 
+      4. DarkGreen = 2 ; 
+      5. DarkCyan = 3 ; 
+      6. DarkRed = 4 ; 
+      7. DarkMagenta = 5 ; 
+      8. DarkYellow = 6 ; 
+      9. Gray = 7 ; 
+     10. DarkGray = 8 ; 
+     11. Blue = 9 ; 
+     12. Green = 10 ; 
+     13. Cyan = 11 ; 
+     14. Red = 12 ; 
+     15. Magenta = 13 ; 
+     16. Yellow = 14 ; 
+     17. White = 15 ; 
+[E]  18. } 
+[S]  19. obj Cow { 
+     20. var x ; 
+     21. val y ; 
+     22. var z ; 
+     23. var babyCow ; 
+     24. val s = 5 ; 
+[S]  25. obj Cow ( x , y , z ) { 
+             ^^^^^^^^^^^^^^^^^   
+     26. this.x = x ; 
+     27. this.y = y ; 
+     28. this.z = z ; 
+     29. this.babyCow = Cow ( 1 , 2 , 3 ) ; 
+                        ^^^^^^^^^^^^^^^^^   
+[E]  30. } 
+[S]  31. func Moo ( ) { 
+              ^^^^^^^   
+[S]  32. for i in Range ( ( x + y + z ) * s ) { 
+                          ^^^^^^^^^^^^^     
+                          ^^^^^^^^^^^^^^^^^   
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+     33. Out ( "Moooo!" , Colour.Blue ) ; 
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+[E]  34. } 
+[E]  35. } 
+[E]  36. } 
+[S]  37. func Main ( ) { 
+              ^^^^^^^^   
+     38. Out ( "This Is My Test Script" ) ; 
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+     39. val cowNumber = 2 * 4 - ( 2 + 2 ) ; 
+                                 ^^^^^^^^^ 
+                         ^^^^^^^^^^^^^^^^^   
+     40. var cow = Cow ( Add ( 1 , 1 ) , ( - 2 + cowNumber ) * 0.5 , 3 ) ; 
+                                         ^^^^^^^^^^^^^^^^^^^       
+                         ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^^^^       
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+     41. cow.Moo ( ) ; 
+         ^^^^^^^^^^^   
+     42. cow.babyCow.Moo ( ) ; 
+         ^^^^^^^^^^^^^^^^^^^   
+[S]  43. if ( true == true ) { 
+     44. Out ( "WOW" ) ; 
+         ^^^^^^^^^^^^^   
+[E]  45. } 
+[S]  46. for i in [ 2 , 4 , 5 ] { 
+     47. Out ( i , Colour.Green ) ; 
+         ^^^^^^^^^^^^^^^^^^^^^^^^   
+[E]  48. } 
+[E]  49. } 
+[S]  50. func Add ( x , y ) { 
+              ^^^^^^^^^^^^^   
+     51. return x + y ; 
+         ^^^^^^^^^^^^   
+[E]  52. } 
+     53. Main ( ) ; 
+         ^^^^^^^^   
+
+--- Purposed Token Lines ---
+Time Elapsed - 4.17 ms
+Total - 53
+Enum          [S]   1. enum Colour { 
+Assignment          2. Black = 0 ; 
+Assignment          3. DarkBlue = 1 ; 
+Assignment          4. DarkGreen = 2 ; 
+Assignment          5. DarkCyan = 3 ; 
+Assignment          6. DarkRed = 4 ; 
+Assignment          7. DarkMagenta = 5 ; 
+Assignment          8. DarkYellow = 6 ; 
+Assignment          9. Gray = 7 ; 
+Assignment         10. DarkGray = 8 ; 
+Assignment         11. Blue = 9 ; 
+Assignment         12. Green = 10 ; 
+Assignment         13. Cyan = 11 ; 
+Assignment         14. Red = 12 ; 
+Assignment         15. Magenta = 13 ; 
+Assignment         16. Yellow = 14 ; 
+Assignment         17. White = 15 ; 
+LineLoopEnd   [E]  18. } 
+Object        [S]  19. obj Cow { 
+Assignment         20. var x ; 
+Assignment         21. val y ; 
+Assignment         22. var z ; 
+Assignment         23. var babyCow ; 
+Assignment         24. val s = 5 ; 
+None          [S]  25. obj Cow ( x , y , z ) { 
+                           ^^^^^^^^^^^^^^^^^   
+Assignment         26. this.x = x ; 
+Assignment         27. this.y = y ; 
+Assignment         28. this.z = z ; 
+Assignment         29. this.babyCow = Cow ( 1 , 2 , 3 ) ; 
+                                      ^^^^^^^^^^^^^^^^^   
+LineLoopEnd   [E]  30. } 
+Function      [S]  31. func Moo ( ) { 
+                            ^^^^^^^   
+None          [S]  32. for i in Range ( ( x + y + z ) * s ) { 
+                                        ^^^^^^^^^^^^^     
+                                        ^^^^^^^^^^^^^^^^^   
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+FunctionCall       33. Out ( "Moooo!" , Colour.Blue ) ; 
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+LineLoopEnd   [E]  34. } 
+LineLoopEnd   [E]  35. } 
+LineLoopEnd   [E]  36. } 
+Function      [S]  37. func Main ( ) { 
+                            ^^^^^^^^   
+FunctionCall       38. Out ( "This Is My Test Script" ) ; 
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+Assignment         39. val cowNumber = 2 * 4 - ( 2 + 2 ) ; 
+                                               ^^^^^^^^^ 
+                                       ^^^^^^^^^^^^^^^^^   
+Assignment         40. var cow = Cow ( Add ( 1 , 1 ) , ( - 2 + cowNumber ) * 0.5 , 3 ) ; 
+                                                       ^^^^^^^^^^^^^^^^^^^       
+                                       ^^^^^^^^^^^^^   ^^^^^^^^^^^^^^^^^^^^^^^^^       
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^   
+FunctionCall       41. cow.Moo ( ) ; 
+                       ^^^^^^^^^^^   
+FunctionCall       42. cow.babyCow.Moo ( ) ; 
+                       ^^^^^^^^^^^^^^^^^^^   
+None          [S]  43. if ( true == true ) { 
+FunctionCall       44. Out ( "WOW" ) ; 
+                       ^^^^^^^^^^^^^   
+LineLoopEnd   [E]  45. } 
+None          [S]  46. for i in [ 2 , 4 , 5 ] { 
+FunctionCall       47. Out ( i , Colour.Green ) ; 
+                       ^^^^^^^^^^^^^^^^^^^^^^^^   
+LineLoopEnd   [E]  48. } 
+LineLoopEnd   [E]  49. } 
+Function      [S]  50. func Add ( x , y ) { 
+                            ^^^^^^^^^^^^^   
+None               51. return x + y ; 
+                       ^^^^^^^^^^^^   
+LineLoopEnd   [E]  52. } 
+FunctionCall       53. Main ( ) ; 
+                       ^^^^^^^^   
+
+--- Program Info ---
+Time Elapsed - 4.35 ms
+

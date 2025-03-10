@@ -51,7 +51,7 @@ public static class AppCommands
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "runtime", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { SendConsoleMessage(new ConsoleLine($"Revistone Has Been Running For {(Manager.currentTick / 40d).ToString("0.00")} Seconds.", AppRegistry.activeApp.colourScheme.primaryColour)); },
                 "Prints The Runtime Of The Current Session."),
-                (new UserInputProfile("comp[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true), (s) => {HoneyCInterpreter.Interpret(s[4..]); }, "Carries Out Given HoneyC Promt."),
+                (new UserInputProfile("comp[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true), (s) => {HoneyCInterpreter.Interpret([s[4..]]); }, "Carries Out Given HoneyC Promt."),
                 (new UserInputProfile("calc[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true), (s) => {CalculatorInterpreter.Intepret(s[4..]); }, "Carries Out Given Calculator Promt."),
                 (new UserInputProfile("file comp[A:]", caseSettings: StringFunctions.CapitalCasing.Lower), (s) => {LoadHoneyCFile(s[9..]); }, "Loads And Carries Out Given HoneyCFile"),
                 (new UserInputProfile("debug[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
@@ -186,7 +186,7 @@ public static class AppCommands
 
         if (AppPersistentData.FileExists($"HoneyC/{userInput}"))
         {
-            HoneyCInterpreter.Interpret(string.Join(" ", AppPersistentData.LoadFile($"HoneyC/{userInput}")));
+            HoneyCInterpreter.Interpret(AppPersistentData.LoadFile($"HoneyC/{userInput}"));
         }
         else
         {

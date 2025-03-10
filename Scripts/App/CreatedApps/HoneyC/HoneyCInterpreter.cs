@@ -7,12 +7,14 @@ namespace Revistone.Apps.HoneyC;
 /// <summary> Class responsible for interpreting user querys. </summary>
 public static class HoneyCInterpreter
 {
-    public static void Interpret(string query)
+    public static void Interpret(string[] query)
     {
         Diagnostics.Start();
         ProgramData.Wipe();
 
-        List<Token> tokenisedInput = HoneyCLexer.Lex(query);
+        string cleanedQuery = HoneyCLexer.Cleaned(query);
+
+        List<Token> tokenisedInput = HoneyCLexer.Lex(cleanedQuery);
         if (!Diagnostics.Running) return;  
 
         Diagnostics.Output("--- Tokens Generated ---", true);

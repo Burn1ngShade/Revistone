@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using Revistone.Apps.HoneyC.Data;
-
+using Revistone.Console;
+using Revistone.Functions;
 using static Revistone.Apps.HoneyC.Data.AbstractToken;
 
 namespace Revistone.Apps.HoneyC;
@@ -15,7 +17,7 @@ public static class HoneyCParser
 
         Stack<int> currentScopes = new();
         List<(int start, int end)> scopes = new();
-        TokenGroup currentGroup = new([], TokenGroupType.Line); 
+        TokenGroup currentGroup = new([], TokenGroupType.None);
         for (int i = 0; i < tokens.Count; i++)
         {
             Token t = tokens[i];
@@ -38,7 +40,7 @@ public static class HoneyCParser
                 }
 
                 groups.Add(currentGroup);
-                currentGroup = new([], TokenGroupType.Line);
+                currentGroup = new([], TokenGroupType.None);
             }
         }
 
@@ -52,6 +54,191 @@ public static class HoneyCParser
         Diagnostics.Output("--- Token Lines ---", true);
         Diagnostics.Output("Total - " + groups.Count);
         for (int i = 0; i < groups.Count; i++) Diagnostics.Output($"{(ProgramData.IsScopeStart(i) ? "[S]" : ProgramData.IsScopeEnd(i) ? "[E]" : "   ")}{new string(' ', 4 - (i + 1).ToString().Length)}{i + 1}. {groups[i]}");
+
+        // --- Lets now work out each groups function ---
+
+        for (int i = 0; i < groups.Count; i++)
+        {
+            TokenGroup g = groups[i];
+
+            for (int j = 0; j < g.content.Count - 2; j++) // merge all multi step variables into one token
+            {
+                if (g.SubGroup(j, 3).InFormat("<id>:this . <id>"))
+                {
+                    g.MergeToToken(j, 3, TokenType.Identifier);
+                    j--;
+                }
+            }
+        }
+
+        Diagnostics.Output("--- Bracket Data ---", true);
+
+        for (int i = 0; i < groups.Count; i++) // now repeated merges of function calls and calculations
+        {
+            List<Token> g = groups[i].ToTokenList(); // first lets find location of all bracket pairs
+            Stack<int> openBrackets = [];
+            List<(int index, int endIndex, int layer)> brackets = [];
+
+            for (int j = 0; j < g.Count; j++)
+            {
+                if (g[j].type != TokenType.Nest) continue;
+
+                if (g[j].content == "(") openBrackets.Push(j);
+                else if (g[j].content == ")")
+                {
+                    if (openBrackets.Count == 0)
+                        return Diagnostics.ThrowError<TokenGroup>("Syntax_Exception", "Unmatched ')'", i, j, g);
+
+                    brackets.Add((openBrackets.Pop(), j, openBrackets.Count));
+                }
+            }
+
+            brackets = [.. brackets.OrderByDescending(x => x.layer)];
+            if (openBrackets.Count != 0) return Diagnostics.ThrowError<TokenGroup>("Syntax_Exception", "Unmatched '('", i, openBrackets.Peek(), g);
+
+            TokenGroup newTokenGroup = new([.. g.Select(x => (AbstractToken)x)], TokenGroupType.None);
+            while (brackets.Count > 0)
+            {
+                (int start, int end, int layer) = brackets[0];
+                bool isFuncCall = start != 0 && newTokenGroup.content[start - 1] is Token t && t.type == TokenType.Identifier;
+
+                if (isFuncCall) // possible func call
+                {
+                    bool isFuncDef = start > 1 && newTokenGroup.content[start - 2] is Token t2 && (t2.content == "func" || t2.content == "obj");
+                    Diagnostics.Output($"Bracket - Start: {start}, End: {end}, Line: {i + 1}, IsFuncCall: {isFuncCall}, IsFuncDef: {isFuncDef}");
+
+                    if (isFuncDef)
+                    {
+                        if (newTokenGroup.SubGroup(start + 1, end - start - 1).InFormat("[OP] <id> [LP] , <id> [ELP] [EOP]"))
+                        {
+                            newTokenGroup.MergeToTokenGroup(start - 1, end - start + 2, TokenGroupType.Function);
+
+                            for (int j = 1; j < brackets.Count; j++)
+                            {
+                                brackets[j] = (brackets[j].index > start - 1 ? (brackets[j].index - (end - start + 1)) : brackets[j].index,
+                                brackets[j].endIndex > (brackets[j].index - (end - start + 1)) ? (brackets[j].endIndex - (end - start + 1)) : brackets[j].endIndex, brackets[j].layer);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // we might be missing some calculations here so lets identify that sht
+
+                        int currentStreak = 0;
+                        for (int k = end - 1; k > start; k--)
+                        {
+                            if (newTokenGroup.content[k] is Token t3 && (t3.type == TokenType.MathOperator || t3.type == TokenType.Value || t3.type == TokenType.Identifier)) currentStreak++;
+                            else if (newTokenGroup.content[k] is TokenGroup tg && (tg.type == TokenGroupType.Calculation || tg.type == TokenGroupType.FunctionCall)) currentStreak++;
+                            else
+                            {
+                                if (currentStreak > 1)
+                                {
+                                    newTokenGroup.MergeToTokenGroup(k + 1, currentStreak, TokenGroupType.Calculation);
+                                    for (int j = 0; j < brackets.Count; j++)
+                                    {
+                                        brackets[j] = (brackets[j].index > k + 1 ? (brackets[j].index - (currentStreak - 1)) : brackets[j].index,
+                                        brackets[j].endIndex > (k + 1 + currentStreak) ? (brackets[j].endIndex - (currentStreak - 1)) : brackets[j].endIndex, brackets[j].layer);
+                                    }
+                                }
+                                currentStreak = 0;
+                            }
+                        }
+
+                        if (currentStreak > 1)
+                        {
+                            newTokenGroup.MergeToTokenGroup(start + 1, currentStreak, TokenGroupType.Calculation);
+                            for (int j = 0; j < brackets.Count; j++)
+                            {
+                                brackets[j] = (brackets[j].index > start ? (brackets[j].index - (currentStreak - 1)) : brackets[j].index,
+                                brackets[j].endIndex > (start + currentStreak) ? (brackets[j].endIndex - (currentStreak - 1)) : brackets[j].endIndex, brackets[j].layer);
+                            }
+                        }
+
+                        (start, end, layer) = brackets[0];
+
+                        if (newTokenGroup.SubGroup(start + 1, end - start - 1).InFormat("[OP] <id>:<val>:<CALL>:<CALC> [LP] ,  <id>:<val>:<CALL>:<CALC> [ELP] [EOP]"))
+                        {
+                            newTokenGroup.MergeToTokenGroup(start - 1, end - start + 2, TokenGroupType.FunctionCall);
+                            for (int j = 1; j < brackets.Count; j++)
+                            {
+                                brackets[j] = (brackets[j].index > start - 1 ? (brackets[j].index - (end - start + 1)) : brackets[j].index,
+                                brackets[j].endIndex > (brackets[j].index - (end - start + 1)) ? (brackets[j].endIndex - (end - start + 1)) : brackets[j].endIndex, brackets[j].layer);
+                            }
+                        }
+                    }
+                }
+                else // possible calculation
+                {
+                    Diagnostics.Output($"Bracket - Start: {start}, End: {end}, Line: {i + 1}, IsFuncCall: {isFuncCall}");
+
+                    if (newTokenGroup.SubGroup(start + 1, end - start - 1).InFormat("<mop>:<val>:<id>:<CALL>:<CALC> [LP] <mop>:<val>:<id>:<CALL>:<CALC> [ELP]"))
+                    {
+                        newTokenGroup.MergeToTokenGroup(start, end - start + 1, TokenGroupType.Calculation);
+                        for (int j = 1; j < brackets.Count; j++)
+                        {
+                            brackets[j] = (brackets[j].index > start ? (brackets[j].index - (end - start)) : brackets[j].index,
+                            brackets[j].endIndex > (brackets[j].index - (end - start)) ? (brackets[j].endIndex - (end - start)) : brackets[j].endIndex, brackets[j].layer);
+                        }
+                    }
+                }
+
+                brackets.RemoveAt(0);
+            }
+
+            int cs = 0;
+            for (int k = newTokenGroup.content.Count - 1; k >= 0; k--)
+            {
+                if (newTokenGroup.content[k] is Token t3 && (t3.type == TokenType.MathOperator || t3.type == TokenType.Value || t3.type == TokenType.Identifier)) cs++;
+                else if (newTokenGroup.content[k] is TokenGroup tg && (tg.type == TokenGroupType.Calculation || tg.type == TokenGroupType.FunctionCall)) cs++;
+                else
+                {
+                    if (cs > 1)
+                    {
+                        newTokenGroup.MergeToTokenGroup(k + 1, cs, TokenGroupType.Calculation);
+                    }
+                    cs = 0;
+                }
+            }
+
+            if (cs > 1)
+            {
+                newTokenGroup.MergeToTokenGroup(0, cs, TokenGroupType.Calculation);
+            }
+
+            groups[i] = newTokenGroup;
+        }
+
+        Diagnostics.Output("--- Grouped Token Lines ---", true);
+        Diagnostics.Output("Total - " + groups.Count);
+        for (int i = 0; i < groups.Count; i++)
+        {
+            Diagnostics.Output($"{(ProgramData.IsScopeStart(i) ? "[S]" : ProgramData.IsScopeEnd(i) ? "[E]" : "   ")}{new string(' ', 4 - (i + 1).ToString().Length)}{i + 1}. {groups[i]}");
+            foreach (string s in groups[i].ToGroupString()) Diagnostics.Output(new string(' ', 9) + s);
+        }
+
+        // now we finally give each line a function yay
+
+        for (int i = 0; i < groups.Count; i++)
+        {
+            TokenGroup g = groups[i];
+
+            if (g.InFormat("[OP] var:val [EOP] <id> [OP] <mop> [EOP] = <val>:<id>:<CALL>:<CALC> ;")) groups[i].type = TokenGroupType.Assignment;
+            else if (g.InFormat("var:val <id> ;")) groups[i].type = TokenGroupType.Assignment;
+            else if (g.InFormat("<CALL> ;")) groups[i].type = TokenGroupType.FunctionCall;
+            else if (g.InFormat("}")) groups[i].type = TokenGroupType.LineLoopEnd;
+            else if (g.InFormat("func <FUNC> {")) groups[i].type = TokenGroupType.Function;
+            else if (g.InFormat("obj <id> {")) groups[i].type = TokenGroupType.Object;
+            else if (g.InFormat("enum <id> {")) groups[i].type = TokenGroupType.Enum;
+            else if (g.InFormat("import <val> ;")) groups[i].type = TokenGroupType.Import;
+        }
+
+        Diagnostics.Output("--- Purposed Token Lines ---", true);
+        Diagnostics.Output("Total - " + groups.Count);
+        for (int i = 0; i < groups.Count; i++)
+        {
+            Diagnostics.Output($"{groups[i].type}{new string(' ', 14 - groups[i].type.ToString().Length)}{(ProgramData.IsScopeStart(i) ? "[S]" : ProgramData.IsScopeEnd(i) ? "[E]" : "   ")}{new string(' ', 4 - (i + 1).ToString().Length)}{i + 1}. {groups[i]}");
+            foreach (string s in groups[i].ToGroupString()) Diagnostics.Output(new string(' ', 23) + s);
+        }
 
         return groups;
     }
