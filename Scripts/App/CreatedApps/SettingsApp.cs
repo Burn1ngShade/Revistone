@@ -13,6 +13,9 @@ public class SettingsApp : App
 {
     // --- APP BOILER ---
 
+    public static event SettingEventHandler OnSettingChanged = new SettingEventHandler((settingName) => { });
+    public delegate void SettingEventHandler(string settingName);
+
     static Setting[] settings = [
         new InputSetting("Username", "The Name Used To Refer To The User.", "User", SettingCategory.User, new UserInputProfile(bannedChars: "\n\"\' ")),
         new DropdownSetting("Pronouns", "The Pronouns Used To Refer To The User", "Prefer Not To Say", SettingCategory.User,
@@ -32,6 +35,14 @@ public class SettingsApp : App
         new UserInputProfile([UserInputProfile.InputType.Float, UserInputProfile.InputType.Int], numericMin: 10, numericMax: 1000)),
         new DropdownSetting("Cursor Jump Separators", "The Charchters That The Cursor Uses To Divide Words.", ",. ", SettingCategory.Input,
         [",. ", ",.!?-_;: ", ",.!?-_;:(){}[] "]),
+        new DropdownSetting("Create Log File", "Should HoneyC Programs Create A Program Log File?", "Yes", SettingCategory.HoneyC,
+        ["Yes", "No"]),
+        new DropdownSetting("Show FPS Widget", "Should The FPS Widget Be Shown?", "Yes", SettingCategory.Widget,
+        ["Yes", "No"]),
+        new DropdownSetting("Show Author Widget", "Should The Author Widget Be Shown?", "Yes", SettingCategory.Widget,
+        ["Yes", "No"]),
+        new DropdownSetting("Show Time Widget", "Should The Time Widget Be Shown?", "Yes", SettingCategory.Widget,
+        ["Yes", "No"]),
     ];
 
     public SettingsApp() : base() { }
@@ -49,7 +60,6 @@ public class SettingsApp : App
 
     public override void ExitApp()
     {
-        SaveSettings();
         base.ExitApp();
     }
 
@@ -61,7 +71,7 @@ public class SettingsApp : App
 
         ShiftLine();
         ConsoleLine[] title = TitleFunctions.CreateTitle("SETTINGS", AdvancedHighlight(97, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10), (ConsoleColor.Cyan.ToArray(), 48, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1);
-        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), 97).ToArray());
+        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
 
         int catIndex = 0;
         while (true)
@@ -70,7 +80,7 @@ public class SettingsApp : App
                 [new ConsoleLine("Exit", ConsoleColor.DarkBlue)]
             ).ToArray(), cursorStartIndex: catIndex);
 
-            if (catIndex == 3)
+            if (catIndex == Enum.GetValues(typeof(SettingCategory)).Length)
             {
                 ExitApp();
                 return;
@@ -131,9 +141,13 @@ public class SettingsApp : App
                         settings[settingIndex].currentValue = dropdownSetting.options[UserInput.CreateOptionMenu($"--- Update [{dropdownSetting.settingName}] ---",
                         dropdownSetting.options.Select(x => new ConsoleLine(x, ConsoleColor.Cyan)).ToArray())];
                     }
+                    SaveSettings();
+                    OnSettingChanged.Invoke(setting.settingName);
                     break;
                 case 1:
                     settings[settingIndex].currentValue = settings[settingIndex].defaultValue;
+                    SaveSettings();
+                    OnSettingChanged.Invoke(setting.settingName);
                     break;
                 case 2:
                     return;
@@ -147,7 +161,6 @@ public class SettingsApp : App
     public static void HandleSettingSet(string setting)
     {
         HandleSettingSet(settings[GetSettingIndex(setting)], false);
-        SaveSettings();
         HandleSettingGet(setting);
     }
 
@@ -236,7 +249,7 @@ public class SettingsApp : App
 
     public abstract class Setting
     {
-        public enum SettingCategory { User, Input, ChatGPT }
+        public enum SettingCategory { User, Input, ChatGPT, HoneyC, Widget }
         public SettingCategory category;
 
         public string settingName = "";

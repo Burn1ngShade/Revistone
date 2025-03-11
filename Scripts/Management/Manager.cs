@@ -2,6 +2,7 @@
 using Revistone.Apps;
 using Revistone.Console;
 using Revistone.Console.Data;
+using Revistone.Console.Widget;
 using Revistone.Interaction;
 
 namespace Revistone.Management;
@@ -23,6 +24,9 @@ public static class Manager
 
     public static int currentTick = 0;
 
+    static long _deltaTime = 0; // duration of last tick in ms
+    public static double deltaTime => _deltaTime / 1000d; // duration of last tick in seconds
+
     /// <summary>
     /// Calls the Tick event, occours every 25ms (40 calls per seconds).
     /// </summary>
@@ -32,15 +36,13 @@ public static class Manager
         Stopwatch tickSleepStart = new Stopwatch(); //tick delay start
         tickStartTime.Start();
 
-        long lastTickTime = 0;
-
         while (true)
         {
             Tick.Invoke(currentTick);
             Profiler.tickCaculationTime.Add(tickStartTime.ElapsedMilliseconds);
 
             tickSleepStart.Start();
-            long targetThreadDelay = Math.Max(25 - (tickStartTime.ElapsedMilliseconds + Math.Max(lastTickTime - 25, 0)), 0);
+            long targetThreadDelay = Math.Max(25 - (tickStartTime.ElapsedMilliseconds + Math.Max(_deltaTime - 25, 0)), 0);
             while (true)
             {
                 if (tickSleepStart.ElapsedMilliseconds >= targetThreadDelay - 0.25) //0.25 is error miminmising
@@ -50,8 +52,8 @@ public static class Manager
                 }
             }
 
-            lastTickTime = tickStartTime.ElapsedMilliseconds;
-            Profiler.tickCompletionTime.Add(lastTickTime);
+            _deltaTime = tickStartTime.ElapsedMilliseconds;
+            Profiler.tickCompletionTime.Add(_deltaTime);
             tickStartTime.Restart();
             currentTick++;
         }
@@ -93,6 +95,7 @@ public static class Manager
         AppRegistry.InitializeAppRegistry();
         AppRegistry.SetActiveApp("Revistone");
 
+        ConsoleWidget.InitializeWidgets();
         ConsoleRenderer.InitializeRenderer();
         ConsoleRendererLogic.InitializeConsoleRendererLogic();
         Profiler.InitializeProfiler();

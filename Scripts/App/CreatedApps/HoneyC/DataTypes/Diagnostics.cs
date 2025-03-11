@@ -27,7 +27,7 @@ public static class Diagnostics
         runtime.Stop();
 
         if (programLog.StartsWith('\n')) programLog = programLog[1..];
-        AppPersistentData.SaveFile($"{ProgramLogFilePath}{DateTime.Now:[yyyy-MM-dd_HH-mm-ss]}.txt", programLog.Split("\n"));
+        if (SettingsApp.GetValue("Create Log File") == "Yes") AppPersistentData.SaveFile($"{ProgramLogFilePath}{DateTime.Now:[yyyy-MM-dd_HH-mm-ss]}.txt", programLog.Split("\n"));
     }
 
     /// <summary> Outputs t into the program log file, and optionally to the console. </summary>

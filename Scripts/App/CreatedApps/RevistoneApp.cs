@@ -17,7 +17,8 @@ public class RevistoneApp : App
                 [(new UserInputProfile(UserInputProfile.InputType.FullText, "boop", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop!", AppRegistry.activeApp.colourScheme.primaryColour)), "Boop!"),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "pride", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => ConsoleAction.SendConsoleMessages(Enumerable.Range(0, 10).Select(i => new ConsoleLine(new string(' ', 41), ConsoleColor.White, TransPattern[i / 2])).ToArray()), "Outputs Trans Flag!")],
+                (s) => ConsoleAction.SendConsoleMessages(Enumerable.Range(0, 10).Select(i => new ConsoleLine(new string(' ', 41), ConsoleColor.White, TransPattern[i / 2])).ToArray()), "Outputs Trans Flag!"),
+                ],
                 98, 29) ];
     }
 
@@ -29,13 +30,13 @@ public class RevistoneApp : App
 
         ConsoleAction.ShiftLine();
         ConsoleAction.SendConsoleMessages(title,
-        Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), 97).ToArray());
+        Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
 
         ConsoleAction.ShiftLine();
 
-        ConsoleColor[] c = AdvancedHighlight(63, AppRegistry.activeApp.colourScheme.primaryColour.ToArray(), AppRegistry.activeApp.colourScheme.secondaryColour, (17, 10), (34, 6));
+        ConsoleColor[] c = AdvancedHighlight(63, AppRegistry.activeApp.colourScheme.primaryColour.ToArray(), AppRegistry.activeApp.colourScheme.secondaryColour, (17, 10), (34, 6), (62, 20));
         ConsoleAction.SendConsoleMessage(new ConsoleLine("More Than Just A [Console!] Input 'Help' For List Of Commands. ", c),
-        new ConsoleAnimatedLine(UpdateUI, 30, true));
+        new ConsoleAnimatedLine(UpdateUI, 5, true));
 
         if (SettingsApp.GetValue("Username") != "User") ConsoleAction.SendConsoleMessage(
             new ConsoleLine($"Welcome Back {SettingsApp.GetValue("Username")}!", BuildArray(ConsoleColor.DarkBlue.Extend(13), ConsoleColor.Cyan.ToArray())));
@@ -52,6 +53,7 @@ public class RevistoneApp : App
 
     static void UpdateUI(ConsoleLine lineInfo, object metaInfo, int tickNum)
     {
-        lineInfo.Update($"More Than Just A {keyword[tickNum / 30 % 4]} Input 'Help' For List Of Commands.");
+        string s = $"More Than Just A {keyword[tickNum / 30 % 4]} Input 'Help' For List Of Commands.";
+        lineInfo.Update(s);
     }
 }

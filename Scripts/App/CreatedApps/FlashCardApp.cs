@@ -32,7 +32,7 @@ public class FlashCardApp : App
 
         ShiftLine();
         ConsoleLine[] title = TitleFunctions.CreateTitle("REVISE", AdvancedHighlight(64, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.DarkGreen.ToArray(), 0, 10), (ConsoleColor.DarkGreen.ToArray(), 32, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1);
-        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), 99).ToArray());
+        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
         ShiftLine();
         MainMenu();
     }

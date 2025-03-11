@@ -1,10 +1,5 @@
-using System.Collections;
-using System.IO.Compression;
-using System.Security.Cryptography.X509Certificates;
-using OpenAI.Chat;
 using Revistone.Console;
 using Revistone.Functions;
-using Revistone.Interaction;
 using static Revistone.Apps.Tetris.TetrisData;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;

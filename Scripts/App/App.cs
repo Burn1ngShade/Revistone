@@ -24,7 +24,7 @@ public abstract class App
     //--- CONSTRUCTORS ---
 
     /// <summary> Base class for apps to inherit. </summary>
-    public App(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColours, ConsoleColor[] tertiaryColour, int speed) colourScheme, (ConsoleColor[] colours, int speed) borderColourScheme, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true)
+    public App(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour, int speed) colourScheme, (ConsoleColor[] colours, int speed) borderColourScheme, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true)
     {
         this.name = name;
 

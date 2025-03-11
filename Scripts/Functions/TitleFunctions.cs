@@ -9,10 +9,12 @@ public static class TitleFunctions
     /// <summary> Ascii Font Of Text. </summary>
     public enum AsciiFont
     {
-        Standard, Big, BigMoneyNW, Graceful, Graffiti,
-        Slant, SmallSlant, Small, AnsiRegular, Block,
-        Colossal, Digital, Double, Merlin1, Blocks,
-        DancingFont, Epic, Ascii3D
+        AnsiRegular, Ascii3D, AsciiNewRoman, Banner3, Big,
+        BigMoneyNE, BigMoneyNW, BigMoneySE, BigMoneySW, Block,
+        Blocks, Cards, Chiseled, Colossal, DancingFont, 
+        Digital, Double, DrPepper, Epic, FlowerPower, 
+        Graceful, Graffiti, Impossible, Merlin1, Puffy, 
+        Slant, Small, SmallSlant, Standard, TinkerToy
     }
 
     static string validChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.!?';:()[]{}-_+=*&^<>%@£";

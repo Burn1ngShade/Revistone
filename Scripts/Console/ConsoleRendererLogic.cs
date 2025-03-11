@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Revistone.Apps;
+using Revistone.Console.Widget;
 using Revistone.Functions;
 using Revistone.Management;
 
@@ -214,8 +215,11 @@ public static class ConsoleRendererLogic
         if (consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return;
         exceptionLines[0] = true;
         consoleLinesBuffer[0].Update(""); //stops buffer width
-        string title = AppRegistry.activeApp.name;
-        consoleLines[0].Update(new string('-', Math.Max((windowSize.width - title.Length) / 2 - 2, 0)) + $" [{title}] " + new string('-', Math.Max((windowSize.width - title.Length) / 2 - 2, 0)), ColourFunctions.Alternate(AppRegistry.activeApp.borderColourScheme.colours, windowSize.width - 1, 1));
+
+        string title = $" [{AppRegistry.activeApp.name}] ";
+        int leftBuffer = Math.Max((int)Math.Floor((windowSize.width - title.Length) / 2f), 0);
+        int rightBuffer = Math.Max((int)Math.Ceiling((windowSize.width - title.Length) / 2f), 0);
+        consoleLines[0].Update(new string('-', leftBuffer) + title + new string('-', rightBuffer), ColourFunctions.Alternate(AppRegistry.activeApp.borderColourScheme.colours, windowSize.width - 1, 1));
         consoleLineUpdates[0].Update(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "1", AppRegistry.activeApp.borderColourScheme.speed, true));
     }
 
@@ -225,14 +229,26 @@ public static class ConsoleRendererLogic
         if (consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return;
         exceptionLines[^8] = true;
         consoleLinesBuffer[^8].Update(""); //stops buffer width
-        consoleLines[^8].Update(new string('-', Math.Max((windowSize.width - 31) / 2 - 2, 0)) + $" [FPS: {Profiler.fps}] --------- [{DateTime.Now.ToString("HH:mm:ss")}] " + new string('-', Math.Max((windowSize.width - 31) / 2 - 2, 0)), ColourFunctions.Alternate(AppRegistry.activeApp.borderColourScheme.colours, windowSize.width - 1, 1));
-        consoleLineUpdates[^8].Update(new ConsoleAnimatedLine(UpdateConsoleBorderAnimation, "", AppRegistry.activeApp.borderColourScheme.speed, true));
+        consoleLines[^8].Update(GenerateConsoleBorderString(), ColourFunctions.Alternate(AppRegistry.activeApp.borderColourScheme.colours, windowSize.width - 1, 1));
+        consoleLineUpdates[^8].Update(new ConsoleAnimatedLine(UpdateConsoleBorderAnimation, "", 1, true));
     }
 
-    /// <summary> Updates console borders time and animation. </summary>
+    /// <summary> Updates console border widgets. </summary>
     static void UpdateConsoleBorderAnimation(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
     {
-        lineInfo.Update(new string('-', Math.Max((windowSize.width - 31) / 2 - 2, 0)) + $" [FPS: {Profiler.fps}] --------- [{DateTime.Now.ToString("HH:mm:ss")}] " + new string('-', Math.Max((windowSize.width - 31) / 2 - 2, 0)), lineInfo.lineColour.Shift(1));
+        if (tickNum % AppRegistry.activeApp.borderColourScheme.speed == 0) lineInfo.Update(GenerateConsoleBorderString(), lineInfo.lineColour.Shift(1));
+        else if (tickNum % 4 == 0) lineInfo.Update(GenerateConsoleBorderString());
+    }
+
+    /// <summary> Generates the console border string using current widget data. </summary>
+    static string GenerateConsoleBorderString()
+    {
+        string[] widgets = ConsoleWidget.GetWidgetContents();
+        string jointWidgets = string.Join("--------", widgets);
+        int leftBuffer = Math.Max((int)Math.Floor((windowSize.width - jointWidgets.Length) / 2f), 0);
+        int rightBuffer = Math.Max((int)Math.Ceiling((windowSize.width - jointWidgets.Length) / 2f), 0);
+
+        return new string('-', leftBuffer) + jointWidgets + new string('-', rightBuffer);
     }
 
     /// <summary> Writes given line to screen, using value of consoleLines. </summary>

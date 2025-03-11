@@ -45,7 +45,7 @@ public static class ConsoleRenderer
     static short right => (short)(left + width - 1);
     static short bottom => (short)(top + height - 1);
 
-    /// <summary> Initializes renderer (DO NOT CALL). </summary>
+    /// <summary> [DO NOT CALL] Initializes renderer. </summary>
     [STAThread]
     internal static void InitializeRenderer(ConsoleColor foreground = ConsoleColor.Gray, ConsoleColor background = ConsoleColor.Black)
     {

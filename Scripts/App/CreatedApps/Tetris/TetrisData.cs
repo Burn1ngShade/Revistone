@@ -1,5 +1,3 @@
-using Revistone.Functions;
-
 namespace Revistone.Apps.Tetris;
 
 public static class TetrisData

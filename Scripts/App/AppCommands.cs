@@ -1,6 +1,7 @@
 using Revistone.Apps.Calculator;
 using Revistone.Apps.HoneyC;
 using Revistone.Console;
+using Revistone.Console.Widget;
 using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.Management;
@@ -30,7 +31,7 @@ public static class AppCommands
                 "Menu To Load Apps."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "hotkeys", caseSettings: StringFunctions.CapitalCasing.Lower,  removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => { Hotkeys(); }, "Displays List Of Console Hotkeys."),
-                (new UserInputProfile(new UserInputProfile.InputType[] {}, "load[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (new UserInputProfile("load[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { LoadApp(s); },
                 "Loads App With The Given Name ([A:] meaning name of app)."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "reload", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
@@ -68,7 +69,10 @@ public static class AppCommands
                 (s) => { GetSetting(s[11..]); }, "Get The Value Of Given Setting."),
                 (new UserInputProfile("set setting[A:]", removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => { SetSetting(s[11..]); }, "Get The Value Of Given Setting."),
-
+                (new UserInputProfile("timer[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => CreateTimer(s[5..].TrimStart()), "Creates Timer."),
+                (new UserInputProfile("cancel timer", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => CancelTimer(), "Cancels Active Timer."),
             };
 
     // --- BASE COMMANDS ---
@@ -137,7 +141,7 @@ public static class AppCommands
             if (i >= 0) LoadApp($"Load{AppRegistry.appRegistry[i].name}");
             return;
         }
-        string appName = userInput.Substring(4).TrimStart().AdjustCapitalisation(StringFunctions.CapitalCasing.FirstLetterUpper);
+        string appName = userInput[4..].TrimStart().AdjustCapitalisation(StringFunctions.CapitalCasing.FirstLetterUpper);
         if (AppRegistry.AppExists(appName))
         {
             int closeApp = UserInput.CreateOptionMenu($"Load {appName}?", new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") });
@@ -223,5 +227,47 @@ public static class AppCommands
         }
 
         return false;
+    }
+
+    /// <summary> Create Timer Widget. </summary>
+    static void CreateTimer(string time)
+    {
+        if (ConsoleWidget.WidgetExists("Timer"))
+        {
+            SendConsoleMessage(new ConsoleLine("Timer Already Active! Use Delete Timer To Remove Active Timer.", AppRegistry.activeApp.colourScheme.primaryColour));
+            return;
+        }
+
+        double timerInSeconds = 0;
+
+        if (double.TryParse(time, out double dDuration)) timerInSeconds = dDuration;
+        else if (TimeSpan.TryParse(time, out TimeSpan duration)) timerInSeconds = duration.TotalSeconds;
+        else
+        {
+            SendConsoleMessage(new ConsoleLine("Invalid Time Format! Use Format hh:mm:ss.", AppRegistry.activeApp.colourScheme.primaryColour));
+            return;
+        }
+
+        if (timerInSeconds > 86400) // seconds in a day
+        {
+            SendConsoleMessage(new ConsoleLine("Timer Can Not Be Longer Than 24 Hours!", AppRegistry.activeApp.colourScheme.primaryColour));
+            return;
+        }
+
+        ConsoleWidget.TryAddWidget(new TimeWidget("Timer", 100, DateTime.Now.AddSeconds(timerInSeconds), true));
+        SendConsoleMessage(new ConsoleLine($"Timer Has Been Created!", AppRegistry.activeApp.colourScheme.primaryColour));
+    }
+
+    /// <summary> Delete Timer Widget. </summary>
+    static void CancelTimer()
+    {
+        if (!ConsoleWidget.WidgetExists("Timer"))
+        {
+            SendConsoleMessage(new ConsoleLine("No Active Timer Exists!", AppRegistry.activeApp.colourScheme.primaryColour));
+            return;
+        }
+
+        ConsoleWidget.TryRemoveWidget("Timer");
+        SendConsoleMessage(new ConsoleLine($"Timer Cancelled!", AppRegistry.activeApp.colourScheme.primaryColour));
     }
 }

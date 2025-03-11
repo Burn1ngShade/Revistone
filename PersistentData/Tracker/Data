@@ -5343,19 +5343,19 @@ DAY 10/03/2025
 Float-Int-
 Sleep (hours) - 9
 Float-Int-
-Weight (kg) - Not Tracked
+Weight (kg) - 77.9
 Int-
-Calories (kcals) - Not Tracked
+Calories (kcals) - 1600
 Int-
-Protein (g) - Not Tracked
+Protein (g) - 100
 Int-
 Water (ml) - 2500
 Float-Int-
 Work (hours) - 5
 Int-
-Wanked - Not Tracked
+Wanked - 1
 (Yes (Own), False)-(Yes (Friends), False)-(No, True)
-Vaped - Not Tracked
+Vaped - No
 (Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
 Gym - Rest
 Int-
@@ -5363,4 +5363,29 @@ Happiness - 6
 FullText-PartialText-
 Summary - Day being sick, got a hell of a lot of discrete revision done, approching the point where we done with notes probs tmr and then onto past papers and shit
 Int-
-Steps - Not Tracked
+Steps - 1200
+DAY 11/03/2025
+Float-Int-
+Sleep (hours) - 9
+Float-Int-
+Weight (kg) - 77.2
+Int-
+Calories (kcals) - 1600
+Int-
+Protein (g) - 75
+Int-
+Water (ml) - 2000
+Float-Int-
+Work (hours) - 3
+Int-
+Wanked - 2
+(Yes (Own), False)-(Yes (Friends), False)-(No, True)
+Vaped - No
+(Push, True)-(Pull, True)-(Legs, True)-(Rest, False)
+Gym - Rest
+Int-
+Happiness - 7
+FullText-PartialText-
+Summary - Still recovering from being ill but going in tmr. FINISHED ALL ALEVEL NOTES, so now onto a shit ton of revision and work ig.
+Int-
+Steps - 1200

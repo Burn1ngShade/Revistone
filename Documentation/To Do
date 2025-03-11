@@ -2,12 +2,21 @@
 [App Ideas]
 
 [Features]
+Dynamic Bottom Bar
 
 
 --- KNOWN BUGS ---
 If console refreshes without changing size, Tetris display can display twice in different positions.
 
 --- DONE ---
-
+Fixed using number 99 for many enumerable.repeats on titles, instead of title.length
+Borders not going all the way to the edge of the screen
+Current App Title Being Slightly Too Far To The Right
 
 --- ADDED ---
+14 new fonts (total 30), now sorted aphabetically
+FontShowcase -> showcase font duh
+Manager -> deltaTime (time duration of last tick in seconds)
+Widgets -> Overhaul to the way borders are handled, now use customisable widget system that can be dynamically added and removed
+DefaultWigidts -> Two Default Widgit types time and fps
+AppCommands -> Two new commands, timer and cancel timer to create and cancel new timer widget
