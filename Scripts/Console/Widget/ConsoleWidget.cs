@@ -1,4 +1,4 @@
-using Revistone.Apps;
+using Revistone.App;
 
 namespace Revistone.Console.Widget;
 

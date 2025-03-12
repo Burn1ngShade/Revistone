@@ -1,6 +1,6 @@
 using Revistone.Console;
 using Revistone.Functions;
-using Revistone.Apps;
+using Revistone.App;
 
 using static Revistone.Functions.StringFunctions;
 using OpenAI.Assistants;

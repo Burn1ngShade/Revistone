@@ -3,7 +3,7 @@ using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.Management;
 
-namespace Revistone.Apps;
+namespace Revistone.App;
 
 /// <summary>
 /// Base class for apps to inherit.

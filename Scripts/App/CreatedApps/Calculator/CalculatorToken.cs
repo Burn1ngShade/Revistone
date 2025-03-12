@@ -1,9 +1,9 @@
 using Revistone.Functions;
 
-using static Revistone.Apps.Calculator.CalculatorDefinitions;
-using static Revistone.Apps.Calculator.CalculatorInterpreter;
+using static Revistone.App.Calculator.CalculatorDefinitions;
+using static Revistone.App.Calculator.CalculatorInterpreter;
 
-namespace Revistone.Apps.Calculator;
+namespace Revistone.App.Calculator;
 
 public abstract class Token
 {

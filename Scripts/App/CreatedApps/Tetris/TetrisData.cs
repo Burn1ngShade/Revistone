@@ -1,4 +1,4 @@
-namespace Revistone.Apps.Tetris;
+namespace Revistone.App.Tetris;
 
 public static class TetrisData
 {

@@ -4,9 +4,9 @@ using Revistone.Console;
 
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Console.ConsoleAction;
-using static Revistone.Apps.SettingsApp.Setting;
+using static Revistone.App.SettingsApp.Setting;
 
-namespace Revistone.Apps;
+namespace Revistone.App;
 
 /// <summary> App for all revistone settings that effect entire application. </summary>
 public class SettingsApp : App

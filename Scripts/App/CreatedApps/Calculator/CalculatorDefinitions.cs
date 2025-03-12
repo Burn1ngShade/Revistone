@@ -1,4 +1,4 @@
-namespace Revistone.Apps.Calculator;
+namespace Revistone.App.Calculator;
 
 public static class CalculatorDefinitions
 {

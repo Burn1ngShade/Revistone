@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Revistone.Apps;
+using Revistone.App;
 using Revistone.Console.Widget;
 using Revistone.Functions;
 using Revistone.Management;

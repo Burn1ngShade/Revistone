@@ -19,4 +19,6 @@ FontShowcase -> showcase font duh
 Manager -> deltaTime (time duration of last tick in seconds)
 Widgets -> Overhaul to the way borders are handled, now use customisable widget system that can be dynamically added and removed
 DefaultWigidts -> Two Default Widgit types time and fps
-AppCommands -> Two new commands, timer and cancel timer to create and cancel new timer widget
+AppCommands -> Three new commands, timer and cancel timer to create and cancel new timer widget, settings shortcut to load settings app.
+GPTFunctions -> more stuff
+Renamed Revistone.Apps -> Revistone.App

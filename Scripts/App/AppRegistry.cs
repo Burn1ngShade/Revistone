@@ -1,7 +1,7 @@
 using System.Reflection;
 using Revistone.Management;
 
-namespace Revistone.Apps;
+namespace Revistone.App;
 
 /// <summary> Class pertaining the info and abilty to register app to the console. </summary>
 public static class AppRegistry

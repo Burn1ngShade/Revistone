@@ -8,7 +8,7 @@ using static Revistone.Functions.ColourFunctions;
 
 //FCS -> Flash Card Set
 
-namespace Revistone.Apps;
+namespace Revistone.App;
 
 public class FlashCardApp : App
 {

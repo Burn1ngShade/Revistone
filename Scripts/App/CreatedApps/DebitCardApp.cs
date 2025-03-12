@@ -7,7 +7,7 @@ using static Revistone.Interaction.UserInput;
 using static Revistone.Interaction.UserInputProfile;
 using static Revistone.Functions.ColourFunctions;
 
-namespace Revistone.Apps;
+namespace Revistone.App;
 
 public class DebitCardApp : App
 {

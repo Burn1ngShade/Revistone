@@ -1,8 +1,8 @@
-using Revistone.Apps.HoneyC.Data;
+using Revistone.App.HoneyC.Data;
 
 using Revistone.Functions;
 
-namespace Revistone.Apps.HoneyC;
+namespace Revistone.App.HoneyC;
 
 /// <summary> Class responsible for interpreting user querys. </summary>
 public static class HoneyCInterpreter
@@ -16,10 +16,10 @@ public static class HoneyCInterpreter
 
         string cleanedQuery = HoneyCLexer.CleanQuery(query); // remove comments and join lines
 
-        List<Token> tokenisedInput = HoneyCLexer.Lex(cleanedQuery);
+        List<Token> tokenisedInput = HoneyCLexer.Lex(cleanedQuery); // converts query to list of tokens
         if (!Diagnostics.Running) return;  
 
-        List<TokenGroup> tokenGroups = HoneyCParser.Parse(tokenisedInput);
+        List<TokenGroup> tokenGroups = HoneyCParser.Parse(tokenisedInput); // converts list of tokens to purposed lines
         if (!Diagnostics.Running) return;
 
         Diagnostics.Output("--- Program Info ---", true, true);

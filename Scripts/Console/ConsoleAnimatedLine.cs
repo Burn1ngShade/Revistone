@@ -1,4 +1,4 @@
-using Revistone.Apps;
+using Revistone.App;
 using Revistone.Functions;
 using Revistone.Management;
 

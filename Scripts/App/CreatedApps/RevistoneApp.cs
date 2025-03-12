@@ -4,7 +4,7 @@ using Revistone.Functions;
 
 using static Revistone.Functions.ColourFunctions;
 
-namespace Revistone.Apps;
+namespace Revistone.App;
 
 public class RevistoneApp : App
 {

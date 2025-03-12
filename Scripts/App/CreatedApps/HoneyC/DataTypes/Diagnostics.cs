@@ -3,7 +3,7 @@ using Revistone.Console;
 using Revistone.Functions;
 using static Revistone.Console.ConsoleAction;
 
-namespace Revistone.Apps.HoneyC.Data;
+namespace Revistone.App.HoneyC.Data;
 
 /// <summary> Class responsible for all interpreter diagnostics. </summary>
 public static class Diagnostics

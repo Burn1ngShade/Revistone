@@ -1,13 +1,13 @@
 using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.Console;
-using Revistone.Apps.Tracker;
+using Revistone.App.Tracker;
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
-using static Revistone.Apps.Tracker.TrackerData;
+using static Revistone.App.Tracker.TrackerData;
 
-namespace Revistone.Apps;
+namespace Revistone.App;
 
 public class TrackerApp : App
 {

@@ -1,10 +1,10 @@
 using Revistone.Console;
 using Revistone.Functions;
-using static Revistone.Apps.Tetris.TetrisData;
+using static Revistone.App.Tetris.TetrisData;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 
-namespace Revistone.Apps.Tetris;
+namespace Revistone.App.Tetris;
 
 public class TetrisGameboard
 {

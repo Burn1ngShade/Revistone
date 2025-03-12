@@ -1,5 +1,5 @@
-using Revistone.Apps.Calculator;
-using Revistone.Apps.HoneyC;
+using Revistone.App.Calculator;
+using Revistone.App.HoneyC;
 using Revistone.Console;
 using Revistone.Console.Widget;
 using Revistone.Functions;
@@ -9,7 +9,7 @@ using Revistone.Management;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 
-namespace Revistone.Apps;
+namespace Revistone.App;
 
 /// <summary> Class pertaining all logic for app commands. </summary>
 public static class AppCommands
@@ -40,6 +40,9 @@ public static class AppCommands
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "hub", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { LoadApp("LoadRevistone"); },
                 "Loads Hub Revistone App."),
+                (new UserInputProfile(UserInputProfile.InputType.FullText, "settings", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => { LoadApp("LoadSettings"); },
+                "Loads The Setting App."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "clear", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { ClearPrimaryConsole(); },
                 "Clears Primary Console."),
@@ -198,43 +201,12 @@ public static class AppCommands
         }
     }
 
-    // --- STATIC FUNCTIONS ---
-
-    /// <summary> Checks for and calls and commands if found within user input. </summary>
-    public static bool Commands(string userInput)
-    {
-        foreach ((UserInputProfile format, Action<string> payload, string summary) in AppRegistry.activeApp.appCommands)
-        {
-            format.outputFormat = UserInputProfile.OutputFormat.NoOutput; //prevent accidentley leaving output on standard from crashing
-
-            if (format.InputValid(userInput))
-            {
-                payload.Invoke(userInput);
-                return true;
-            }
-        }
-
-        if (!AppRegistry.activeApp.baseCommands) return false;
-        foreach ((UserInputProfile format, Action<string> payload, string summary) in baseCommands)
-        {
-            format.outputFormat = UserInputProfile.OutputFormat.NoOutput; //prevent accidentley leaving output on standard from crashing
-
-            if (format.InputValid(userInput))
-            {
-                payload.Invoke(userInput);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     /// <summary> Create Timer Widget. </summary>
     static void CreateTimer(string time)
     {
         if (ConsoleWidget.WidgetExists("Timer"))
         {
-            SendConsoleMessage(new ConsoleLine("Timer Already Active! Use Delete Timer To Remove Active Timer.", AppRegistry.activeApp.colourScheme.primaryColour));
+            SendConsoleMessage(new ConsoleLine("Timer Already Active! Use Cancel Timer To Remove Active Timer.", AppRegistry.activeApp.colourScheme.primaryColour));
             return;
         }
 
@@ -269,5 +241,36 @@ public static class AppCommands
 
         ConsoleWidget.TryRemoveWidget("Timer");
         SendConsoleMessage(new ConsoleLine($"Timer Cancelled!", AppRegistry.activeApp.colourScheme.primaryColour));
+    }
+
+    // --- STATIC FUNCTIONS ---
+
+    /// <summary> Checks for and calls and commands if found within user input. </summary>
+    public static bool Commands(string userInput)
+    {
+        foreach ((UserInputProfile format, Action<string> payload, string summary) in AppRegistry.activeApp.appCommands)
+        {
+            format.outputFormat = UserInputProfile.OutputFormat.NoOutput; //prevent accidentley leaving output on standard from crashing
+
+            if (format.InputValid(userInput))
+            {
+                payload.Invoke(userInput);
+                return true;
+            }
+        }
+
+        if (!AppRegistry.activeApp.baseCommands) return false;
+        foreach ((UserInputProfile format, Action<string> payload, string summary) in baseCommands)
+        {
+            format.outputFormat = UserInputProfile.OutputFormat.NoOutput; //prevent accidentley leaving output on standard from crashing
+
+            if (format.InputValid(userInput))
+            {
+                payload.Invoke(userInput);
+                return true;
+            }
+        }
+
+        return false;
     }
 }

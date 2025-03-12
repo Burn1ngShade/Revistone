@@ -2,10 +2,10 @@ using System.Text.RegularExpressions;
 using Revistone.Console;
 using Revistone.Functions;
 
-using static Revistone.Apps.Calculator.CalculatorComputations;
+using static Revistone.App.Calculator.CalculatorComputations;
 using static Revistone.Console.ConsoleAction;
 
-namespace Revistone.Apps.Calculator;
+namespace Revistone.App.Calculator;
 
 public static class CalculatorInterpreter
 {

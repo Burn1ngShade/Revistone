@@ -1,4 +1,4 @@
-using Revistone.Apps;
+using Revistone.App;
 using Revistone.Console;
 
 namespace Revistone.Functions;

@@ -1,5 +1,5 @@
 using static Revistone.Console.Data.ConsoleData;
-using Revistone.Apps;
+using Revistone.App;
 
 namespace Revistone.Console;
 

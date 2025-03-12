@@ -1,4 +1,4 @@
-namespace Revistone.Apps;
+namespace Revistone.App;
 
 /// <summary> Class pertaining all logic for easy saving of data for apps. </summary>
 public static class AppPersistentData
