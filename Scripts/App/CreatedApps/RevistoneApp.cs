@@ -18,6 +18,7 @@ public class RevistoneApp : App
                 (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop!", AppRegistry.activeApp.colourScheme.primaryColour)), "Boop!"),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "pride", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => ConsoleAction.SendConsoleMessages(Enumerable.Range(0, 10).Select(i => new ConsoleLine(new string(' ', 41), ConsoleColor.White, TransPattern[i / 2])).ToArray()), "Outputs Trans Flag!"),
+                (new UserInputProfile(UserInputProfile.InputType.FullText, "render test", caseSettings: StringFunctions.CapitalCasing.Lower, removeTrailingWhitespace: true, removeLeadingWhitespace: true), (s) => { RenderTest(); }, "Outputs Trans Flag!"),
                 ],
                 98, 29) ];
     }
@@ -30,7 +31,7 @@ public class RevistoneApp : App
 
         ConsoleAction.ShiftLine();
         ConsoleAction.SendConsoleMessages(title,
-        Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
 
         ConsoleAction.ShiftLine();
 
@@ -45,6 +46,13 @@ public class RevistoneApp : App
         {
             ConsoleAction.UpdateLineExceptionStatus(true, i);
         }
+    }
+
+    static void RenderTest()
+    {
+        ConsoleLine[] lines = Enumerable.Range(0, 30).Select(i => new ConsoleLine(new string('a', 100), AllColours.Repeat(8), AllColours.Repeat(8))).ToArray();
+        ConsoleAnimatedLine[] animation = Enumerable.Range(0, 30).Select(i => new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, 5, true)).ToArray();
+        ConsoleAction.SendConsoleMessages(lines, animation);
     }
 
     static string[] keyword = new string[] {

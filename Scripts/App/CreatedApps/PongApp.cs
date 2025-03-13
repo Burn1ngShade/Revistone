@@ -100,7 +100,7 @@ public class PongApp : App
         ShiftLine();
         SendConsoleMessages(
             TitleFunctions.CreateTitle("PONG!", AdvancedHighlight(48, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1),
-            Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), 48).ToArray());
+            Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), 48).ToArray());
         ShiftLine();
         int i = UserInput.CreateOptionMenu("Options:", new (string, Action)[] {
                     ("1 Player", () => GameLoad(1)),
@@ -113,7 +113,7 @@ public class PongApp : App
         string[] title = TitleFunctions.CreateTitle($"P{(player1.score == 3 ? '1' : '2')} WINS!", TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1).ToArray();
         ConsoleColor[] titleColours = AdvancedHighlight(title[0].Length, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), title[0].Length / 2, 10));
         SendConsoleMessages(title.Select(s => new ConsoleLine(s, titleColours)).ToArray(),
-        Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
         UserInput.WaitForUserInput(space: true);
 
         MainMenu();
@@ -127,8 +127,8 @@ public class PongApp : App
         player2.score = 0;
         ResetGame();
         ShiftLine();
-        SendConsoleMessage(new ConsoleLine(new string('-', 60), CyanDarkBlueGradient.Extend(60, true)), new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "1", 5, true));
-        UpdatePrimaryConsoleLine(new ConsoleLine(new string('-', 60), CyanDarkBlueGradient.Extend(60, true)), new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "1", 5, true), 28);
+        SendConsoleMessage(new ConsoleLine(new string('-', 60), CyanDarkBlueGradient.Extend(60, true)), new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "1", 5, true));
+        UpdatePrimaryConsoleLine(new ConsoleLine(new string('-', 60), CyanDarkBlueGradient.Extend(60, true)), new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "1", 5, true), 28);
     }
 
     /// <summary> Reset game at start and after each point.</summary>

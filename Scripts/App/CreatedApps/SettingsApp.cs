@@ -43,6 +43,8 @@ public class SettingsApp : App
         ["Yes", "No"]),
         new DropdownSetting("Show Time Widget", "Should The Time Widget Be Shown?", "Yes", SettingCategory.Widget,
         ["Yes", "No"]),
+        new DropdownSetting("Use Multithreaded Rendering", "Should The Console Use Multithreaded Rendering (10x Speed But Is Ass).", "Yes", SettingCategory.Performance,
+        ["Yes", "No"]),
     ];
 
     public SettingsApp() : base() { }
@@ -71,7 +73,7 @@ public class SettingsApp : App
 
         ShiftLine();
         ConsoleLine[] title = TitleFunctions.CreateTitle("SETTINGS", AdvancedHighlight(97, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10), (ConsoleColor.Cyan.ToArray(), 48, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1);
-        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
 
         int catIndex = 0;
         while (true)
@@ -249,7 +251,7 @@ public class SettingsApp : App
 
     public abstract class Setting
     {
-        public enum SettingCategory { User, Input, ChatGPT, HoneyC, Widget }
+        public enum SettingCategory { User, Input, ChatGPT, HoneyC, Widget, Performance }
         public SettingCategory category;
 
         public string settingName = "";

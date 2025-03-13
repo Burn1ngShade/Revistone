@@ -44,7 +44,7 @@ public class ConsoleAnimatedLine
     /// <summary> Update configuration for dynamically updating a ConsoleLine, every tickMod ticks. </summary>
     public void Update(Action<ConsoleLine, ConsoleAnimatedLine, int> update, object metaInfo, int tickMod = 5, bool enabled = false)
     {
-        lock (Management.Manager.renderLockObject)
+        lock (Manager.renderLockObject)
         {
             this.enabled = enabled;
             this.update = update;
@@ -65,11 +65,27 @@ public class ConsoleAnimatedLine
     public static void Nothing(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum) { }
 
     /// <summary> Shift colour by given shift (within animationMetaInfo). </summary>
-    public static void ShiftColour(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
+    public static void ShiftForegroundColour(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
     {
         int shift = 1;
         if (animationInfo.metaInfo as int? != null) shift = (int)animationInfo.metaInfo;
         lineInfo.Update(lineInfo.lineColour.Shift(shift));
+    }
+
+    /// <summary> Shift background colour by given shift (within animationMetaInfo). </summary>
+    public static void ShiftBackgroundColour(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
+    {
+        int shift = 1;
+        if (animationInfo.metaInfo as int? != null) shift = (int)animationInfo.metaInfo;
+        lineInfo.Update(lineInfo.lineText, lineInfo.lineColour, lineInfo.lineBGColour.Shift(shift));
+    }
+
+    /// <summary> Shift foreground and background colour by given shift (within animationMetaInfo). </summary>
+    public static void ShiftColour(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
+    {
+        int shift = 1;
+        if (animationInfo.metaInfo as int? != null) shift = (int)animationInfo.metaInfo;
+        lineInfo.Update(lineInfo.lineText, lineInfo.lineColour.Shift(shift), lineInfo.lineBGColour.Shift(shift));
     }
 
     /// <summary> Updates text colours, via switching cyan and dark cyan. </summary>

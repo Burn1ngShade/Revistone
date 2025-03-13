@@ -81,7 +81,6 @@ public static class ConsoleRenderer
         ForegroundColor = ConsoleColor.White;
         BackgroundColor = ConsoleColor.Black;
         Clear(ForegroundColor, BackgroundColor);
-        // DrawBuffer();
     }
 
     /// <summary> Attempts to obtain a file handle for the console output. </summary>

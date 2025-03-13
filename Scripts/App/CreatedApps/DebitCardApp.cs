@@ -37,7 +37,7 @@ public class DebitCardApp : App
 
         ShiftLine();
         ConsoleLine[] title = TitleFunctions.CreateTitle("Honey Bank", ColourFunctions.Extend(CyanDarkMagentaGradient, 93, true), TitleFunctions.AsciiFont.BigMoneyNW);
-        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", 10, true), title.Length).ToArray());
+        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", 10, true), title.Length).ToArray());
 
         CreateOptionMenu($"Options", new (string, Action)[] { ("Access Debit Card", AccessCard), ("Create Debit Card", CreateCard),
                 ("View All Accounts", ViewAllCards), ("Verify Long Card Number", ValidateCardNumber), ("Exit", ExitApp) }, true);
@@ -358,7 +358,7 @@ public class DebitCardApp : App
                         $"+{new string('-', 58)}+"
                     };
 
-            for (int i = 0; i < cardLines.Length; i++) { SendConsoleMessage(new ConsoleLine(cardLines[i], c), new ConsoleLineUpdate(), new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "1", 10, true)); }
+            for (int i = 0; i < cardLines.Length; i++) { SendConsoleMessage(new ConsoleLine(cardLines[i], c), new ConsoleLineUpdate(), new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "1", 10, true)); }
         }
 
         /// <summary> Completes additional tasks for card setup </summary>

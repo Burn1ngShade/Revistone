@@ -42,9 +42,9 @@ public static class Profiler
 
             if (_enabled)
             {
-                string compTicks = $"Comp Ticks (ms): {tickCompletionTime.ToElementString()}";
-                string calcTicks = $"Calc Ticks (ms): {tickCaculationTime.ToElementString()}";
-                string drawTicks = $"Draw Ticks (ms): {drawTime.ToElementString()}";
+                string calcTicks = $"Calc Ticks (ms): Avg - {((int)tickCaculationTime.Average()).ToString("00")} | {tickCaculationTime.ToElementString()} ";
+                string drawTicks = $"Draw Ticks (ms): Avg - {((int)drawTime.Average()).ToString("00")} | {drawTime.ToElementString()}";
+                string compTicks = $"Comp Ticks (ms): Avg - {((int)tickCompletionTime.Average()).ToString("00")} | {tickCompletionTime.ToElementString()}";
 
                 UpdateDebugConsoleLine(new ConsoleLine($"[Profiler] FPS: {_fps}"), debugStartIndex + 1);
                 UpdateDebugConsoleLine(new ConsoleLine($"Tick Num: {tickNum}, Lost Duration {tickCaculationTime.Where(s => s > 25).Sum(s => s - 25)} ms, Total Duration: {Math.Round((double)tickCaculationTime.Sum(), 2)} ms, Draw Duration: {Math.Round((double)drawTime.Sum(), 2)} ms"), debugStartIndex + 2);

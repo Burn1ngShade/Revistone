@@ -1,4 +1,3 @@
-using Revistone.Console;
 using static System.ConsoleColor;
 
 namespace Revistone.Functions;
@@ -52,6 +51,8 @@ public static class ColourFunctions
     public static ConsoleColor[] RainbowWithoutYellowGradient { get { return [Red, Green, Cyan, Blue, Magenta]; } }
     /// <summary> Colour gradient, [Cyan, Magenta, White, Magenta, Cyan]. </summary>
     public static ConsoleColor[] TransPattern { get { return [Cyan, Magenta, White, Magenta, Cyan]; } }
+    /// <summary> Colour gradient, All colours in enum index order. </summary>
+    public static ConsoleColor[] AllColours { get { return [Black, DarkBlue, DarkGreen, DarkCyan, DarkRed, DarkMagenta, DarkYellow, Gray, DarkGray, Blue, Green, Cyan, Red, Magenta, Yellow, White];}}
 
     // --- MODIFY ARRAY ---
 

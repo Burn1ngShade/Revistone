@@ -34,7 +34,7 @@ public class FontShowcaseApp : App
         ClearPrimaryConsole();
 
         ConsoleLine[] title = CreateTitle(exampleText, AdvancedHighlight(exampleText.Length * 15, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10), (ConsoleColor.Cyan.ToArray(), exampleText.Length * 5, 10), (ConsoleColor.Cyan.ToArray(), exampleText.Length * 10, 10)), exampleFont, letterSpacing: 1, bottomSpace: 1, topSpace: 1);
-        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
 
         GoToLine(14);
         int option = UserInput.CreateOptionMenu($"--- Font {exampleFont} [{(int)exampleFont + 1} / {fontCount}] ---", ["Next Font", "Previous Font", "Edit Example Text", "Exit"], cursorStartIndex: pointerIndex);
