@@ -1,3 +1,4 @@
+using System.Net;
 using Revistone.Console;
 using Revistone.Functions;
 
@@ -42,6 +43,8 @@ public static class Profiler
 
             if (_enabled)
             {
+                if (tickCaculationTime.Count == 0) return;
+
                 string[] formattedAverages = [
                     ((int)tickCaculationTime.Average()).ToString().PadRight(2, ' '), ((int)drawTime.Average()).ToString().PadRight(2, ' '), ((int)tickCompletionTime.Average()).ToString().PadRight(2, ' ')
                     ];

@@ -9,8 +9,6 @@ Dynamic Bottom Bar
 If console refreshes without changing size, Tetris display can display twice in different positions.
 
 --- DONE ---
-Fixed using number 99 for many enumerable.repeats on titles, instead of title.length
-Borders not going all the way to the edge of the screen
-Current App Title Being Slightly Too Far To The Right
+Fixed bug crashing when profiler tired to work with 0 frames
 
 --- ADDED ---

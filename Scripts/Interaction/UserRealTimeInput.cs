@@ -1,5 +1,4 @@
 using System.Runtime.InteropServices;
-using Revistone.Console;
 using Revistone.Console.Data;
 using Revistone.Management;
 
@@ -21,6 +20,7 @@ public static class UserRealtimeInput
         while (true)
         {
             ConsoleKeyInfo c = System.Console.ReadKey(true);
+            Analytics.General.TotalKeyPresses++;
             lastKey = (c, DateTime.Now);
         }
     }

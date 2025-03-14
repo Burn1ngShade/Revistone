@@ -58,7 +58,11 @@ public static class AppRegistry
     {
         for (int i = 0; i < _appRegistry.Count; i++)
         {
-            if (_appRegistry[i].name.ToLower() == name.ToLower()) return SetActiveApp(i);
+            if (_appRegistry[i].name.ToLower() == name.ToLower())
+            {
+                Analytics.App.TrackAppOpen(name);
+                return SetActiveApp(i);
+            }
         }
 
         return false;
@@ -75,7 +79,7 @@ public static class AppRegistry
         return false;
     }
 
-    /// <summary> Registers apps to console [DO NOT CALL]. </summary>
+    /// <summary> [DO NOT CALL] Registers apps to console. </summary>
     internal static void InitializeAppRegistry()
     {
         // Get all types in the current assembly

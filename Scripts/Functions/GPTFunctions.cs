@@ -3,6 +3,7 @@ using OpenAI.Chat;
 using Revistone.App;
 using Revistone.Console;
 using Revistone.Console.Data;
+using Revistone.Management;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 
@@ -30,6 +31,7 @@ public static class GPTFunctions
         ChatClient? client = CreateChatClient("gpt-4-turbo");
         if (client == null) return;
         ExecuteQuery(client, messages, o);
+        Analytics.General.TotalGPTPromts++;
     }
 
     ///<summary> Clears the message history of the chatbot. </summary>
@@ -142,6 +144,9 @@ public static class GPTFunctions
 
         messageHistory.Add(new AssistantChatMessage(completion));
         SendFormattedGPTResponse(completion, messages.Length);
+
+        Analytics.General.TotalGPTInputTokens += completion.Usage.InputTokenCount;
+        Analytics.General.TotalGPTOutputTokens += completion.Usage.OutputTokenCount;
     }
 
     ///<summary> Attempts to create chat client for given query. </summary>

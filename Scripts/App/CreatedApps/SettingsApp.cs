@@ -249,7 +249,7 @@ public class SettingsApp : App
 
     public abstract class Setting
     {
-        public enum SettingCategory { User, Input, ChatGPT, HoneyC, Widget }
+        public enum SettingCategory { User, Input, ChatGPT, HoneyC, Widget, Analytics }
         public SettingCategory category;
 
         public string settingName = "";

@@ -1,4 +1,5 @@
 using Revistone.App;
+using Revistone.Management;
 
 namespace Revistone.Console.Widget;
 
@@ -23,12 +24,7 @@ public abstract class ConsoleWidget
 
     // --- WIDGET BEHAVIOUR ---
 
-    static List<ConsoleWidget> widgets = new List<ConsoleWidget>()
-    {
-        new FrameWidget("Frame Rate", 0, false),
-        new BillboardWidget("Author", 1, "Creator: Isaac Honeyman", false),
-        new TimeWidget("Current Time", uint.MaxValue, DateTime.Now, false, true, false),
-    };
+    static List<ConsoleWidget> widgets = [];
 
     ///<summary> Returns all console widgets content. </summary> 
     public static string[] GetWidgetContents()
@@ -82,6 +78,8 @@ public abstract class ConsoleWidget
         widgets.Add(widget);
         widgets = [.. widgets.OrderBy(w => w.order)];
 
+        Analytics.Widget.TrackWidgetCreation(widget.name);
+
         return true;
     }
 
@@ -93,6 +91,7 @@ public abstract class ConsoleWidget
         if (index != -1 && widgets[index].canRemove)
         {
             widgets.RemoveAt(index);
+            Analytics.Widget.TrackWidgetDeletion(widgetName);
             return true;
         }
 
@@ -128,6 +127,10 @@ public abstract class ConsoleWidget
     ///<summary> [DO NOT CALL] Initializes Widgets. </summary>
     public static void InitializeWidgets()
     {
+        TryAddWidget(new FrameWidget("Frame Rate", 0, false));
+        TryAddWidget(new BillboardWidget("Author", 1, "Creator: Isaac Honeyman", false));
+        TryAddWidget(new TimeWidget("Current Time", uint.MaxValue, DateTime.Now, false, true, false));
+
         SettingsApp.OnSettingChanged += OnSettingChange;
 
         OnSettingChange("Show FPS Widget");

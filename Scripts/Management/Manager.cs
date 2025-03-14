@@ -18,6 +18,7 @@ public static class Manager
 
     static Thread handleTickBehaviour = new Thread(HandleTickBehaviour);
     static Thread handleRealTimeInput = new Thread(UserRealtimeInput.KeyRegistry);
+    static Thread handleAnalytics = new Thread(Analytics.HandleAnalytics);
 
     public static event TickEventHandler Tick = new TickEventHandler((tickNum) => { });
     public delegate void TickEventHandler(int tickNum);
@@ -28,7 +29,7 @@ public static class Manager
     public static double deltaTime => _deltaTime / 1000d; // duration of last tick in seconds
 
     /// <summary>
-    /// Calls the Tick event, occours every 25ms (40 calls per seconds).
+    /// [DO NOT CALL] Calls the Tick event, occours every 25ms (40 calls per seconds).
     /// </summary>
     static void HandleTickBehaviour() //controls tick based events
     {
@@ -92,6 +93,9 @@ public static class Manager
     //Initalizes main and tick threads, aswell as setting up consoleDisplay
     public static void Main(string[] args)
     {
+        // called first so init functions can still be tracked
+        Analytics.InitalizeAnalytics();
+
         AppRegistry.InitializeAppRegistry();
         AppRegistry.SetActiveApp("Revistone");
 
@@ -102,6 +106,7 @@ public static class Manager
 
         System.Console.CancelKeyPress += new ConsoleCancelEventHandler(OnCancelKeyPress); // prevent ctrl c from closing the program
 
+        handleAnalytics.Start();
         handleTickBehaviour.Start();
         handleRealTimeInput.Start();
 

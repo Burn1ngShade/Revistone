@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace Revistone.App;
 
 /// <summary> Class pertaining all logic for easy saving of data for apps. </summary>
@@ -5,7 +7,7 @@ public static class AppPersistentData
 {
     public enum SaveType { Overwrite, PartialOverwrite, Append, Insert }
 
-    static string dataPath = "PersistentData/";
+    static readonly string dataPath = "PersistentData/";
 
     // --- Useful ---
 
@@ -147,5 +149,35 @@ public static class AppPersistentData
         string[] s = File.ReadAllLines($"{dataPath}{path}");
 
         return lineIndex > s.Length - 1 ? "" : s[lineIndex];
+    }
+
+    // --- JSON Commands ---
+
+    /// <summary> Saves fileData to given file with given name in the JSON format. </summary>
+    public static bool SaveFileAsJSON<T>(string path, T data)
+    {
+        string json = JsonSerializer.Serialize<T>(data, new JsonSerializerOptions { WriteIndented = true });
+
+        if (!FileExists(path)) CreateFile(path);
+        File.WriteAllText($"{dataPath}{path}", json);
+
+        return true;
+    }
+
+    /// <summary> Loads data from given file, if not in JSON format, the default value for given type is returned. </summary>
+    public static T? LoadFileFromJSON<T>(string path)
+    {
+        if (!File.Exists(path)) CreateFile(path);
+
+        string json = File.ReadAllText($"{dataPath}{path}");
+        try
+        {
+            T? data = JsonSerializer.Deserialize<T>(json);
+            return data;
+        }
+        catch (Exception)
+        {
+            return default;
+        }
     }
 }

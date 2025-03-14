@@ -5,6 +5,7 @@ using Revistone.App;
 using static Revistone.Console.Data.ConsoleData;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
+using Revistone.Management;
 
 namespace Revistone.Interaction;
 
@@ -23,7 +24,7 @@ public static class UserInput
         ConsoleKey.F10, ConsoleKey.F11, ConsoleKey.F12, ConsoleKey.F13,
         ConsoleKey.F14, ConsoleKey.F15, ConsoleKey.F16, ConsoleKey.F17,
         ConsoleKey.F18, ConsoleKey.F19, ConsoleKey.F20, ConsoleKey.F21,
-        ConsoleKey.F22, ConsoleKey.F23, ConsoleKey.F24, 
+        ConsoleKey.F22, ConsoleKey.F23, ConsoleKey.F24,
     ];
 
     // previous user inputs file path
@@ -164,6 +165,8 @@ public static class UserInput
 
         data.Clean(clear);
         ShiftLine(skipLine ? 1 : 0);
+
+        Analytics.General.TotalInputsProcessed++;
 
         return data.input;
     }
@@ -513,6 +516,8 @@ public static class UserInput
             else if (c.keyInfo.Key == ConsoleKey.S || c.keyInfo.Key == ConsoleKey.DownArrow) pointer = Math.Clamp(pointer + 1, optionLines[0], optionLines[^1]);
             else if (c.keyInfo.Key == ConsoleKey.Enter)
             {
+                Analytics.General.TotalOptionMenusUsed++;
+
                 if (clear)
                 {
                     GoToLine(optionLines[^1]);
