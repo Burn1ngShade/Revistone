@@ -1,5 +1,5 @@
 # Revistone
-**Experiencing performance issues? Ensure that an exception has been added for antivirus software, and increase priority in task manger.**
+**Experiencing performance issues? Ensure that an exception has been added for antivirus software.**
 ## What Is It?
 Revistone, is a console based application, capable of managing and streamlining the creation of apps for the console, using **0** dependencies and libarys (excluding dotnet). Currently in development by me (Isaac) with the hopes to continue to build upon this system expanding it into a truly impressive project!
 ## Future Goals!
