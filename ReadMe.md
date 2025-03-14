@@ -40,7 +40,7 @@ Apps currently have 5 main ways to interact with the user:
 **OnRevistoneStartup()** called on inital console startup.
 
 ### Creating Widgets
-New to Revistone version 0.7, widgets are custom features that appear on the border of the application, regardless of application. To create a widget either use a base widget found [here!](Scripts/Console/Widget/DefaultWidgets.cs), or create a custom widget using the template below.
+New to Revistone version 0.6.1, widgets are custom features that appear on the border of the application, regardless of application. To create a widget either use a base widget found [here!](Scripts/Console/Widget/DefaultWidgets.cs), or create a custom widget using the template below.
 
 ```C#
 namespace Revistone.Console.Widget;
