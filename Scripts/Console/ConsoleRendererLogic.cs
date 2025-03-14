@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Revistone.App;
 using Revistone.Console.Widget;
 using Revistone.Functions;
@@ -252,6 +251,8 @@ public static class ConsoleRendererLogic
         return new string('-', leftBuffer) + jointWidgets + new string('-', rightBuffer);
     }
 
+    // --- CONSOLE RENDERING ---
+
     /// <summary> Writes given line to screen, using value of consoleLines. </summary>
     static void WriteConsoleLine(int lineIndex)
     {
@@ -266,28 +267,21 @@ public static class ConsoleRendererLogic
 
         if (bc.lineText.Length > c.lineText.Length) //clears line between end of currentline and buffer line
         {
-            for (int i = c.lineText.Length; i < System.Console.WindowWidth; i++)
+            for (int i = c.lineText.Length; i < windowSize.width; i++)
             {
                 ConsoleRenderer.SetChar(i, lineIndex, ' ', ConsoleColor.White, ConsoleColor.Black);
             }
         }
 
-        for (int i = 0; i < Math.Min(c.lineText.Length, System.Console.WindowWidth); i++)
+        for (int i = 0; i < Math.Min(c.lineText.Length, windowSize.width); i++)
         {
             ConsoleRenderer.SetChar(i, lineIndex, c.lineText[i], c.lineColour.Length > i ? c.lineColour[i] : c.lineColour[^1], c.lineBGColour.Length > i ? c.lineBGColour[i] : c.lineBGColour[^1]);
         }
-
-        System.Console.ForegroundColor = ConsoleColor.White;
     }
-
-    static int renderThreadCount = 10;
 
     /// <summary> Updates the console display, based on current states of consoleLines, before updating consoleLinesBuffer. </summary>
     static void RenderConsole(int tickNum)
     {
-        // RenderConsoleMultiThread(tickNum);
-        // return;
-
         if (blockRender) return;
 
         lock (Manager.renderLockObject)
@@ -295,11 +289,14 @@ public static class ConsoleRendererLogic
             Stopwatch s = new Stopwatch();
             s.Start();
 
-            if (System.Console.WindowTop != 0) try
+            if (System.Console.WindowTop != 0)
+            {
+                try
                 {
                     if (OperatingSystem.IsWindows()) System.Console.SetWindowPosition(0, 0);
                 }
                 catch (IOException) { } //needed as its not possible to detect user changing window size (to my knowledge)
+            }
 
             for (int i = 0; i < consoleLines.Length; i++)
             {
@@ -318,79 +315,6 @@ public static class ConsoleRendererLogic
 
             s.Stop();
             Profiler.drawTime.Add(s.ElapsedMilliseconds);
-        }
-    }
-
-    /// <summary> Updates the console display, based on current states of consoleLines, before updating consoleLinesBuffer. </summary>
-    static void RenderConsoleMultiThread(int tickNum)
-    {
-        if (blockRender) return;
-
-        lock (Manager.renderLockObject)
-        {
-            Stopwatch debugStopwatch = new Stopwatch();
-            long[] debugInfo = new long[5];
-            debugStopwatch.Start();
-
-            Stopwatch s = new Stopwatch();
-            s.Start();
-
-            if (System.Console.WindowTop != 0)
-            {
-                try
-                {
-                    if (OperatingSystem.IsWindows()) System.Console.SetWindowPosition(0, 0);
-                }
-                catch (IOException) { } //needed as its not possible to detect user changing window size (to my knowledge)
-            }
-
-            // --- THIS PART KILLS PERFORMANCE ---
-
-            Task[] tasks = new Task[renderThreadCount];
-            int lineCount = consoleLines.Length;
-            debugInfo[3] = lineCount;
-            int chunkSize = lineCount / renderThreadCount;
-            debugInfo[4] = chunkSize;
-            (int start, int end)[] index = new (int, int)[renderThreadCount];
-
-
-            for (int i = 0; i < renderThreadCount; i++)
-            {
-                int startIndex = i * chunkSize;
-                int endIndex = i == renderThreadCount - 1 ? lineCount - 1 : (i + 1) * chunkSize - 1;
-
-                index[i] = (startIndex, endIndex);
-                tasks[i] = Task.Run(() => RenderLines(startIndex, endIndex));
-            }
-
-            debugInfo[0] = debugStopwatch.ElapsedMilliseconds;
-
-            // -----------------------------------------
-
-            ConsoleRenderer.DrawBuffer();
-
-            debugInfo[1] = debugStopwatch.ElapsedMilliseconds - debugInfo[0];
-            // ConsoleAction.SendDebugMessage(debugInfo.ToElementString());
-            // ConsoleAction.SendDebugMessage(index.ToElementString());
-
-            s.Stop();
-            Profiler.drawTime.Add(s.ElapsedMilliseconds);
-        }
-    }
-
-    private static void RenderLines(int startIndex, int endIndex)
-    {
-        for (int i = startIndex; i <= endIndex; i++)
-        {
-            if (consoleLines[i].updated) continue;
-
-            if (System.Console.WindowHeight != windowSize.height || System.Console.WindowWidth != windowSize.width)
-            {
-                return;
-            }
-
-            WriteConsoleLine(i);
-            consoleLinesBuffer[i].Update(consoleLines[i]);
         }
     }
 }

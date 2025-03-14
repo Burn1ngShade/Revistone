@@ -43,8 +43,6 @@ public class SettingsApp : App
         ["Yes", "No"]),
         new DropdownSetting("Show Time Widget", "Should The Time Widget Be Shown?", "Yes", SettingCategory.Widget,
         ["Yes", "No"]),
-        new DropdownSetting("Use Multithreaded Rendering", "Should The Console Use Multithreaded Rendering (10x Speed But Is Ass).", "Yes", SettingCategory.Performance,
-        ["Yes", "No"]),
     ];
 
     public SettingsApp() : base() { }
@@ -251,7 +249,7 @@ public class SettingsApp : App
 
     public abstract class Setting
     {
-        public enum SettingCategory { User, Input, ChatGPT, HoneyC, Widget, Performance }
+        public enum SettingCategory { User, Input, ChatGPT, HoneyC, Widget }
         public SettingCategory category;
 
         public string settingName = "";

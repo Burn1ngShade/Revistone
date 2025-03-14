@@ -46,7 +46,6 @@ public static class ConsoleRenderer
     static short bottom => (short)(top + height - 1);
 
     /// <summary> [DO NOT CALL] Initializes renderer. </summary>
-    [STAThread]
     internal static void InitializeRenderer(ConsoleColor foreground = ConsoleColor.Gray, ConsoleColor background = ConsoleColor.Black)
     {
         System.Console.OutputEncoding = System.Text.Encoding.Unicode;
@@ -68,7 +67,6 @@ public static class ConsoleRenderer
     }
 
     /// <summary> Reloads renderer (Called on screen resize). </summary>
-    [STAThread]
     public static void Reload()
     {
         width = (short)System.Console.WindowWidth;
@@ -148,7 +146,7 @@ public static class ConsoleRenderer
         SetChar((short)coords.x, (short)coords.y, c, foreground, background, overline, leftline, rightline, underline);
     }
 
-    /// <summary> Set char at given point in console. </summary>s
+    /// <summary> Set char at given point in console. </summary>
     public static void SetChar(int x, int y, char c, ConsoleColor foreground, ConsoleColor background, bool overline = false, bool leftline = false, bool rightline = false, bool underline = false)
     {
         SetChar((short)x, (short)y, c, foreground, background, overline, leftline, rightline, underline);

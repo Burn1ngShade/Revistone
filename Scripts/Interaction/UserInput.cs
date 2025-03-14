@@ -17,7 +17,13 @@ public static class UserInput
     static readonly ConsoleKey[] exceptionKeys = [
         ConsoleKey.Escape, ConsoleKey.Delete, ConsoleKey.End,
         ConsoleKey.Insert, ConsoleKey.Home, ConsoleKey.PageUp,
-        ConsoleKey.PageDown, ConsoleKey.Tab,
+        ConsoleKey.PageDown, ConsoleKey.Tab, ConsoleKey.F1,
+        ConsoleKey.F2, ConsoleKey.F3, ConsoleKey.F4, ConsoleKey.F5,
+        ConsoleKey.F6, ConsoleKey.F7, ConsoleKey.F8, ConsoleKey.F9,
+        ConsoleKey.F10, ConsoleKey.F11, ConsoleKey.F12, ConsoleKey.F13,
+        ConsoleKey.F14, ConsoleKey.F15, ConsoleKey.F16, ConsoleKey.F17,
+        ConsoleKey.F18, ConsoleKey.F19, ConsoleKey.F20, ConsoleKey.F21,
+        ConsoleKey.F22, ConsoleKey.F23, ConsoleKey.F24, 
     ];
 
     // previous user inputs file path

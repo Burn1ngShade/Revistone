@@ -1,6 +1,4 @@
 using System.Globalization;
-using OpenAI.VectorStores;
-using Revistone.Console.Data;
 using Revistone.Functions;
 
 namespace Revistone.Console;
@@ -49,14 +47,24 @@ public class ConsoleLine
     //--- METHODS ---
 
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(string lineText, ConsoleColor[] lineColour, ConsoleColor[] lineColourBG)
+    public void Update(string lineText, ConsoleColor[] lineColour, ConsoleColor[] lineColourBG, bool overrideLock = false)
     {
-        lock (Management.Manager.renderLockObject)
+        if (overrideLock)
         {
             this._lineText = lineText;
             this._lineColour = lineColour;
             this._lineBGColour = lineColourBG;
             this._updated = false;
+        }
+        else
+        {
+            lock (Management.Manager.renderLockObject)
+            {
+                this._lineText = lineText;
+                this._lineColour = lineColour;
+                this._lineBGColour = lineColourBG;
+                this._updated = false;
+            }
         }
     }
 

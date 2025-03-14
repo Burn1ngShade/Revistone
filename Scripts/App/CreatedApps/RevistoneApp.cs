@@ -50,7 +50,7 @@ public class RevistoneApp : App
 
     static void RenderTest()
     {
-        ConsoleLine[] lines = Enumerable.Range(0, 30).Select(i => new ConsoleLine(new string('a', 100), AllColours.Repeat(8), AllColours.Repeat(8))).ToArray();
+        ConsoleLine[] lines = Enumerable.Range(0, 30).Select(i => new ConsoleLine(new string('a', 200), AllColours.Repeat(13), AllColours.Repeat(13))).ToArray();
         ConsoleAnimatedLine[] animation = Enumerable.Range(0, 30).Select(i => new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, 5, true)).ToArray();
         ConsoleAction.SendConsoleMessages(lines, animation);
     }
