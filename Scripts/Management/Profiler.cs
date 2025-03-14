@@ -42,9 +42,13 @@ public static class Profiler
 
             if (_enabled)
             {
-                string calcTicks = $"Calc Ticks (ms): Avg - {((int)tickCaculationTime.Average()).ToString("00")} | {tickCaculationTime.ToElementString()} ";
-                string drawTicks = $"Draw Ticks (ms): Avg - {((int)drawTime.Average()).ToString("00")} | {drawTime.ToElementString()}";
-                string compTicks = $"Comp Ticks (ms): Avg - {((int)tickCompletionTime.Average()).ToString("00")} | {tickCompletionTime.ToElementString()}";
+                string[] formattedAverages = [
+                    ((int)tickCaculationTime.Average()).ToString().PadRight(2, ' '), ((int)drawTime.Average()).ToString().PadRight(2, ' '), ((int)tickCompletionTime.Average()).ToString().PadRight(2, ' ')
+                    ];
+                    
+                string calcTicks = $"Calc Ticks (ms): Avg - {formattedAverages[0]} | {tickCaculationTime.ToElementString()} ";
+                string drawTicks = $"Draw Ticks (ms): Avg - {formattedAverages[1]} | {drawTime.ToElementString()}";
+                string compTicks = $"Comp Ticks (ms): Avg - {formattedAverages[2]} | {tickCompletionTime.ToElementString()}";
 
                 UpdateDebugConsoleLine(new ConsoleLine($"[Profiler] FPS: {_fps}"), debugStartIndex + 1);
                 UpdateDebugConsoleLine(new ConsoleLine($"Tick Num: {tickNum}, Lost Duration {tickCaculationTime.Where(s => s > 25).Sum(s => s - 25)} ms, Total Duration: {Math.Round((double)tickCaculationTime.Sum(), 2)} ms, Draw Duration: {Math.Round((double)drawTime.Sum(), 2)} ms"), debugStartIndex + 2);

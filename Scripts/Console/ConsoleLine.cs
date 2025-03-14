@@ -47,24 +47,14 @@ public class ConsoleLine
     //--- METHODS ---
 
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(string lineText, ConsoleColor[] lineColour, ConsoleColor[] lineColourBG, bool overrideLock = false)
+    public void Update(string lineText, ConsoleColor[] lineColour, ConsoleColor[] lineColourBG)
     {
-        if (overrideLock)
+        lock (Management.Manager.renderLockObject)
         {
             this._lineText = lineText;
             this._lineColour = lineColour;
             this._lineBGColour = lineColourBG;
             this._updated = false;
-        }
-        else
-        {
-            lock (Management.Manager.renderLockObject)
-            {
-                this._lineText = lineText;
-                this._lineColour = lineColour;
-                this._lineBGColour = lineColourBG;
-                this._updated = false;
-            }
         }
     }
 
