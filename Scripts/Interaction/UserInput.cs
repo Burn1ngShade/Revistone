@@ -1,11 +1,12 @@
 using Revistone.Console;
 using Revistone.Functions;
 using Revistone.App;
+using Revistone.Management;
 
 using static Revistone.Console.Data.ConsoleData;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
-using Revistone.Management;
+using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.Interaction;
 
@@ -26,9 +27,6 @@ public static class UserInput
         ConsoleKey.F18, ConsoleKey.F19, ConsoleKey.F20, ConsoleKey.F21,
         ConsoleKey.F22, ConsoleKey.F23, ConsoleKey.F24,
     ];
-
-    // previous user inputs file path
-    static readonly string inputHistoryFilePath = "Settings/Data/UserInput.txt";
 
     /// <summary> Gets input from the user (supports multiline input).  </summary>
     public static string GetUserInput(ConsoleLine prompt, bool clear = false, bool skipLine = false, string prefilledText = "", int maxLineCount = 1)
@@ -161,12 +159,12 @@ public static class UserInput
         }
 
         if (data.history.data.Count == 0 || data.history.data[^1] != data.input) data.history.data.Add(data.input);
-        AppPersistentData.SaveFile(inputHistoryFilePath, data.history.data.TakeLast(Math.Min(data.history.data.Count, int.Parse(SettingsApp.GetValue("Input History")))).ToArray());
+        SaveFile(GeneratePath(DataLocation.Console, "History", "UserInput.txt"), data.history.data.TakeLast(Math.Min(data.history.data.Count, int.Parse(SettingsApp.GetValue("Input History")))).ToArray());
 
         data.Clean(clear);
         ShiftLine(skipLine ? 1 : 0);
 
-        Analytics.General.TotalInputsProcessed++;
+        Analytics.General.LinesEntered++;
 
         return data.input;
     }
@@ -194,7 +192,7 @@ public static class UserInput
             this.pointer = (input.Length, 0);
             this.lines = (primaryLineIndex, 1, maxLineCount);
 
-            this.history.data = [.. AppPersistentData.LoadFile(inputHistoryFilePath)];
+            this.history.data = [.. LoadFile(GeneratePath(DataLocation.Console, "History", "UserInput.txt"))];
             this.history.index = history.data.Count;
 
             this.anim = (true, false, new ConsoleColor[maxLineCount][]);
@@ -516,7 +514,7 @@ public static class UserInput
             else if (c.keyInfo.Key == ConsoleKey.S || c.keyInfo.Key == ConsoleKey.DownArrow) pointer = Math.Clamp(pointer + 1, optionLines[0], optionLines[^1]);
             else if (c.keyInfo.Key == ConsoleKey.Enter)
             {
-                Analytics.General.TotalOptionMenusUsed++;
+                Analytics.General.OptionMenusUsed++;
 
                 if (clear)
                 {

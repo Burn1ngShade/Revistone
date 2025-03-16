@@ -5,6 +5,7 @@ using Revistone.Console;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.App.SettingsApp.Setting;
+using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.App;
 
@@ -43,6 +44,10 @@ public class SettingsApp : App
         ["Yes", "No"]),
         new DropdownSetting("Show Time Widget", "Should The Time Widget Be Shown?", "Yes", SettingCategory.Widget,
         ["Yes", "No"]),
+        new DropdownSetting("Analytics Update Frequency", "How Often Should Analytics Update? (Can Effect Performance On Low End Devices, All Unsaved Analytics Are Lossed On Console Close).", "0.5s", SettingCategory.Performance,
+        ["0.25s", "0.5s", "1s", "2.5s", "5s", "10s", "30s", "60s"]),
+        new DropdownSetting("Widget Update Frequency", "How Often Should Widgets Update? (Can Effect Performance On Low End Devices, But Lower Settings Will Make Widgets Appear Laggy).", "0.025s", SettingCategory.Performance,
+        ["0.025s", "0.05s", "0.1s", "0.2s", "0.5s", "1s"])
     ];
 
     public SettingsApp() : base() { }
@@ -181,7 +186,7 @@ public class SettingsApp : App
 
     void LoadSettings()
     {
-        string[][] settingsTxt = AppPersistentData.LoadFile("Settings/Settings", 2, true);
+        string[][] settingsTxt = LoadFile(GeneratePath(DataLocation.Console, "Settings", "Settings.txt"), 2, true);
 
         for (int i = 0; i < settingsTxt.Length; i++)
         {
@@ -203,7 +208,7 @@ public class SettingsApp : App
             settingsTxt[i * 2 + 1] = settings[i].currentValue;
         }
 
-        AppPersistentData.SaveFile("Settings/Settings", settingsTxt);
+        SaveFile(GeneratePath(DataLocation.Console, "Settings", "Settings.txt"), settingsTxt);
 
         UpdateSettingsDict();
     }
@@ -249,7 +254,7 @@ public class SettingsApp : App
 
     public abstract class Setting
     {
-        public enum SettingCategory { User, Input, ChatGPT, HoneyC, Widget, Analytics }
+        public enum SettingCategory { User, Input, ChatGPT, HoneyC, Widget, Performance }
         public SettingCategory category;
 
         public string settingName = "";

@@ -4,8 +4,10 @@ using Revistone.App;
 using Revistone.Console;
 using Revistone.Console.Data;
 using Revistone.Management;
+
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
+using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.Functions;
 
@@ -16,10 +18,18 @@ public static class GPTFunctions
 
     // --- PUBLIC FUNCTIONS ---
 
+    ///<summary> [DO NOT CALL] Initializes GPT, fetching message history. </summary>
+    public static void InitializeGPT()
+    {
+        List<SerializableChatMessage>? serializableChats = LoadFileFromJSON<List<SerializableChatMessage>>(GeneratePath(DataLocation.Console, "History", "GPTMessages.json"));
+        if (serializableChats == null) messageHistory = [];
+        else messageHistory = serializableChats.Select(x => x.ToChatMessage()).ToList();
+    }
+
     ///<summary> Function to send a query to run a query with ChatGPT. </summary>
     public static void Query(string query, bool useMessageHistory)
     {
-        messageHistory.Add(new UserChatMessage(query));
+        AddToMessageHistory(new UserChatMessage(query));
         ChatMessage[] messages = GetRelevantChatMessages(useMessageHistory);
 
         var o = new ChatCompletionOptions
@@ -32,13 +42,6 @@ public static class GPTFunctions
         if (client == null) return;
         ExecuteQuery(client, messages, o);
         Analytics.General.TotalGPTPromts++;
-    }
-
-    ///<summary> Clears the message history of the chatbot. </summary>
-    public static void ClearMessageHistory()
-    {
-        messageHistory = [];
-        SendConsoleMessage(new ConsoleLine("ChatGPT Message History Cleared.", ConsoleColor.DarkBlue));
     }
 
     ///<summary> Outputs a GPT response in a console friendly format. </summary>
@@ -80,7 +83,30 @@ public static class GPTFunctions
         SendConsoleMessages(lines.Select(x => ConsoleLine.Clean(new ConsoleLine(x, ConsoleColor.DarkBlue))).ToArray());
     }
 
-    // --- GPT LOGIC ---
+    // --- MESSAGE HISTORY ---
+
+    ///<summary> JSON friendly format for chat messages to be saved inbetween sessions. </summary>
+    public class SerializableChatMessage
+    {
+        public enum MessageType { User, Assistant }
+
+        public MessageType Type { get; set; }
+        public string Content { get; set; } = "";
+
+        public SerializableChatMessage() { }
+
+        public SerializableChatMessage(ChatMessage message)
+        {
+            this.Type = message as UserChatMessage != null ? MessageType.User : MessageType.Assistant;
+            this.Content = message.Content[0].Text;
+        }
+
+        public ChatMessage ToChatMessage()
+        {
+            if (Type == MessageType.User) return new UserChatMessage(Content);
+            else return new AssistantChatMessage(Content);
+        }
+    }
 
     ///<summary> Gathers all context messages needed to generate a response. </summary>
     static ChatMessage[] GetRelevantChatMessages(bool useMessageHistory)
@@ -91,6 +117,26 @@ public static class GPTFunctions
         else messages = messages.Concat([messageHistory[^1]]).ToArray();
         return messages;
     }
+
+    ///<summary> Add message to previous message history, caps size to 50 to keep data storage reasonable. </summary>
+    static void AddToMessageHistory(ChatMessage message)
+    {
+        while (messageHistory.Count >= 50) messageHistory.RemoveAt(0);
+
+        messageHistory.Add(message);
+
+        SaveFileAsJSON(GeneratePath(DataLocation.Console, "History", "GPTMessages.json"), messageHistory.Select(x => new SerializableChatMessage(x)).ToList());
+    }
+
+    ///<summary> Clears the message history of the chatbot. </summary>
+    public static void ClearMessageHistory()
+    {
+        messageHistory = [];
+        SaveFileAsJSON(GeneratePath(DataLocation.Console, "History", "GPTMessages.json"), messageHistory.Select(x => new SerializableChatMessage(x)).ToList());
+        SendConsoleMessage(new ConsoleLine("ChatGPT Message History Cleared.", ConsoleColor.DarkBlue));
+    }
+
+    // --- GPT LOGIC ---
 
     ///<summary> Executes and handles chat tools for the given query. </summary>
     static void ExecuteQuery(ChatClient client, ChatMessage[] messages, ChatCompletionOptions options)
@@ -142,11 +188,11 @@ public static class GPTFunctions
 
         } while (requiresAction);
 
-        messageHistory.Add(new AssistantChatMessage(completion));
+        AddToMessageHistory(new AssistantChatMessage(completion));
         SendFormattedGPTResponse(completion, messages.Length);
 
-        Analytics.General.TotalGPTInputTokens += completion.Usage.InputTokenCount;
-        Analytics.General.TotalGPTOutputTokens += completion.Usage.OutputTokenCount;
+        Analytics.General.UsedGPTInputTokens += completion.Usage.InputTokenCount;
+        Analytics.General.UsedGPTOutputTokens += completion.Usage.OutputTokenCount;
     }
 
     ///<summary> Attempts to create chat client for given query. </summary>

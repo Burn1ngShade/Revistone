@@ -8,6 +8,7 @@ using Revistone.Management;
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
+using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.App;
 
@@ -63,9 +64,9 @@ public static class AppCommands
                 (new UserInputProfile("profiler toggle", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => { Profiler.SetEnabled(!Profiler.enabled); }, "Toggles Profiler On Or Off."),
                 (new UserInputProfile("gpt[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
-                (s) => { GPTFunctions.Query(s[3..], true); }, "Interact With Custom Revistone ChatGPT Model, In A Back And Forth Conversation."),
+                (s) => { GPTFunctions.Query(s[3..].TrimStart(), true); }, "Interact With Custom Revistone ChatGPT Model, In A Back And Forth Conversation."),
                 (new UserInputProfile("snap gpt[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
-                (s) => { GPTFunctions.Query(s[8..], false); }, "Interact With Custom Revistone ChatGPT Model, In A Single Message."),
+                (s) => { GPTFunctions.Query(s[8..].TrimStart(), false); }, "Interact With Custom Revistone ChatGPT Model, In A Single Message."),
                 (new UserInputProfile("clear gpt", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => { GPTFunctions.ClearMessageHistory(); }, "Wipe Message History Of ChatGPT Model."),
                 (new UserInputProfile("get setting[A:]", removeLeadingWhitespace: true, removeTrailingWhitespace: true),
@@ -85,7 +86,7 @@ public static class AppCommands
     {
         UserInput.CreateReadMenu("Help", 5,
         commands.name.Select((s, i) => new ConsoleLine($"{s}: {commands.summary[i]}",
-        ColourFunctions.AdvancedHighlight($"{commands.name[i]}: {commands.summary[i]}".Length, AppRegistry.activeApp.colourScheme.primaryColour,
+        AdvancedHighlight($"{commands.name[i]}: {commands.summary[i]}".Length, AppRegistry.activeApp.colourScheme.primaryColour,
         (AppRegistry.activeApp.colourScheme.secondaryColour, 0, commands.name[i].Length + 1)))).ToArray());
     }
 
@@ -191,9 +192,9 @@ public static class AppCommands
     {
         userInput = userInput.Trim();
 
-        if (AppPersistentData.FileExists($"HoneyC/{userInput}"))
+        if (FileExists(GeneratePath(DataLocation.Workspace, $"HoneyC/{userInput}")))
         {
-            HoneyCInterpreter.Interpret(AppPersistentData.LoadFile($"HoneyC/{userInput}"));
+            HoneyCInterpreter.Interpret(LoadFile(GeneratePath(DataLocation.Workspace, $"HoneyC/{userInput}")));
         }
         else
         {
@@ -255,6 +256,7 @@ public static class AppCommands
             if (format.InputValid(userInput))
             {
                 payload.Invoke(userInput);
+                Analytics.General.CommandsUsed++;
                 return true;
             }
         }
@@ -267,6 +269,7 @@ public static class AppCommands
             if (format.InputValid(userInput))
             {
                 payload.Invoke(userInput);
+                Analytics.General.CommandsUsed++;
                 return true;
             }
         }

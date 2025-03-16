@@ -3,6 +3,7 @@ using Revistone.App;
 using Revistone.Console;
 using Revistone.Console.Data;
 using Revistone.Console.Widget;
+using Revistone.Functions;
 using Revistone.Interaction;
 
 namespace Revistone.Management;
@@ -103,14 +104,16 @@ public static class Manager
         ConsoleRenderer.InitializeRenderer();
         ConsoleRendererLogic.InitializeConsoleRendererLogic();
         Profiler.InitializeProfiler();
+        GPTFunctions.InitializeGPT();
 
         System.Console.CancelKeyPress += new ConsoleCancelEventHandler(OnCancelKeyPress); // prevent ctrl c from closing the program
 
         handleAnalytics.Start();
         handleTickBehaviour.Start();
-        handleRealTimeInput.Start();
+        handleRealTimeInput.Start(); 
 
         HandleConsoleBehaviour();
+
     }
 
     static void OnCancelKeyPress(object? sender, ConsoleCancelEventArgs args)

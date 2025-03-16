@@ -236,8 +236,8 @@ public static class ConsoleRendererLogic
     /// <summary> Updates console border widgets. </summary>
     static void UpdateConsoleBorderAnimation(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
     {
-        if (tickNum % AppRegistry.activeApp.borderColourScheme.speed == 0) lineInfo.Update(GenerateConsoleBorderString(), lineInfo.lineColour.Shift(1));
-        else if (tickNum % 4 == 0) lineInfo.Update(GenerateConsoleBorderString());
+        if (tickNum % AppRegistry.activeApp.borderColourScheme.speed == 0) lineInfo.Update(lineInfo.lineColour.Shift(1));
+        if (tickNum % (int)(float.Parse(SettingsApp.GetValue("Widget Update Frequency")[..^1]) * 40) == 0) lineInfo.Update(GenerateConsoleBorderString());
     }
 
     /// <summary> Generates the console border string using current widget data. </summary>

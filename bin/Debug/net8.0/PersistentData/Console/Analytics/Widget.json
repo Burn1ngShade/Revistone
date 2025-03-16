@@ -1,0 +1,21 @@
+{
+  "WidgetsCreated": 3,
+  "WidgetsDestroyed": 0,
+  "Widgets": [
+    {
+      "WidgetName": "Frame Rate",
+      "TimesCreated": 1,
+      "TimesDestroyed": 0
+    },
+    {
+      "WidgetName": "Author",
+      "TimesCreated": 1,
+      "TimesDestroyed": 0
+    },
+    {
+      "WidgetName": "Current Time",
+      "TimesCreated": 1,
+      "TimesDestroyed": 0
+    }
+  ]
+}

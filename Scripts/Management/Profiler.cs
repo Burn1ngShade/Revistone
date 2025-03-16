@@ -1,4 +1,3 @@
-using System.Net;
 using Revistone.Console;
 using Revistone.Functions;
 

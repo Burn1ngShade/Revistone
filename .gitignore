@@ -1,6 +1,6 @@
-PersistentData/Tracker
-PersistentData/Tracker/Data
-PersistentData/Settings
-PersistentData/DebitCard
-PersistentData/HoneyC/ProgramLog
-PersistentData/Analytics
+PersistentData/App/Tracker
+PersistentData/App/DebitCard
+PersistentData/Console/Analytics
+PersistentData/Console/History
+PersistentData/Console/Settings
+PersistentData/Workspace

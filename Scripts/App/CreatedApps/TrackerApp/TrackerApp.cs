@@ -6,6 +6,7 @@ using Revistone.App.Tracker;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.App.Tracker.TrackerData;
+using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.App;
 
@@ -29,9 +30,9 @@ public class TrackerApp : App
 
     public override void OnAppInitalisation()
     {
-        if (AppPersistentData.FileExists("Tracker/Data")) DATA = new TrackerData(AppPersistentData.LoadFile("Tracker/Data"));
+        if (FileExists(GeneratePath(DataLocation.App, "Tracker", "Data"))) DATA = new TrackerData(LoadFile(GeneratePath(DataLocation.App, "Tracker", $"Data")));
         else {
-            AppPersistentData.CreateFile("Tracker/Data"); 
+            CreateFile(GeneratePath(DataLocation.App, "Tracker", "Data")); 
             DATA = new TrackerData();
         }
 
@@ -119,7 +120,7 @@ public class TrackerApp : App
                 ("Last 30 Days", Math.Max(0, DATA.GetDayIndex(DATA.today) - 30), Math.Min(30, DATA.GetDayIndex(DATA.today)) + 1),
                 ("Last 7 Days", Math.Max(0, DATA.GetDayIndex(DATA.today) - 7), Math.Min(7, DATA.GetDayIndex(DATA.today)) + 1),
             ];
-            timePeriodData.AddRange(AppPersistentData.LoadFile("Tracker/Arc Data", 3, true).Select(x => (x[0], DATA.GetDayIndex(System.DateOnly.Parse(x[1])), DATA.GetDayIndex(System.DateOnly.Parse(x[2])))));
+            timePeriodData.AddRange(LoadFile(GeneratePath(DataLocation.App, "Tracker", "ArcData"), 3, true).Select(x => (x[0], DATA.GetDayIndex(DateOnly.Parse(x[1])), DATA.GetDayIndex(DateOnly.Parse(x[2])))));
             int timePeriod = 0;
             while (true)
             {

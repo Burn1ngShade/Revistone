@@ -20,7 +20,7 @@ public static class UserRealtimeInput
         while (true)
         {
             ConsoleKeyInfo c = System.Console.ReadKey(true);
-            Analytics.General.TotalKeyPresses++;
+            Analytics.General.KeyPresses++;
             lastKey = (c, DateTime.Now);
         }
     }

@@ -3,7 +3,6 @@ using Revistone.Functions;
 using Revistone.App;
 
 using static Revistone.Functions.StringFunctions;
-using OpenAI.Assistants;
 
 namespace Revistone.Interaction;
 

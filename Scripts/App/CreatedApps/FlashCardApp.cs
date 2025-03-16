@@ -5,6 +5,7 @@ using Revistone.Management;
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
+using static Revistone.Functions.PersistentDataFunctions;
 
 //FCS -> Flash Card Set
 
@@ -55,7 +56,7 @@ public class FlashCardApp : App
     /// <summary> Menu to select a FCS to use.</summary>
     void MainMenuSelectFCS()
     {
-        string[] flashNames = AppPersistentData.GetSubFiles("FlashCard");
+        string[] flashNames = GetSubFiles(GeneratePath(DataLocation.App, "FlashCard"));
         if (flashNames.Length == 0)
         {
             SendConsoleMessage(new ConsoleLine("No Flash Card Sets Can Be Found!", ConsoleColor.DarkRed));
@@ -69,7 +70,7 @@ public class FlashCardApp : App
     /// <summary> Menu to select a FCS to edit.</summary>
     void MainMenuEditFCS()
     {
-        string[] flashNames = AppPersistentData.GetSubFiles("FlashCard");
+        string[] flashNames = GetSubFiles(GeneratePath(DataLocation.App, "FlashCard"));
         int i = UserInput.CreateMultiPageOptionMenu("Flash Card Sets", new ConsoleLine[] { new ConsoleLine("New Flash Card Set") }.Concat(flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s)))).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 8);
 
         if (i == 0) CreateFCS();
@@ -88,7 +89,7 @@ public class FlashCardApp : App
 
         if (i == 0)
         {
-            FlashCardSet[] f = AppPersistentData.GetSubFiles("FlashCard").Select(s => new FlashCardSet($"FlashCard/{s}")).ToArray();
+            FlashCardSet[] f = GetSubFiles(GeneratePath(DataLocation.App, "FlashCard")).Select(s => new FlashCardSet($"FlashCard/{s}")).ToArray();
 
             SendConsoleMessage(new ConsoleLine("General Flash Card Manager Stats", ConsoleColor.DarkBlue));
 
@@ -103,7 +104,7 @@ public class FlashCardApp : App
         }
         else if (i == 1)
         {
-            string[] flashNames = AppPersistentData.GetSubFiles("FlashCard");
+            string[] flashNames = GetSubFiles(GeneratePath(DataLocation.App, "FlashCard"));
             if (flashNames.Length == 0)
             {
                 SendConsoleMessage(new ConsoleLine("No Flash Card Sets Can Be Found!", ConsoleColor.DarkRed));
@@ -248,7 +249,7 @@ public class FlashCardApp : App
     {
         if (UserInput.CreateTrueFalseOptionMenu($"Are You Sure You Want To Delete '{StringFunctions.SplitAtCapitalisation(s.name)}'?"))
         {
-            AppPersistentData.DeleteFile($"FlashCard/{s.name}");
+            DeleteFile(GeneratePath(DataLocation.App, $"FlashCard/{s.name}"));
             SendConsoleMessage($"'{StringFunctions.SplitAtCapitalisation(s.name)}' Deleted!");
             UserInput.WaitForUserInput(space: true);
             return true;
@@ -264,7 +265,7 @@ public class FlashCardApp : App
     /// <summary> Saves given FCS to file.</summary>
     void SaveFCS(FlashCardSet s)
     {
-        AppPersistentData.SaveFile($"FlashCard/{s.name}", s.ToString().Split('\n'));
+        SaveFile(GeneratePath(DataLocation.App, $"FlashCard/{s.name}"), s.ToString().Split('\n'));
     }
 
     // QUESTION MODIFICATIONS
@@ -399,7 +400,8 @@ public class FlashCardApp : App
 
         public FlashCardSet(string filePath)
         {
-            string[] s = AppPersistentData.LoadFile(filePath, 0, 7);
+            Analytics.Debug.CreateDebugMessage(filePath);
+            string[] s = LoadFile(GeneratePath(DataLocation.App, filePath), 0, 7);
             name = s[0];
             timeSpent = TimeSpan.Parse(s[1]);
             bestTime = TimeSpan.Parse(s[2]);
@@ -407,7 +409,7 @@ public class FlashCardApp : App
             questionsCompletedCorrect = int.Parse(s[4]);
             questionHighscore = int.Parse(s[5]);
             timesCompleted = int.Parse(s[6]);
-            questions = AppPersistentData.LoadFile(filePath, 3, true, 7).Select(s => FlashCard.FlashCardFromString(s)).ToList();
+            questions = LoadFile(GeneratePath(DataLocation.App, filePath), 3, true, 7).Select(s => FlashCard.FlashCardFromString(s)).ToList();
         }
 
         public void PrintStats()

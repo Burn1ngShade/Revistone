@@ -1,0 +1,15 @@
+{
+  "AppsOpened": 1,
+  "Apps": [
+    {
+      "AppName": "Revistone",
+      "TimesOpened": 1,
+      "TotalRuntimeTicks": 832,
+      "TotalRuntime": "00:00:20.8000000",
+      "KeyPresses": 30,
+      "LinesEntered": 3,
+      "OptionMenusUsed": 1,
+      "CommandsUsed": 2
+    }
+  ]
+}

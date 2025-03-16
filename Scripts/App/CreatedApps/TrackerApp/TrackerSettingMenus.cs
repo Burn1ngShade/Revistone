@@ -4,7 +4,8 @@ using Revistone.Interaction;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.App.Tracker.TrackerData;
 using static Revistone.Interaction.UserInputProfile;
-using System.Security.Cryptography;
+using static Revistone.Functions.PersistentDataFunctions;
+
 
 namespace Revistone.App.Tracker;
 
@@ -51,12 +52,12 @@ public static class TrackerSettingMenus
 
     static void CreateArc()
     {
-        List<string> arcData = AppPersistentData.LoadFile("Tracker/Arc Data").ToList();
+        List<string> arcData = LoadFile(GeneratePath(DataLocation.App, "Tracker", "ArcData")).ToList();
         string statName = UserInput.GetValidUserInput(new ConsoleLine("--- Enter Arc Name ---", ConsoleColor.DarkBlue), new UserInputProfile(InputType.FullText));
         arcData.Add(statName);
         arcData.Add(UserInput.GetValidUserInput(new ConsoleLine($"--- Enter [{statName}] Start Date ---", ConsoleColor.DarkBlue), new UserInputProfile(InputType.DateOnly)));
         arcData.Add(UserInput.GetValidUserInput(new ConsoleLine($"--- Enter [{statName}] End Date ---", ConsoleColor.DarkBlue), new UserInputProfile(InputType.DateOnly)));
-        AppPersistentData.SaveFile("Tracker/Arc Data", arcData.ToArray());
+        SaveFile(GeneratePath(DataLocation.App, "Tracker", "ArcData"), arcData.ToArray());
 
         ClearPrimaryConsole();
         DATA.GetDayData(DATA.today).Display();
@@ -64,7 +65,7 @@ public static class TrackerSettingMenus
 
     static void EditArc()
     {
-        (string name, DateOnly startDate, DateOnly endDate)[] arcs = AppPersistentData.LoadFile("Tracker/Arc Data", 3, true).Select(x => (x[0], DateOnly.Parse(x[1]), DateOnly.Parse(x[2]))).ToArray();
+        (string name, DateOnly startDate, DateOnly endDate)[] arcs = LoadFile(GeneratePath(DataLocation.App, "Tracker", "ArcData"), 3, true).Select(x => (x[0], DateOnly.Parse(x[1]), DateOnly.Parse(x[2]))).ToArray();
         if (arcs.Length == 0)
         {
             SendConsoleMessage(new ConsoleLine("No Arcs Exist!", ConsoleColor.DarkBlue));
@@ -80,7 +81,7 @@ public static class TrackerSettingMenus
         arcs[arcIndex].startDate = DateOnly.Parse(UserInput.GetValidUserInput(new ConsoleLine($"--- Enter [{arcs[arcIndex].name}] Start Date ---", ConsoleColor.DarkBlue), new UserInputProfile(UserInputProfile.InputType.DateOnly)));
         arcs[arcIndex].endDate = DateOnly.Parse(UserInput.GetValidUserInput(new ConsoleLine($"--- Enter [{arcs[arcIndex].name}] End Date ---", ConsoleColor.DarkBlue), new UserInputProfile(UserInputProfile.InputType.DateOnly)));
 
-        AppPersistentData.SaveFile("Tracker/Arc Data",
+        SaveFile(GeneratePath(DataLocation.App, "Tracker", "ArcData"),
         arcs.Select(x => new string[] { x.name, x.startDate.ToString(), x.endDate.ToString() }).SelectMany(arr => arr).ToArray());
 
         ClearPrimaryConsole();
@@ -89,7 +90,7 @@ public static class TrackerSettingMenus
 
     static void DeleteArc()
     {
-        List<(string name, DateOnly startDate, DateOnly endDate)> arcs = AppPersistentData.LoadFile("Tracker/Arc Data", 3, true).Select(x => (x[0], System.DateOnly.Parse(x[1]), System.DateOnly.Parse(x[2]))).ToList();
+        List<(string name, DateOnly startDate, DateOnly endDate)> arcs = LoadFile(GeneratePath(DataLocation.App, "Tracker", "ArcData"), 3, true).Select(x => (x[0], System.DateOnly.Parse(x[1]), System.DateOnly.Parse(x[2]))).ToList();
         if (arcs.Count == 0)
         {
             SendConsoleMessage(new ConsoleLine("No Arcs Exist!", ConsoleColor.DarkBlue));
@@ -104,7 +105,7 @@ public static class TrackerSettingMenus
 
         arcs.RemoveAt(arcIndex);
 
-        AppPersistentData.SaveFile("Tracker/Arc Data",
+        SaveFile(GeneratePath(DataLocation.App, "Tracker", "ArcData"),
         arcs.Select(x => new string[] { x.name, x.startDate.ToString(), x.endDate.ToString() }).SelectMany(arr => arr).ToArray());
 
         ClearPrimaryConsole();
@@ -232,7 +233,7 @@ public static class TrackerSettingMenus
         string savePath = GetSavePath();
         if (savePath.Length > 0)
         {
-            DATA = new TrackerData(AppPersistentData.LoadFile($"Tracker/Saves/{savePath}"));
+            DATA = new TrackerData(LoadFile(GeneratePath(DataLocation.App, "Tracker", $"Saves/{savePath}")));
             ClearPrimaryConsole();
             DATA.GetDayData(DATA.today).Display();
         }
@@ -244,7 +245,7 @@ public static class TrackerSettingMenus
         SendDebugMessage(savePath);
         if (savePath.Length > 0)
         {
-            AppPersistentData.DeleteFile($"Tracker/Saves/{savePath}");
+            DeleteFile(GeneratePath(DataLocation.App, "Tracker", $"Saves/{savePath}"));
             SendConsoleMessage(new ConsoleLine("Manual Save Deleted!", ConsoleColor.DarkBlue));
             UserInput.WaitForUserInput(space: true);
             ShiftLine(-2);
@@ -253,7 +254,7 @@ public static class TrackerSettingMenus
 
     static string GetSavePath()
     {
-        ConsoleLine[] saves = AppPersistentData.GetSubFiles("Tracker/Saves").Select(x => new ConsoleLine(x, ConsoleColor.Cyan)).Reverse().ToArray();
+        ConsoleLine[] saves = GetSubFiles(GeneratePath(DataLocation.App, "Tracker", $"Saves")).Select(x => new ConsoleLine(x, ConsoleColor.Cyan)).Reverse().ToArray();
         if (saves.Length == 0)
         {
             SendConsoleMessage(new ConsoleLine("No Manual Saves Exist!", ConsoleColor.DarkBlue));

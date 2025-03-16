@@ -2,6 +2,7 @@ using Revistone.Functions;
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
+using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.App.Tracker;
 
@@ -85,6 +86,6 @@ class TrackerData
                 data.Add(stat.ToString());
             }
         }
-        AppPersistentData.SaveFile($"Tracker/{fileName}", data.ToArray());
+        SaveFile(GeneratePath(DataLocation.App, "Tracker", fileName), data.ToArray());
     }
 }

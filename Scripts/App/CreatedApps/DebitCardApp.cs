@@ -6,6 +6,7 @@ using static Revistone.Console.ConsoleAction;
 using static Revistone.Interaction.UserInput;
 using static Revistone.Interaction.UserInputProfile;
 using static Revistone.Functions.ColourFunctions;
+using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.App;
 
@@ -17,13 +18,13 @@ public class DebitCardApp : App
 
     public override App[] OnRegister()
     {
-        return new DebitCardApp[] { new DebitCardApp("Debit Card Manager", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Magenta.ToArray(), ConsoleColor.Blue.ToArray(), 10), (Alternate(DarkBlueAndMagenta.Flip(), 6, 3), 5),
-                new (UserInputProfile format, Action<string> payload, string summary)[] {}, 94) };
+        return [ new DebitCardApp("Debit Card Manager", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Magenta.ToArray(), ConsoleColor.Blue.ToArray(), 10), (Alternate(DarkBlueAndMagenta.Flip(), 6, 3), 5),
+                [], 94) ];
     }
 
     public override void OnAppInitalisation()
     {
-        DebitCard.accountID = int.TryParse(AppPersistentData.LoadFile("DebitCard/Data", 0), out int i) ? i : 0;
+        DebitCard.accountID = int.TryParse(LoadFile(GeneratePath(DataLocation.App, "DebitCard", "Data"), 0), out int i) ? i : 0;
         DebitCard.LoadDataBase();
         MainMenu();
     }
@@ -375,7 +376,7 @@ public class DebitCardApp : App
         public static void LoadDataBase()
         {
             db.Clear();
-            string[][] lines = AppPersistentData.LoadFile("DebitCard/Data", 9, true, 1);
+            string[][] lines = LoadFile(GeneratePath(DataLocation.App, "DebitCard", "Data.txt"), 9, true, 1);
             for (int i = 0; i < lines.Length; i++) { db.Add(new DebitCard(lines[i])); }
         }
 
@@ -384,7 +385,7 @@ public class DebitCardApp : App
         {
             string s = $"{accountID}\n";
             for (int i = 0; i < db.Count; i++) { s += db[i].ToString(); }
-            AppPersistentData.SaveFile("DebitCard/Data", s.Split("\n"));
+            SaveFile(GeneratePath(DataLocation.App, "DebitCard", "Data.txt"), s.Split("\n"));
         }
     }
 }

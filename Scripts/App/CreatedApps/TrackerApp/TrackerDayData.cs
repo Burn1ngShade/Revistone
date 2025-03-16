@@ -5,6 +5,7 @@ using static Revistone.Functions.ColourFunctions;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Interaction.UserInputProfile;
 using static Revistone.App.Tracker.TrackerData;
+using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.App.Tracker;
 
@@ -65,7 +66,7 @@ class TrackerDayData
 
     public void Display()
     {
-        (string name, DateOnly startDate, DateOnly endDate)[] arc = AppPersistentData.LoadFile("Tracker/Arc Data", 3, true).Select(x => (x[0], DateOnly.Parse(x[1]), DateOnly.Parse(x[2]))).ToArray();
+        (string name, DateOnly startDate, DateOnly endDate)[] arc = LoadFile(GeneratePath(DataLocation.App, "Tracker", $"ArcData"), 3, true).Select(x => (x[0], DateOnly.Parse(x[1]), DateOnly.Parse(x[2]))).ToArray();
         string arcString = string.Join(' ', arc.Where(x => x.startDate <= date && x.endDate >= date).Select(x => $"[{x.name}]"));
 
         string dayString = $"--- Day {DATA.GetDayIndex(date) + 1} - [{date}] ---";
@@ -83,7 +84,7 @@ class TrackerDayData
             x => new ConsoleLine($"{x} ", BuildArray(ConsoleColor.Cyan.Extend(x.statName.Length + 2), ConsoleColor.White.ToArray(1000)))).ToArray();
         dayStatsSelect = dayStatsSelect.Concat(new ConsoleLine[] { new ConsoleLine("Exit", ConsoleColor.DarkBlue) }).ToArray();
 
-        (string name, DateOnly startDate, DateOnly endDate)[] arc = AppPersistentData.LoadFile("Tracker/Arc Data", 3, true).Select(x => (x[0], DateOnly.Parse(x[1]), DateOnly.Parse(x[2]))).ToArray();
+        (string name, DateOnly startDate, DateOnly endDate)[] arc = LoadFile(GeneratePath(DataLocation.App, "Tracker", $"ArcData"), 3, true).Select(x => (x[0], DateOnly.Parse(x[1]), DateOnly.Parse(x[2]))).ToArray();
         string arcString = string.Join(' ', arc.Where(x => x.startDate <= date && x.endDate >= date).Select(x => $"[{x.name}]"));
         string dayString = $"--- Day {DATA.GetDayIndex(date) + 1} - [{date}] ---";
 

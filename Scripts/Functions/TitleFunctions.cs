@@ -1,5 +1,6 @@
-using Revistone.App;
 using Revistone.Console;
+
+using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.Functions;
 
@@ -24,10 +25,10 @@ public static class TitleFunctions
     {
         string path = FontFilePath(font);
 
-        if (!AppPersistentData.FileExists(path)) return new string[] { text };
+        if (!FileExists(path)) return [ text ];
 
         //textHeight is height of given font, spaceLength is the given width of spaces in the font, frontTrim is the amount that should be trimmed from the front of the font
-        string[] fontMetaData = AppPersistentData.LoadFile(path, 0, 2);
+        string[] fontMetaData = LoadFile(path, 0, 2);
         int textHeight = int.Parse(fontMetaData[0]), frontTrim = int.Parse(fontMetaData[1]);
         string[] title = new string[textHeight];
 
@@ -36,7 +37,7 @@ public static class TitleFunctions
             string[] letter = new string[textHeight];
             if (validChar.Contains(text[i]))
             {
-                letter = AppPersistentData.LoadFile(path, 2 + validChar.IndexOf(text[i]) * textHeight, textHeight);
+                letter = LoadFile(path, 2 + validChar.IndexOf(text[i]) * textHeight, textHeight);
                 letter = letter.Select(str => string.IsNullOrWhiteSpace(str) ? new string(' ', 255) : str).ToArray(); //removes human errors
                 letter = letter.Select(s => s.Length > letter.Max(c => c.TrimEnd().Length) ? s.Substring(frontTrim, letter.Max(c => c.TrimEnd().Length - frontTrim)) + new string(' ', letterSpacing) : s.Substring(frontTrim, s.Length - frontTrim) + new string(' ', letterSpacing)).ToArray();
             }
@@ -55,5 +56,5 @@ public static class TitleFunctions
         return CreateTitle(text, font, emptySpacing, letterSpacing, removeEmptyLines, bottomSpace, topSpace).Select(s => new ConsoleLine(s, colours)).ToArray();
     }
 
-    public static string FontFilePath(AsciiFont font) { return $"TitleFont/{font}.txt"; }
+    public static string FontFilePath(AsciiFont font) { return GeneratePath(DataLocation.Console, "Assets", $"Fonts/{font}.txt"); }
 }

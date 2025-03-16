@@ -1,15 +1,15 @@
 using System.Diagnostics;
 using Revistone.Console;
 using Revistone.Functions;
+
 using static Revistone.Console.ConsoleAction;
+using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.App.HoneyC.Data;
 
 /// <summary> Class responsible for all interpreter diagnostics. </summary>
 public static class Diagnostics
 {
-    const string ProgramLogFilePath = "HoneyC/ProgramLog/";
-
     static Stopwatch runtime = new();
     static string programLog = "";
 
@@ -27,7 +27,7 @@ public static class Diagnostics
         runtime.Stop();
 
         if (programLog.StartsWith('\n')) programLog = programLog[1..];
-        if (SettingsApp.GetValue("Create Log File") == "Yes") AppPersistentData.SaveFile($"{ProgramLogFilePath}{DateTime.Now:[yyyy-MM-dd_HH-mm-ss]}.txt", programLog.Split("\n"));
+        if (SettingsApp.GetValue("Create Log File") == "Yes") SaveFile(GeneratePath(DataLocation.Workspace, "HoneyC", $"ProgramLog/{DateTime.Now:[yyyy-MM-dd_HH-mm-ss]}.txt"), programLog.Split("\n"));
     }
 
     /// <summary> Outputs t into the program log file, and optionally to the console. </summary>
