@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Revistone.App;
+using Revistone.App.BaseApps;
 using System.Runtime.CompilerServices;
 using static Revistone.Functions.PersistentDataFunctions;
 
@@ -50,7 +51,7 @@ public static class Analytics
     }
 
     ///<summary> Saves analytics data. </summary>
-    static void SaveAnalytics()
+    public static void SaveAnalytics()
     {
         SaveFileAsJSON(GeneratePath(DataLocation.Console, "Analytics", "General.json"), General);
         SaveFileAsJSON(GeneratePath(DataLocation.Console, "Analytics", "App.json"), App);
@@ -208,7 +209,7 @@ public static class Analytics
     {
         public List<DebugData> DebugMessages { get; private set; } = [];
 
-        public void CreateDebugMessage(string message, [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void Add(string message, [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
             DebugMessages.Add(new DebugData(message, callerFilePath, callerLineNumber));
         }

@@ -1,0 +1,2061 @@
+{
+  "Width": 41,
+  "Height": 10,
+  "Pixels": [
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 15
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 13
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    },
+    {
+      "Character": " ",
+      "FGColour": 15,
+      "BGColour": 11
+    }
+  ],
+  "DefaultPixel": {
+    "Character": " ",
+    "FGColour": 15,
+    "BGColour": 11
+  }
+}

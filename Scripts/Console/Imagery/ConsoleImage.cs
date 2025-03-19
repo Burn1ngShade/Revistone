@@ -1,155 +1,191 @@
+using Revistone.App;
 using Revistone.Console.Data;
 using Revistone.Functions;
+using Revistone.Management;
 
 namespace Revistone.Console.Image;
 
-/// <summary> Class pertaining all logic for creating images in the console. </summary>
+/// <summary> Class pertaining all logic for creating images in the console, (0, 0) refers to the bot left of an image. </summary>
 public class ConsoleImage
 {
     // --- VARIABLES AND CONSTRUCTORS ---
 
-    (int width, int height) _size;
-    public (int width, int height) size { get { return _size; } }
+    (int width, int height) size = (0, 0);
 
-    (char charchter, ConsoleColor colour)[,] _pixels;
-    public (char charchter, ConsoleColor colour)[,] pixels { get { return _pixels; } }
+    ConsolePixel[,] pixels = new ConsolePixel[0, 0];
+    ConsolePixel defaultPixel = new ConsolePixel();
 
     /// <summary> Class pertaining all logic for creating images in the console. </summary>
-    public ConsoleImage(int width = 10, int height = 10, char character = ' ', ConsoleColor colour = ConsoleColor.White)
+    public ConsoleImage(int width, int height, ConsolePixel defaultPixel)
     {
-        _size.width = Math.Clamp(width, 1, int.MaxValue);
-        _size.height = Math.Clamp(height, 1, int.MaxValue);
-
-        _pixels = new (char charchter, ConsoleColor colour)[width, height];
-
-        SetPixels(character, colour);
+        SetDefaultPixel(defaultPixel);
+        SetImageSize(width, height);
     }
 
     /// <summary> Class pertaining all logic for creating images in the console. </summary>
-    public ConsoleImage(string asciiArt)
+    public ConsoleImage(int width = 10, int height = 10) : this(width, height, new ConsolePixel()) { }
+
+    public ConsoleImage(SerializableConsoleImage serializableConsoleImage)
     {
-        //not actually needed but stops null error yapping
-        _pixels = new (char charchter, ConsoleColor colour)[_size.width, _size.height];
-        SetPixels(asciiArt);
+        SetDefaultPixel(serializableConsoleImage.DefaultPixel);
+        SetImageSize(serializableConsoleImage.Width, serializableConsoleImage.Height);
+
+        Analytics.Debug.Add($"Width: {size.width}, Height: {size.height}");
+
+        for (int i = 0; i < serializableConsoleImage.Pixels.Length; i++)
+        {
+            pixels[i % size.width, i / size.width] = serializableConsoleImage.Pixels[i];
+        }
     }
 
     // --- IMAGE CONTROL ---
 
-    /// <summary> Resizes image to given width and height. </summary>
-    public void ResizeImage(int width, int height)
+    ///<summary> Sets the pixel type that is used by default. </summary>
+    public void SetDefaultPixel(ConsolePixel pixel)
     {
-        _size.width = Math.Clamp(width, 1, int.MaxValue);
-        _size.height = Math.Clamp(height, 1, int.MaxValue);
-
-        (char character, ConsoleColor colour)[,] newPixels = new (char character, ConsoleColor colour)[width, height];
-
-        for (int x = 0; x < _size.width; x++)
-        {
-            for (int y = 0; y < _size.width; y++)
-            {
-                if (x < _pixels.GetLength(0) && y < _pixels.GetLength(1)) newPixels[x, y] = _pixels[x, y];
-                else newPixels[x, y] = (' ', ConsoleColor.White);
-            }
-        }
+        defaultPixel = pixel;
     }
 
-    // --- PIXEL CONTROL ---
-
-    /// <summary> Set given pixel position, to given charchter and colour. </summary>
-    public bool SetPixel(int x, int y, char character, ConsoleColor colour = ConsoleColor.White)
+    /// <summary> Updates dimensions of the image. </summary>
+    public void SetImageSize(int newWidth, int newHeight, bool perserveImage = true)
     {
-        if (x < 0 || x >= _size.width || y < 0 || y >= _size.height) return false;
+        newWidth = Math.Max(1, newWidth);
+        newHeight = Math.Max(1, newHeight);
 
-        _pixels[x, y] = (character, colour);
-        return true;
-    }
+        ConsolePixel[,] newPixels = new ConsolePixel[newWidth, newHeight];
 
-    /// <summary> Set given pixel positions, to given charchters and colours (array size must = width * height). </summary>
-    public bool SetPixels(int startX, int startY, int width, int height, (char character, ConsoleColor colour)[] setPixels)
-    {
-        if (setPixels.Length != width * height) return false;
-
-        for (int x = startX; x < startX + width; x++)
+        for (int x = 0; x < newWidth; x++)
         {
-            for (int y = startY; y < startY + height; y++)
+            for (int y = 0; y < newHeight; y++)
             {
-                if (x < 0 || x >= _size.width || y < 0 || y >= _size.height) continue;
-
-                _pixels[x, y] = setPixels[(y - startY) * width + (x - startX)];
+                if (perserveImage && size.width > x && size.height > y) newPixels[x, y] = pixels[x, y];
+                else newPixels[x, y] = new ConsolePixel(defaultPixel);
             }
         }
 
+        size = (newWidth, newHeight);
+        pixels = newPixels;
+    }
+
+    // --- SET PIXELS ---
+
+    /// <summary> Set pixel at given position. </summary>
+    public bool SetPixel(int x, int y, ConsolePixel newPixel)
+    {
+        if (!PixelExists(x, y)) return false;
+        pixels[x, y].Set(newPixel);
         return true;
     }
 
-    /// <summary> Set all pixels to gicen asciiArt </summary>
-    public bool SetPixels(string asciiArt)
+    /// <summary> Set given block of pixels to given blockPixel array, (array size must = width * height). </summary>
+    public bool SetPixelBlock(int startX, int startY, int blockWidth, int blockHeight, ConsolePixel[] blockPixels)
     {
-        string[] lines = asciiArt.Split('\n');
+        if (blockPixels.Length != blockWidth * blockHeight) return false;
 
-        _size.width = lines.Max(s => s.Length);
-        _size.height = lines.Length;
-
-        _pixels = new (char charchter, ConsoleColor colour)[_size.width, _size.height];
-
-        SetPixels(' ', ConsoleColor.White);
-
-        for (int y = 0; y < _size.height; y++)
+        for (int x = startX; x < startX + blockWidth; x++)
         {
-            int lineIndex = lines.Length - 1 - y;
-            for (int x = 0; x < _size.width; x++)
+            for (int y = startY; y < startY + blockHeight; y++)
             {
-                if (lines[lineIndex].Length > x) _pixels[x, y] = (lines[lineIndex][x], ConsoleColor.White);
+                if (!PixelExists(x, y)) continue;
+                pixels[x, y].Set(blockPixels[(y - startY) * blockWidth + (x - startX)]);
             }
         }
 
         return true;
     }
 
-    /// <summary> Set given pixel positions, to give ConsoleLine. </summary>
+    /// <summary> Set given block of pixels to given blockPixel array, (array size must = width * height). </summary>
+    public bool SetPixelBlock(int startX, int startY, int blockWidth, int blockHeight, ConsolePixel blockPixels)
+    {
+        return SetPixelBlock(startX, startY, blockWidth, blockHeight, [.. Enumerable.Repeat(blockPixels, blockWidth * blockHeight)]);
+    }
+
+    /// <summary> Set given pixel positions, from a ConsleLine. </summary>
     public bool SetPixels(int x, int y, ConsoleLine consoleLine)
     {
-        ConsoleLine c = new ConsoleLine(consoleLine.lineText, consoleLine.lineColour.Extend(consoleLine.lineText.Length));
-        return SetPixels(x, y, c.lineText.Length, 1, c.lineText.Select((cr, index) => (cr, c.lineColour[index])).ToArray());
+        ConsoleLine c = new(consoleLine.lineText, consoleLine.lineColour.Extend(consoleLine.lineText.Length), consoleLine.lineBGColour.Extend(consoleLine.lineText.Length));
+        return SetPixelBlock(x, y, c.lineText.Length, 1, [.. c.lineText.Select((cr, index) => new ConsolePixel(cr, c.lineColour[index], c.lineBGColour[index]))]);
     }
 
-    /// <summary> Set given pixel positions, to give ConsoleLines. </summary>
+    /// <summary> Set given pixel positions, from A ConsoleLine array. </summary>
     public bool SetPixels(int x, int y, ConsoleLine[] consoleLines)
     {
-        bool successfulLine = false;
+        bool setPixels = false;
         for (int i = 0; i < consoleLines.Length; i++)
         {
-            if (SetPixels(x, y + i, consoleLines[i])) successfulLine = true;
+            if (SetPixels(x, y + i, consoleLines[i])) setPixels = true;
         }
-        return successfulLine;
+        return setPixels;
     }
 
-    /// <summary> Set given pixel positions, to give string and colour. </summary>
-    public bool SetPixels(int x, int y, string text, ConsoleColor colour = ConsoleColor.White) { return SetPixels(x, y, new ConsoleLine(text, colour)); }
-    /// <summary> Set given pixel positions, to given string and colours. </summary>
-    public bool SetPixels(int x, int y, string text, ConsoleColor[] colours) { return SetPixels(x, y, new ConsoleLine(text, colours)); }
-
-    /// <summary> Set given pixel positions, to given charchter and colour. </summary>
-    public bool SetPixels(int startX, int startY, int width, int height, char character, ConsoleColor colour = ConsoleColor.White) { return SetPixels(startX, startY, width, height, Enumerable.Repeat((character, colour), width * height).ToArray()); }
     /// <summary> Sets all pixels to given charchter and colour. </summary>
+    public bool SetAllPixels(ConsolePixel pixel) { return SetPixelBlock(0, 0, size.width, size.height, [.. Enumerable.Repeat(pixel, size.width * size.height)]); }
 
-    public bool SetPixels(char character, ConsoleColor colour) { return SetPixels(0, 0, _size.width, _size.height, character, colour); }
+    // --- GET PIXELS ---
+
+    ///<summary> Attempts to get pixel at given position, returning default pixel otherwise. </summary>
+    public ConsolePixel GetPixel(int x, int y)
+    {
+        if (!PixelExists(x, y)) return new ConsolePixel(defaultPixel);
+        return new ConsolePixel(pixels[x, y]);
+    }
+
+    ///<summary> Attempts to get pixel row, returning [] otherwise. </summary>
+    public ConsolePixel[] GetPixelRow(int y)
+    {
+        if (y < 0 || y >= size.height) return [];
+        return [.. Enumerable.Range(0, size.width).Select(x => new ConsolePixel(pixels[x, y]))];
+    }
+
+    ///<summary> Attempts to get pixel column, returning [] otherwise. </summary>
+    public ConsolePixel[] GetPixelColumn(int x)
+    {
+        if (x < 0 || x >= size.width) return [];
+        return [.. Enumerable.Range(0, size.height).Select(y => new ConsolePixel(pixels[x, y]))];
+    }
+
+    // --- GENERAL FUNCTIONS ---
+
+    ///<summary> Verifys if given (x, y) coordinate is a pixel within the image. </summary>
+    public bool PixelExists(int x, int y)
+    {
+        if (x < 0 || y < 0 | x >= size.width || y >= size.height) return false;
+        return true;
+    }
+
+    public static ConsoleLine PixelArrayToConsoleLine(ConsolePixel[] pixels)
+    {
+        return new ConsoleLine(
+            new string([.. pixels.Select(p => p.Character)]),
+            [.. pixels.Select(p => p.FGColour)],
+            [.. pixels.Select(p => p.BGColour)]);
+    }
+
+    /// <summary> Converts image to ConsoleLines array. </summary>
+    public ConsoleLine[] ToConsoleLineArray()
+    {
+        ConsoleLine[] lines = new ConsoleLine[size.height];
+        for (int y = size.height - 1; y >= 0; y--)
+        {
+            lines[size.height - 1 - y] = PixelArrayToConsoleLine(GetPixelRow(y));
+        }
+        return lines;
+    }
 
     // --- OUTPUT ---
 
     /// <summary> Outputs image to console. </summary>
-    public bool SendToConsole(bool colourless = false)
+    public void Output(bool debugConsole = false)
     {
-        ConsoleLine[] c = ToConsoleLineArray(colourless);
-        if (c.Length == 0) return false;
-        for (int i = 0; i < c.Length; i++) ConsoleAction.SendConsoleMessage(c[i]);
-        return true;
+        if (debugConsole) ConsoleAction.SendDebugMessages(ToConsoleLineArray());
+        else ConsoleAction.SendConsoleMessages(ToConsoleLineArray());
     }
 
-    /// <summary> Outputs image to console at given position. </summary>
-    public bool SendToConsole(int x, int y, bool colourless = false)
+    /// <summary> Outputs image to primary console at given position. </summary>
+    public bool OutputAt(int x, int y)
     {
-        ConsoleLine[] c = ToConsoleLineArray(colourless);
+        ConsoleLine[] c = ToConsoleLineArray();
+
         if (c.Length == 0 || y < 1 || y >= ConsoleData.debugStartIndex) return false;
 
         for (int lineIndex = y; lineIndex < Math.Min(y + c.Length, ConsoleData.debugStartIndex); lineIndex++)
@@ -160,48 +196,46 @@ public class ConsoleImage
         return true;
     }
 
-    /// <summary> Returns a row of the image as a ConsoleLine. </summary>
-    public ConsoleLine RowToConsoleLine(int rowIndex, bool colourless = false)
+    // --- JSON ---
+
+    ///<summary> Gets a ConsoleImage from a JSON file. </summary>
+    public static ConsoleImage GetFromJSON(string filePath)
     {
-        if (rowIndex < 0 || rowIndex >= _size.height) return new ConsoleLine();
-
-        string s = "";
-        ConsoleColor[] c = new ConsoleColor[_size.width];
-
-        for (int x = 0; x < _size.width; x++)
-        {
-            s += _pixels[x, rowIndex].charchter;
-            c[x] = colourless ? ConsoleColor.White : _pixels[x, rowIndex].colour;
-        }
-
-        return new ConsoleLine(s, c);
+        return new ConsoleImage(PersistentDataFunctions.LoadFileFromJSON<SerializableConsoleImage>(filePath) ?? new SerializableConsoleImage());
     }
 
-    /// <summary> Returns a column of the image as a ConsoleLine. </summary>
-    public ConsoleLine ColumnToConsoleLine(int columIndex, bool colourless = false)
+    ///<summary> Saves a ConsoleImage to a JSON file. </summary>
+    public static bool SaveToJson(string filePath, ConsoleImage consoleImage)
     {
-        if (columIndex < 0 || columIndex >= _size.width) return new ConsoleLine();
-
-        string s = "";
-        ConsoleColor[] c = new ConsoleColor[_size.height];
-
-        for (int y = 0; y < _size.height; y++)
-        {
-            s += _pixels[columIndex, y].charchter;
-            c[y] = colourless ? ConsoleColor.White : _pixels[columIndex, y].colour;
-        }
-
-        return new ConsoleLine(s, c);
+        return PersistentDataFunctions.SaveFileAsJSON(filePath, new SerializableConsoleImage(consoleImage));
     }
 
-    /// <summary> Converts image to ConsoleLines array. </summary>
-    public ConsoleLine[] ToConsoleLineArray(bool colourless = false)
+    ///<summary> Serializable version of console image for saving and loading to JSON. </summary>
+    public class SerializableConsoleImage
     {
-        ConsoleLine[] lines = new ConsoleLine[_size.height];
-        for (int y = _size.height - 1; y >= 0; y--)
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public ConsolePixel[] Pixels { get; set; } = [];
+        public ConsolePixel DefaultPixel { get; set; } = new ConsolePixel();
+
+        public SerializableConsoleImage()
         {
-            lines[_size.height - 1 - y] = RowToConsoleLine(y);
+            
         }
-        return lines;
+
+        public SerializableConsoleImage(ConsoleImage image)
+        {
+            Width = image.size.width;
+            Height = image.size.height;
+            DefaultPixel = image.defaultPixel;
+
+            Pixels = new ConsolePixel[Width * Height];
+
+            for (int i = 0; i < Pixels.Length; i++)
+            {
+                Pixels[i] = image.pixels[i % Width, i / Width];
+            }
+        }
     }
 }

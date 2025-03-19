@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Revistone.App.BaseApps;
 using Revistone.App;
 using Revistone.Console.Widget;
 using Revistone.Functions;
@@ -218,7 +219,7 @@ public static class ConsoleRendererLogic
 
         string title = $" [{AppRegistry.activeApp.name}] ";
         int leftBuffer = Math.Max((int)Math.Floor((windowSize.width - title.Length) / 2f), 0);
-        int rightBuffer = Math.Max((int)Math.Ceiling((windowSize.width - title.Length) / 2f), 0);
+        int rightBuffer = Math.Max((int)Math.Ceiling((windowSize.width - title.Length) / 2f), 0) - 1;
         consoleLines[0].Update(new string('-', leftBuffer) + title + new string('-', rightBuffer), ColourFunctions.Alternate(AppRegistry.activeApp.borderColourScheme.colours, windowSize.width - 1, 1));
         consoleLineUpdates[0].Update(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "1", AppRegistry.activeApp.borderColourScheme.speed, true));
     }
@@ -246,7 +247,7 @@ public static class ConsoleRendererLogic
         string[] widgets = ConsoleWidget.GetWidgetContents();
         string jointWidgets = string.Join("--------", widgets);
         int leftBuffer = Math.Max((int)Math.Floor((windowSize.width - jointWidgets.Length) / 2f), 0);
-        int rightBuffer = Math.Max((int)Math.Ceiling((windowSize.width - jointWidgets.Length) / 2f), 0);
+        int rightBuffer = Math.Max((int)Math.Ceiling((windowSize.width - jointWidgets.Length) / 2f), 1) - 1;
 
         return new string('-', leftBuffer) + jointWidgets + new string('-', rightBuffer);
     }

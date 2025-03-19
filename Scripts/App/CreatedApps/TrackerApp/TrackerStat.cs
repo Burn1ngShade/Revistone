@@ -1,6 +1,6 @@
 using static Revistone.Interaction.UserInputProfile;
 
-namespace Revistone.App.Tracker;
+namespace Revistone.App.BaseApps.Tracker;
 
 /// <summary> Abstract representation of a stat for tracker application. </summary>
 abstract class TrackerStat

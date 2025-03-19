@@ -1,11 +1,7 @@
-using System.Diagnostics;
-using System.Runtime.Serialization;
-using Revistone.App.HoneyC.Data;
-using Revistone.Console;
-using Revistone.Functions;
-using static Revistone.App.HoneyC.Data.AbstractToken;
+using Revistone.App.BaseApps.HoneyC.Data;
+using static Revistone.App.BaseApps.HoneyC.Data.AbstractToken;
 
-namespace Revistone.App.HoneyC;
+namespace Revistone.App.BaseApps.HoneyC;
 
 /// <summary> Class responsible for converting tokens to set of tokenGroups, and carries out syntax checks. </summary>
 public static class HoneyCParser

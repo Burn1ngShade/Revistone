@@ -33,7 +33,7 @@ public static class PersistentDataFunctions
 
         if (!isValid)
         {
-            Analytics.Debug.CreateDebugMessage($"Error: Invalid File Path {path}");
+            Analytics.Debug.Add($"Error: Invalid File Path {path}");
         }
 
         return isValid;
@@ -229,11 +229,14 @@ public static class PersistentDataFunctions
         string json = File.ReadAllText(path);
         try
         {
+            Analytics.Debug.Add($"Yo");
             T? data = JsonSerializer.Deserialize<T>(json);
+            Analytics.Debug.Add($"Yo");
             return data;
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Analytics.Debug.Add(e.Message);
             return default;
         }
     }

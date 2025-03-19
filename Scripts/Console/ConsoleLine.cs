@@ -102,7 +102,10 @@ public class ConsoleLine
         ConsoleColor[] cl = baseLine.lineColour.Extend(ConsoleColor.White, s.Length);
         for (int i = overwriteIndex; i < overwriteIndex + overwriteLine.lineText.Length; i++) cl[i] = overwriteLine.lineColour[i - overwriteIndex];
 
-        return new ConsoleLine(s, cl);
+        ConsoleColor[] clbg = baseLine.lineBGColour.Extend(ConsoleColor.Black, s.Length);
+        for (int i = overwriteIndex; i < overwriteIndex + overwriteLine.lineText.Length; i++) clbg[i] = overwriteLine.lineBGColour[i - overwriteIndex];
+
+        return new ConsoleLine(s, cl, clbg);
     }
 
     /// <summary> Removes invalid charchters, zero and double length charchters from a consoleLine </summary>

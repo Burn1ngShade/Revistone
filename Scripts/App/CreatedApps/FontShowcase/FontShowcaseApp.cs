@@ -6,7 +6,7 @@ using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.TitleFunctions;
 using static Revistone.Console.ConsoleAction;
 
-namespace Revistone.App;
+namespace Revistone.App.BaseApps;
 
 public class FontShowcaseApp : App
 {

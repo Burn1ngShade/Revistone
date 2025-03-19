@@ -4,10 +4,10 @@ using Revistone.Interaction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Interaction.UserInputProfile;
-using static Revistone.App.Tracker.TrackerData;
+using static Revistone.App.BaseApps.Tracker.TrackerData;
 using static Revistone.Functions.PersistentDataFunctions;
 
-namespace Revistone.App.Tracker;
+namespace Revistone.App.BaseApps.Tracker;
 
 /// <summary> class pertaining all information tracked by user in a day. </summary>
 class TrackerDayData

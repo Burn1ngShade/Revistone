@@ -1,9 +1,9 @@
 using Revistone.Interaction;
 
-using static Revistone.App.Calculator.CalculatorDefinitions;
-using static Revistone.App.Calculator.CalculatorInterpreter;
+using static Revistone.App.BaseApps.Calculator.CalculatorDefinitions;
+using static Revistone.App.BaseApps.Calculator.CalculatorInterpreter;
 
-namespace Revistone.App.Calculator;
+namespace Revistone.App.BaseApps.Calculator;
 
 public static class CalculatorComputations
 {

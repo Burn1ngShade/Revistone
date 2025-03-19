@@ -1,6 +1,6 @@
-using static Revistone.App.HoneyC.Data.AbstractToken;
+using static Revistone.App.BaseApps.HoneyC.Data.AbstractToken;
 
-namespace Revistone.App.HoneyC.Data;
+namespace Revistone.App.BaseApps.HoneyC.Data;
 
 /// <summary> Class responsible for language syntax and definitions. </summary>
 public static class Definitions

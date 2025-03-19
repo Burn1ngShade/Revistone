@@ -1,4 +1,4 @@
-namespace Revistone.App.HoneyC.Data;
+namespace Revistone.App.BaseApps.HoneyC.Data;
 
 /// <summary> Class responsible for holding running program data. </summary>
 public static class ProgramData

@@ -1,6 +1,8 @@
-using Revistone.App.Calculator;
-using Revistone.App.HoneyC;
+using Revistone.App.BaseApps.Calculator;
+using Revistone.App.BaseApps.HoneyC;
+using Revistone.App.BaseApps;
 using Revistone.Console;
+using Revistone.Console.Image;
 using Revistone.Console.Widget;
 using Revistone.Functions;
 using Revistone.Interaction;
@@ -77,6 +79,8 @@ public static class AppCommands
                 (s) => CreateTimer(s[5..].TrimStart()), "Creates Timer."),
                 (new UserInputProfile("cancel timer", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => CancelTimer(), "Cancels Active Timer."),
+                (new UserInputProfile("sticker[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => { DisplaySticker(s[7..].TrimStart()); }, "Output a given sticker to the console."),
             };
 
     // --- BASE COMMANDS ---
@@ -124,7 +128,7 @@ public static class AppCommands
     static void Hotkeys()
     {
         UserInput.CreateReadMenu("Hotkeys", 5,
-        hotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}]: {x.description}", 
+        hotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}]: {x.description}",
         BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour.Extend(x.keyCombo.Length + 3), AppRegistry.activeApp.colourScheme.primaryColour.ToArray()))).ToArray());
     }
 
@@ -242,6 +246,20 @@ public static class AppCommands
 
         ConsoleWidget.TryRemoveWidget("Timer");
         SendConsoleMessage(new ConsoleLine($"Timer Cancelled!", AppRegistry.activeApp.colourScheme.primaryColour));
+    }
+
+    /// <summary> Displays Sticker. </summary>
+    static void DisplaySticker(string sticker)
+    {
+        if (File.Exists(GeneratePath(DataLocation.Console, "Assets", $"Stickers/{sticker}.json")))
+        {
+            ConsoleImage stickerImage = ConsoleImage.GetFromJSON(GeneratePath(DataLocation.Console, "Assets", $"Stickers/{sticker}.json"));
+            stickerImage.Output();
+        }
+        else
+        {
+            SendConsoleMessage(new ConsoleLine($"Sticker [{sticker}] Could Not Be Found!", AppRegistry.activeApp.colourScheme.primaryColour));
+        }
     }
 
     // --- STATIC FUNCTIONS ---

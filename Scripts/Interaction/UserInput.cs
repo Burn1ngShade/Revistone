@@ -1,5 +1,6 @@
 using Revistone.Console;
 using Revistone.Functions;
+using Revistone.App.BaseApps;
 using Revistone.App;
 using Revistone.Management;
 

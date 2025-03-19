@@ -1,6 +1,7 @@
 using System.Text.Json;
 using OpenAI.Chat;
 using Revistone.App;
+using Revistone.App.BaseApps;
 using Revistone.Console;
 using Revistone.Console.Data;
 using Revistone.Management;
@@ -139,7 +140,7 @@ public static class GPTFunctions
     // --- GPT LOGIC ---
 
     ///<summary> Executes and handles chat tools for the given query. </summary>
-    static void ExecuteQuery(ChatClient client, ChatMessage[] messages, ChatCompletionOptions options)
+    static bool ExecuteQuery(ChatClient client, ChatMessage[] messages, ChatCompletionOptions options)
     {
         List<ChatMessage> queryMessages = messages.ToList();
 
@@ -150,7 +151,15 @@ public static class GPTFunctions
         {
             requiresAction = false;
 
-            completion = client.CompleteChat(queryMessages, options);
+            try
+            {
+                completion = client.CompleteChat(queryMessages, options);
+            }
+            catch (Exception e)
+            {
+                SendConsoleMessage(ConsoleLine.Clean(new ConsoleLine($"GPT Error: {e.Message}", ConsoleColor.Red)));
+                return false;
+            }
 
             switch (completion.FinishReason)
             {
@@ -193,6 +202,8 @@ public static class GPTFunctions
 
         Analytics.General.UsedGPTInputTokens += completion.Usage.InputTokenCount;
         Analytics.General.UsedGPTOutputTokens += completion.Usage.OutputTokenCount;
+
+        return true;
     }
 
     ///<summary> Attempts to create chat client for given query. </summary>

@@ -1,8 +1,8 @@
-using Revistone.App.HoneyC.Data;
+using Revistone.App.BaseApps.HoneyC.Data;
 
 using Revistone.Functions;
 
-namespace Revistone.App.HoneyC;
+namespace Revistone.App.BaseApps.HoneyC;
 
 /// <summary> Class responsible for interpreting user querys. </summary>
 public static class HoneyCInterpreter

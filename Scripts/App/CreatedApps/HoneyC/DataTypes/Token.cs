@@ -1,6 +1,6 @@
 using Revistone.Functions;
 
-namespace Revistone.App.HoneyC.Data;
+namespace Revistone.App.BaseApps.HoneyC.Data;
 
 public abstract class AbstractToken
 {

@@ -4,7 +4,7 @@ using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
 
-namespace Revistone.App.Tracker;
+namespace Revistone.App.BaseApps.Tracker;
 
 /// <summary> Main class pertaining all information tracked by user. </summary>
 class TrackerData

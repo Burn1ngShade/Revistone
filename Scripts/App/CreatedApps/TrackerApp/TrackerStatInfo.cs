@@ -2,11 +2,11 @@ using Revistone.Console;
 using Revistone.Functions;
 using Revistone.Interaction;
 
-using static Revistone.App.Tracker.TrackerData;
+using static Revistone.App.BaseApps.Tracker.TrackerData;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.NumericalFunctions;
 
-namespace Revistone.App.Tracker;
+namespace Revistone.App.BaseApps.Tracker;
 
 abstract class TrackerStatProfile
 {

@@ -2,12 +2,11 @@ using Revistone.Console;
 using Revistone.Interaction;
 
 using static Revistone.Console.ConsoleAction;
-using static Revistone.App.Tracker.TrackerData;
+using static Revistone.App.BaseApps.Tracker.TrackerData;
 using static Revistone.Interaction.UserInputProfile;
 using static Revistone.Functions.PersistentDataFunctions;
 
-
-namespace Revistone.App.Tracker;
+namespace Revistone.App.BaseApps.Tracker;
 
 public static class TrackerSettingMenus
 {

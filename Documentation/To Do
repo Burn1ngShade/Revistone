@@ -10,5 +10,7 @@ If console refreshes without changing size, Tetris display can display twice in 
 
 --- DONE ---
 Fixed bug crashing when profiler tired to work with 0 frames
+Fixed Console.Image bug with resizing
+Fixed Crash from gpt with insufficent tokens
 
 --- ADDED ---

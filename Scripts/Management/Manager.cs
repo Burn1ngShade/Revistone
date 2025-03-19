@@ -2,15 +2,14 @@
 using Revistone.App;
 using Revistone.Console;
 using Revistone.Console.Data;
+using Revistone.Console.Image;
 using Revistone.Console.Widget;
 using Revistone.Functions;
 using Revistone.Interaction;
 
 namespace Revistone.Management;
 
-/// <summary>
-/// Main management class, handles initialization, Tick, and main interaction behaviour.
-/// </summary>
+/// <summary> Main management class, handles initialization, Tick, and main interaction behaviour. </summary>
 public static class Manager
 {
     public static object renderLockObject = new object();
@@ -29,9 +28,7 @@ public static class Manager
     static long _deltaTime = 0; // duration of last tick in ms
     public static double deltaTime => _deltaTime / 1000d; // duration of last tick in seconds
 
-    /// <summary>
-    /// [DO NOT CALL] Calls the Tick event, occours every 25ms (40 calls per seconds).
-    /// </summary>
+    /// <summary> [DO NOT CALL] Calls the Tick event, occours every 25ms (40 calls per seconds). </summary>
     static void HandleTickBehaviour() //controls tick based events
     {
         Stopwatch tickStartTime = new Stopwatch(); //time tick starts
@@ -61,9 +58,7 @@ public static class Manager
         }
     }
 
-    /// <summary>
-    /// Handles default behaviour of user interaction, can be interrupted via ConsoleInteraction methods. 
-    /// </summary>
+    /// <summary> Handles default behaviour of user interaction, can be interrupted via ConsoleInteraction methods.  </summary>
     static void HandleConsoleBehaviour()
     {
         while (true)
@@ -96,6 +91,7 @@ public static class Manager
     {
         // called first so init functions can still be tracked
         Analytics.InitalizeAnalytics();
+        Analytics.Debug.Add("Console Process Start.");
 
         AppRegistry.InitializeAppRegistry();
         AppRegistry.SetActiveApp("Revistone");
@@ -110,16 +106,37 @@ public static class Manager
 
         handleAnalytics.Start();
         handleTickBehaviour.Start();
-        handleRealTimeInput.Start(); 
+        handleRealTimeInput.Start();
 
+        AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
+        AppDomain.CurrentDomain.UnhandledException += OnProcessCrash;
+
+        Analytics.Debug.Add("Console Process Initialization Complete.");
         HandleConsoleBehaviour();
 
     }
 
+    // --- ON APPLICATION CLOSE ---
+
+    ///<summary> Called upon attempted close keybind Ctrl+C. </summary>
     static void OnCancelKeyPress(object? sender, ConsoleCancelEventArgs args)
     {
         ConsoleAction.SendDebugMessage(new ConsoleLine("Console Close Prevented, If Attempting To Copy Text Use Alt+C Instead.", ConsoleColor.DarkBlue));
 
         args.Cancel = true;
+    }
+
+    ///<summary> Called upon standard close of the console. </summary>
+    static void OnProcessExit(object? sender, EventArgs e)
+    {
+        Analytics.Debug.Add($"Console Process Exit.");
+        Analytics.SaveAnalytics();
+    }
+
+    ///<summary> Called upon crash of the console. </summary>
+    static void OnProcessCrash(object sender, UnhandledExceptionEventArgs e)
+    {
+        Analytics.Debug.Add($"Console CRASH :( Process Exit. Crash Message: {e.ExceptionObject}");
+        Analytics.SaveAnalytics();
     }
 }

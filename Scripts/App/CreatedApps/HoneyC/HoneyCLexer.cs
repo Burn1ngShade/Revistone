@@ -1,9 +1,9 @@
-using Revistone.App.HoneyC.Data;
+using Revistone.App.BaseApps.HoneyC.Data;
 using Revistone.Functions;
 
-using static Revistone.App.HoneyC.Data.AbstractToken;
+using static Revistone.App.BaseApps.HoneyC.Data.AbstractToken;
 
-namespace Revistone.App.HoneyC;
+namespace Revistone.App.BaseApps.HoneyC;
 
 /// <summary> Class responsible for converting user query to set of tokens. </summary>
 public static class HoneyCLexer

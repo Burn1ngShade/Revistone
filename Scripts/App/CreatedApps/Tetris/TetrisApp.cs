@@ -5,7 +5,7 @@ using Revistone.Management;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 
-namespace Revistone.App.Tetris;
+namespace Revistone.App.BaseApps.Tetris;
 
 public class TetrisApp : App
 {

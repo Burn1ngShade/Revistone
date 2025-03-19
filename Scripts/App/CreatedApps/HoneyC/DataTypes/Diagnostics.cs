@@ -5,7 +5,7 @@ using Revistone.Functions;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.PersistentDataFunctions;
 
-namespace Revistone.App.HoneyC.Data;
+namespace Revistone.App.BaseApps.HoneyC.Data;
 
 /// <summary> Class responsible for all interpreter diagnostics. </summary>
 public static class Diagnostics
