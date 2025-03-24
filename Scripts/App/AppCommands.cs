@@ -11,6 +11,8 @@ using Revistone.Management;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Revistone.App;
 
@@ -81,6 +83,12 @@ public static class AppCommands
                 (s) => CancelTimer(), "Cancels Active Timer."),
                 (new UserInputProfile("sticker[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => { DisplaySticker(s[7..].TrimStart()); }, "Output a given sticker to the console."),
+                (new UserInputProfile("list stickers", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => StickerList(), "List all default stickers."),
+                (new UserInputProfile("screenshot[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => { ConsoleImage.TakePrimaryScreenshot(s[10..].TrimStart()); }, "Take a screenshot of the primary console."),
+                (new UserInputProfile("dscreenshot[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => { ConsoleImage.TakeDebugScreenshot(s[11..].TrimStart()); }, "Take a screenshot of the debug console."),
             };
 
     // --- BASE COMMANDS ---
@@ -251,15 +259,21 @@ public static class AppCommands
     /// <summary> Displays Sticker. </summary>
     static void DisplaySticker(string sticker)
     {
-        if (File.Exists(GeneratePath(DataLocation.Console, "Assets", $"Stickers/{sticker}.json")))
+        if (File.Exists(GeneratePath(DataLocation.Console, "Assets", $"Stickers/{sticker}.cimg")))
         {
-            ConsoleImage stickerImage = ConsoleImage.GetFromJSON(GeneratePath(DataLocation.Console, "Assets", $"Stickers/{sticker}.json"));
-            stickerImage.Output();
+            ConsoleImage? stickerImage = ConsoleImage.LoadFromCIMG(GeneratePath(DataLocation.Console, "Assets", $"Stickers/{sticker}.cimg"));
+            stickerImage?.Output();
         }
         else
         {
             SendConsoleMessage(new ConsoleLine($"Sticker [{sticker}] Could Not Be Found!", AppRegistry.activeApp.colourScheme.primaryColour));
         }
+    }
+
+    static void StickerList()
+    {
+        string[] stickers = GetSubFiles(GeneratePath(DataLocation.Console, "Assets", "Stickers"));
+        UserInput.CreateReadMenu("Stickers", 4, stickers.Select(x => new ConsoleLine(x[..^5], AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray());
     }
 
     // --- STATIC FUNCTIONS ---

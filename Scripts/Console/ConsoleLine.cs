@@ -3,9 +3,7 @@ using Revistone.Functions;
 
 namespace Revistone.Console;
 
-/// <summary>
-/// Class pertaining all info for a line in the console.
-/// </summary>
+/// <summary> Class pertaining all info for a line in the console. </summary>
 public class ConsoleLine
 {
     //--- NORMAL ---

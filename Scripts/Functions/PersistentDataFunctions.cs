@@ -1,5 +1,4 @@
 using System.Text.Json;
-using Revistone.Console;
 using Revistone.Management;
 
 namespace Revistone.Functions;
@@ -27,7 +26,7 @@ public static class PersistentDataFunctions
     }
 
     ///<summary> Checks if path is valid, warns user if using an invalid path. </summary>
-    static bool IsPathValid(string path)
+    public static bool IsPathValid(string path)
     {
         bool isValid = path.StartsWith("PersistentData/") || path.StartsWith("PersistentData\\");
 
@@ -229,9 +228,7 @@ public static class PersistentDataFunctions
         string json = File.ReadAllText(path);
         try
         {
-            Analytics.Debug.Add($"Yo");
             T? data = JsonSerializer.Deserialize<T>(json);
-            Analytics.Debug.Add($"Yo");
             return data;
         }
         catch (Exception e)
@@ -240,4 +237,6 @@ public static class PersistentDataFunctions
             return default;
         }
     }
+
+    // --- BINARY Commands ---
 }

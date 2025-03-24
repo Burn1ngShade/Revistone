@@ -3,14 +3,10 @@ using System.Text.RegularExpressions;
 
 namespace Revistone.Functions;
 
-/// <summary>
-/// Class filled with functions unrelated to console, but useful for string manipulation.
-/// </summary>
+/// <summary> Class filled with functions unrelated to console, but useful for string manipulation. </summary>
 public static class StringFunctions
 {
-    /// <summary>
-    /// Takes array of type T and returns array as a string in format [element, element...].
-    /// </summary>
+    /// <summary> Takes array of type T and returns array as a string in format [element, element...]. </summary>
     public static string ToElementString<T>(this T[] t)
     {
         if (t.Length == 0) return "[]";
@@ -197,6 +193,7 @@ public static class StringFunctions
         return true;
     }
 
+    /// <summary> Attempts to get text from system clipboard. </summary>
     public static string GetClipboardText()
     {
         if (!OpenClipboard(IntPtr.Zero)) return "";

@@ -50,6 +50,8 @@ public static class AppRegistry
         _activeAppIndex = index;
         Manager.Tick += activeApp.OnUpdate;
 
+        Analytics.Debug.Add($"Loaded App: {activeApp.name}.");
+
         return true;
     }
 

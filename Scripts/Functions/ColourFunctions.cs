@@ -52,7 +52,13 @@ public static class ColourFunctions
     /// <summary> Colour gradient, [Cyan, Magenta, White, Magenta, Cyan]. </summary>
     public static ConsoleColor[] TransPattern { get { return [Cyan, Magenta, White, Magenta, Cyan]; } }
     /// <summary> Colour gradient, All colours in enum index order. </summary>
-    public static ConsoleColor[] AllColours { get { return [Black, DarkBlue, DarkGreen, DarkCyan, DarkRed, DarkMagenta, DarkYellow, Gray, DarkGray, Blue, Green, Cyan, Red, Magenta, Yellow, White];}}
+    public static ConsoleColor[] AllColours { get { return [Black, DarkBlue, DarkGreen, DarkCyan, DarkRed, DarkMagenta, DarkYellow, Gray, DarkGray, Blue, Green, Cyan, Red, Magenta, Yellow, White]; } }
+
+    ///<summary> Returns the most contrasting colour to the given ConsoleColour. </summary>
+    public static Dictionary<ConsoleColor, ConsoleColor> ContrastColour = new Dictionary<ConsoleColor, ConsoleColor>
+    {
+        {Black, White}, {DarkBlue, Yellow}, {DarkGreen, Magenta}, {DarkCyan, Red}, {DarkRed, Cyan}, {DarkMagenta, Green}, {DarkYellow, Blue}, {Gray, Black}, {DarkGray, White}, {Blue, Yellow}, {Green, Magenta}, {Cyan, Red}, {Red, Cyan}, {Magenta, Green}, {Yellow, Blue}, {White, Black}
+    };
 
     // --- MODIFY ARRAY ---
 
@@ -227,6 +233,17 @@ public static class ColourFunctions
         return c;
     }
 
+    /// <summary> Extends ConsoleColour to given length. </summary>
+    public static ConsoleColor[] Extend(this ConsoleColor colour, int length) { return Extend(colour.ToArray(), length, false); }
+
+    ///<summary> Extends ConsoleColour arrary to given length, appending the final colour in the array. </summary>
+    public static ConsoleColor[] ExtendEnd(this ConsoleColor[] colours, int length)
+    {
+        if (colours.Length == 0) return colours;
+
+        return colours.Extend(colours[^1], length);
+    }
+
     /// <summary> Stretchs ConsoleColour array by given factor. </summary>
     public static ConsoleColor[] Stretch(this ConsoleColor[] colours, int factor)
     {
@@ -241,9 +258,6 @@ public static class ColourFunctions
 
         return c;
     }
-
-    /// <summary> Extends ConsoleColour to given length. </summary>
-    public static ConsoleColor[] Extend(this ConsoleColor colour, int length) { return Extend(colour.ToArray(), length, false); }
 
     // --- NEW ARRAY ---
 

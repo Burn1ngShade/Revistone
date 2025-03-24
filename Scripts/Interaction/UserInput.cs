@@ -305,7 +305,7 @@ public static class UserInput
             GoToLine(lines.startIndex);
             for (int i = 0; i < lines.lastCount; i++)
             {
-                ConsoleLine cl = ConsoleAction.GetConsoleLine(lines.startIndex + i);
+                ConsoleLine cl = GetConsoleLine(lines.startIndex + i);
                 SendConsoleMessage(clear ? new ConsoleLine() : new ConsoleLine(cl.lineText, cl.lineColour, [ConsoleColor.Black]), ConsoleAnimatedLine.None);
 
                 if (i == lines.lastCount - 1 && cl.lineText == " ") ShiftLine(-1); // edge case where no text on last line but cursor is
@@ -675,5 +675,10 @@ public static class UserInput
     public static void CreateReadMenu(string title, int messagesPerPage, params string[] messages)
     {
         CreateReadMenu(title, messagesPerPage, messages.Select(s => new ConsoleLine(s)).ToArray());
+    }
+
+    internal static int CreateOptionMenu(string v, object value, int cursorStartIndex)
+    {
+        throw new NotImplementedException();
     }
 }

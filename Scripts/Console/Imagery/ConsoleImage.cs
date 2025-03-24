@@ -3,6 +3,8 @@ using Revistone.Console.Data;
 using Revistone.Functions;
 using Revistone.Management;
 
+using static Revistone.Functions.PersistentDataFunctions;
+
 namespace Revistone.Console.Image;
 
 /// <summary> Class pertaining all logic for creating images in the console, (0, 0) refers to the bot left of an image. </summary>
@@ -11,6 +13,8 @@ public class ConsoleImage
     // --- VARIABLES AND CONSTRUCTORS ---
 
     (int width, int height) size = (0, 0);
+    public int Width => size.width;
+    public int Height => size.height;
 
     ConsolePixel[,] pixels = new ConsolePixel[0, 0];
     ConsolePixel defaultPixel = new ConsolePixel();
@@ -24,19 +28,6 @@ public class ConsoleImage
 
     /// <summary> Class pertaining all logic for creating images in the console. </summary>
     public ConsoleImage(int width = 10, int height = 10) : this(width, height, new ConsolePixel()) { }
-
-    public ConsoleImage(SerializableConsoleImage serializableConsoleImage)
-    {
-        SetDefaultPixel(serializableConsoleImage.DefaultPixel);
-        SetImageSize(serializableConsoleImage.Width, serializableConsoleImage.Height);
-
-        Analytics.Debug.Add($"Width: {size.width}, Height: {size.height}");
-
-        for (int i = 0; i < serializableConsoleImage.Pixels.Length; i++)
-        {
-            pixels[i % size.width, i / size.width] = serializableConsoleImage.Pixels[i];
-        }
-    }
 
     // --- IMAGE CONTROL ---
 
@@ -77,6 +68,30 @@ public class ConsoleImage
         return true;
     }
 
+    ///<summary> Set pixel charchter at given position. </summary>
+    public bool SetPixelChar(int x, int y, char c)
+    {
+        if (!PixelExists(x, y)) return false;
+        pixels[x, y].SetChar(c);
+        return true;
+    }
+
+    ///<summary> Set pixel foreground at given position. </summary>
+    public bool SetPixelForeground(int x, int y, ConsoleColor colour)
+    {
+        if (!PixelExists(x, y)) return false;
+        pixels[x, y].SetForeground(colour);
+        return true;
+    }
+
+    ///<summary> Set pixel background at given position. </summary>
+    public bool SetPixelBackground(int x, int y, ConsoleColor colour)
+    {
+        if (!PixelExists(x, y)) return false;
+        pixels[x, y].SetBackground(colour);
+        return true;
+    }
+
     /// <summary> Set given block of pixels to given blockPixel array, (array size must = width * height). </summary>
     public bool SetPixelBlock(int startX, int startY, int blockWidth, int blockHeight, ConsolePixel[] blockPixels)
     {
@@ -103,8 +118,8 @@ public class ConsoleImage
     /// <summary> Set given pixel positions, from a ConsleLine. </summary>
     public bool SetPixels(int x, int y, ConsoleLine consoleLine)
     {
-        ConsoleLine c = new(consoleLine.lineText, consoleLine.lineColour.Extend(consoleLine.lineText.Length), consoleLine.lineBGColour.Extend(consoleLine.lineText.Length));
-        return SetPixelBlock(x, y, c.lineText.Length, 1, [.. c.lineText.Select((cr, index) => new ConsolePixel(cr, c.lineColour[index], c.lineBGColour[index]))]);
+        ConsoleLine c = new(consoleLine.lineText, consoleLine.lineColour.ExtendEnd(consoleLine.lineText.Length), consoleLine.lineBGColour.ExtendEnd(consoleLine.lineText.Length));
+        return SetPixelBlock(x, y, c.lineText.Length, 1, [.. c.lineText.Select((cr, index) => new ConsolePixel(char.IsSurrogate(cr) ? ' ' : cr, c.lineColour[index], c.lineBGColour[index]))]);
     }
 
     /// <summary> Set given pixel positions, from A ConsoleLine array. </summary>
@@ -196,46 +211,104 @@ public class ConsoleImage
         return true;
     }
 
-    // --- JSON ---
+    // --- BINARY Format ---
 
-    ///<summary> Gets a ConsoleImage from a JSON file. </summary>
-    public static ConsoleImage GetFromJSON(string filePath)
+    public static bool SaveToCIMG(string filePath, ConsoleImage image)
     {
-        return new ConsoleImage(PersistentDataFunctions.LoadFileFromJSON<SerializableConsoleImage>(filePath) ?? new SerializableConsoleImage());
-    }
+        if (!IsPathValid(filePath)) return false;
 
-    ///<summary> Saves a ConsoleImage to a JSON file. </summary>
-    public static bool SaveToJson(string filePath, ConsoleImage consoleImage)
-    {
-        return PersistentDataFunctions.SaveFileAsJSON(filePath, new SerializableConsoleImage(consoleImage));
-    }
+        CreateFile(filePath);
 
-    ///<summary> Serializable version of console image for saving and loading to JSON. </summary>
-    public class SerializableConsoleImage
-    {
-        public int Width { get; set; }
-        public int Height { get; set; }
-
-        public ConsolePixel[] Pixels { get; set; } = [];
-        public ConsolePixel DefaultPixel { get; set; } = new ConsolePixel();
-
-        public SerializableConsoleImage()
+        using (FileStream fs = new(filePath, FileMode.Create))
+        using (BinaryWriter writer = new(fs))
         {
-            
-        }
+            writer.Write("CIMG"); // file type
+            writer.Write(image.Width);
+            writer.Write(image.Height);
+            writer.Write(image.defaultPixel.Character);
+            writer.Write((byte)image.defaultPixel.FGColour);
+            writer.Write((byte)image.defaultPixel.BGColour);
 
-        public SerializableConsoleImage(ConsoleImage image)
-        {
-            Width = image.size.width;
-            Height = image.size.height;
-            DefaultPixel = image.defaultPixel;
-
-            Pixels = new ConsolePixel[Width * Height];
-
-            for (int i = 0; i < Pixels.Length; i++)
+            for (int x = 0; x < image.Width; x++)
             {
-                Pixels[i] = image.pixels[i % Width, i / Width];
+                for (int y = 0; y < image.Height; y++)
+                {
+                    writer.Write(image.pixels[x, y].Character);
+                    writer.Write((byte)image.pixels[x, y].FGColour);
+                    writer.Write((byte)image.pixels[x, y].BGColour);
+                }
             }
         }
+
+        return true;
+    }
+
+    public static ConsoleImage? LoadFromCIMG(string filePath)
+    {
+        if (!IsPathValid(filePath)) return new ConsoleImage();
+
+        using (FileStream fs = new(filePath, FileMode.Open))
+        using (BinaryReader reader = new(fs))
+        {
+            if (reader.ReadString() != "CIMG")
+            {
+                Analytics.Debug.Add($"Error: File At Path {filePath} Is Not A CIMG file.");
+                return null;
+            }
+
+            int width = reader.ReadInt32();
+            int height = reader.ReadInt32();
+            ConsolePixel defaultPixel = new(reader.ReadChar(), (ConsoleColor)reader.ReadByte(), (ConsoleColor)reader.ReadByte());
+
+            ConsoleImage image = new(width, height, defaultPixel);
+
+            for (int x = 0; x < image.Width; x++)
+            {
+                for (int y = 0; y < image.Height; y++)
+                {
+                    image.pixels[x, y] = new ConsolePixel(reader.ReadChar(), (ConsoleColor)reader.ReadByte(), (ConsoleColor)reader.ReadByte());
+                }
+            }
+
+            return image;
+        }
+    }
+
+    // --- General Console ---
+
+    ///<summary> Takes a screenshot of the primary console. </summary>
+    public static void TakePrimaryScreenshot(string name = "")
+    {
+        int primarySize = ConsoleData.debugStartIndex - 1;
+        ConsoleLine[] c = new ConsoleLine[primarySize];
+
+        for (int i = 1; i < primarySize + 1; i++)
+        {
+            c[primarySize - i] = ConsoleAction.GetConsoleLine(i);
+        }
+
+        ConsoleImage image = new(ConsoleData.windowSize.width, primarySize);
+        image.SetPixels(0, 0, c);
+        SaveToCIMG(GeneratePath(DataLocation.Console, "History/Screenshots", name.Length == 0 ? $"Primary{DateTime.Now:[yyyy-MM-dd_HH-mm-ss]}.cimg" : $"{name}.cimg"), image);
+
+        ConsoleAction.SendDebugMessage(new ConsoleLine("Screenshot Taken.", AppRegistry.activeApp.colourScheme.primaryColour));
+    }
+
+    ///<summary> Takes a screenshot of the debug console. </summary>
+    public static void TakeDebugScreenshot(string name = "")
+    {
+        ConsoleLine[] c = new ConsoleLine[7];
+
+        for (int i = ConsoleData.debugStartIndex + 1; i < ConsoleData.debugStartIndex + 8; i++)
+        {
+            Analytics.Debug.Add((ConsoleData.debugBufferStartIndex - i + 6).ToString());
+            c[ConsoleData.debugBufferStartIndex - i + 6] = ConsoleAction.GetConsoleLine(i);
+        }
+
+        ConsoleImage image = new(ConsoleData.windowSize.width, 8);
+        image.SetPixels(0, 0, c);
+        SaveToCIMG(GeneratePath(DataLocation.Console, "History/Screenshots", name.Length == 0 ? $"Debug{DateTime.Now:[yyyy-MM-dd_HH-mm-ss]}.cimg" : $"{name}.cimg"), image);
+
+        ConsoleAction.SendDebugMessage(new ConsoleLine("Debug Screenshot Taken.", AppRegistry.activeApp.colourScheme.primaryColour));
     }
 }

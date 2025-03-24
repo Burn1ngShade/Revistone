@@ -1,4 +1,5 @@
 using Revistone.Console;
+using Revistone.Console.Image;
 using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.Management;
@@ -65,6 +66,10 @@ public abstract class App
     public virtual void OnUpdate(int tickNum)
     {
         if (UserRealtimeInput.KeyPressed(0x11) && UserRealtimeInput.KeyPressed(0x10) && UserRealtimeInput.KeyPressedDown(80)) Profiler.SetEnabled(!Profiler.enabled);
+
+        // f12
+        if (UserRealtimeInput.KeyPressedDown(123)) ConsoleImage.TakePrimaryScreenshot();
+        if (UserRealtimeInput.KeyPressedDown(122)) ConsoleImage.TakeDebugScreenshot();
     }
 
     /// <summary> Called when revistone app is first started, just after OnRegister. </summary>

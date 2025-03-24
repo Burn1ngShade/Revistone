@@ -2,7 +2,6 @@
 using Revistone.App;
 using Revistone.Console;
 using Revistone.Console.Data;
-using Revistone.Console.Image;
 using Revistone.Console.Widget;
 using Revistone.Functions;
 using Revistone.Interaction;
@@ -12,18 +11,18 @@ namespace Revistone.Management;
 /// <summary> Main management class, handles initialization, Tick, and main interaction behaviour. </summary>
 public static class Manager
 {
-    public static object renderLockObject = new object();
+    public static readonly object renderLockObject = new object();
 
-    public static Random rng = new Random();
+    public static readonly Random rng = new Random();
 
-    static Thread handleTickBehaviour = new Thread(HandleTickBehaviour);
-    static Thread handleRealTimeInput = new Thread(UserRealtimeInput.KeyRegistry);
-    static Thread handleAnalytics = new Thread(Analytics.HandleAnalytics);
+    static readonly Thread handleTickBehaviour = new Thread(HandleTickBehaviour);
+    static readonly Thread handleRealTimeInput = new Thread(UserRealtimeInput.KeyRegistry);
+    static readonly Thread handleAnalytics = new Thread(Analytics.HandleAnalytics);
 
     public static event TickEventHandler Tick = new TickEventHandler((tickNum) => { });
     public delegate void TickEventHandler(int tickNum);
 
-    public static int currentTick = 0;
+    public static int currentTick { get; private set; } = 0;
 
     static long _deltaTime = 0; // duration of last tick in ms
     public static double deltaTime => _deltaTime / 1000d; // duration of last tick in seconds
@@ -121,7 +120,7 @@ public static class Manager
     ///<summary> Called upon attempted close keybind Ctrl+C. </summary>
     static void OnCancelKeyPress(object? sender, ConsoleCancelEventArgs args)
     {
-        ConsoleAction.SendDebugMessage(new ConsoleLine("Console Close Prevented, If Attempting To Copy Text Use Alt+C Instead.", ConsoleColor.DarkBlue));
+        ConsoleAction.SendDebugMessage(new ConsoleLine("Console Close Prevented, If Attempting To Copy Text Use Alt+C Instead.", AppRegistry.activeApp.colourScheme.primaryColour));
 
         args.Cancel = true;
     }

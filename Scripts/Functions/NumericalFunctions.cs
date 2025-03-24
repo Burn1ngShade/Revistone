@@ -1,8 +1,6 @@
 namespace Revistone.Functions;
 
-/// <summary>
-/// Class filled with functions unrelated to console, but useful for carrying out numerical calculations.
-/// </summary>
+/// <summary> Class filled with functions unrelated to console, but useful for carrying out numerical calculations. </summary>
 public static class NumericalFunctions
 {
     /// <summary> Returns the median value from a sorted numerical list. </summary>
