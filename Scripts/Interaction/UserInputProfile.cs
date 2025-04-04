@@ -125,11 +125,11 @@ public class UserInputProfile //really happy with this script atm
 
         if (errors.Count == 0 || outputFormat == OutputFormat.NoOutput) return errors.Count == 0;
 
-        ConsoleAction.SendConsoleMessage(new ConsoleLine("--- Input Invalid --- ", AppRegistry.activeApp.colourScheme.secondaryColour.Extend(22)),
+        ConsoleAction.SendConsoleMessage(new ConsoleLine("--- Input Invalid --- ", AppRegistry.SecondaryCol.Extend(22)),
         ConsoleAnimatedLine.AppTheme);
         for (int i = 0; i < errors.Count; i++)
         {
-            ConsoleAction.SendConsoleMessage(new ConsoleLine($"{i + 1}. {errors[i]}", AppRegistry.activeApp.colourScheme.primaryColour));
+            ConsoleAction.SendConsoleMessage(new ConsoleLine($"{i + 1}. {errors[i]}", AppRegistry.PrimaryCol));
         }
 
         if (outputFormat == OutputFormat.Standard)

@@ -3,6 +3,7 @@ using Revistone.Console;
 using Revistone.Functions;
 
 using static Revistone.Functions.ColourFunctions;
+using Revistone.Management;
 
 namespace Revistone.App.BaseApps;
 
@@ -13,13 +14,15 @@ public class RevistoneApp : App
 
     public override App[] OnRegister()
     {
-        return [ new RevistoneApp("Revistone", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray(), 10), (CyanDarkBlueGradient.Extend(7, true), 5),
+        return [ new RevistoneApp("Revistone", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray(), 10), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5),
                 [(new UserInputProfile(UserInputProfile.InputType.FullText, "boop", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop!", AppRegistry.activeApp.colourScheme.primaryColour)), "Boop!"),
+                (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop!", AppRegistry.PrimaryCol)), "Boop!"),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "render test", caseSettings: StringFunctions.CapitalCasing.Lower, removeTrailingWhitespace: true, removeLeadingWhitespace: true), (s) => { RenderTest(); }, "Outputs Trans Flag!"),
                 ],
                 98, 29) ];
     }
+
+    static bool firstOpen = true;
 
     public override void OnAppInitalisation()
     {
@@ -33,7 +36,7 @@ public class RevistoneApp : App
 
         ConsoleAction.ShiftLine();
 
-        ConsoleColor[] c = AdvancedHighlight(63, AppRegistry.activeApp.colourScheme.primaryColour.ToArray(), AppRegistry.activeApp.colourScheme.secondaryColour, (17, 10), (34, 6), (62, 20));
+        ConsoleColor[] c = AdvancedHighlight(63, AppRegistry.PrimaryCol.ToArray(), AppRegistry.SecondaryCol, (17, 10), (34, 6), (62, 20));
         ConsoleAction.SendConsoleMessage(new ConsoleLine("More Than Just A [Console!] Input 'Help' For List Of Commands. ", c),
         new ConsoleAnimatedLine(UpdateUI, 5, true));
 
@@ -44,6 +47,12 @@ public class RevistoneApp : App
         {
             ConsoleAction.UpdateLineExceptionStatus(true, i);
         }
+
+        if (firstOpen && SettingsApp.GetValue("Welcome Message") == "Yes")
+        {
+            GPTFunctions.Query($"User Has Logged In, Last Log Out Time: {Analytics.General.LastCloseDate}, Log In Time: {Analytics.General.LastOpenDate}", true);
+        }
+        firstOpen = false;
     }
 
     static void RenderTest()
@@ -53,9 +62,9 @@ public class RevistoneApp : App
         ConsoleAction.SendConsoleMessages(lines, animation);
     }
 
-    static string[] keyword = new string[] {
+    static string[] keyword = [
                 "[Console!]", "[Concept!]", "[Project!]", "[Program!]",
-            };
+            ];
 
     static void UpdateUI(ConsoleLine lineInfo, object metaInfo, int tickNum)
     {

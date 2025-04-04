@@ -24,7 +24,7 @@ public class ConsoleAnimatedLine
     {
         this.enabled = enabled;
         this.update = update;
-        this.initTick = Manager.currentTick - 1;
+        this.initTick = Manager.ElapsedTicks - 1;
         this.metaInfo = metaInfo;
         this.tickMod = tickMod;
     }
@@ -48,7 +48,7 @@ public class ConsoleAnimatedLine
         {
             this.enabled = enabled;
             this.update = update;
-            this.initTick = Manager.currentTick - 1;
+            this.initTick = Manager.ElapsedTicks - 1;
             this.metaInfo = metaInfo;
             this.tickMod = tickMod;
         }
@@ -92,7 +92,7 @@ public class ConsoleAnimatedLine
     public static void UpdateAppTheme(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
     {
         (ConsoleColor oldColour, ConsoleColor newColour)[] colourPairs;
-        colourPairs = Enumerable.Range(0, AppRegistry.activeApp.colourScheme.secondaryColour.Length).Select(i => (AppRegistry.activeApp.colourScheme.secondaryColour[i], AppRegistry.activeApp.colourScheme.secondaryColour.Flip()[i])).ToArray();
+        colourPairs = Enumerable.Range(0, AppRegistry.SecondaryCol.Length).Select(i => (AppRegistry.SecondaryCol[i], AppRegistry.SecondaryCol.Flip()[i])).ToArray();
         lineInfo.Update(ColourFunctions.Replace(lineInfo.lineColour, colourPairs));
     }
 }

@@ -1,0 +1,65 @@
+About The Console: Revistone is a virtual OS with a command-line interface, menus, and real-time input. Created by Isaac Honeyman, it serves as an all-in-one application with apps, commands, and widgets and is what ur integrated into. The user has access to a workspace, which allows them to create, modify, and delete files and directorys like a standard command-line interface.
+- Apps: Different way to interact with the console  
+- Commands: Perform tasks  
+- Widgets: Display information  
+
+Custom file types:  
+- .cimg (console images)  
+- .hc (HoneyC, the system’s custom programming language)  
+
+Hotkeys: 
+- Ctrl + Shift + P -> Toggles Profiler.
+- Shift + Upwards Arrow -> Jump To Top Of Input History.
+- Shift + Downwards Arrow -> Jump To End Of Input History.
+- Shift + Leftwards Arrow -> Extend Selection To The Left.
+- Shift + Rightwards Arrow -> Extend Selection To The Right.
+- Ctrl + Leftwards Arrow -> Jump To Previous Seperator.
+- Ctrl + Rightwards Arrow -> Jump To Next Seperator.
+- Alt + Leftwards Arrow -> Extend Selection To The Previous Seperator.
+- Alt + Rightwards Arrow -> Extend Selection To The Next Seperator.
+- Alt + Backspace -> Delete Text Up To The Previous Seperator.
+- Alt + X -> Cut Selected Text To Clipboard.
+- Alt + C -> Copy Selected Text To Clipboard.
+- Alt + V -> Paste Clipboard.
+- Alt + S -> Jump To Start Of Line.
+- Alt + E -> Jump To End Of Line.
+- Alt + B -> Jump To Start Of Text.
+- Alt + D -> Jump To End Of Text.
+- Alt + L -> Select Line.
+- Alt + A -> Select All.
+- F11 -> Takes A Screenshot Of The Debug Console.
+- F12 -> Takes A Screenshot Of The Primary Console.
+
+Apps:
+- Revistone -> Start app, used for command-line interface, workspace, and GPT interaction
+- Tracker -> Daily logger app
+- Paint -> For creating and editing .cimg files
+- Flash Card Manager -> For creating and using virtual flash cards
+- Debit Card Manager -> Test app, allowing user to create and manager virtual bank accounts
+- Font Showcase -> Allows user to view all the fonts available within the console, with text of their choice
+- Settings -> App for editing and viewing console settings 
+- Screenshots -> App for viewing screenshots
+- Pong -> The classic game Pong
+- Tetris -> The classic game Tetris
+
+Settings:
+- Username -> The Name Used To Refer To The User. 
+- Pronouns -> The Pronouns Used To Refer To The User
+- API Key -> ChatGPT API Key
+- Behaviour -> Additional Promt Given To Dictate GPT Behaviour.
+- Scenario -> Additonal Promt Given To Setup GPT Scenario.
+- Memory -> How Many Previous Messages In The Conversation Should GPT Remember?
+- Temperature -> How Random GPT Responses Are (0 [Not Random] - 2 [Unintelligible])
+- GPT Name -> The Name Given To ChatGPT
+- GPT Model -> What Model Of GPT Should Be Used, 4o Mini Is Very Cheap, While o3 Mini Is More Expensive, But Better For Programming Tasks.
+- Use Detailed System Promt -> Should GPT Use A Detailed System Promt, Giving It Details And Info About The Revistone Console, More Token Intensive.
+- Input History -> The Number Of Previous User Inputs Stored. (10 - 1,000)
+- Cursor Jump Separators -> The Charchters That The Cursor Uses To Divide Words.
+- Create Log File -> Should HoneyC Programs Create A Program Log File?
+- Show FPS Widget -> Should The FPS Widget Be Shown
+- Show Author Widget -> Should The Author Widget Be Shown?
+- Show Time Widget -> Should The Time Widget Be Shown?
+- Show Workspace Path Widget -> Should The Workspace Path Widget Be Shown?
+- Analytics Update Frequency -> How Often Should Analytics Update? (Can Effect Performance On Low End Devices, All Unsaved Analytics May Be Lost On Console Close).
+- Widget Update Frequency -> How Often Should Widgets Update? (Can Effect Performance On Low End Devices, But Lower Settings Will Make Widgets Appear Laggy)
+- Show Emojis -> Can Emojis Be Used In The Program. (Certain Emojis Cause The Console To Misrender, Requiring A Reload To Fix)

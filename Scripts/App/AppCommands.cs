@@ -11,8 +11,7 @@ using Revistone.Management;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection.Metadata.Ecma335;
+using static Revistone.Functions.WorkspaceFunctions;
 
 namespace Revistone.App;
 
@@ -30,7 +29,7 @@ public static class AppCommands
                 "List Of All App Specfic Commands And Their Descriptions."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "apps", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => {
-                    int i = UserInput.CreateMultiPageOptionMenu("Apps:", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray(), [new ConsoleLine("Exit")], 4);
+                    int i = UserInput.CreateMultiPageOptionMenu("Apps:", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.SecondaryCol)).ToArray(), [new ConsoleLine("Exit")], 4);
                     if (i >= 0) LoadApp($"Load{AppRegistry.appRegistry[i].name}");
                 },
                 "Menu To Load Apps."),
@@ -55,10 +54,10 @@ public static class AppCommands
                 (s) => { ClearDebugConsole(); },
                 "Clears Debug Console."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "time", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => { SendConsoleMessage(new ConsoleLine($"{DateTime.Now}.", AppRegistry.activeApp.colourScheme.primaryColour)); },
+                (s) => { SendConsoleMessage(new ConsoleLine($"{DateTime.Now}.", AppRegistry.PrimaryCol)); },
                 "Prints The Current System Time."),
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "runtime", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => { SendConsoleMessage(new ConsoleLine($"Revistone Has Been Running For {(Manager.currentTick / 40d).ToString("0.00")} Seconds.", AppRegistry.activeApp.colourScheme.primaryColour)); },
+                (s) => { SendConsoleMessage(new ConsoleLine($"Revistone Has Been Running For {(Manager.ElapsedTicks / 40d).ToString("0.00")} Seconds.", AppRegistry.PrimaryCol)); },
                 "Prints The Runtime Of The Current Session."),
                 (new UserInputProfile("comp[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true), (s) => {HoneyCInterpreter.Interpret([s[4..]]); }, "Carries Out Given HoneyC Promt."),
                 (new UserInputProfile("calc[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true), (s) => {CalculatorInterpreter.Intepret(s[4..]); }, "Carries Out Given Calculator Promt."),
@@ -66,7 +65,7 @@ public static class AppCommands
                 (new UserInputProfile("debug[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => { SendDebugMessage(s.Substring(5).TrimStart()); }, "Sends Debug Message [A:] ([A:] being the message)."),
                 (new UserInputProfile("profiler toggle", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
-                (s) => { Profiler.SetEnabled(!Profiler.enabled); }, "Toggles Profiler On Or Off."),
+                (s) => { Profiler.SetEnabled(!Profiler.Enabled); }, "Toggles Profiler On Or Off."),
                 (new UserInputProfile("gpt[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => { GPTFunctions.Query(s[3..].TrimStart(), true); }, "Interact With Custom Revistone ChatGPT Model, In A Back And Forth Conversation."),
                 (new UserInputProfile("snap gpt[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
@@ -82,13 +81,33 @@ public static class AppCommands
                 (new UserInputProfile("cancel timer", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => CancelTimer(), "Cancels Active Timer."),
                 (new UserInputProfile("sticker[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
-                (s) => { DisplaySticker(s[7..].TrimStart()); }, "Output a given sticker to the console."),
+                (s) => { DisplaySticker(s[7..].TrimStart()); }, "Output A Given Sticker To The Console."),
                 (new UserInputProfile("list stickers", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
-                (s) => StickerList(), "List all default stickers."),
+                (s) => StickerList(), "List All Default Stickers."),
                 (new UserInputProfile("screenshot[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
-                (s) => { ConsoleImage.TakePrimaryScreenshot(s[10..].TrimStart()); }, "Take a screenshot of the primary console."),
+                (s) => { ConsoleImage.TakePrimaryScreenshot(s[10..].Trim()); }, "Take A Screenshot Of The Primary Console."),
                 (new UserInputProfile("dscreenshot[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
-                (s) => { ConsoleImage.TakeDebugScreenshot(s[11..].TrimStart()); }, "Take a screenshot of the debug console."),
+                (s) => { ConsoleImage.TakeDebugScreenshot(s[11..].Trim()); }, "Take A Screenshot Of The Debug Console."),
+                (new UserInputProfile("kill", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => {KillTerminal();}, "Force Closes The Revistone Terminal."),
+                (new UserInputProfile("mkdir[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => {CreateWorkspaceDirectory(s[5..].Trim());}, "Create A Directory Within The Current Workspace Path."),
+                (new UserInputProfile("rmdir[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => {DeleteWorkspaceDirectory(s[5..].Trim());}, "Deletes A Directory Within The Current Workspace Path."),
+                (new UserInputProfile("cdir[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => {ChangeWorkspaceDirectory(s[4..].Trim());}, "Changes Directory To A Directory Within The Current Workspace Path."),
+                (new UserInputProfile("bdir", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => {ChangeBackWorkspaceDirectory();}, "Goes Back One Directory."),
+                (new UserInputProfile("rdir", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => {ChangeRootWorkspaceDirectory();}, "Changes To Root Directory."),
+                (new UserInputProfile("dir", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => {GetWorkspaceDirectoryContents();}, "Gets Files And Directories Within The Current Workspace Directory."),
+                (new UserInputProfile("mkfile[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => {CreateWorkspaceFile(s[6..].Trim());}, "Create A File Within The Current Workspace Path."),
+                (new UserInputProfile("rmfile[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => {DeleteWorkspaceFile(s[6..].Trim());}, "Deletes A File Within The Current Workspace Path."),
+                (new UserInputProfile("open[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => {OpenWorkspaceFile(s[4..].Trim());}, "Opens A File Within The Current Workspace Path."),
             };
 
     // --- BASE COMMANDS ---
@@ -98,15 +117,15 @@ public static class AppCommands
     {
         UserInput.CreateReadMenu("Help", 5,
         commands.name.Select((s, i) => new ConsoleLine($"{s}: {commands.summary[i]}",
-        AdvancedHighlight($"{commands.name[i]}: {commands.summary[i]}".Length, AppRegistry.activeApp.colourScheme.primaryColour,
-        (AppRegistry.activeApp.colourScheme.secondaryColour, 0, commands.name[i].Length + 1)))).ToArray());
+        AdvancedHighlight($"{commands.name[i]}: {commands.summary[i]}".Length, AppRegistry.PrimaryCol,
+        (AppRegistry.SecondaryCol, 0, commands.name[i].Length + 1)))).ToArray());
     }
 
     /// <summary> Displays list of app specfic commands and descriptions. </summary>
     static void AppHelp()
     {
         (string[] name, string[] summary) commands = (AppRegistry.activeApp.appCommands.Select(cmd => StringFunctions.AdjustCapitalisation(cmd.format.inputFormat, StringFunctions.CapitalCasing.FirstLetterUpper)).ToArray(), AppRegistry.activeApp.appCommands.Select(cmd => cmd.summary).ToArray());
-        if (commands.name.Length == 0) SendConsoleMessage(new ConsoleLine("This App Has No Custom Commands!", AppRegistry.activeApp.colourScheme.primaryColour));
+        if (commands.name.Length == 0) SendConsoleMessage(new ConsoleLine("This App Has No Custom Commands!", AppRegistry.PrimaryCol));
         else Help(commands);
     }
 
@@ -130,6 +149,8 @@ public static class AppCommands
         ("Alt + D", "Jump To End Of Text."),
         ("Alt + L", "Select Line."),
         ("Alt + A", "Select All."),
+        ("F11", "Takes A Screenshot Of The Debug Console."),
+        ("F12", "Takes A Screenshot Of The Primary Console.")
     ];
 
     /// <summary> Displays list of console hotkeys. </summary>
@@ -137,7 +158,7 @@ public static class AppCommands
     {
         UserInput.CreateReadMenu("Hotkeys", 5,
         hotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}]: {x.description}",
-        BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour.Extend(x.keyCombo.Length + 3), AppRegistry.activeApp.colourScheme.primaryColour.ToArray()))).ToArray());
+        BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 3), AppRegistry.PrimaryCol.ToArray()))).ToArray());
     }
 
     /// <summary> Gives user Y/N option to reload current app. </summary>
@@ -145,7 +166,7 @@ public static class AppCommands
     {
         int clearConsole = UserInput.CreateOptionMenu("Reload App?", new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") });
         if (clearConsole == 0) ReloadConsole();
-        else SendConsoleMessage(new ConsoleLine("App Reload Cancelled!", AppRegistry.activeApp.colourScheme.primaryColour), new ConsoleLineUpdate());
+        else SendConsoleMessage(new ConsoleLine("App Reload Cancelled!", AppRegistry.PrimaryCol), new ConsoleLineUpdate());
     }
 
     /// <summary> Gives user Y/N option to load given app. </summary>
@@ -153,7 +174,7 @@ public static class AppCommands
     {
         if (userInput.Trim().Length == 4) //submitted empty load request
         {
-            int i = UserInput.CreateMultiPageOptionMenu("Apps:", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 4);
+            int i = UserInput.CreateMultiPageOptionMenu("Apps:", AppRegistry.appRegistry.Select(app => new ConsoleLine(app.name, AppRegistry.SecondaryCol)).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 4);
             if (i >= 0) LoadApp($"Load{AppRegistry.appRegistry[i].name}");
             return;
         }
@@ -168,12 +189,12 @@ public static class AppCommands
             }
             else
             {
-                SendConsoleMessage(new ConsoleLine($"App Load Cancelled!", AppRegistry.activeApp.colourScheme.primaryColour), new ConsoleLineUpdate());
+                SendConsoleMessage(new ConsoleLine($"App Load Cancelled!", AppRegistry.PrimaryCol), new ConsoleLineUpdate());
             }
         }
         else
         {
-            SendConsoleMessage(new ConsoleLine($"App Named [{appName}] Could Not Be Found!", AppRegistry.activeApp.colourScheme.primaryColour), new ConsoleLineUpdate());
+            SendConsoleMessage(new ConsoleLine($"App Named [{appName}] Could Not Be Found!", AppRegistry.PrimaryCol), new ConsoleLineUpdate());
         }
     }
 
@@ -185,7 +206,7 @@ public static class AppCommands
         {
             SettingsApp.HandleSettingGet(userInput);
         }
-        else SendConsoleMessage(new ConsoleLine($"Setting [{userInput}] Could Not Be Found!", AppRegistry.activeApp.colourScheme.primaryColour));
+        else SendConsoleMessage(new ConsoleLine($"Setting [{userInput}] Could Not Be Found!", AppRegistry.PrimaryCol));
     }
 
     /// <summary> Allows user to set setting with a given name. </summary>
@@ -196,7 +217,7 @@ public static class AppCommands
         {
             SettingsApp.HandleSettingSet(userInput);
         }
-        else SendConsoleMessage(new ConsoleLine($"Setting [{userInput}] Could Not Be Found!", AppRegistry.activeApp.colourScheme.primaryColour));
+        else SendConsoleMessage(new ConsoleLine($"Setting [{userInput}] Could Not Be Found!", AppRegistry.PrimaryCol));
     }
 
     /// <summary> Loads HoneyC File. </summary>
@@ -210,7 +231,7 @@ public static class AppCommands
         }
         else
         {
-            SendConsoleMessage(new ConsoleLine($"File [{userInput}] Could Not Be Found!", AppRegistry.activeApp.colourScheme.primaryColour));
+            SendConsoleMessage(new ConsoleLine($"File [{userInput}] Could Not Be Found!", AppRegistry.PrimaryCol));
         }
     }
 
@@ -219,7 +240,7 @@ public static class AppCommands
     {
         if (ConsoleWidget.WidgetExists("Timer"))
         {
-            SendConsoleMessage(new ConsoleLine("Timer Already Active! Use Cancel Timer To Remove Active Timer.", AppRegistry.activeApp.colourScheme.primaryColour));
+            SendConsoleMessage(new ConsoleLine("Timer Already Active! Use Cancel Timer To Remove Active Timer.", AppRegistry.PrimaryCol));
             return;
         }
 
@@ -229,18 +250,18 @@ public static class AppCommands
         else if (TimeSpan.TryParse(time, out TimeSpan duration)) timerInSeconds = duration.TotalSeconds;
         else
         {
-            SendConsoleMessage(new ConsoleLine("Invalid Time Format! Use Format hh:mm:ss.", AppRegistry.activeApp.colourScheme.primaryColour));
+            SendConsoleMessage(new ConsoleLine("Invalid Time Format! Use Format hh:mm:ss.", AppRegistry.PrimaryCol));
             return;
         }
 
         if (timerInSeconds > 86400) // seconds in a day
         {
-            SendConsoleMessage(new ConsoleLine("Timer Can Not Be Longer Than 24 Hours!", AppRegistry.activeApp.colourScheme.primaryColour));
+            SendConsoleMessage(new ConsoleLine("Timer Can Not Be Longer Than 24 Hours!", AppRegistry.PrimaryCol));
             return;
         }
 
         ConsoleWidget.TryAddWidget(new TimeWidget("Timer", 100, DateTime.Now.AddSeconds(timerInSeconds), true));
-        SendConsoleMessage(new ConsoleLine($"Timer Has Been Created!", AppRegistry.activeApp.colourScheme.primaryColour));
+        SendConsoleMessage(new ConsoleLine($"Timer Has Been Created!", AppRegistry.PrimaryCol));
     }
 
     /// <summary> Delete Timer Widget. </summary>
@@ -248,12 +269,12 @@ public static class AppCommands
     {
         if (!ConsoleWidget.WidgetExists("Timer"))
         {
-            SendConsoleMessage(new ConsoleLine("No Active Timer Exists!", AppRegistry.activeApp.colourScheme.primaryColour));
+            SendConsoleMessage(new ConsoleLine("No Active Timer Exists!", AppRegistry.PrimaryCol));
             return;
         }
 
         ConsoleWidget.TryRemoveWidget("Timer");
-        SendConsoleMessage(new ConsoleLine($"Timer Cancelled!", AppRegistry.activeApp.colourScheme.primaryColour));
+        SendConsoleMessage(new ConsoleLine($"Timer Cancelled!", AppRegistry.PrimaryCol));
     }
 
     /// <summary> Displays Sticker. </summary>
@@ -266,14 +287,26 @@ public static class AppCommands
         }
         else
         {
-            SendConsoleMessage(new ConsoleLine($"Sticker [{sticker}] Could Not Be Found!", AppRegistry.activeApp.colourScheme.primaryColour));
+            SendConsoleMessage(new ConsoleLine($"Sticker [{sticker}] Could Not Be Found!", AppRegistry.PrimaryCol));
         }
     }
 
+    ///<summary> Displays list of console stickers. </summary>
     static void StickerList()
     {
         string[] stickers = GetSubFiles(GeneratePath(DataLocation.Console, "Assets", "Stickers"));
-        UserInput.CreateReadMenu("Stickers", 4, stickers.Select(x => new ConsoleLine(x[..^5], AppRegistry.activeApp.colourScheme.secondaryColour)).ToArray());
+        UserInput.CreateReadMenu("Stickers", 4, stickers.Select(x => new ConsoleLine(x[..^5], AppRegistry.SecondaryCol)).ToArray());
+    }
+
+    ///<summary> Confirms user choice and kills terminal. </summary>
+    static void KillTerminal()
+    {
+        SendConsoleMessage(new ConsoleLine("[WARNING] This Will Force Close Console (Crash).", ConsoleColor.Red));
+        if (UserInput.CreateTrueFalseOptionMenu("Kill Terminal?", cursorStartIndex: 1))
+        {
+            throw new Exception("User Killed Terminal.");
+        }
+        ClearLines(updateCurrentLine: true);
     }
 
     // --- STATIC FUNCTIONS ---

@@ -59,7 +59,7 @@ public class TetrisApp : App
     {
         gb = new();
 
-        gb.startTick = Manager.currentTick;
+        gb.startTick = Manager.ElapsedTicks;
         gb.Output();
 
         while (true)

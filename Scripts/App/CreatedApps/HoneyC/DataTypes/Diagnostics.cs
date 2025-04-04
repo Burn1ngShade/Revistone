@@ -37,8 +37,8 @@ public static class Diagnostics
         if (header) programLog += $"Time Elapsed - {Math.Round(ElapsedTime, 2)} ms\n";
         if (showInConsole)
         {
-            SendConsoleMessage(new ConsoleLine($"{t}", header ? AppRegistry.activeApp.colourScheme.secondaryColour : isWarning ? [ConsoleColor.Yellow] : AppRegistry.activeApp.colourScheme.primaryColour));
-            if (header) SendConsoleMessage(new ConsoleLine($"Time Elapsed - {Math.Round(ElapsedTime, 2)} ms", AppRegistry.activeApp.colourScheme.primaryColour));
+            SendConsoleMessage(new ConsoleLine($"{t}", header ? AppRegistry.SecondaryCol : isWarning ? [ConsoleColor.Yellow] : AppRegistry.PrimaryCol));
+            if (header) SendConsoleMessage(new ConsoleLine($"Time Elapsed - {Math.Round(ElapsedTime, 2)} ms", AppRegistry.PrimaryCol));
         }
     }
 

@@ -1,23 +1,22 @@
+using Revistone.App;
 using Revistone.Console;
 using Revistone.Functions;
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Console.Data.ConsoleData;
+using static Revistone.Functions.ColourFunctions;
 
 namespace Revistone.Management;
 
 /// <summary> Handles debugging of the console. </summary>
 public static class Profiler
 {
-    static bool _enabled = false;
-    public static bool enabled { get { return _enabled; } }
+    public static bool Enabled { get; private set; }
+    public static int Fps { get; private set; }
 
-    public static List<long> tickCompletionTime = new List<long>();
-    public static List<long> tickCaculationTime = new List<long>();
-    public static List<long> drawTime = new List<long>();
-
-    public static int _fps = 40;
-    public static int fps { get { return _fps; } }
+    public static List<long> TickTime { get; private set; } = []; // total duration of a tick
+    public static List<long> CalcTime { get; private set; } = []; // time for all methods following the event Tick to run
+    public static List<long> RenderTime { get; private set; } = []; // time to render frame
 
     /// <summary> [DO NOT CALL] Initializes Profiler. </summary>
     internal static void InitializeProfiler()
@@ -30,7 +29,7 @@ public static class Profiler
     {
         ClearDebugConsole();
         if (state) SendDebugMessage("Gathering Data...");
-        _enabled = state;
+        Enabled = state;
     }
 
     /// <summary> Main loop for profile behaviour. </summary>
@@ -38,34 +37,34 @@ public static class Profiler
     {
         if (tickNum % 20 == 0)
         {
-            if (tickCompletionTime.Count > 0) _fps = Math.Max((int)Math.Round(tickCompletionTime.Count / ((double)tickCompletionTime.Sum() / 1000)), 0);
+            if (TickTime.Count > 0) Fps = Math.Max((int)Math.Round(TickTime.Count / ((double)TickTime.Sum() / 1000)), 0);
 
-            if (_enabled)
+            if (Enabled)
             {
-                if (tickCaculationTime.Count == 0) return;
+                if (CalcTime.Count == 0 || TickTime.Count == 0 || RenderTime.Count == 0) return;
 
                 string[] formattedAverages = [
-                    ((int)tickCaculationTime.Average()).ToString().PadRight(2, ' '), ((int)drawTime.Average()).ToString().PadRight(2, ' '), ((int)tickCompletionTime.Average()).ToString().PadRight(2, ' ')
+                    ((int)CalcTime.Average()).ToString().PadRight(2, ' '), ((int)RenderTime.Average()).ToString().PadRight(2, ' '), ((int)TickTime.Average()).ToString().PadRight(2, ' ')
                     ];
-                    
-                string calcTicks = $"Calc Ticks (ms): Avg - {formattedAverages[0]} | {tickCaculationTime.ToElementString()} ";
-                string drawTicks = $"Draw Ticks (ms): Avg - {formattedAverages[1]} | {drawTime.ToElementString()}";
-                string compTicks = $"Comp Ticks (ms): Avg - {formattedAverages[2]} | {tickCompletionTime.ToElementString()}";
 
-                UpdateDebugConsoleLine(new ConsoleLine($"[Profiler] FPS: {_fps}"), debugStartIndex + 1);
-                UpdateDebugConsoleLine(new ConsoleLine($"Tick Num: {tickNum}, Lost Duration {tickCaculationTime.Where(s => s > 25).Sum(s => s - 25)} ms, Total Duration: {Math.Round((double)tickCaculationTime.Sum(), 2)} ms, Draw Duration: {Math.Round((double)drawTime.Sum(), 2)} ms"), debugStartIndex + 2);
+                string calcTicks = $"Calc Ticks (ms): Avg - {formattedAverages[0]} | {CalcTime.ToElementString()} ";
+                string drawTicks = $"Draw Ticks (ms): Avg - {formattedAverages[1]} | {RenderTime.ToElementString()}";
+                string compTicks = $"Comp Ticks (ms): Avg - {formattedAverages[2]} | {TickTime.ToElementString()}";
+
+                UpdateDebugConsoleLine(new ConsoleLine($"[Profiler] FPS: {Fps}", BuildArray(AppRegistry.SecondaryCol.Extend(10), AppRegistry.PrimaryCol)), debugStartIndex + 1);
+                UpdateDebugConsoleLine(new ConsoleLine($"Tick Num: {tickNum}, Lost Duration {CalcTime.Where(s => s > 25).Sum(s => s - 25)} ms, Total Duration: {Math.Round((double)CalcTime.Sum(), 2)} ms, Draw Duration: {Math.Round((double)RenderTime.Sum(), 2)} ms", AppRegistry.PrimaryCol), debugStartIndex + 2);
                 UpdateDebugConsoleLine(new ConsoleLine(calcTicks, ColourTickInfo(calcTicks)), debugStartIndex + 3);
                 UpdateDebugConsoleLine(new ConsoleLine(drawTicks, ColourTickInfo(drawTicks)), debugStartIndex + 4);
                 UpdateDebugConsoleLine(new ConsoleLine(compTicks, ColourTickInfo(compTicks, 25, 30)), debugStartIndex + 5);
             }
 
-            tickCaculationTime.Clear();
-            tickCompletionTime.Clear();
-            drawTime.Clear();
+            CalcTime.Clear();
+            TickTime.Clear();
+            RenderTime.Clear();
         }
     }
 
-    /// <summary> Colours ticks according to there duratio. </summary>
+    /// <summary> Colours ticks according to their duration. </summary>
     static ConsoleColor[] ColourTickInfo(string ticks, int warningThreshold = 15, int errorThreshold = 25)
     {
         ConsoleColor[] colours = new ConsoleColor[ticks.Length];
@@ -85,11 +84,11 @@ public static class Profiler
                 else break;
             }
 
-            colours[i] = ConsoleColor.White;
+            colours[i] = AppRegistry.PrimaryCol[0];
             for (int j = 0; j < numberString.Length; j++)
             {
                 int tickDuration = int.Parse(numberString);
-                colours[i + j] = tickDuration > errorThreshold ? ConsoleColor.Red : tickDuration > warningThreshold ? ConsoleColor.Yellow : ConsoleColor.White;
+                colours[i + j] = tickDuration > errorThreshold ? ConsoleColor.Red : tickDuration > warningThreshold ? ConsoleColor.Yellow : AppRegistry.PrimaryCol[0];
             }
         }
 

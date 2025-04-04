@@ -11,39 +11,37 @@ namespace Revistone.Management;
 /// <summary> Main management class, handles initialization, Tick, and main interaction behaviour. </summary>
 public static class Manager
 {
-    public static readonly object renderLockObject = new object();
+    public static readonly object renderLockObject = new();
+    public static readonly Random rng = new();
 
-    public static readonly Random rng = new Random();
-
-    static readonly Thread handleTickBehaviour = new Thread(HandleTickBehaviour);
-    static readonly Thread handleRealTimeInput = new Thread(UserRealtimeInput.KeyRegistry);
-    static readonly Thread handleAnalytics = new Thread(Analytics.HandleAnalytics);
-
-    public static event TickEventHandler Tick = new TickEventHandler((tickNum) => { });
+    public static event TickEventHandler Tick = new((tickNum) => { });
     public delegate void TickEventHandler(int tickNum);
-
-    public static int currentTick { get; private set; } = 0;
+    public static int ElapsedTicks { get; private set; } = 0;
 
     static long _deltaTime = 0; // duration of last tick in ms
-    public static double deltaTime => _deltaTime / 1000d; // duration of last tick in seconds
+    public static double DeltaTime => _deltaTime / 1000d; // duration of last tick in seconds
+
+    static readonly Thread tickBehaviourThread = new(HandleTickBehaviour); // tick thread
+    static readonly Thread realTimeInputThread = new(UserRealtimeInput.KeyRegistry); // thread for input
+    static readonly Thread analyticThread = new(Analytics.HandleAnalytics); // analytic thread
 
     /// <summary> [DO NOT CALL] Calls the Tick event, occours every 25ms (40 calls per seconds). </summary>
-    static void HandleTickBehaviour() //controls tick based events
+    static void HandleTickBehaviour()
     {
-        Stopwatch tickStartTime = new Stopwatch(); //time tick starts
-        Stopwatch tickSleepStart = new Stopwatch(); //tick delay start
+        Stopwatch tickStartTime = new(); //time tick starts
+        Stopwatch tickSleepStart = new(); //tick delay start
         tickStartTime.Start();
 
         while (true)
         {
-            Tick.Invoke(currentTick);
-            Profiler.tickCaculationTime.Add(tickStartTime.ElapsedMilliseconds);
+            Tick.Invoke(ElapsedTicks);
+            Profiler.CalcTime.Add(tickStartTime.ElapsedMilliseconds);
 
             tickSleepStart.Start();
             long targetThreadDelay = Math.Max(25 - (tickStartTime.ElapsedMilliseconds + Math.Max(_deltaTime - 25, 0)), 0);
             while (true)
             {
-                if (tickSleepStart.ElapsedMilliseconds >= targetThreadDelay - 0.25) //0.25 is error miminmising
+                if (tickSleepStart.ElapsedMilliseconds >= targetThreadDelay)
                 {
                     tickSleepStart.Reset();
                     break;
@@ -51,9 +49,9 @@ public static class Manager
             }
 
             _deltaTime = tickStartTime.ElapsedMilliseconds;
-            Profiler.tickCompletionTime.Add(_deltaTime);
+            Profiler.TickTime.Add(_deltaTime);
             tickStartTime.Restart();
-            currentTick++;
+            ElapsedTicks++;
         }
     }
 
@@ -64,9 +62,9 @@ public static class Manager
         {
             if (ConsoleData.consoleReload) continue;
 
-            if (ConsoleData.appInitalisation)
+            if (ConsoleData.appInitalisation) // load new app
             {
-                Profiler.SetEnabled(Profiler.enabled);
+                Profiler.SetEnabled(Profiler.Enabled);
                 AppRegistry.activeApp.OnAppInitalisation();
                 ConsoleData.appInitalisation = false;
             }
@@ -85,34 +83,31 @@ public static class Manager
         }
     }
 
-    //Initalizes main and tick threads, aswell as setting up consoleDisplay
+    // Entry point of the entire program, initalizes all systems
     public static void Main(string[] args)
     {
-        // called first so init functions can still be tracked
-        Analytics.InitalizeAnalytics();
+        Analytics.InitalizeAnalytics(); // called to track start up process
         Analytics.Debug.Add("Console Process Start.");
 
-        AppRegistry.InitializeAppRegistry();
+        AppRegistry.InitializeAppRegistry(); // init all apps
         AppRegistry.SetActiveApp("Revistone");
 
-        ConsoleWidget.InitializeWidgets();
-        ConsoleRenderer.InitializeRenderer();
-        ConsoleRendererLogic.InitializeConsoleRendererLogic();
-        Profiler.InitializeProfiler();
-        GPTFunctions.InitializeGPT();
+        ConsoleWidget.InitializeWidgets(); // init border widgets
+        ConsoleRenderer.InitializeRenderer(); // init rendering
+        ConsoleRendererLogic.InitializeConsoleRendererLogic(); // init rendering pt2
+        Profiler.InitializeProfiler(); // init fps tracking (profiler)
+        GPTFunctions.InitializeGPT(); // init gpt
+
+        analyticThread.Start();
+        tickBehaviourThread.Start();
+        realTimeInputThread.Start();
 
         System.Console.CancelKeyPress += new ConsoleCancelEventHandler(OnCancelKeyPress); // prevent ctrl c from closing the program
-
-        handleAnalytics.Start();
-        handleTickBehaviour.Start();
-        handleRealTimeInput.Start();
-
-        AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
-        AppDomain.CurrentDomain.UnhandledException += OnProcessCrash;
+        AppDomain.CurrentDomain.ProcessExit += OnProcessExit; // on user close
+        AppDomain.CurrentDomain.UnhandledException += OnProcessCrash; // on crash
 
         Analytics.Debug.Add("Console Process Initialization Complete.");
-        HandleConsoleBehaviour();
-
+        HandleConsoleBehaviour(); // main console loop
     }
 
     // --- ON APPLICATION CLOSE ---
@@ -120,14 +115,14 @@ public static class Manager
     ///<summary> Called upon attempted close keybind Ctrl+C. </summary>
     static void OnCancelKeyPress(object? sender, ConsoleCancelEventArgs args)
     {
-        ConsoleAction.SendDebugMessage(new ConsoleLine("Console Close Prevented, If Attempting To Copy Text Use Alt+C Instead.", AppRegistry.activeApp.colourScheme.primaryColour));
-
+        ConsoleAction.SendDebugMessage(new ConsoleLine("Console Close Prevented, If Attempting To Copy Text Use Alt+C Instead.", AppRegistry.PrimaryCol));
         args.Cancel = true;
     }
 
     ///<summary> Called upon standard close of the console. </summary>
     static void OnProcessExit(object? sender, EventArgs e)
     {
+        Analytics.General.LastCloseDate = DateTime.Now;
         Analytics.Debug.Add($"Console Process Exit.");
         Analytics.SaveAnalytics();
     }
@@ -135,7 +130,8 @@ public static class Manager
     ///<summary> Called upon crash of the console. </summary>
     static void OnProcessCrash(object sender, UnhandledExceptionEventArgs e)
     {
-        Analytics.Debug.Add($"Console CRASH :( Process Exit. Crash Message: {e.ExceptionObject}");
+        Analytics.General.LastCloseDate = DateTime.Now;
+        Analytics.Debug.Add($"Console Unexpected (Crash D:) Process Exit.\n Crash Message: {e.ExceptionObject}");
         Analytics.SaveAnalytics();
     }
 }

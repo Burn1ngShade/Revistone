@@ -1,3 +1,10 @@
 render test
 yayayay
 reload
+load paint
+hlep
+help
+load screenshots
+sticker cute
+load paint
+load flash card manager

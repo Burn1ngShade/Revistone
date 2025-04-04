@@ -6,10 +6,11 @@ using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.Management;
 
-///<summary> Class responsible for tracking all data about console usage (locally stored). </summary>
+///<summary> Handles tracking all data about console usage (locally stored). </summary>
 public static class Analytics
 {
     static readonly ManualResetEvent waitHandle = new(false);
+    static readonly object saveLockObject = new();
 
     public static GeneralAnalyticsData General { get; set; } = new();
     public static AppAnalyticsData App { get; set; } = new();
@@ -29,34 +30,51 @@ public static class Analytics
         {
             waitHandle.WaitOne((int)(float.Parse(SettingsApp.GetValue("Analytics Update Frequency")[..^1]) * 1000)); // wait for a second or until signaled
 
-            General.TotalRuntimeTicks += Manager.currentTick - lastRuntimeTicks;
+            General.TotalRuntimeTicks += Manager.ElapsedTicks - lastRuntimeTicks;
             rAnalytics.Difference(General);
             App.TrackAppRuntime(AppRegistry.activeApp.name, rAnalytics);
 
             SaveAnalytics();
             rAnalytics = new(General);
-            lastRuntimeTicks = Manager.currentTick;
+            lastRuntimeTicks = Manager.ElapsedTicks;
         }
     }
 
     // --- DATA HANDLING ---
 
     ///<summary> [DO NOT CALL] Initalizes analytics. </summary>
-    public static void InitalizeAnalytics()
+    internal static void InitalizeAnalytics()
     {
         General = LoadFileFromJSON<GeneralAnalyticsData>(GeneratePath(DataLocation.Console, "Analytics", "General.json")) ?? new GeneralAnalyticsData();
         App = LoadFileFromJSON<AppAnalyticsData>(GeneratePath(DataLocation.Console, "Analytics", "App.json")) ?? new AppAnalyticsData();
         Widget = LoadFileFromJSON<WidgetAnalyticsData>(GeneratePath(DataLocation.Console, "Analytics", "Widget.json")) ?? new WidgetAnalyticsData();
         Debug = new DebugAnalyticsData(); // we only want debug from last run
+
+        if (!FileExists(GeneratePath(DataLocation.Console, "Analytics", "Debug.json"))) CreateFile(GeneratePath(DataLocation.Console, "Analytics", "Debug.json"));
     }
 
     ///<summary> Saves analytics data. </summary>
     public static void SaveAnalytics()
     {
-        SaveFileAsJSON(GeneratePath(DataLocation.Console, "Analytics", "General.json"), General);
-        SaveFileAsJSON(GeneratePath(DataLocation.Console, "Analytics", "App.json"), App);
-        SaveFileAsJSON(GeneratePath(DataLocation.Console, "Analytics", "Widget.json"), Widget);
-        SaveFileAsJSON(GeneratePath(DataLocation.Console, "Analytics", "Debug.json"), Debug);
+        // using temp files prevents data being corrupted when closing console mid save so yay!
+
+        lock (saveLockObject)
+        {
+            string tempGeneralFile = GeneratePath(DataLocation.Console, "Analytics", "General_temp.json");
+            string tempAppFile = GeneratePath(DataLocation.Console, "Analytics", "App_temp.json");
+            string tempWidgetFile = GeneratePath(DataLocation.Console, "Analytics", "Widget_temp.json");
+            string tempDebugFile = GeneratePath(DataLocation.Console, "Analytics", "Debug_temp.json");
+
+            SaveFileAsJSON(tempGeneralFile, General);
+            SaveFileAsJSON(tempAppFile, App);
+            SaveFileAsJSON(tempWidgetFile, Widget);
+            SaveFileAsJSON(tempDebugFile, Debug);
+
+            File.Replace(tempGeneralFile, GeneratePath(DataLocation.Console, "Analytics", "General.json"), null);
+            File.Replace(tempAppFile, GeneratePath(DataLocation.Console, "Analytics", "App.json"), null);
+            File.Replace(tempWidgetFile, GeneratePath(DataLocation.Console, "Analytics", "Widget.json"), null);
+            File.Replace(tempDebugFile, GeneratePath(DataLocation.Console, "Analytics", "Debug.json"), null);
+        }
     }
 
     // --- ANALYTICS OBJECTS ---
@@ -95,6 +113,7 @@ public static class Analytics
     {
         public DateTime AnalyticsCreationDate { get; set; } = DateTime.Now;
         public DateTime LastOpenDate { get; set; }
+        public DateTime LastCloseDate {get; set; }
 
         // --- General ---
         public int TimesOpened { get; set; } = 0;

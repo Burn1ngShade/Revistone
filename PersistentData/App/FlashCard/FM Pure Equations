@@ -1,0 +1,52 @@
+FM Pure Equations
+00:13:11.8708362
+00:02:20.8610070
+70
+61
+14
+5
+0
+M = [(a,b),(c,d)], M^(-1) = 
+(1/detM)[(d,-b),(-c,a)]
+0
+General Solution For Two Distinct Roots = 
+Ae^(h_1x)+Be^(h_2x)
+0
+General Solution For Repeated Roots = 
+(A+Bx)e^(hx)
+0
+General Solution For Complex Roots = 
+e^(ax)(Asin(bx)+Bcos(bx))
+0
+A.B = 
+|A||B|cosx
+0
+detM After A Row/Column Swap = 
+-detM
+0
+detM After A Scalar Multiplication k On Row/Column = 
+kdetM
+0
+detM After Adding A Multiple Of One Row/Column To Another = 
+detM
+0
+The Equation For Eigan Vectors/Values, 0 = 
+(M-hI)v
+0
+a = 
+-w^(2)x
+0
+v^(2) = 
+w^(2)(A^(2)-x^(2))
+0
+Distance Between Two Parallel Lines d = 
+(|(a_2-a_1)xb|)/(|b|)
+0
+Distance Between Two Skew Lines d = 
+(|(a_2-a_1).(b_1xb_2)|)/(|b_1xb_2|)
+0
+Area Of A Triangle = 
+(1/2)|AxB|
+0
+Distance From A Point To A Plane = 
+(|(a_2-a_1).n|)/(|n|)

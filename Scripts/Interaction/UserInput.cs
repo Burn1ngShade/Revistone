@@ -8,6 +8,11 @@ using static Revistone.Console.Data.ConsoleData;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
+using System.Security.Cryptography.X509Certificates;
+using Revistone.Console.Data;
+using System.Net.Http.Headers;
+using System.Security.Principal;
+using System.Reflection.Metadata;
 
 namespace Revistone.Interaction;
 
@@ -134,17 +139,17 @@ public static class UserInput
                                 (int index, int length) cutPointer = data.GetPointerFromLeft();
                                 StringFunctions.CopyToClipboard($"{data.input} ".Substring(cutPointer.index, cutPointer.length));
                                 data.Remove();
-                                SendDebugMessage(new ConsoleLine("Contents Cut To Clipboard.", AppRegistry.activeApp.colourScheme.primaryColour));
+                                SendDebugMessage(new ConsoleLine("Contents Cut To Clipboard.", AppRegistry.PrimaryCol));
                                 break;
                             case ConsoleKey.C: // copy
                                 (int index, int length) copyPointer = data.GetPointerFromLeft();
                                 StringFunctions.CopyToClipboard($"{data.input} ".Substring(copyPointer.index, copyPointer.length));
-                                SendDebugMessage(new ConsoleLine("Contents Copied To Clipboard.", AppRegistry.activeApp.colourScheme.primaryColour));
+                                SendDebugMessage(new ConsoleLine("Contents Copied To Clipboard.", AppRegistry.PrimaryCol));
                                 break;
                             case ConsoleKey.V: // paste
                                 if (data.pointer.extension != 0) data.Remove();
                                 data.Add(ConsoleLine.Clean(new ConsoleLine(StringFunctions.GetClipboardText())).lineText);
-                                SendDebugMessage(new ConsoleLine("Clipboard Contents Pasted.", AppRegistry.activeApp.colourScheme.primaryColour));
+                                SendDebugMessage(new ConsoleLine("Clipboard Contents Pasted.", AppRegistry.PrimaryCol));
                                 break;
                         }
 
@@ -171,7 +176,7 @@ public static class UserInput
     }
 
     /// <summary> Gets input from the user (input length capped at buffer width). </summary>
-    public static string GetUserInput(string promt = "", bool clear = false, bool goNextLine = false, int maxLineCount = 1) { return GetUserInput(new ConsoleLine(promt, AppRegistry.activeApp.colourScheme.primaryColour), clear, goNextLine, "", maxLineCount); }
+    public static string GetUserInput(string promt = "", bool clear = false, bool goNextLine = false, int maxLineCount = 1) { return GetUserInput(new ConsoleLine(promt, AppRegistry.PrimaryCol), clear, goNextLine, "", maxLineCount); }
 
     /// <summary> Class responsible all of the data and it's manipulation while taking a user's input. </summary>
     class InputData
@@ -295,7 +300,7 @@ public static class UserInput
             anim.data[index] = startIndex == 0 ? BuildArray(ConsoleColor.Black.Extend(2), CreateAnimationLineData(whiteSpacedInput, startIndex)) : CreateAnimationLineData(whiteSpacedInput, startIndex);
 
             return startIndex == 0 ?
-            new ConsoleLine($"> {whiteSpacedInput.Substring(startIndex, length)}", BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour, ConsoleColor.White.ToArray()), GetLineAnimationData(index)) :
+            new ConsoleLine($"> {whiteSpacedInput.Substring(startIndex, length)}", BuildArray(AppRegistry.SecondaryCol, ConsoleColor.White.ToArray()), GetLineAnimationData(index)) :
             new ConsoleLine(whiteSpacedInput.Substring(startIndex, length), ConsoleColor.White.ToArray(), GetLineAnimationData(index));
         }
 
@@ -413,7 +418,7 @@ public static class UserInput
     }
 
     /// <summary> Gets input from the user, verifying it matches the conditions of given UserInputProfile. </summary>
-    public static string GetValidUserInput(string promt, UserInputProfile inputProfile, string prefilledText = "", int maxLineCount = 1) { return GetValidUserInput(new ConsoleLine(promt, AppRegistry.activeApp.colourScheme.primaryColour), inputProfile, prefilledText, maxLineCount); }
+    public static string GetValidUserInput(string promt, UserInputProfile inputProfile, string prefilledText = "", int maxLineCount = 1) { return GetValidUserInput(new ConsoleLine(promt, AppRegistry.PrimaryCol), inputProfile, prefilledText, maxLineCount); }
 
     /// <summary> Waits for user to input given key, pausing program until pressed. </summary>
     // will update once dynamic lines get updated
@@ -422,7 +427,7 @@ public static class UserInput
         if (space) ShiftLine();
         int dotCount = 1, index = -1;
 
-        ConsoleColor[] colours = AdvancedHighlight(30, AppRegistry.activeApp.colourScheme.primaryColour, (AppRegistry.activeApp.colourScheme.secondaryColour, 6, 2 + key.ToString().Length));
+        ConsoleColor[] colours = AdvancedHighlight(30, AppRegistry.PrimaryCol, (AppRegistry.SecondaryCol, 6, 2 + key.ToString().Length));
 
         SendConsoleMessage(new ConsoleLine($"Press [{key}] To Continue{new string('.', dotCount)}", colours), ConsoleLineUpdate.SameLine,
         new ConsoleAnimatedLine(WaitForUserInputUpdate, tickMod: AppRegistry.activeApp.colourScheme.speed, enabled: true));
@@ -469,7 +474,7 @@ public static class UserInput
         for (int i = 0; i < options.Length; i++)
         {
             options[i].Update("> " + options[i].lineText,
-            BuildArray(AppRegistry.activeApp.colourScheme.secondaryColour.Extend(2), options[i].lineColour.Extend(options[i].lineText.Length), AppRegistry.activeApp.colourScheme.secondaryColour.Extend(3)));
+            BuildArray(AppRegistry.SecondaryCol.Extend(2), options[i].lineColour.Extend(options[i].lineText.Length), AppRegistry.SecondaryCol.Extend(3)));
             optionLines[i] = SendConsoleMessage(options[i], ConsoleAnimatedLine.AppTheme);
         }
 
@@ -535,13 +540,13 @@ public static class UserInput
     /// <summary> Creates menu from given options, allowing user to pick one. </summary>
     public static int CreateOptionMenu(string title, ConsoleLine[] options, bool clear = true, int cursorStartIndex = 0)
     {
-        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour), options, clear, cursorStartIndex);
+        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), options, clear, cursorStartIndex);
     }
 
     /// <summary> Creates menu from given consoleLine options, allowing user to pick one, and invoking the associated action. </summary>
     public static int CreateOptionMenu(string title, (ConsoleLine name, Action action)[] options, bool clear = true, int cursorStartIndex = 0)
     {
-        int option = CreateOptionMenu(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour), options.Select(option => option.name).ToArray(), clear, cursorStartIndex);
+        int option = CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), options.Select(option => option.name).ToArray(), clear, cursorStartIndex);
         options[option].action.Invoke();
         return option;
     }
@@ -557,19 +562,19 @@ public static class UserInput
     /// <summary> Creates menu from given text options, allowing user to pick one, and invoking the associated action. </summary>
     public static int CreateOptionMenu(string title, (string name, Action action)[] options, bool clear = true, int cursorStartIndex = 0)
     {
-        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour), options, clear, cursorStartIndex);
+        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), options, clear, cursorStartIndex);
     }
 
     /// <summary> Creates menu from given text options, allowing user to pick one. </summary>
     public static int CreateOptionMenu(string title, string[] options, bool clear = true, int cursorStartIndex = 0)
     {
-        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour), options.Select(option => new ConsoleLine(option)).ToArray(), clear, cursorStartIndex);
+        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), options.Select(option => new ConsoleLine(option)).ToArray(), clear, cursorStartIndex);
     }
 
     /// <summary> Creates menu, allowing user to select either yes or no. </summary>
     public static bool CreateTrueFalseOptionMenu(string title, string trueOption = "Yes", string falseOption = "No", bool clear = true, int cursorStartIndex = 0)
     {
-        if (CreateOptionMenu(new ConsoleLine(title, AppRegistry.activeApp.colourScheme.primaryColour), [new ConsoleLine(trueOption, AppRegistry.activeApp.colourScheme.secondaryColour), new ConsoleLine(falseOption, AppRegistry.activeApp.colourScheme.secondaryColour)], clear, cursorStartIndex) == 0) return true;
+        if (CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), [new ConsoleLine(trueOption, AppRegistry.SecondaryCol), new ConsoleLine(falseOption, AppRegistry.SecondaryCol)], clear, cursorStartIndex) == 0) return true;
         return false;
     }
 
@@ -578,11 +583,11 @@ public static class UserInput
     {
         if (options.Length + pinnedOptions.Length < 2) return 0;
 
-        for (int i = 0; i < pinnedOptions.Length; i++) { pinnedOptions[i].Update(AppRegistry.activeApp.colourScheme.primaryColour.ToArray()); }
+        for (int i = 0; i < pinnedOptions.Length; i++) { pinnedOptions[i].Update(AppRegistry.PrimaryCol.ToArray()); }
 
         ConsoleLine[] pgExtraOptions = new ConsoleLine[] {
-                    new ConsoleLine("Next Page", AppRegistry.activeApp.colourScheme.primaryColour),
-                    new ConsoleLine("Previous Page", AppRegistry.activeApp.colourScheme.primaryColour)
+                    new ConsoleLine("Next Page", AppRegistry.PrimaryCol),
+                    new ConsoleLine("Previous Page", AppRegistry.PrimaryCol)
                 }.Concat(pinnedOptions).ToArray();
 
         int currentPage = cursorStartIndex / optionsPerPage, totalPages = (options.Length - 1) / optionsPerPage, resultIndex = cursorStartIndex % optionsPerPage;
@@ -593,9 +598,9 @@ public static class UserInput
             ConsoleLine[] pgOptions = options.Skip(currentPage * optionsPerPage).Take(Math.Min(optionsPerPage, options.Length - currentPage * optionsPerPage)).Concat(pgExtraOptions).ToArray();
 
             SendConsoleMessage(new ConsoleLine($"--- {title} Page [{currentPage + 1}/{totalPages + 1}] ---",
-            BuildArray(AppRegistry.activeApp.colourScheme.primaryColour.Extend(title.Length + 10),
-            AppRegistry.activeApp.colourScheme.secondaryColour.Extend($"[{currentPage + 1}/{currentPage + 1}]".Length, true),
-            AppRegistry.activeApp.colourScheme.primaryColour.Extend(4))));
+            BuildArray(AppRegistry.PrimaryCol.Extend(title.Length + 10),
+            AppRegistry.SecondaryCol.Extend($"[{currentPage + 1}/{currentPage + 1}]".Length, true),
+            AppRegistry.PrimaryCol.Extend(4))));
 
             resultIndex = CreateOptionMenu("", pgOptions.Select(o => new ConsoleLine(o)).ToArray(), cursorStartIndex: resultIndex);
 
@@ -633,13 +638,14 @@ public static class UserInput
     public static void CreateReadMenu(string title, int messagesPerPage, (ConsoleLine name, Action action)[] extraOptions, params ConsoleLine[] messages)
     {
         int page = 0, pages = (messages.Length - 1) / messagesPerPage, pageLength;
+        int cursorIndex = 0;
 
         while (true)
         {
             SendConsoleMessage(new ConsoleLine($"--- {title} Page [{page + 1}/{pages + 1}] ---",
-            BuildArray(AppRegistry.activeApp.colourScheme.primaryColour.Extend(title.Length + 10),
-            AppRegistry.activeApp.colourScheme.secondaryColour.Extend($"[{page + 1}/{pages + 1}]".Length, true),
-            AppRegistry.activeApp.colourScheme.primaryColour.Extend(4))));
+            BuildArray(AppRegistry.PrimaryCol.Extend(title.Length + 10),
+            AppRegistry.SecondaryCol.Extend($"[{page + 1}/{pages + 1}]".Length, true),
+            AppRegistry.PrimaryCol.Extend(4))));
 
 
             pageLength = Math.Min(page * messagesPerPage + messagesPerPage, messages.Length) - page * messagesPerPage;
@@ -650,10 +656,12 @@ public static class UserInput
                 SendConsoleMessage(messages[i], ConsoleAnimatedLine.AppTheme);
             }
 
-            if (CreateOptionMenu("", extraOptions.Concat(new (ConsoleLine, Action)[] {
-                    (new ConsoleLine("Next Page", AppRegistry.activeApp.colourScheme.primaryColour), () => page = page < pages ? page + 1 : 0),
-                    (new ConsoleLine("Last Page", AppRegistry.activeApp.colourScheme.primaryColour), () => page = page > 0 ? page - 1 : pages),
-                    (new ConsoleLine("Exit", AppRegistry.activeApp.colourScheme.primaryColour), () => {})}).ToArray()) == 2)
+            cursorIndex = CreateOptionMenu("", extraOptions.Concat(new (ConsoleLine, Action)[] {
+                    (new ConsoleLine("Next Page", AppRegistry.PrimaryCol), () => page = page < pages ? page + 1 : 0),
+                    (new ConsoleLine("Last Page", AppRegistry.PrimaryCol), () => page = page > 0 ? page - 1 : pages),
+                    (new ConsoleLine("Exit", AppRegistry.PrimaryCol), () => {})}).ToArray(), cursorStartIndex: cursorIndex);
+
+            if (cursorIndex == 2)
             {
                 ClearLines(metaOptionsLines, true);
                 break;
@@ -668,7 +676,7 @@ public static class UserInput
     /// <summary> Creates menu from given messages, spliting into pages, allowing user to view. </summary>
     public static void CreateReadMenu(string title, int messagesPerPage, params ConsoleLine[] messages)
     {
-        CreateReadMenu(title, messagesPerPage, new (ConsoleLine, Action)[] { }, messages);
+        CreateReadMenu(title, messagesPerPage, [], messages);
     }
 
     /// <summary> Creates menu from given messages, spliting into pages, allowing user to view. </summary>
@@ -677,8 +685,89 @@ public static class UserInput
         CreateReadMenu(title, messagesPerPage, messages.Select(s => new ConsoleLine(s)).ToArray());
     }
 
-    internal static int CreateOptionMenu(string v, object value, int cursorStartIndex)
+    ///<summary> Allows user to edit, remove, and append multiple lines to a given string[]. </summary>
+    public static string[] MultiLineEdit(string title, string[] content)
     {
-        throw new NotImplementedException();
+        List<string> c = content.Length == 0 ? [""] : [.. content];
+
+        int windowHeight;
+        int windowTop;
+        int cur = 0;
+        int contentIndex = 0;
+
+        CreateRender();
+
+        while (true)
+        {
+            (ConsoleKeyInfo key, bool interrupted) = UserRealtimeInput.GetKey();
+
+            if (interrupted)
+            {
+                CreateRender();
+                continue;
+            }
+
+            switch (key.Key)
+            {
+                case ConsoleKey.W or ConsoleKey.UpArrow:
+                    ShiftRender(-1);
+                    break;
+                case ConsoleKey.S or ConsoleKey.DownArrow:
+                    ShiftRender(1);
+                    break;
+                case ConsoleKey.Enter:
+                    primaryLineIndex = windowTop + cur;
+                    c[contentIndex + cur] = UserInput.GetUserInput(new ConsoleLine(), clear: true, prefilledText: c[contentIndex + cur]);
+                    UpdateRender();
+                    break;
+                case ConsoleKey.E:
+                    while (c.Count > 0 && c[^1].Length == 0) c.RemoveAt(c.Count - 1);
+                    primaryLineIndex = windowTop + windowHeight;
+                    ClearPrimaryConsole();
+                    return [.. c];
+            }
+        }
+
+        // full render of edit window
+        void CreateRender()
+        {
+            ClearPrimaryConsole();
+            windowHeight = debugStartIndex - primaryLineIndex - 4;
+
+            SendConsoleMessage(new ConsoleLine($"--- {title} ---", BuildArray(AppRegistry.PrimaryCol.Extend(3), AppRegistry.SecondaryCol.Extend(title.Length + 1), AppRegistry.PrimaryCol)));
+            for (int i = 0; i < windowHeight; i++)
+            {
+                SendConsoleMessage(new ConsoleLine($"{(contentIndex + i + 1).ToString().PadLeft((contentIndex + windowHeight).ToString().Length)}. " + (contentIndex + i < c.Count ? c[contentIndex + i] : ""), BuildArray(i == cur ? AppRegistry.SecondaryCol.Extend(3) : AppRegistry.PrimaryCol.Extend(3), ConsoleColor.White.ToArray())));
+            }
+            windowTop = primaryLineIndex - windowHeight;
+
+            SendConsoleMessage(new ConsoleLine(new string('-', 8 + title.Length), AppRegistry.PrimaryCol));
+            ShiftLine();
+            SendConsoleMessage(new ConsoleLine("Press [E] To Save And Exit.", BuildArray(AppRegistry.PrimaryCol.Extend(6), AppRegistry.SecondaryCol.Extend(3), AppRegistry.PrimaryCol)));
+        }
+
+        void UpdateRender()
+        {
+            for (int i = 0; i < windowHeight; i++)
+            {
+                UpdatePrimaryConsoleLine(new ConsoleLine($"{(contentIndex + i + 1).ToString().PadLeft((contentIndex + windowHeight).ToString().Length)}. " + (contentIndex + i < c.Count ? c[contentIndex + i] : ""), BuildArray(i == cur ? AppRegistry.SecondaryCol.Extend(3) : AppRegistry.PrimaryCol.Extend(3), ConsoleColor.White.ToArray())), windowTop + i);
+            }
+        }
+
+        // move cursor up or down
+        void ShiftRender(int shift)
+        {
+            int newCur = cur + shift;
+            if (newCur < 0) contentIndex = Math.Max(contentIndex - 1, 0);
+            else if (newCur >= windowHeight)
+            {
+                contentIndex++;
+            }
+
+            cur = Math.Clamp(newCur, 0, windowHeight - 1);
+            if (contentIndex + cur >= c.Count) c.Add("");
+
+            UpdateRender();
+        }
     }
 }

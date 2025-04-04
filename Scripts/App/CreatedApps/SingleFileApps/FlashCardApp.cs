@@ -150,7 +150,7 @@ public class FlashCardApp : App
             {
                 case 0:
                     StandardFlashCard sfc = (StandardFlashCard)shuffledQuestions[i];
-                    SendConsoleMessage(new ConsoleLine("Promt:", AppRegistry.activeApp.colourScheme.primaryColour));
+                    SendConsoleMessage(new ConsoleLine("Promt:", AppRegistry.PrimaryCol));
                     SendConsoleMessage(sfc.promt);
                     ShiftLine();
                     answer = UserInput.GetUserInput("Answer: ", clear: true);
@@ -158,7 +158,7 @@ public class FlashCardApp : App
                     break;
                 case 1:
                     MultiChoiceFlashCard mcfc = (MultiChoiceFlashCard)shuffledQuestions[i];
-                    SendConsoleMessage(new ConsoleLine("Promt:", AppRegistry.activeApp.colourScheme.primaryColour));
+                    SendConsoleMessage(new ConsoleLine("Promt:", AppRegistry.PrimaryCol));
                     SendConsoleMessage(mcfc.promt);
                     ShiftLine();
                     answer = UserInput.CreateOptionMenu("Answer: ", mcfc.answers.ToArray()).ToString();
@@ -166,7 +166,7 @@ public class FlashCardApp : App
                     break;
                 case 2:
                     FillTheGapFlashCard ftgfc = (FillTheGapFlashCard)shuffledQuestions[i];
-                    SendConsoleMessage(new ConsoleLine("Fill In The Gap:", AppRegistry.activeApp.colourScheme.primaryColour));
+                    SendConsoleMessage(new ConsoleLine("Fill In The Gap:", AppRegistry.PrimaryCol));
                     SendConsoleMessage(ftgfc.FormattedQuestion());
                     ShiftLine();
                     answer = UserInput.GetUserInput("Answer: ", clear: true);
@@ -182,6 +182,7 @@ public class FlashCardApp : App
             else
             {
                 SendConsoleMessage(new ConsoleLine("Answer Incorrect!", ConsoleColor.DarkRed));
+                SendConsoleMessage($"Your Answer: {answer.Trim()}");
                 SendConsoleMessage($"Correct Answer: {correctAnswer}");
             }
 

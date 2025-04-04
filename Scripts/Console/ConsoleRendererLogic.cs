@@ -29,7 +29,7 @@ public static class ConsoleRendererLogic
 
     static void HandleGlobalException(object sender, UnhandledExceptionEventArgs e)
     {
-        blockRender = true;
+        if (SettingsApp.GetValue("Block Rendering On Crash") == "Yes") blockRender = true;
     }
 
     /// <summary> Main loop for ConsoleDisplay, handles dynamic lines and rendering console. </summary>
@@ -315,7 +315,7 @@ public static class ConsoleRendererLogic
             ConsoleRenderer.DrawBuffer();
 
             s.Stop();
-            Profiler.drawTime.Add(s.ElapsedMilliseconds);
+            Profiler.RenderTime.Add(s.ElapsedMilliseconds);
         }
     }
 }

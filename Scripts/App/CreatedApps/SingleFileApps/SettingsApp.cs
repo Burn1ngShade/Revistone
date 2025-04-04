@@ -31,8 +31,11 @@ public class SettingsApp : App
         new UserInputProfile(UserInputProfile.InputType.Int, numericMin: 0, numericMax: 50)),
         new InputSetting("Temperature", "How Random GPT Responses Are (0 [Not Random] - 2 [Unintelligible])", "1", SettingCategory.ChatGPT,
         new UserInputProfile([UserInputProfile.InputType.Float, UserInputProfile.InputType.Int], numericMin: 0, numericMax: 2)),
-        new InputSetting("GPT Name", "The Name Given To ChatGPT", "GPT", SettingCategory.ChatGPT, new UserInputProfile(bannedChars: "\n\"\' ")),
-        new InputSetting("Input History", "The Number Of Previous User Inputs Stored. (10 - 1,000)", "100", SettingCategory.Input,
+        new InputSetting("GPT Name", "The Name Given To GPT", "GPT", SettingCategory.ChatGPT, new UserInputProfile(bannedChars: "\n\"\' ")),
+        new DropdownSetting("GPT Model", "What Model Of GPT Should Be Used, 4o Mini Is Very Cheap, While o3 Mini Is More Expensive, But Better For Programming Tasks.", "gpt-4o-mini", SettingCategory.ChatGPT, ["gpt-4o-mini", "o3-mini"]),
+        new DropdownSetting("Welcome Message", "GPT Will Send A Message Upon Console Startup (Will Increase Inital Load Time).", "No", SettingCategory.ChatGPT, ["Yes", "No"]),
+        new DropdownSetting("Use Detailed System Promt", "Should GPT Use A Detailed System Promt, Giving It Details And Info About The Revistone Console, More Token Intensive.", "Yes", SettingCategory.ChatGPT, ["Yes", "No"]),
+        new InputSetting("Input History", "The Number Of Previous User Inputs Stored (10 - 1,000).", "100", SettingCategory.Input,
         new UserInputProfile([UserInputProfile.InputType.Float, UserInputProfile.InputType.Int], numericMin: 10, numericMax: 1000)),
         new DropdownSetting("Cursor Jump Separators", "The Charchters That The Cursor Uses To Divide Words.", ",. ", SettingCategory.Input,
         [",. ", ",.!?-_;: ", ",.!?-_;:(){}[] "]),
@@ -44,10 +47,15 @@ public class SettingsApp : App
         ["Yes", "No"]),
         new DropdownSetting("Show Time Widget", "Should The Time Widget Be Shown?", "Yes", SettingCategory.Widget,
         ["Yes", "No"]),
+        new DropdownSetting("Show Workspace Path Widget", "Should The Workspace Path Widget Be Shown?", "Yes", SettingCategory.Widget,
+        ["Yes", "No"]),
         new DropdownSetting("Analytics Update Frequency", "How Often Should Analytics Update? (Can Effect Performance On Low End Devices, All Unsaved Analytics May Be Lost On Console Close).", "0.5s", SettingCategory.Performance,
         ["0.25s", "0.5s", "1s", "2.5s", "5s", "10s", "30s", "60s"]),
         new DropdownSetting("Widget Update Frequency", "How Often Should Widgets Update? (Can Effect Performance On Low End Devices, But Lower Settings Will Make Widgets Appear Laggy).", "0.025s", SettingCategory.Performance,
-        ["0.025s", "0.05s", "0.1s", "0.2s", "0.5s", "1s"])
+        ["0.025s", "0.05s", "0.1s", "0.2s", "0.5s", "1s"]),
+        new DropdownSetting("Show Emojis", "Can Emojis Be Used In The Program (Certain Emojis Cause The Console To Misrender, Requiring A Reload To Fix).", "No", SettingCategory.Performance, ["Yes", "No"]),
+        new DropdownSetting("Block Rendering On Crash", "Pauses Rendering On Crash, Showing C# Compiler Error But Preventing Final Rendering Passes.", "Yes", SettingCategory.Debug, ["Yes", "No"]),
+        new DropdownSetting("Show GPT Tool Results", "Outputs GPT Tool Results To The Debug Console (GPT Can Sometimes Be A Little Bit Stupid, Use For Promt Improvement).", "No", SettingCategory.Debug, ["Yes", "No"])
     ];
 
     public SettingsApp() : base() { }
@@ -118,8 +126,8 @@ public class SettingsApp : App
             SendConsoleMessage(new ConsoleLine($"--- {setting.settingName} - {setting.category} ---", ConsoleColor.DarkBlue));
             SendConsoleMessage(new ConsoleLine($"{setting.settingName} - '{setting.currentValue}'", BuildArray(ConsoleColor.Cyan.Extend(setting.settingName.Length + 3), ConsoleColor.White.ToArray())));
             ShiftLine();
-            SendConsoleMessage(new ConsoleLine($"Summary: {setting.description}", ConsoleColor.DarkBlue));
-            SendConsoleMessage(new ConsoleLine($"Default Value: '{setting.defaultValue}'", ConsoleColor.DarkBlue));
+            SendConsoleMessage(new ConsoleLine($"Summary - {setting.description}", BuildArray(ConsoleColor.Cyan.Extend(9), ConsoleColor.DarkBlue.ToArray())));
+            SendConsoleMessage(new ConsoleLine($"Default Value - '{setting.defaultValue}'", BuildArray(ConsoleColor.Cyan.Extend(15), ConsoleColor.DarkBlue.ToArray())));
             ShiftLine();
 
             userOption = UserInput.CreateOptionMenu("--- Options ---", [
@@ -254,7 +262,7 @@ public class SettingsApp : App
 
     public abstract class Setting
     {
-        public enum SettingCategory { User, Input, ChatGPT, HoneyC, Widget, Performance }
+        public enum SettingCategory { User, Input, ChatGPT, HoneyC, Widget, Performance, Debug }
         public SettingCategory category;
 
         public string settingName = "";

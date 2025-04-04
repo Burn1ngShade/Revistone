@@ -1,4 +1,5 @@
 using System.Reflection;
+using Revistone.Console.Widget;
 using Revistone.Management;
 
 namespace Revistone.App;
@@ -14,6 +15,12 @@ public static class AppRegistry
     public static int activeAppIndex { get { return _activeAppIndex; } }
 
     public static App activeApp { get { return _appRegistry[_activeAppIndex]; } }
+    ///<summary> Primary colour of active app. </summary>
+    public static ConsoleColor[] PrimaryCol => activeApp.colourScheme.primaryColour;
+    ///<summary> Secondary colour of active app. </summary>
+    public static ConsoleColor[] SecondaryCol => activeApp.colourScheme.secondaryColour;
+    ///<summary> Tertiary colour of active app. </summary>
+    public static ConsoleColor[] TertiaryColour => activeApp.colourScheme.tertiaryColour;
 
     // --- METHODS ---
 
@@ -49,6 +56,8 @@ public static class AppRegistry
         Manager.Tick -= activeApp.OnUpdate;
         _activeAppIndex = index;
         Manager.Tick += activeApp.OnUpdate;
+
+        ConsoleWidget.UpdateWidgetHideInApp(activeApp.name);
 
         Analytics.Debug.Add($"Loaded App: {activeApp.name}.");
 

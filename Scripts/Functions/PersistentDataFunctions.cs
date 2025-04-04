@@ -1,4 +1,6 @@
 using System.Text.Json;
+using Revistone.App;
+using Revistone.Console;
 using Revistone.Management;
 
 namespace Revistone.Functions;
@@ -9,7 +11,8 @@ public static class PersistentDataFunctions
     public enum DataLocation { App, Console, Workspace }
     public enum SaveType { Overwrite, PartialOverwrite, Append, Insert }
 
-    static readonly string[] dataPaths = ["PersistentData/App/", "PersistentData/Console/", "PersistentData/Workspace/"];
+    static readonly string[] dataPaths = [@"PersistentData\App\", @"PersistentData\Console\", @"PersistentData\Workspace\"];
+    static readonly string[] reservedNames = ["CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"];
 
     // --- Useful ---
 
@@ -36,6 +39,27 @@ public static class PersistentDataFunctions
         }
 
         return isValid;
+    }
+
+    ///<summary> Verifys if file or directory name is valid. </summary>
+    public static bool IsNameValid(string name, bool outputErrors = false)
+    {
+        foreach (char c in Path.GetInvalidFileNameChars())
+        {
+            if (name.Contains(c))
+            {
+                if (outputErrors) ConsoleAction.SendConsoleMessage(new ConsoleLine($"File Name Contains Invalid Character: {c}.", AppRegistry.PrimaryCol));
+                return false;
+            }
+        }
+
+        if (reservedNames.Contains(name))
+        {
+            if (outputErrors) ConsoleAction.SendConsoleMessage(new ConsoleLine($"File Name Is Reserved: {name}.", AppRegistry.PrimaryCol));
+            return false;
+        }
+
+        return true;
     }
 
     /// <summary> Splits path into its components. </summary> 
@@ -65,7 +89,7 @@ public static class PersistentDataFunctions
     {
         if (!IsPathValid(path)) return;
 
-        if (DirectoryExists(path)) Directory.Delete(path);
+        if (DirectoryExists(path)) Directory.Delete(path, true);
     }
 
     /// <summary> Checks for directory with given name. </summary>
@@ -75,7 +99,7 @@ public static class PersistentDataFunctions
     }
 
     /// <summary> Returns a list of all the names of directorys at a given path. </summary>
-    public static string[] GetSubDirectorys(string path)
+    public static string[] GetSubDirectories(string path)
     {
         if (!IsPathValid(path)) return [];
 
@@ -237,6 +261,4 @@ public static class PersistentDataFunctions
             return default;
         }
     }
-
-    // --- BINARY Commands ---
 }

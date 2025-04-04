@@ -279,6 +279,8 @@ public class ConsoleImage
     ///<summary> Takes a screenshot of the primary console. </summary>
     public static void TakePrimaryScreenshot(string name = "")
     {
+        if (!IsNameValid(name, true)) return;
+
         int primarySize = ConsoleData.debugStartIndex - 1;
         ConsoleLine[] c = new ConsoleLine[primarySize];
 
@@ -291,12 +293,14 @@ public class ConsoleImage
         image.SetPixels(0, 0, c);
         SaveToCIMG(GeneratePath(DataLocation.Console, "History/Screenshots", name.Length == 0 ? $"Primary{DateTime.Now:[yyyy-MM-dd_HH-mm-ss]}.cimg" : $"{name}.cimg"), image);
 
-        ConsoleAction.SendDebugMessage(new ConsoleLine("Screenshot Taken.", AppRegistry.activeApp.colourScheme.primaryColour));
+        ConsoleAction.SendDebugMessage(new ConsoleLine("Screenshot Taken.", AppRegistry.PrimaryCol));
     }
 
     ///<summary> Takes a screenshot of the debug console. </summary>
     public static void TakeDebugScreenshot(string name = "")
     {
+        if (!IsNameValid(name, true)) return; 
+
         ConsoleLine[] c = new ConsoleLine[7];
 
         for (int i = ConsoleData.debugStartIndex + 1; i < ConsoleData.debugStartIndex + 8; i++)
@@ -309,6 +313,6 @@ public class ConsoleImage
         image.SetPixels(0, 0, c);
         SaveToCIMG(GeneratePath(DataLocation.Console, "History/Screenshots", name.Length == 0 ? $"Debug{DateTime.Now:[yyyy-MM-dd_HH-mm-ss]}.cimg" : $"{name}.cimg"), image);
 
-        ConsoleAction.SendDebugMessage(new ConsoleLine("Debug Screenshot Taken.", AppRegistry.activeApp.colourScheme.primaryColour));
+        ConsoleAction.SendDebugMessage(new ConsoleLine("Debug Screenshot Taken.", AppRegistry.PrimaryCol));
     }
 }

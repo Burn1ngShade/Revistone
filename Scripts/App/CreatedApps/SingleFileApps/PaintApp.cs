@@ -75,7 +75,7 @@ public class PaintApp : App
             return;
         }
 
-        int option = UserInput.CreateMultiPageOptionMenu("Images", [.. imageFiles.Select(x => new ConsoleLine(x[..^5], AppRegistry.activeApp.colourScheme.secondaryColour))], [new ConsoleLine("Exit", AppRegistry.activeApp.colourScheme.primaryColour)], 4);
+        int option = UserInput.CreateMultiPageOptionMenu("Images", [.. imageFiles.Select(x => new ConsoleLine(x[..^5], AppRegistry.SecondaryCol))], [new ConsoleLine("Exit", AppRegistry.PrimaryCol)], 4);
 
         if (option == -1) return;
 
@@ -230,7 +230,7 @@ public class PaintApp : App
             return;
         }
 
-        int option = UserInput.CreateMultiPageOptionMenu("Images", [.. imageFiles.Select(x => new ConsoleLine(x[..^5], AppRegistry.activeApp.colourScheme.secondaryColour))], [new ConsoleLine("Exit", AppRegistry.activeApp.colourScheme.primaryColour)], 4);
+        int option = UserInput.CreateMultiPageOptionMenu("Images", [.. imageFiles.Select(x => new ConsoleLine(x[..^5], AppRegistry.SecondaryCol))], [new ConsoleLine("Exit", AppRegistry.PrimaryCol)], 4);
 
         if (option == -1) return;
 

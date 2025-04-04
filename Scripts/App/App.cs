@@ -1,14 +1,10 @@
 using Revistone.Console;
-using Revistone.Console.Image;
 using Revistone.Functions;
 using Revistone.Interaction;
-using Revistone.Management;
 
 namespace Revistone.App;
 
-/// <summary>
-/// Base class for apps to inherit.
-/// </summary>
+/// <summary> Base class for apps to inherit. </summary>
 public abstract class App
 {
     public string name;
@@ -20,7 +16,7 @@ public abstract class App
     public int minHeightBuffer; //app only displays with atleast this height
 
     public bool baseCommands; //wether or not base commands work
-    public (UserInputProfile format, Action<string> payload, string summary)[] appCommands = new (UserInputProfile, Action<string>, string summary)[] { }; //custom commands
+    public (UserInputProfile format, Action<string> payload, string summary)[] appCommands = []; //custom commands
 
     //--- CONSTRUCTORS ---
 
@@ -65,11 +61,7 @@ public abstract class App
     /// <summary> Called once a tick (25ms). </summary>
     public virtual void OnUpdate(int tickNum)
     {
-        if (UserRealtimeInput.KeyPressed(0x11) && UserRealtimeInput.KeyPressed(0x10) && UserRealtimeInput.KeyPressedDown(80)) Profiler.SetEnabled(!Profiler.enabled);
-
-        // f12
-        if (UserRealtimeInput.KeyPressedDown(123)) ConsoleImage.TakePrimaryScreenshot();
-        if (UserRealtimeInput.KeyPressedDown(122)) ConsoleImage.TakeDebugScreenshot();
+        
     }
 
     /// <summary> Called when revistone app is first started, just after OnRegister. </summary>

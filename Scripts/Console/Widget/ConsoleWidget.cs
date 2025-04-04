@@ -1,4 +1,5 @@
 using Revistone.App.BaseApps;
+using Revistone.Functions;
 using Revistone.Management;
 
 namespace Revistone.Console.Widget;
@@ -7,16 +8,20 @@ namespace Revistone.Console.Widget;
 public abstract class ConsoleWidget
 {
     public string name;
-    public uint order; // the order in which the widget should be displayed (left to right)
+    public int order; // the order in which the widget should be displayed (left to right)
     public bool canRemove;
+    public string[] widgetEnabledApps; // apps which the widget may be shown in, leave empty to show in all apps
 
-    public bool hide = false;
+    private bool hideInApp;
+    private bool hide;
+    public bool IsHidden => hide || hideInApp;
 
-    public ConsoleWidget(string name, uint order, bool canRemove)
+    public ConsoleWidget(string name, int order, bool canRemove, string[] widgetEnabledApps)
     {
         this.name = name;
         this.order = order;
         this.canRemove = canRemove;
+        this.widgetEnabledApps = widgetEnabledApps;
     }
 
     ///<summary> Gets the current state of the widget for display. </summary>
@@ -36,7 +41,7 @@ public abstract class ConsoleWidget
         {
             ConsoleWidget widget = widgets[i];
 
-            if (widget.hide) continue;
+            if (widget.IsHidden) continue;
 
             bool shouldRemove = false;
             string content = widget.GetContent(ref shouldRemove);
@@ -68,6 +73,16 @@ public abstract class ConsoleWidget
         }
 
         return false;
+    }
+
+    public static void UpdateWidgetHideInApp(string appName)
+    {
+        for (int i = 0; i < widgets.Count; i++)
+        {
+            if (widgets[i].widgetEnabledApps.Length == 0) continue;
+
+            widgets[i].hideInApp = !widgets[i].widgetEnabledApps.Contains(appName);
+        }
     }
 
     ///<summary> Attempts to add widget to console, fails if widget of same name already exists. </summary>
@@ -122,20 +137,27 @@ public abstract class ConsoleWidget
             ConsoleWidget? w = TryGetWidget("Current Time");
             if (w != null) w.hide = SettingsApp.GetValue("Show Time Widget") != "Yes";
         }
+        else if (settingName == "Show Workspace Path Widget")
+        {
+            ConsoleWidget? w = TryGetWidget("Workspace Path");
+            if (w != null) w.hide = SettingsApp.GetValue("Show Workspace Path Widget") != "Yes";
+        }
     }
 
     ///<summary> [DO NOT CALL] Initializes Widgets. </summary>
-    public static void InitializeWidgets()
+    internal static void InitializeWidgets()
     {
-        TryAddWidget(new FrameWidget("Frame Rate", 0, false));
-        TryAddWidget(new BillboardWidget("Author", 1, "Creator: Isaac Honeyman", false));
-        TryAddWidget(new TimeWidget("Current Time", uint.MaxValue, DateTime.Now, false, true, false));
+        TryAddWidget(new FunctionWidget("Frame Rate", int.MinValue, () => ($"FPS: {Profiler.Fps}", false), false));
+        TryAddWidget(new FunctionWidget("Workspace Path", -100, () => ($"Path: {WorkspaceFunctions.DisplayPath}", false), ["Revistone"], false));
+        TryAddWidget(new FunctionWidget("Author", 100, () => ("Creator: Isaac Honeyman", false), false));
+        TryAddWidget(new TimeWidget("Current Time", int.MaxValue, DateTime.Now, false, true, false));
 
         SettingsApp.OnSettingChanged += OnSettingChange;
 
         OnSettingChange("Show FPS Widget");
         OnSettingChange("Show Author Widget");
         OnSettingChange("Show Time Widget");
+        OnSettingChange("Show Workspace Path Widget");
     }
 }
 

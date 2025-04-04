@@ -1,12 +1,22 @@
 --- TO DO ---
 [App Ideas]
+GPT Create Memory
+GPT Read Command
+GPT Write Command
+Improved Command System
+GPT Update Settings
+Description field to apps
+Menu Priority valuegpt 
 
-[Features]
-Dynamic Bottom Bar
+CODE CLEANUP // its lowkey getting bad :(
+UI Overhaul
+More in use features for workspace
+Better ui display for revistone widgets
 
+
+FPS Update
 
 --- KNOWN BUGS ---
-If console refreshes without changing size, Tetris display can display twice in different positions.
 
 --- DONE ---
 Fixed bug crashing when profiler tired to work with 0 frames

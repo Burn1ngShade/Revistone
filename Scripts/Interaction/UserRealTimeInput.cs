@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using Revistone.Console.Data;
+using Revistone.Console.Image;
 using Revistone.Management;
 
 namespace Revistone.Interaction;
@@ -64,6 +65,12 @@ public static class UserRealtimeInput
         {
             keyInfo[i] = (keyInfo[i].currentState, Math.Abs(GetAsyncKeyState(i)) > 1);
         }
+
+        if (KeyPressed(0x11) && KeyPressed(0x10) && KeyPressedDown(80)) Profiler.SetEnabled(!Profiler.Enabled);
+
+        // f12
+        if (KeyPressedDown(123)) ConsoleImage.TakePrimaryScreenshot();
+        if (KeyPressedDown(122)) ConsoleImage.TakeDebugScreenshot();
     }
 
     /// <summary> Returns if key currently pressed down. </summary>

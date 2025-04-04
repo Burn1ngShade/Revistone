@@ -1,4 +1,5 @@
 using System.Globalization;
+using Revistone.App.BaseApps;
 using Revistone.Functions;
 
 namespace Revistone.Console;
@@ -106,15 +107,20 @@ public class ConsoleLine
         return new ConsoleLine(s, cl, clbg);
     }
 
-    /// <summary> Removes invalid charchters, zero and double length charchters from a consoleLine </summary>
+    /// <summary> Removes invalid charchters, zero and double length charchters from a consoleLine, seperates emojis to prevent joining. </summary>
     public static ConsoleLine Clean(ConsoleLine baseLine)
     {
         string validLineText = "";
+        bool allowEmojis = SettingsApp.GetValue("Show Emojis") == "Yes";
 
         TextElementEnumerator enumerator = StringInfo.GetTextElementEnumerator(baseLine.lineText);
+        bool lastCharIsEmoji = false;
         while (enumerator.MoveNext())
         {
             string textElement = enumerator.GetTextElement();
+            bool isEmoji = StringFunctions.IsEmoji(textElement);
+
+            if (isEmoji && !allowEmojis) continue;
 
             if (textElement.Length == 1 && char.IsSurrogate(textElement[0]))
             {
@@ -127,11 +133,15 @@ public class ConsoleLine
             if (textElement.Length == 2 && char.IsSurrogatePair(textElement[0], textElement[1]))
             {
                 if (lineWidth == 2) validLineText += textElement;
+                if (isEmoji && lastCharIsEmoji) validLineText += " ";
             }
             else if (lineWidth == 1)
             {
                 validLineText += enumerator.GetTextElement();
+                if (isEmoji && lastCharIsEmoji) validLineText += " ";
             }
+
+            lastCharIsEmoji = isEmoji;
         }
 
         validLineText = validLineText.Replace("\n", "").Replace("\r", "");

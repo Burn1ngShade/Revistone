@@ -188,17 +188,17 @@ public static class CalculatorInterpreter
 
     public static void Output<T>(T output, FlagProfile flags)
     {
-        if (!flags.hideOutput) SendConsoleMessage(new ConsoleLine(output?.ToString() ?? "", AppRegistry.activeApp.colourScheme.primaryColour));
+        if (!flags.hideOutput) SendConsoleMessage(new ConsoleLine(output?.ToString() ?? "", AppRegistry.PrimaryCol));
     }
 
     public static void DebugHeaderOutput<T>(T output, FlagProfile flags)
     {
-        if (flags.debug) SendConsoleMessage(new ConsoleLine(output?.ToString() ?? "", AppRegistry.activeApp.colourScheme.tertiaryColour));
+        if (flags.debug) SendConsoleMessage(new ConsoleLine(output?.ToString() ?? "", AppRegistry.TertiaryColour));
     }
 
     public static void DebugOutput<T>(T output, FlagProfile flags)
     {
-        if (flags.debug) SendConsoleMessage(new ConsoleLine(output?.ToString() ?? "", AppRegistry.activeApp.colourScheme.secondaryColour));
+        if (flags.debug) SendConsoleMessage(new ConsoleLine(output?.ToString() ?? "", AppRegistry.SecondaryCol));
     }
 
 
