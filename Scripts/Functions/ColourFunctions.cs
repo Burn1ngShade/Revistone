@@ -1,3 +1,4 @@
+using OpenAI.VectorStores;
 using static System.ConsoleColor;
 
 namespace Revistone.Functions;
@@ -55,7 +56,7 @@ public static class ColourFunctions
     public static ConsoleColor[] AllColours { get { return [Black, DarkBlue, DarkGreen, DarkCyan, DarkRed, DarkMagenta, DarkYellow, Gray, DarkGray, Blue, Green, Cyan, Red, Magenta, Yellow, White]; } }
 
     ///<summary> Returns the most contrasting colour to the given ConsoleColour. </summary>
-    public static Dictionary<ConsoleColor, ConsoleColor> ContrastColour = new Dictionary<ConsoleColor, ConsoleColor>
+    public static readonly Dictionary<ConsoleColor, ConsoleColor> ContrastColour = new()
     {
         {Black, White}, {DarkBlue, Yellow}, {DarkGreen, Magenta}, {DarkCyan, Red}, {DarkRed, Cyan}, {DarkMagenta, Green}, {DarkYellow, Blue}, {Gray, Black}, {DarkGray, White}, {Blue, Yellow}, {Green, Magenta}, {Cyan, Red}, {Red, Cyan}, {Magenta, Green}, {Yellow, Blue}, {White, Black}
     };
@@ -428,11 +429,11 @@ public static class ColourFunctions
 
     /// <summary> Generates a ConsoleColor array with cycing colours, changling every colourLength, for given length. </summary>
     public static ConsoleColor[] Alternate(ConsoleColor[] colours, int length, int colourLength = 1)
-    { return Alternate(colours, length, new int[] { colourLength }); }
+    { return Alternate(colours, length, [colourLength]); }
 
     public static ConsoleColor[] BuildArray(params ConsoleColor[][] colours)
     {
-        ConsoleColor[] c = new ConsoleColor[] { };
+        ConsoleColor[] c = [];
 
         for (int i = 0; i < colours.Length; i++)
         {

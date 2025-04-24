@@ -19,7 +19,7 @@ namespace Revistone.App;
 public static class AppCommands
 {
     /// <summary> Array of all built in commands. </summary>
-    public static (UserInputProfile format, Action<string> payload, string summary)[] baseCommands = new (UserInputProfile, Action<string>, string summary)[] {
+    public static (UserInputProfile format, Action<string> payload, string summary)[] baseCommands = [
                 //useful commands
                 (new UserInputProfile(UserInputProfile.InputType.FullText, "help", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => {if (baseCommands != null) Help((baseCommands.Select(cmd => StringFunctions.AdjustCapitalisation(cmd.format.inputFormat, StringFunctions.CapitalCasing.FirstLetterUpper)).ToArray(), baseCommands.Select(cmd => cmd.summary).ToArray())); },
@@ -72,6 +72,10 @@ public static class AppCommands
                 (s) => { GPTFunctions.Query(s[8..].TrimStart(), false); }, "Interact With Custom Revistone ChatGPT Model, In A Single Message."),
                 (new UserInputProfile("clear gpt", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => { GPTFunctions.ClearMessageHistory(); }, "Wipe Message History Of ChatGPT Model."),
+                (new UserInputProfile("store gpt[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => { GPTFunctions.AddToMemories(s[9..].TrimStart()); }, "Store A Permeant Memory To GPT."),
+                (new UserInputProfile("memory gpt", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+                (s) => { GPTFunctions.ViewMemories(); }, "View List Of GPT Memories."),
                 (new UserInputProfile("get setting[A:]", removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => { GetSetting(s[11..]); }, "Get The Value Of Given Setting."),
                 (new UserInputProfile("set setting[A:]", removeLeadingWhitespace: true, removeTrailingWhitespace: true),
@@ -95,20 +99,20 @@ public static class AppCommands
                 (new UserInputProfile("rmdir[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => {DeleteWorkspaceDirectory(s[5..].Trim());}, "Deletes A Directory Within The Current Workspace Path."),
                 (new UserInputProfile("cdir[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
-                (s) => {ChangeWorkspaceDirectory(s[4..].Trim());}, "Changes Directory To A Directory Within The Current Workspace Path."),
-                (new UserInputProfile("bdir", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => {ChangeBackWorkspaceDirectory();}, "Goes Back One Directory."),
+                (s) => {UpdatePath(RawPath + $@"{s[4..].Trim()}\");}, "Changes Directory To A Directory Within The Current Workspace Path."),
+                (new UserInputProfile("pdir", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                (s) => {UpdatePath(GetParentPath(RawPath));}, "Goes To Parent Directory."),
                 (new UserInputProfile("rdir", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => {ChangeRootWorkspaceDirectory();}, "Changes To Root Directory."),
+                (s) => {UpdatePath(RootPath);}, "Changes To Root Directory."),
                 (new UserInputProfile("dir", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => {GetWorkspaceDirectoryContents();}, "Gets Files And Directories Within The Current Workspace Directory."),
+                (s) => {DisplayWorkspaceOverview();}, "Gets Files And Directories Within The Current Workspace Directory."),
                 (new UserInputProfile("mkfile[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => {CreateWorkspaceFile(s[6..].Trim());}, "Create A File Within The Current Workspace Path."),
                 (new UserInputProfile("rmfile[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => {DeleteWorkspaceFile(s[6..].Trim());}, "Deletes A File Within The Current Workspace Path."),
                 (new UserInputProfile("open[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
                 (s) => {OpenWorkspaceFile(s[4..].Trim());}, "Opens A File Within The Current Workspace Path."),
-            };
+            ];
 
     // --- BASE COMMANDS ---
 
@@ -129,7 +133,7 @@ public static class AppCommands
         else Help(commands);
     }
 
-    static (string keyCombo, string description)[] hotkeys = [
+    static readonly (string keyCombo, string description)[] hotkeys = [
         ("Ctrl + Shift + P", "Toggles Profiler."),
         ("Shift + Upwards Arrow", "Jump To Top Of Input History."),
         ("Shift + Downwards Arrow", "Jump To End Of Input History."),
@@ -137,9 +141,9 @@ public static class AppCommands
         ("Shift + Rightwards Arrow", "Extend Selection To The Right."),
         ("Ctrl + Leftwards Arrow", "Jump To Previous Seperator."),
         ("Ctrl + Rightwards Arrow", "Jump To Next Seperator."),
-        ("Alt + Leftwards Arrow", "Extend Selection To The Previous Seperator."),
-        ("Alt + Rightwards Arrow", "Extend Selection To The Next Seperator."),
-        ("Alt + Backspace", "Delete Text Up To The Previous Seperator."),
+        ("Tab + Leftwards Arrow", "Extend Selection To The Previous Seperator."),
+        ("Tab + Rightwards Arrow", "Extend Selection To The Next Seperator."),
+        ("Tab + Backspace", "Delete Text Up To The Previous Seperator."),
         ("Alt + X", "Cut Selected Text To Clipboard."),
         ("Alt + C", "Copy Selected Text To Clipboard."),
         ("Alt + V", "Paste Clipboard."),
@@ -153,19 +157,57 @@ public static class AppCommands
         ("F12", "Takes A Screenshot Of The Primary Console.")
     ];
 
+    static readonly (string keyCombo, string description)[] generalHotkeys = [
+        ("Ctrl + Shift + P", "Toggles Profiler."),
+        ("F11", "Takes A Screenshot Of The Debug Console."),
+        ("F12", "Takes A Screenshot Of The Primary Console."),
+    ];
+
+    static readonly (string keyCombo, string description)[] inputHotkeys = [
+        ("Shift + Up Arrow", "Jump To Top Of Input History."),
+        ("Shift + Down Arrow", "Jump To End Of Input History."),
+        ("Shift + Left Arrow", "Extend Selection To The Left."),
+        ("Shift + Right Arrow", "Extend Selection To The Right."),
+        ("Ctrl + Left Arrow", "Jump To Previous Seperator."),
+        ("Ctrl + Right Arrow", "Jump To Next Seperator."),
+        ("Tab + Left Arrow", "Extend Selection To The Previous Seperator."),
+        ("Tab + Right Arrow", "Extend Selection To The Next Seperator."),
+        ("Tab + Backspace", "Delete Text Up To The Previous Seperator."),
+        ("Alt + X", "Cut Selected Text To Clipboard."),
+        ("Alt + C", "Copy Selected Text To Clipboard."),
+        ("Alt + V", "Paste Clipboard."),
+        ("Alt + S", "Jump To Start Of Line."),
+        ("Alt + E", "Jump To End Of Line."),
+        ("Alt + B", "Jump To Start Of Text."),
+        ("Alt + D", "Jump To End Of Text."),
+        ("Alt + L", "Select Line."),
+        ("Alt + A", "Select All."),
+    ];
+
+    static readonly (string keyCombo, string description)[] fileHotkeys = [
+        ("Shift + Up Arrow", "Jump A Page Up."),
+        ("Shift + Down Arrow", "Jump A Page Down."),
+        ("Tab + Up Arrow", "Removes Empty Line."),
+        ("Tab + Down Arrow", "Inserts Empty Line."),
+    ];
+
     /// <summary> Displays list of console hotkeys. </summary>
     static void Hotkeys()
     {
-        UserInput.CreateReadMenu("Hotkeys", 5,
-        hotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}]: {x.description}",
-        BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 3), AppRegistry.PrimaryCol.ToArray()))).ToArray());
+        UserInput.CreateCategorisedReadMenu("Hotkeys", 5,
+        ("General", generalHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}]: {x.description}", BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 3), [.. AppRegistry.PrimaryCol]))).ToArray()),
+        ("Input", inputHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}]: {x.description}", BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 3), [.. AppRegistry.PrimaryCol]))).ToArray()),
+        ("File", fileHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}]: {x.description}", BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 3), [.. AppRegistry.PrimaryCol]))).ToArray()));
+
+        // UserInput.CreateReadMenu("Hotkeys", 5,
+        // hotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}]: {x.description}",
+        // BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 3), AppRegistry.PrimaryCol.ToArray()))).ToArray());
     }
 
     /// <summary> Gives user Y/N option to reload current app. </summary>
     static void ReloadApp(string userInput)
     {
-        int clearConsole = UserInput.CreateOptionMenu("Reload App?", new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") });
-        if (clearConsole == 0) ReloadConsole();
+        if (UserInput.CreateTrueFalseOptionMenu("Reload App?")) ReloadConsole();
         else SendConsoleMessage(new ConsoleLine("App Reload Cancelled!", AppRegistry.PrimaryCol), new ConsoleLineUpdate());
     }
 
@@ -181,8 +223,7 @@ public static class AppCommands
         string appName = userInput[4..].TrimStart().AdjustCapitalisation(StringFunctions.CapitalCasing.FirstLetterUpper);
         if (AppRegistry.AppExists(appName))
         {
-            int closeApp = UserInput.CreateOptionMenu($"Load {appName}?", new ConsoleLine[] { new ConsoleLine("Yes"), new ConsoleLine("No") });
-            if (closeApp == 0)
+            if (UserInput.CreateTrueFalseOptionMenu($"Load {appName}?"))
             {
                 AppRegistry.SetActiveApp(appName);
                 ReloadConsole();
@@ -301,7 +342,7 @@ public static class AppCommands
     ///<summary> Confirms user choice and kills terminal. </summary>
     static void KillTerminal()
     {
-        SendConsoleMessage(new ConsoleLine("[WARNING] This Will Force Close Console (Crash).", ConsoleColor.Red));
+        SendConsoleMessage(new ConsoleLine("[WARNING] This Will Force Close Console (Crash).", ConsoleColor.DarkRed));
         if (UserInput.CreateTrueFalseOptionMenu("Kill Terminal?", cursorStartIndex: 1))
         {
             throw new Exception("User Killed Terminal.");

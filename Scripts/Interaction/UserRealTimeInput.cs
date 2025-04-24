@@ -8,7 +8,7 @@ namespace Revistone.Interaction;
 /// <summary> Deal with realtime input, without the use of an external libary </summary>
 public static class UserRealtimeInput
 {
-    static (bool lastState, bool currentState)[] keyInfo = new (bool, bool)[256];
+    static readonly (bool lastState, bool currentState)[] keyInfo = new (bool, bool)[256];
     static (ConsoleKeyInfo key, DateTime time) lastKey = new(new ConsoleKeyInfo(), DateTime.MinValue);
 
     // --- Get Key Alternative ---
@@ -66,11 +66,11 @@ public static class UserRealtimeInput
             keyInfo[i] = (keyInfo[i].currentState, Math.Abs(GetAsyncKeyState(i)) > 1);
         }
 
-        if (KeyPressed(0x11) && KeyPressed(0x10) && KeyPressedDown(80)) Profiler.SetEnabled(!Profiler.Enabled);
+        // --- Permanent Hotkeys ---
 
-        // f12
-        if (KeyPressedDown(123)) ConsoleImage.TakePrimaryScreenshot();
-        if (KeyPressedDown(122)) ConsoleImage.TakeDebugScreenshot();
+        if (KeyPressed(0x11) && KeyPressed(0x10) && KeyPressedDown(80)) Profiler.SetEnabled(!Profiler.Enabled); // ctrl + shift + p
+        if (KeyPressedDown(123)) ConsoleImage.TakePrimaryScreenshot(); // f12
+        if (KeyPressedDown(122)) ConsoleImage.TakeDebugScreenshot(); // f11
     }
 
     /// <summary> Returns if key currently pressed down. </summary>
@@ -79,13 +79,15 @@ public static class UserRealtimeInput
         return keyInfo[key].currentState;
     }
 
+    ///<summary> Was the key pressed within the last tick. </summary>
     public static bool KeyPressedDown(byte key)
     {
         if (keyInfo[key].currentState && !keyInfo[key].lastState) return true;
         return false;
     }
 
-    public static bool KeyPressedUp(byte key)
+    ///<summary> Was the key was released within the last tick. </summary>
+    public static bool KeyReleased(byte key)
     {
         if (!keyInfo[key].currentState && keyInfo[key].lastState) return true;
         return false;
@@ -93,4 +95,10 @@ public static class UserRealtimeInput
 
     /// <summary> Returns if key currently pressed down. </summary>
     public static bool KeyPressed(ConsoleKey key) { return KeyPressed((byte)key); }
+
+    ///<summary> Was the key pressed within the last tick. </summary>
+    public static bool KeyPressedDown(ConsoleKey key) { return KeyPressedDown((byte)key); }
+
+    ///<summary> Was the key was released within the last tick. </summary>
+    public static bool KeyReleased(ConsoleKey key) { return KeyReleased((byte)key); }
 }

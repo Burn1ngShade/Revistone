@@ -3,6 +3,8 @@ using Revistone.App;
 using Revistone.Console;
 using Revistone.Management;
 
+using static Revistone.Functions.ColourFunctions;
+
 namespace Revistone.Functions;
 
 /// <summary> Class pertaining all logic for easy saving of data for apps. </summary>
@@ -35,27 +37,27 @@ public static class PersistentDataFunctions
 
         if (!isValid)
         {
-            Analytics.Debug.Add($"Error: Invalid File Path {path}");
+            Analytics.Debug.Log($"Error: Invalid File Path {path}");
         }
 
         return isValid;
     }
 
     ///<summary> Verifys if file or directory name is valid. </summary>
-    public static bool IsNameValid(string name, bool outputErrors = false)
+    public static bool IsNameValid(string name, bool outputErrors = false, bool allowSlashes = false)
     {
         foreach (char c in Path.GetInvalidFileNameChars())
         {
-            if (name.Contains(c))
+            if (name.Contains(c) && !(allowSlashes && (c == '/' || c == '\\')))
             {
-                if (outputErrors) ConsoleAction.SendConsoleMessage(new ConsoleLine($"File Name Contains Invalid Character: {c}.", AppRegistry.PrimaryCol));
+                if (outputErrors) ConsoleAction.SendConsoleMessage(new ConsoleLine($"File Name Contains Invalid Character: '{c}'", BuildArray(AppRegistry.PrimaryCol.Extend(38), AppRegistry.SecondaryCol)));
                 return false;
             }
         }
 
         if (reservedNames.Contains(name))
         {
-            if (outputErrors) ConsoleAction.SendConsoleMessage(new ConsoleLine($"File Name Is Reserved: {name}.", AppRegistry.PrimaryCol));
+            if (outputErrors) ConsoleAction.SendConsoleMessage(new ConsoleLine($"File Name Is Reserved: '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
             return false;
         }
 
@@ -257,7 +259,7 @@ public static class PersistentDataFunctions
         }
         catch (Exception e)
         {
-            Analytics.Debug.Add(e.Message);
+            Analytics.Debug.Log(e.Message);
             return default;
         }
     }

@@ -7,10 +7,10 @@ using static Revistone.Functions.StringFunctions;
 namespace Revistone.Interaction;
 
 /// <summary> The configuration of the requirements of user input. </summary>
-public class UserInputProfile //really happy with this script atm
+public class UserInputProfile
 {
     public enum InputType { FullText, PartialText, DateOnly, Int, Float } //type of input
-    public enum OutputFormat { NoOutput, Standard, Dump } //type of output [will add more at some point]
+    public enum OutputFormat { NoOutput, Standard, Dump } //type of output
 
     //--- REQS ---
 
@@ -43,12 +43,12 @@ public class UserInputProfile //really happy with this script atm
     //--- CONSTRUCTORS ---
 
     /// <summary> The configuration of the requirements of user input. </summary>
-    public UserInputProfile(InputType[] validTypes, string inputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
+    public UserInputProfile(InputType[] validInputTypes, string inputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
     int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
     bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
     float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard)
     {
-        this.validInputTypes = validTypes;
+        this.validInputTypes = validInputTypes;
         this.inputFormat = inputFormat;
         this.bannedChars = bannedChars;
         this.caseRequirements = caseRequirements;
@@ -125,8 +125,7 @@ public class UserInputProfile //really happy with this script atm
 
         if (errors.Count == 0 || outputFormat == OutputFormat.NoOutput) return errors.Count == 0;
 
-        ConsoleAction.SendConsoleMessage(new ConsoleLine("--- Input Invalid --- ", AppRegistry.SecondaryCol.Extend(22)),
-        ConsoleAnimatedLine.AppTheme);
+        ConsoleAction.SendConsoleMessage(new ConsoleLine("--- Input Invalid --- ", AppRegistry.SecondaryCol.Extend(22)));
         for (int i = 0; i < errors.Count; i++)
         {
             ConsoleAction.SendConsoleMessage(new ConsoleLine($"{i + 1}. {errors[i]}", AppRegistry.PrimaryCol));

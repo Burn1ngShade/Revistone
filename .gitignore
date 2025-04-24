@@ -3,4 +3,6 @@ PersistentData/App/DebitCard
 PersistentData/Console/Analytics
 PersistentData/Console/History
 PersistentData/Console/Settings
-PersistentData/Workspace
+PersistentData/Workspace/**
+
+!PersistentData/Workspace/Welcome.txt

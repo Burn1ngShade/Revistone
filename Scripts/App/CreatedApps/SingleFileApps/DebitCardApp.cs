@@ -14,11 +14,11 @@ public class DebitCardApp : App
 {
     // --- APP BOILER PLATE ---
     public DebitCardApp() : base() { }
-    public DebitCardApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public DebitCardApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
 
     public override App[] OnRegister()
     {
-        return [ new DebitCardApp("Debit Card Manager", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Magenta.ToArray(), ConsoleColor.Blue.ToArray(), 10), (Alternate(DarkBlueAndMagenta.Flip(), 6, 3), 5),
+        return [ new DebitCardApp("Debit Card Manager", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Magenta.ToArray(), ConsoleColor.Blue.ToArray()), (Alternate(DarkBlueAndMagenta.Flip(), 6, 3), 5),
                 [], 94) ];
     }
 

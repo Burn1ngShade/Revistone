@@ -14,11 +14,11 @@ public class TrackerApp : App
     // --- APP BOILER ---
 
     public TrackerApp() : base() { }
-    public TrackerApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public TrackerApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
 
     public override App[] OnRegister()
     {
-        return [new TrackerApp("Tracker", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.DarkCyan.ToArray(), 10), (CyanDarkBlueGradient.Extend(7, true), 5), [], 70, 50)];
+        return [new TrackerApp("Tracker", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.DarkCyan.ToArray()), (CyanDarkBlueGradient.Extend(7, true), 5), [], 70, 50)];
     }
 
     public override void ExitApp()
@@ -84,7 +84,7 @@ public class TrackerApp : App
 
             if (day.stats[pointer] is TrackerInputStat inputStat)
             {
-                inputStat.value = UserInput.GetValidUserInput($"--- Enter Data For [{inputStat.statName}] ---", new UserInputProfile(inputStat.inputTypes, bannedChars: "-"), inputStat.value == "Not Tracked" ? "" : inputStat.value, 5);
+                inputStat.value = UserInput.GetValidUserInput($"--- Enter Data For [{inputStat.statName}] ---", new UserInputProfile(inputStat.inputTypes, bannedChars: "-"), inputStat.value == "Not Tracked" ? "" : inputStat.value, maxLineCount: 5);
             }
 
             else if (day.stats[pointer] is TrackerDropdownStat dropdownStat)

@@ -9,7 +9,7 @@ public abstract class App
 {
     public string name;
 
-    public (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour, int speed) colourScheme;
+    public (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) colourScheme;
     public (ConsoleColor[] colours, int speed) borderColourScheme;
 
     public int minWidthBuffer; //app only displays with atleast this width
@@ -21,7 +21,7 @@ public abstract class App
     //--- CONSTRUCTORS ---
 
     /// <summary> Base class for apps to inherit. </summary>
-    public App(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour, int speed) colourScheme, (ConsoleColor[] colours, int speed) borderColourScheme, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true)
+    public App(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) colourScheme, (ConsoleColor[] colours, int speed) borderColourScheme, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true)
     {
         this.name = name;
 
@@ -36,7 +36,7 @@ public abstract class App
     }
 
     /// <summary> Base class for apps to inherit. </summary>
-    public App() : this("app", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.DarkCyan.ToArray(), 5), (new ConsoleColor[0], 5), []) { }
+    public App() : this("app", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.DarkCyan.ToArray()), ([], 5), []) { }
 
     //--- METHODS ---
 

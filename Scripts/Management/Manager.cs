@@ -47,6 +47,7 @@ public static class Manager
                     break;
                 }
             }
+            tickSleepStart.Reset();
 
             _deltaTime = tickStartTime.ElapsedMilliseconds;
             Profiler.TickTime.Add(_deltaTime);
@@ -87,7 +88,7 @@ public static class Manager
     public static void Main(string[] args)
     {
         Analytics.InitalizeAnalytics(); // called to track start up process
-        Analytics.Debug.Add("Console Process Start.");
+        Analytics.Debug.Log("Console Process Start.");
 
         AppRegistry.InitializeAppRegistry(); // init all apps
         AppRegistry.SetActiveApp("Revistone");
@@ -106,7 +107,7 @@ public static class Manager
         AppDomain.CurrentDomain.ProcessExit += OnProcessExit; // on user close
         AppDomain.CurrentDomain.UnhandledException += OnProcessCrash; // on crash
 
-        Analytics.Debug.Add("Console Process Initialization Complete.");
+        Analytics.Debug.Log("Console Process Initialization Complete.");
         HandleConsoleBehaviour(); // main console loop
     }
 
@@ -123,7 +124,7 @@ public static class Manager
     static void OnProcessExit(object? sender, EventArgs e)
     {
         Analytics.General.LastCloseDate = DateTime.Now;
-        Analytics.Debug.Add($"Console Process Exit.");
+        Analytics.Debug.Log($"Console Process Exit.");
         Analytics.SaveAnalytics();
     }
 
@@ -131,7 +132,7 @@ public static class Manager
     static void OnProcessCrash(object sender, UnhandledExceptionEventArgs e)
     {
         Analytics.General.LastCloseDate = DateTime.Now;
-        Analytics.Debug.Add($"Console Unexpected (Crash D:) Process Exit.\n Crash Message: {e.ExceptionObject}");
+        Analytics.Debug.Log($"Console Unexpected (Crash D:) Process Exit.\n Crash Message: {e.ExceptionObject}");
         Analytics.SaveAnalytics();
     }
 }

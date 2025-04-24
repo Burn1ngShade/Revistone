@@ -28,7 +28,7 @@ public static class Profiler
     public static void SetEnabled(bool state)
     {
         ClearDebugConsole();
-        if (state) SendDebugMessage("Gathering Data...");
+        if (state) SendDebugMessage(new ConsoleLine("Gathering Data...", AppRegistry.SecondaryCol));
         Enabled = state;
     }
 
@@ -41,7 +41,7 @@ public static class Profiler
 
             if (Enabled)
             {
-                if (CalcTime.Count == 0 || TickTime.Count == 0 || RenderTime.Count == 0) return;
+                if (CalcTime.Count != 20 || TickTime.Count != 20 || RenderTime.Count != 20) return;
 
                 string[] formattedAverages = [
                     ((int)CalcTime.Average()).ToString().PadRight(2, ' '), ((int)RenderTime.Average()).ToString().PadRight(2, ' '), ((int)TickTime.Average()).ToString().PadRight(2, ' ')
@@ -61,6 +61,12 @@ public static class Profiler
             CalcTime.Clear();
             TickTime.Clear();
             RenderTime.Clear();
+        }
+
+        if (Enabled && GetConsoleLine(debugLineIndex + 1).lineText.Length != 0) // stats that require more realtime updates
+        {
+            UpdateDebugConsoleLine(new ConsoleLine($"Primary Line Index: {primaryLineIndex}, Debug Line Index: {debugLineIndex}", AppRegistry.PrimaryCol), debugStartIndex + 7);
+            UpdateDebugConsoleLine(new ConsoleLine($"Window Width: {windowSize.width}, Window Height: {windowSize.height}", AppRegistry.PrimaryCol), debugStartIndex + 6);
         }
     }
 

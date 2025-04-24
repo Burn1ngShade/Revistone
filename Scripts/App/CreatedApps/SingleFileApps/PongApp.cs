@@ -18,13 +18,13 @@ public class PongApp : App
     (int score, int pos) player2;
 
     public PongApp() : base() { }
-    public PongApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public PongApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
 
     public override App[] OnRegister()
     {
-        return new PongApp[] {
-                    new PongApp("Pong", (ConsoleColor.DarkBlue.ToArray(), CyanGradient, BlueGradient, 10), (CyanDarkBlueGradient, 5), new (UserInputProfile format, Action<string> payload, string summary)[0], 60, 40)
-                };
+        return [
+                    new PongApp("Pong", (ConsoleColor.DarkBlue.ToArray(), CyanGradient, BlueGradient), (CyanDarkBlueGradient, 5), [], 60, 40)
+                ];
     }
 
     public override void OnAppInitalisation()
@@ -155,7 +155,6 @@ public class PongApp : App
         frame.SetPixels(15, 9, TitleFunctions.CreateTitle($"{player1.score}", ConsoleColor.White.ToArray(), TitleFunctions.AsciiFont.Small).Reverse().ToArray());
         frame.SetPixels(47, 9, TitleFunctions.CreateTitle($"{player2.score}", ConsoleColor.White.ToArray(), TitleFunctions.AsciiFont.Small).Reverse().ToArray());
         frame.SetPixel(ball.pos.x + 2, ball.pos.y + 1, new ConsolePixel(bg: ConsoleColor.White));
-        Analytics.Debug.Add(frame.GetPixel(ball.pos.x, ball.pos.y + 1).BGColour.ToString());
         frame.OutputAt(0, 13);
     }
 

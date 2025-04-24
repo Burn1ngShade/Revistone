@@ -252,7 +252,7 @@ public class ConsoleImage
         {
             if (reader.ReadString() != "CIMG")
             {
-                Analytics.Debug.Add($"Error: File At Path {filePath} Is Not A CIMG file.");
+                Analytics.Debug.Log($"Error: File At Path {filePath} Is Not A CIMG file.");
                 return null;
             }
 
@@ -305,7 +305,6 @@ public class ConsoleImage
 
         for (int i = ConsoleData.debugStartIndex + 1; i < ConsoleData.debugStartIndex + 8; i++)
         {
-            Analytics.Debug.Add((ConsoleData.debugBufferStartIndex - i + 6).ToString());
             c[ConsoleData.debugBufferStartIndex - i + 6] = ConsoleAction.GetConsoleLine(i);
         }
 

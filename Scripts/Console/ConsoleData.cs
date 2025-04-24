@@ -4,11 +4,11 @@ namespace Revistone.Console.Data;
 internal static class ConsoleData
 {
     //--- Console Lines ---
-    public static ConsoleLine[] consoleLines = new ConsoleLine[] { }; //current state of console lines
-    public static ConsoleLine[] consoleLinesBuffer = new ConsoleLine[] { }; //last tick state of console lines
-    public static ConsoleAnimatedLine[] consoleLineUpdates = new ConsoleAnimatedLine[] { }; //animation data of console lines
+    public static ConsoleLine[] consoleLines = []; //current state of console lines
+    public static ConsoleLine[] consoleLinesBuffer = []; //last tick state of console lines
+    public static ConsoleAnimatedLine[] consoleLineUpdates = []; //animation data of console lines
 
-    public static bool[] exceptionLines = new bool[] { }; //prevent certain methods effecting line
+    public static bool[] exceptionLines = []; //prevent certain methods effecting line
 
     //--- Console Metadata ---
     public static int primaryLineIndex; //index of current console line

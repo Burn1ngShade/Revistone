@@ -1,10 +1,10 @@
-Cambridge Interview Revision
-01:14:30.7496728
-00:02:28.9127447
-691
-678
-30
+Trigonometry And Hyperbolic Equations
+01:38:24.0932852
+00:02:43.3713347
+894
+874
 28
+37
 0
 1/sinx = 
 cosecx
@@ -54,7 +54,7 @@ sin(2A) =
 cos(2A) = 
 cos^2(A)-sin^2(A)
 0
-tan2A = 
+tan(2A) = 
 2tanA/(1-tan^2(A))
 0
 sinA+sinB = 
@@ -69,29 +69,23 @@ cosA+cosB =
 cosA-cosB = 
 -2sin((A+B)/2)sin((A-B)/2)
 0
-nCr
-n!/(r!(n-r)!)
+cosh^2(x) - sinh^2(x) = 
+1
 0
-nPr
-n!/(n-r)!
+sinh(2A) = 
+2sinhAcoshA
 0
-sum(n) =
-(n/2)(n+1)
+cosh(2A) = 
+cosh^2(A) + sinh^2(A)
 0
-sum(n^2) = 
-(n/6)(n+1)(2n+1)
+sinhx = 
+(e^x - e^-x)/2
 0
-v^2 = 
-u^2+2as
+coshx = 
+(e^x + e^-x)/2
 0
-v = 
-u+at
+1 - tanh^2(x) = 
+sech^2(x)
 0
-s = ut + 
-(1/2)at^2
-0
-s = vt - 
-(1/2)at^2
-0
-s = 
-((u+v)/2)t
+coth^2(x) - 1 = 
+cosech^2(x) 

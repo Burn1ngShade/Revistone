@@ -16,14 +16,16 @@ public class FlashCardApp : App
     // --- APP BOILER ---
 
     public FlashCardApp() : base() { }
-    public FlashCardApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public FlashCardApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
 
     public override App[] OnRegister()
     {
         return [
-                new FlashCardApp("Flash Card Manager", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.DarkGreen.ToArray(), ConsoleColor.Green.ToArray(), 10), (Alternate(DarkGreenAndDarkBlue, 6, 3), 5), [], 70, 40)
+                new FlashCardApp("Flash Card Manager", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.DarkGreen.ToArray(), ConsoleColor.Green.ToArray()), (Alternate(DarkGreenAndDarkBlue, 6, 3), 5), [], 70, 40)
             ];
     }
+
+    static ConsoleColor[] inputCol = [];
 
     public override void OnAppInitalisation()
     {
@@ -31,8 +33,10 @@ public class FlashCardApp : App
 
         for (int i = 0; i <= 10; i++) { UpdateLineExceptionStatus(true, i); }
 
+        inputCol = SettingsApp.GetValueAsConsoleColour("Input Text Colour");
+
         ShiftLine();
-        ConsoleLine[] title = TitleFunctions.CreateTitle("REVISE", AdvancedHighlight(64, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.DarkGreen.ToArray(), 0, 10), (ConsoleColor.DarkGreen.ToArray(), 32, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1);
+        ConsoleLine[] title = TitleFunctions.CreateTitle("REVISE", AdvancedHighlight(64, AppRegistry.PrimaryCol, (AppRegistry.SecondaryCol.ToArray(), 0, 10), (AppRegistry.PrimaryCol.ToArray(), 32, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1);
         SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
         ShiftLine();
         MainMenu();
@@ -63,7 +67,7 @@ public class FlashCardApp : App
             UserInput.WaitForUserInput(space: true);
             return;
         }
-        int i = UserInput.CreateMultiPageOptionMenu("Flash Card Sets", flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s))).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 8);
+        int i = UserInput.CreateMultiPageOptionMenu("Flash Card Sets", [.. flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s), AppRegistry.SecondaryCol))], [new ConsoleLine("Exit", AppRegistry.PrimaryCol)], 8);
         if (i >= 0) UseFCS(new FlashCardSet($"FlashCard/{flashNames[i]}"));
     }
 
@@ -71,7 +75,7 @@ public class FlashCardApp : App
     void MainMenuEditFCS()
     {
         string[] flashNames = GetSubFiles(GeneratePath(DataLocation.App, "FlashCard"));
-        int i = UserInput.CreateMultiPageOptionMenu("Flash Card Sets", new ConsoleLine[] { new ConsoleLine("New Flash Card Set") }.Concat(flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s)))).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 8);
+        int i = UserInput.CreateMultiPageOptionMenu("Flash Card Sets", [new ConsoleLine("New Flash Card Set", AppRegistry.PrimaryCol), .. flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s), AppRegistry.SecondaryCol))], [new ConsoleLine("Exit", AppRegistry.PrimaryCol)], 8);
 
         if (i == 0) CreateFCS();
         else if (i > 0)
@@ -85,19 +89,19 @@ public class FlashCardApp : App
     {
         ClearPrimaryConsole();
 
-        int i = UserInput.CreateOptionMenu("Options:", new string[] { "General Stats", "Flash Card Set Stats", "Exit" });
+        int i = UserInput.CreateOptionMenu("Options:", ["General Stats", "Flash Card Set Stats", "Exit"]);
 
         if (i == 0)
         {
             FlashCardSet[] f = GetSubFiles(GeneratePath(DataLocation.App, "FlashCard")).Select(s => new FlashCardSet($"FlashCard/{s}")).ToArray();
 
-            SendConsoleMessage(new ConsoleLine("General Flash Card Manager Stats", ConsoleColor.DarkBlue));
-
-            SendConsoleMessage($"Time Revising: {new TimeSpan(f.Sum(s => s.timeSpent.Ticks)).ToString(@"hh\:mm\:ss")}");
-            SendConsoleMessage($"Flash Card Sets Completed: {f.Sum(s => s.timesCompleted)}");
+            SendConsoleMessage(new ConsoleLine("General Flash Card Manager Stats", AppRegistry.PrimaryCol));
             ShiftLine();
-            SendConsoleMessage($"Total Questions Answered: {f.Sum(s => s.questionsCompleted)}");
-            SendConsoleMessage($"Total Questions Correctly: {f.Sum(s => s.questionsCompletedCorrect)}");
+            SendConsoleMessage(new ConsoleLine($"Time Revising: {new TimeSpan(f.Sum(s => s.timeSpent.Ticks)):hh\\:mm\\:ss}", AppRegistry.SecondaryCol));
+            SendConsoleMessage(new ConsoleLine($"Flash Card Sets Completed: {f.Sum(s => s.timesCompleted)}", AppRegistry.SecondaryCol));
+            ShiftLine();
+            SendConsoleMessage(new ConsoleLine($"Total Questions Answered: {f.Sum(s => s.questionsCompleted)}", AppRegistry.SecondaryCol));
+            SendConsoleMessage(new ConsoleLine($"Total Questions Correctly: {f.Sum(s => s.questionsCompletedCorrect)}", AppRegistry.SecondaryCol));
             UserInput.WaitForUserInput(space: true);
             MainMenuStats();
             return;
@@ -112,14 +116,14 @@ public class FlashCardApp : App
                 MainMenuStats();
                 return;
             }
-            int k = UserInput.CreateMultiPageOptionMenu("Flash Card Sets", flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s))).ToArray(), new ConsoleLine[] { new ConsoleLine("Exit") }, 8);
+            int k = UserInput.CreateMultiPageOptionMenu("Flash Card Sets", [.. flashNames.Select(s => new ConsoleLine(StringFunctions.SplitAtCapitalisation(s), AppRegistry.SecondaryCol))], [new ConsoleLine("Exit", AppRegistry.PrimaryCol)], 8);
             if (k < 0)
             {
                 MainMenuStats();
                 return;
             }
             FlashCardSet f = new FlashCardSet($"FlashCard/{flashNames[k]}");
-            SendConsoleMessage(new ConsoleLine($"Stats For Flash Card Set '{StringFunctions.SplitAtCapitalisation(f.name)}'", ConsoleColor.DarkBlue));
+            SendConsoleMessage(new ConsoleLine($"Stats For Flash Card Set '{StringFunctions.SplitAtCapitalisation(f.name)}'", AppRegistry.PrimaryCol));
             ShiftLine();
             f.PrintStats();
             UserInput.WaitForUserInput(space: true);
@@ -140,7 +144,7 @@ public class FlashCardApp : App
         {
             ClearPrimaryConsole();
 
-            SendConsoleMessage(new ConsoleLine($"Flash Card Set '{StringFunctions.SplitAtCapitalisation(s.name)}' [{i + 1} / {shuffledQuestions.Length}]", ConsoleColor.DarkBlue));
+            SendConsoleMessage(new ConsoleLine($"Flash Card Set '{StringFunctions.SplitAtCapitalisation(s.name)}' [{i + 1} / {shuffledQuestions.Length}]", AppRegistry.PrimaryCol));
             ShiftLine();
 
             string answer = "";
@@ -151,7 +155,7 @@ public class FlashCardApp : App
                 case 0:
                     StandardFlashCard sfc = (StandardFlashCard)shuffledQuestions[i];
                     SendConsoleMessage(new ConsoleLine("Promt:", AppRegistry.PrimaryCol));
-                    SendConsoleMessage(sfc.promt);
+                    SendConsoleMessage(new ConsoleLine(sfc.promt, AppRegistry.SecondaryCol));
                     ShiftLine();
                     answer = UserInput.GetUserInput("Answer: ", clear: true);
                     correctAnswer = sfc.expectedAnswer;
@@ -159,7 +163,7 @@ public class FlashCardApp : App
                 case 1:
                     MultiChoiceFlashCard mcfc = (MultiChoiceFlashCard)shuffledQuestions[i];
                     SendConsoleMessage(new ConsoleLine("Promt:", AppRegistry.PrimaryCol));
-                    SendConsoleMessage(mcfc.promt);
+                    SendConsoleMessage(new ConsoleLine(mcfc.promt, AppRegistry.SecondaryCol));
                     ShiftLine();
                     answer = UserInput.CreateOptionMenu("Answer: ", mcfc.answers.ToArray()).ToString();
                     correctAnswer = mcfc.answers[mcfc.answerIndex];
@@ -167,7 +171,7 @@ public class FlashCardApp : App
                 case 2:
                     FillTheGapFlashCard ftgfc = (FillTheGapFlashCard)shuffledQuestions[i];
                     SendConsoleMessage(new ConsoleLine("Fill In The Gap:", AppRegistry.PrimaryCol));
-                    SendConsoleMessage(ftgfc.FormattedQuestion());
+                    SendConsoleMessage(new ConsoleLine(ftgfc.FormattedQuestion(), AppRegistry.SecondaryCol));
                     ShiftLine();
                     answer = UserInput.GetUserInput("Answer: ", clear: true);
                     correctAnswer = ftgfc.CorrectAnswer();
@@ -177,16 +181,16 @@ public class FlashCardApp : App
             if (shuffledQuestions[i].CheckAnswer(answer.Trim()))
             {
                 correctQuestions.Add(i);
-                SendConsoleMessage(new ConsoleLine("Answer Correct!", ConsoleColor.Green));
+                SendConsoleMessage(new ConsoleLine("Answer Correct!", AppRegistry.SecondaryCol));
             }
             else
             {
                 SendConsoleMessage(new ConsoleLine("Answer Incorrect!", ConsoleColor.DarkRed));
-                SendConsoleMessage($"Your Answer: {answer.Trim()}");
-                SendConsoleMessage($"Correct Answer: {correctAnswer}");
+                SendConsoleMessage(new ConsoleLine($"Your Answer: {answer.Trim()}", BuildArray(AppRegistry.SecondaryCol.Extend(12), inputCol)));
+                SendConsoleMessage(new ConsoleLine($"Correct Answer: {correctAnswer}", AppRegistry.SecondaryCol));
             }
 
-            UserInput.WaitForUserInput(space: true);
+            if (UserInput.WaitForUserInput([ConsoleKey.Enter, ConsoleKey.E], space: true) == ConsoleKey.E) return;
         }
 
         TimeSpan time = DateTime.Now - startTime;
@@ -200,14 +204,19 @@ public class FlashCardApp : App
             s.questionHighscore = correctQuestions.Count;
             s.bestTime = time;
         }
+        else if (s.questionHighscore > s.questions.Count) // some questions where deleted
+        {
+            s.questionHighscore = correctQuestions.Count;
+            s.bestTime = time;
+        }
         else if (s.questionHighscore == correctQuestions.Count && s.bestTime > time) s.bestTime = time;
 
         //stats 
         ClearPrimaryConsole();
-        SendConsoleMessage(new ConsoleLine($"'{StringFunctions.SplitAtCapitalisation(s.name)}' Complete!", ConsoleColor.DarkBlue));
+        SendConsoleMessage(new ConsoleLine($"'{StringFunctions.SplitAtCapitalisation(s.name)}' Complete!", AppRegistry.PrimaryCol));
         ShiftLine();
-        SendConsoleMessage($"Score: [{correctQuestions.Count} / {s.questions.Count}] {Math.Round((double)correctQuestions.Count / (double)s.questions.Count * 100d, 2)}%");
-        SendConsoleMessage($"Time: {time.ToString(@"mm\:ss")}");
+        SendConsoleMessage(new ConsoleLine($"Score: [{correctQuestions.Count} / {s.questions.Count}] {Math.Round((double)correctQuestions.Count / (double)s.questions.Count * 100d, 2)}%", AppRegistry.SecondaryCol));
+        SendConsoleMessage(new ConsoleLine($"Time: {time:mm\\:ss}", AppRegistry.SecondaryCol));
         ShiftLine();
         s.PrintStats();
 
@@ -228,21 +237,30 @@ public class FlashCardApp : App
     void EditFCS(FlashCardSet s)
     {
         ClearPrimaryConsole();
-        SendConsoleMessage(new ConsoleLine($"Editing Set '{StringFunctions.SplitAtCapitalisation(s.name)}' Of {s.questions.Count} Questions.", ConsoleColor.DarkGreen));
+        SendConsoleMessage(new ConsoleLine($"Editing Set '{StringFunctions.SplitAtCapitalisation(s.name)}' Of {s.questions.Count} Questions.", AppRegistry.PrimaryCol));
         ShiftLine();
         bool deleted = false;
 
-        int i = UserInput.CreateOptionMenu("Options:", new (string name, Action action)[] {
+        int i = UserInput.CreateOptionMenu("Options:", [
                     ("New Question", () => s.questions.Add(CreateQuestion(s))),
                     ("View Questions", () => ViewQuestions(s)),
+                    ("Rename Flash Card Set", () => RenameFCS(s)),
                     ("Delete Flash Card Set", () => deleted = DeleteFCS(s)),
                     ("Exit", () => {})
-                });
+                ]);
 
         if (deleted) { return; }
 
-        if (i != 3) EditFCS(s);
+        if (i != 4) EditFCS(s);
         else SaveFCS(s);
+    }
+
+    void RenameFCS(FlashCardSet s)
+    {
+        string newName = UserInput.GetValidUserInput("New Flash Card Set Name: ", new UserInputProfile(UserInputProfile.InputType.FullText, "[C:]", removeWhitespace: true));
+        DeleteFile(GeneratePath(DataLocation.App, $"FlashCard/{s.name}"));
+        s.name = newName;
+        SaveFCS(s);
     }
 
     /// <summary> Deletes given FCS file.</summary>
@@ -251,13 +269,13 @@ public class FlashCardApp : App
         if (UserInput.CreateTrueFalseOptionMenu($"Are You Sure You Want To Delete '{StringFunctions.SplitAtCapitalisation(s.name)}'?"))
         {
             DeleteFile(GeneratePath(DataLocation.App, $"FlashCard/{s.name}"));
-            SendConsoleMessage($"'{StringFunctions.SplitAtCapitalisation(s.name)}' Deleted!");
+            SendConsoleMessage(new ConsoleLine($"'{StringFunctions.SplitAtCapitalisation(s.name)}' Deleted!", AppRegistry.PrimaryCol));
             UserInput.WaitForUserInput(space: true);
             return true;
         }
         else
         {
-            SendConsoleMessage($"'{StringFunctions.SplitAtCapitalisation(s.name)}' Deletion Aborted!");
+            SendConsoleMessage(new ConsoleLine($"'{StringFunctions.SplitAtCapitalisation(s.name)}' Deletion Aborted!", AppRegistry.PrimaryCol));
             UserInput.WaitForUserInput(space: true);
             return false;
         }
@@ -272,30 +290,36 @@ public class FlashCardApp : App
     // QUESTION MODIFICATIONS
 
     /// <summary> Create a question for a given FCS.</summary>
-    FlashCard CreateQuestion(FlashCardSet s)
+    FlashCard CreateQuestion(FlashCardSet s, FlashCard? fromFlashCard = null)
     {
-        int questionType = UserInput.CreateOptionMenu("Question Type:", new string[] { "Standard", "Multi Choice", "Fill The Gap" });
-        string promt = UserInput.GetValidUserInput("Create Your Flash Card's Promt:", new UserInputProfile());
+        int questionType = UserInput.CreateOptionMenu("Question Type:", ["Standard", "Multi Choice", "Fill The Gap"],
+        cursorStartIndex: fromFlashCard == null ? 0 : FlashCard.GetQuestionType(fromFlashCard));
+        string promt = UserInput.GetValidUserInput("Create Your Flash Card's Promt:", new UserInputProfile(), fromFlashCard?.promt ?? "");
         switch (questionType)
         {
             case 0:
-                string answer = UserInput.GetValidUserInput("Create Your Flash Card's Answer:", new UserInputProfile());
+                string answer = UserInput.GetValidUserInput("Create Your Flash Card's Answer:", new UserInputProfile(), fromFlashCard is StandardFlashCard sfc ? sfc.expectedAnswer : "");
                 return new StandardFlashCard(promt, answer);
             case 1:
                 List<string> answers = new List<string>();
                 while (true)
                 {
-                    if (answers.Count >= 2 && UserInput.CreateOptionMenu("Options: ", new string[] { "New Choice", "Finish" }) == 1)
+                    if (answers.Count >= 2 && UserInput.CreateOptionMenu("Options: ", ["New Choice", "Finish"]) == 1)
                     {
                         return new MultiChoiceFlashCard(promt, answers, UserInput.CreateOptionMenu("Select The Correct Answer: ", answers.ToArray()));
                     }
                     answers.Add(UserInput.GetValidUserInput($"Input Flash Card's Answer Choice {answers.Count + 1}:", new UserInputProfile(bannedChars: ":")));
                 }
             default:
-                List<int> validQuestionIndexes = new List<int>();
+                if (fromFlashCard is FillTheGapFlashCard ftgfc && UserInput.CreateTrueFalseOptionMenu("Keep Current Fill The Gap Indexes?"))
+                {
+                    return new FillTheGapFlashCard(promt, ftgfc.questionIndexes);
+                }
+
+                List<int> validQuestionIndexes = [];
                 while (true)
                 {
-                    if (validQuestionIndexes.Count > 0 && UserInput.CreateOptionMenu("Options: ", new string[] { "New Choice", "Finish" }) == 1)
+                    if (validQuestionIndexes.Count > 0 && UserInput.CreateOptionMenu("Options: ", ["New Choice", "Finish"]) == 1)
                     {
                         return new FillTheGapFlashCard(promt, validQuestionIndexes);
                     }
@@ -314,7 +338,7 @@ public class FlashCardApp : App
     }
 
     /// <summary> Select and edit a question from a given FCS.</summary>
-    void ViewQuestions(FlashCardSet s)
+    void ViewQuestions(FlashCardSet s, int questionPointer = 0)
     {
         if (s.questions.Count == 0)
         {
@@ -323,52 +347,48 @@ public class FlashCardApp : App
             return;
         }
 
-        int cq = 0;
-
+        questionPointer = Math.Min(questionPointer, s.questions.Count - 1);
         int pointer = 0;
 
         while (true)
         {
             ClearPrimaryConsole();
-            SendConsoleMessage($"Flash Card Set '{StringFunctions.SplitAtCapitalisation(s.name)}'");
+            SendConsoleMessage(new ConsoleLine($"Flash Card Set '{StringFunctions.SplitAtCapitalisation(s.name)}'", AppRegistry.PrimaryCol));
 
-            SendConsoleMessage($"Question {cq + 1}/{s.questions.Count}");
-            SendConsoleMessage($"Type: {FlashCard.QuestionTypeName[FlashCard.GetQuestionType(s.questions[cq])]}");
+            SendConsoleMessage(new ConsoleLine($"Question {questionPointer + 1}/{s.questions.Count}", AppRegistry.SecondaryCol));
+            SendConsoleMessage(new ConsoleLine($"Type: {FlashCard.QuestionTypeName[FlashCard.GetQuestionType(s.questions[questionPointer])]}", AppRegistry.SecondaryCol));
             ShiftLine();
-            SendConsoleMessage($"Promt: {s.questions[cq].promt}");
-            switch (FlashCard.GetQuestionType(s.questions[cq]))
+            SendConsoleMessage(new ConsoleLine($"Promt: {s.questions[questionPointer].promt}", AppRegistry.SecondaryCol));
+            switch (FlashCard.GetQuestionType(s.questions[questionPointer]))
             {
                 case 0:
-                    SendConsoleMessage($"Answer: {((StandardFlashCard)s.questions[cq]).expectedAnswer}");
+                    SendConsoleMessage(new ConsoleLine($"Answer: {((StandardFlashCard)s.questions[questionPointer]).expectedAnswer}", AppRegistry.SecondaryCol));
                     break;
                 case 1:
-                    SendConsoleMessage($"Choices: ");
-                    SendConsoleMessages(((MultiChoiceFlashCard)s.questions[cq]).answers.Select((s, index) => new ConsoleLine($"{index + 1}. {s}")).ToArray());
-                    SendConsoleMessage($"Correct Answer: {((MultiChoiceFlashCard)s.questions[cq]).answers[((MultiChoiceFlashCard)s.questions[cq]).answerIndex]}");
+                    SendConsoleMessage(new ConsoleLine($"Choices: ", AppRegistry.SecondaryCol));
+                    SendConsoleMessages(((MultiChoiceFlashCard)s.questions[questionPointer]).answers.Select((s, index) => new ConsoleLine($"{index + 1}. {s}", AppRegistry.SecondaryCol)).ToArray());
+                    SendConsoleMessage(new ConsoleLine($"Correct Answer: {((MultiChoiceFlashCard)s.questions[questionPointer]).answers[((MultiChoiceFlashCard)s.questions[questionPointer]).answerIndex]}", AppRegistry.SecondaryCol));
                     break;
                 case 2:
-                    SendConsoleMessage($"Promt Indexes: {((FillTheGapFlashCard)s.questions[cq]).questionIndexes.ToElementString()}");
+                    SendConsoleMessage(new ConsoleLine($"Promt Indexes: {((FillTheGapFlashCard)s.questions[questionPointer]).questionIndexes.ToElementString()}", AppRegistry.SecondaryCol));
                     break;
             }
             ShiftLine();
-
-
             bool reload = false;
 
-
-            pointer = UserInput.CreateOptionMenu("Options: ", new (ConsoleLine, Action)[] {
-                        (new ConsoleLine("Edit Question"), () => { if (UserInput.CreateTrueFalseOptionMenu("Edit Question:")) { s.questions[cq] = CreateQuestion(s); reload = true;}} ),
-                        (new ConsoleLine("Delete Question"), () => { if (UserInput.CreateTrueFalseOptionMenu("Delete Question:")) { s.questions.RemoveAt(cq); reload = true;}}),
-                        (new ConsoleLine("Next Question", ConsoleColor.DarkBlue), () => cq = cq < s.questions.Count - 1 ? cq + 1 : 0),
-                        (new ConsoleLine("Previous Question", ConsoleColor.DarkBlue), () => cq = cq > 0 ? cq - 1 : s.questions.Count - 1),
-                        (new ConsoleLine("Exit", ConsoleColor.DarkBlue), () => {}),
-                        },
+            pointer = UserInput.CreateOptionMenu("Options: ", [
+                        (new ConsoleLine("Edit Question", AppRegistry.SecondaryCol), () => { if (UserInput.CreateTrueFalseOptionMenu("Edit Question:")) { s.questions[questionPointer] = CreateQuestion(s, s.questions[questionPointer]); reload = true;}} ),
+                        (new ConsoleLine("Delete Question", AppRegistry.SecondaryCol), () => { if (UserInput.CreateTrueFalseOptionMenu("Delete Question:")) { s.questions.RemoveAt(questionPointer); reload = true;}}),
+                        (new ConsoleLine("Next Question", AppRegistry.PrimaryCol), () => questionPointer = questionPointer < s.questions.Count - 1 ? questionPointer + 1 : 0),
+                        (new ConsoleLine("Previous Question", AppRegistry.PrimaryCol), () => questionPointer = questionPointer > 0 ? questionPointer - 1 : s.questions.Count - 1),
+                        (new ConsoleLine("Exit", AppRegistry.PrimaryCol), () => {}),
+                        ],
             cursorStartIndex: pointer);
 
 
             if (reload)
             {
-                ViewQuestions(s);
+                ViewQuestions(s, questionPointer);
                 return;
             }
 
@@ -401,7 +421,6 @@ public class FlashCardApp : App
 
         public FlashCardSet(string filePath)
         {
-            Analytics.Debug.Add(filePath);
             string[] s = LoadFile(GeneratePath(DataLocation.App, filePath), 0, 7);
             name = s[0];
             timeSpent = TimeSpan.Parse(s[1]);
@@ -415,14 +434,14 @@ public class FlashCardApp : App
 
         public void PrintStats()
         {
-            SendConsoleMessage($"Highscore: [{questionHighscore} / {questions.Count}] {Math.Round((double)questionHighscore / (double)questions.Count * 100d, 2)}%");
-            SendConsoleMessage($"Highscore Time: {bestTime.ToString(@"mm\:ss")}");
+            SendConsoleMessage(new ConsoleLine($"Highscore: [{questionHighscore} / {questions.Count}] {Math.Round(questionHighscore / (double)questions.Count * 100d, 2)}%", AppRegistry.SecondaryCol));
+            SendConsoleMessage(new ConsoleLine($"Highscore Time: {bestTime:mm\\:ss}", AppRegistry.SecondaryCol));
             ShiftLine();
-            SendConsoleMessage($"Times Completed: {timesCompleted}");
-            SendConsoleMessage($"Total Time Spent: {timeSpent.ToString(@"hh\:mm\:ss")}");
+            SendConsoleMessage(new ConsoleLine($"Times Completed: {timesCompleted}", AppRegistry.SecondaryCol));
+            SendConsoleMessage(new ConsoleLine($"Total Time Spent: {timeSpent:hh\\:mm\\:ss}", AppRegistry.SecondaryCol));
             ShiftLine();
-            SendConsoleMessage($"Questions Answered: {questionsCompleted}");
-            SendConsoleMessage($"Questions Answered Correctley: {questionsCompletedCorrect}");
+            SendConsoleMessage(new ConsoleLine($"Questions Answered: {questionsCompleted}", AppRegistry.SecondaryCol));
+            SendConsoleMessage(new ConsoleLine($"Questions Answered Correctley: {questionsCompletedCorrect}", AppRegistry.SecondaryCol));
         }
 
         public override string ToString()
@@ -459,7 +478,7 @@ public class FlashCardApp : App
             return 2;
         }
 
-        public static string[] QuestionTypeName { get { return new string[] { "Standard", "Multi Choice", "Fill The Gap" }; } }
+        public static string[] QuestionTypeName { get { return ["Standard", "Multi Choice", "Fill The Gap"]; } }
     }
 
     /// <summary>Class pertaining all information for a flash card question.</summary>F
@@ -477,7 +496,7 @@ public class FlashCardApp : App
         public override bool CheckAnswer(string answer)
         {
             //my IDE saids these brackets are unesccary (its lying!)
-            return (answer.ToLower() == expectedAnswer.ToLower());
+            return answer.ToLower().Replace(" ", "") == expectedAnswer.ToLower().Replace(" ", "");
         }
 
         public override string ToString()
@@ -502,7 +521,7 @@ public class FlashCardApp : App
         /// <summary>Checks if given answer to flash card is correct.</summary>
         public override bool CheckAnswer(string answer)
         {
-            return (int.Parse(answer) == answerIndex);
+            return int.Parse(answer) == answerIndex;
         }
 
         public override string ToString()
@@ -537,7 +556,7 @@ public class FlashCardApp : App
         /// <summary>Checks if given answer to flash card is correct.</summary>
         public override bool CheckAnswer(string answer)
         {
-            return (CorrectAnswer().ToLower() == answer.ToLower());
+            return CorrectAnswer().ToLower().Replace(" ", "") == answer.ToLower().Replace(" ", "");
         }
 
         public override string ToString()

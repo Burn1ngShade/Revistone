@@ -1,125 +1,229 @@
 using Revistone.Console;
 using Revistone.Interaction;
-
-using static Revistone.Functions.PersistentDataFunctions;
-using static Revistone.Console.ConsoleAction;
 using Revistone.App;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Win32.SafeHandles;
 using System.ComponentModel;
+using Revistone.Management;
+
+using static Revistone.Functions.ColourFunctions;
+using static Revistone.Functions.PersistentDataFunctions;
+using static Revistone.Console.ConsoleAction;
+using Microsoft.VisualBasic;
 
 namespace Revistone.Functions;
 
 public static class WorkspaceFunctions
 {
-    static DirectoryInfo dir = new(path ?? @"PersistentData\Workspace\");
-    static string path = @"PersistentData\Workspace\";
-    public static string DisplayPath => dir.FullName[(dir.FullName.IndexOf(path, StringComparison.OrdinalIgnoreCase) + 15)..^1];
+    public static readonly string RootPath = @"PersistentData\Workspace\"; // path of root directory
 
+    static DirectoryInfo dir = new(path ?? RootPath); // info of current directory
+    static string path = RootPath; // path of current directory
+
+    public static string DisplayPath => dir.FullName[(dir.FullName.IndexOf(path, StringComparison.OrdinalIgnoreCase) + 15)..^1]; // use when displaying path
+    public static string RawPath => path;
+
+    // --- PATHS ---
+
+    ///<summary> Gets the path of the parent folder of the current workspace folder. </summary>
+    public static string GetParentPath(string path)
+    {
+        if (path == RootPath) return path;
+
+        path = path[..path[..^1].LastIndexOf('\\')];
+        if (DirectoryExists(path)) path = GetFinalPathName(path);
+        path += @"\";
+        return path[path.IndexOf(RootPath, StringComparison.OrdinalIgnoreCase)..];
+    }
+
+    ///<summary> Updates workspace folder path. </summary>
+    public static bool UpdatePath(string newPath)
+    {
+        if (!DirectoryExists(newPath))
+        {
+            SendConsoleMessage(new ConsoleLine($"Directory Does Not Exist - '{newPath[15..^1]}'", BuildArray(AppRegistry.PrimaryCol.Extend(27), AppRegistry.SecondaryCol)));
+            return false;
+        }
+
+        if (newPath.Equals(path, StringComparison.CurrentCultureIgnoreCase))
+        {
+            SendConsoleMessage(new ConsoleLine($"Already In Directory - '{DisplayPath}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
+            return false;
+        }
+
+        newPath = GetFinalPathName(newPath);
+        if (!newPath.EndsWith('\\')) newPath += @"\";
+        path = newPath[newPath.IndexOf(RootPath, StringComparison.OrdinalIgnoreCase)..];
+        dir = new(path);
+        SendConsoleMessage(new ConsoleLine($"Changed To Directory - '{DisplayPath}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
+
+        Analytics.General.DirectoriesOpened++;
+
+        return true;
+    }
+
+    ///<summary> Info about each workspace query, allowing for query modifiers (e.g -r, -p). </summary>
+    struct WorkspaceQuery
+    {
+        public readonly string Path;
+        public readonly string Name;
+        public DirectoryInfo Dir;
+
+        public readonly string Location => Path + Name;
+        public readonly string Info; // info about query, e.g. "At Root Directory"
+
+        public readonly Dictionary<string, bool> modifiers = new()
+        {
+            { "-r", false }, // root directory
+            { "-p", false }, // parent directory
+            { "-j", false}, // jump to
+        };
+
+        public WorkspaceQuery(string queryName)
+        {
+
+            while (queryName.Length >= 2)
+            {
+                bool foundModifier = false;
+                foreach (string key in modifiers.Keys)
+                {
+                    if (queryName.EndsWith(key))
+                    {
+                        modifiers[key] = true;
+                        foundModifier = true;
+                        queryName = queryName[..^key.Length].TrimEnd();
+                        break;
+                    }
+                }
+                if (!foundModifier) break;
+            }
+
+            if (modifiers["-r"])
+            {
+                Path = RootPath;
+                Dir = new(Path);
+                Info = "Within Root Directory ";
+            }
+            else if (modifiers["-p"])
+            {
+                Path = GetParentPath(path);
+                Dir = new(Path);
+                Info = "Within Parent Directory ";
+            }
+            else
+            {
+                Path = path;
+                Dir = dir;
+                Info = "";
+            }
+
+            Name = queryName;
+        }
+    }
+
+    // --- DIRECTORIES ---
+
+    ///<summary> Creates a directory within workspace. </summary>
     public static bool CreateWorkspaceDirectory(string dirName)
     {
-        if (!IsNameValid(dirName, true)) return false;
-        if (DirectoryExists(path + dirName))
+        WorkspaceQuery q = new(dirName);
+
+        if (!IsNameValid(q.Name, true, true)) return false;
+
+        string dirLabel = (dirName.Contains('\\') || dirName.Contains('/')) ? "Directories" : "Directory";
+
+        if (DirectoryExists(q.Location))
         {
-            SendConsoleMessage(new ConsoleLine($"Directory Already Exists - '{dirName}'.", AppRegistry.PrimaryCol));
+            SendConsoleMessage(new ConsoleLine($"{dirLabel} Already Exists {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(18 + dirLabel.Length + q.Info.Length), AppRegistry.SecondaryCol)));
             return false;
         }
 
-        CreateDirectory(path + dirName);
-        SendConsoleMessage(new ConsoleLine($"Created Directory - '{dirName}'.", AppRegistry.PrimaryCol));
+        CreateDirectory(q.Location);
+        SendConsoleMessage(new ConsoleLine($"Created {dirLabel} {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(11 + dirLabel.Length + q.Info.Length), AppRegistry.SecondaryCol)));
+
+        if (q.modifiers["-j"]) UpdatePath(q.Location); // jump to new directory
+
+        Analytics.General.DirectoriesCreated++;
 
         return true;
     }
 
+    ///<summary> Removes a directory within workspace. </summary>
     public static bool DeleteWorkspaceDirectory(string dirName)
     {
-        if (!DirectoryExists(path + dirName) || dirName == "")
+        WorkspaceQuery q = new(dirName);
+
+        if (!DirectoryExists(q.Location) || q.Name == "")
         {
-            SendConsoleMessage(new ConsoleLine($"Directory Does Not Exist - '{dirName}'.", AppRegistry.PrimaryCol));
+            SendConsoleMessage(new ConsoleLine($"Directory Does Not Exist {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(27 + q.Info.Length), AppRegistry.SecondaryCol)));
             return false;
         }
 
-        if (!UserInput.CreateTrueFalseOptionMenu($"Are You Sure You Want To Delete Directory: {dirName}")) return false;
+        if (!UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Are You Sure You Want To Delete Directory {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(44 + q.Info.Length), AppRegistry.SecondaryCol)))) return false;
 
-        DeleteDirectory(path + dirName);
-        SendConsoleMessage(new ConsoleLine($"Deleted Directory - '{dirName}'.", AppRegistry.PrimaryCol));
+        DeleteDirectory(q.Location);
+        SendConsoleMessage(new ConsoleLine($"Deleted Directory {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(20 + q.Info.Length), AppRegistry.SecondaryCol)));
+
+        if (!DirectoryExists(path)) // if we deleted the directory we are currently in using -p or -r
+        {
+            string validPath = path;
+            while (!DirectoryExists(validPath))
+            {
+                validPath = GetParentPath(validPath);
+            }
+            UpdatePath(validPath);
+        }
+
+        Analytics.General.DirectoriesDeleted++;
 
         return true;
     }
 
-    public static bool ChangeWorkspaceDirectory(string dirName)
-    {
-        if (!DirectoryExists(path + dirName) || dirName == "")
-        {
-            SendConsoleMessage(new ConsoleLine($"Directory Does Not Exist - '{dirName}'.", AppRegistry.PrimaryCol));
-            return false;
-        }
+    // --- DISPLAY FUNCTIONS ---
 
-        path = GetFinalPathName(path + $@"{dirName}\");
-        path = path[path.IndexOf(@"PersistentData\Workspace\", StringComparison.OrdinalIgnoreCase)..];
-        path += @"\";
-        dir = new(path);
-        SendConsoleMessage(new ConsoleLine($"Changed To Directory - '{DisplayPath}'.", AppRegistry.PrimaryCol));
-
-        return true;
-    }
-
-    public static bool ChangeBackWorkspaceDirectory()
-    {
-        if (path == @"PersistentData\Workspace\")
-        {
-            SendConsoleMessage(new ConsoleLine("Already Within The Root Directory.", AppRegistry.PrimaryCol));
-            return false;
-        }
-
-        path = GetFinalPathName(path[..path[..^1].LastIndexOf('\\')]);
-        path += @"\";
-        path = path[path.IndexOf(@"PersistentData\Workspace\", StringComparison.OrdinalIgnoreCase)..];
-        dir = new(path);
-        SendConsoleMessage(new ConsoleLine($"Changed To Directory - '{DisplayPath}'.", AppRegistry.PrimaryCol));
-
-        return true;
-    }
-
-    public static bool ChangeRootWorkspaceDirectory()
-    {
-        if (path == @"PersistentData\Workspace\")
-        {
-            SendConsoleMessage(new ConsoleLine("Already Within The Root Directory.", AppRegistry.PrimaryCol));
-            return false;
-        }
-
-        path = @"PersistentData\Workspace\";
-        dir = new(path);
-        SendConsoleMessage(new ConsoleLine($"Changed To Directory - '{DisplayPath}'.", AppRegistry.PrimaryCol));
-        return true;
-    }
-
-    public static void GetWorkspaceDirectoryContents()
+    ///<summary> Displays general info about current workspace directory. </summary>
+    public static void DisplayWorkspaceOverview()
     {
         SendConsoleMessage(new ConsoleLine($"--- {DisplayPath} ---", AppRegistry.PrimaryCol));
 
-        string[] directories = GetSubDirectories(path);
-        string[] files = GetSubFiles(path);
+        (string name, DirectoryInfo info)[] directories = [.. GetSubDirectories(path).Select(x => (x, new DirectoryInfo(path + x))).OrderByDescending(x => x.Item2.GetFiles().Length)];
+        (string name, FileInfo info)[] files = [.. GetSubFiles(path).Select(x => (x, new FileInfo(path + x))).OrderByDescending(x => x.Item2.Length)];
 
+        SendConsoleMessage(new ConsoleLine($"Created On - {dir.CreationTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(12), AppRegistry.PrimaryCol)));
+        SendConsoleMessage(new ConsoleLine("")); // prevent some shiftline weirdness
         SendConsoleMessage(new ConsoleLine("Directories:", AppRegistry.SecondaryCol));
-        foreach (string dir in directories)
+        for (int i = 0; i < Math.Min(directories.Length, 6); i++)
         {
-            DirectoryInfo info = new DirectoryInfo(path + dir);
-            SendConsoleMessage(new ConsoleLine($" {dir} - {info.GetFiles().Length} Files, {info.GetDirectories().Length} Directories.", AppRegistry.PrimaryCol));
+            (string name, DirectoryInfo info) = directories[i];
+            SendConsoleMessage(new ConsoleLine($"  {name} - {info.GetFiles().Length} Files, {info.GetDirectories().Length} Directories", AppRegistry.PrimaryCol));
         }
-        if (directories.Length == 0) SendConsoleMessage(new ConsoleLine("No Directories Found.", AppRegistry.PrimaryCol));
-
+        if (directories.Length == 0) SendConsoleMessage(new ConsoleLine("  No Directories Found.", AppRegistry.PrimaryCol));
+        if (directories.Length > 6) SendConsoleMessage(new ConsoleLine($"  + {directories.Length - 6} {(directories.Length - 6 == 1 ? "Directory" : "Directories")}", AppRegistry.SecondaryCol));
+        SendConsoleMessage(new ConsoleLine(""));
         SendConsoleMessage(new ConsoleLine("Files:", AppRegistry.SecondaryCol));
-        foreach (string file in files)
+        for (int i = 0; i < Math.Min(files.Length, 6); i++)
         {
-            FileInfo info = new FileInfo(path + file);
-            SendConsoleMessage(new ConsoleLine($" {file} - {info.Length} Bytes", AppRegistry.PrimaryCol));
+            (string name, FileInfo info) = files[i];
+            SendConsoleMessage(new ConsoleLine($"  {name} - {info.Length} Bytes", AppRegistry.PrimaryCol));
         }
-        if (files.Length == 0) SendConsoleMessage(new ConsoleLine("No Files Found.", AppRegistry.PrimaryCol));
+        if (files.Length == 0) SendConsoleMessage(new ConsoleLine("  No Files Found.", AppRegistry.PrimaryCol));
+        if (files.Length > 6) SendConsoleMessage(new ConsoleLine($"  + {files.Length - 6} {(files.Length - 6 == 1 ? "File" : "Files")}", AppRegistry.SecondaryCol));
+    }
+
+    ///<summary> Displays info about files within the current workspace directory. </summary>
+    public static void ListWorkspaceFiles()
+    {
 
     }
+
+    ///<summary> Displays info about directories within the current workspace directory. </summary>
+    public static void ListWorkspaceDirectories()
+    {
+
+    }
+
+    // --- FILES ---
 
     public static bool CreateWorkspaceFile(string fileName)
     {
@@ -135,6 +239,7 @@ public static class WorkspaceFunctions
 
         SaveFile(path + fileName, []);
         SendConsoleMessage(new ConsoleLine($"Created Text File - '{fileName}'.", AppRegistry.PrimaryCol));
+        Analytics.General.FilesCreated++;
 
         return true;
     }
@@ -151,6 +256,7 @@ public static class WorkspaceFunctions
 
         DeleteFile(path + fileName);
         SendConsoleMessage(new ConsoleLine($"Deleted File - '{fileName}'.", AppRegistry.PrimaryCol));
+        Analytics.General.FilesDeleted++;
 
         return true;
     }
@@ -171,7 +277,8 @@ public static class WorkspaceFunctions
         }
 
         string[] content = LoadFile(path + fileName);
-        SaveFile(path + fileName, UserInput.MultiLineEdit(Path.GetFileNameWithoutExtension(GetFinalPathName(path + fileName)), content));
+        SaveFile(path + fileName, UserInput.GetMultiUserInput(Path.GetFileNameWithoutExtension(GetFinalPathName(path + fileName)), content));
+        Analytics.General.FilesOpened++;
 
         return true;
     }

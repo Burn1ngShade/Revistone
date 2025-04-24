@@ -6,6 +6,7 @@ using static Revistone.Functions.ColourFunctions;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.App.BaseApps.SettingsApp.Setting;
 using static Revistone.Functions.PersistentDataFunctions;
+using Revistone.Management;
 
 namespace Revistone.App.BaseApps;
 
@@ -17,8 +18,11 @@ public class SettingsApp : App
     public static event SettingEventHandler OnSettingChanged = new SettingEventHandler((settingName) => { });
     public delegate void SettingEventHandler(string settingName);
 
+    static readonly string[] YesNoOpt = ["Yes", "No"];
+    static readonly string[] ColourOpt = ["White", "Gray", "Dark Gray", "Black", "Red", "Dark Red", "Yellow", "Dark Yellow", "Green", "Dark Green", "Cyan", "Dark Cyan", "Blue", "Dark Blue", "Magenta", "Dark Magenta"];
+
     static Setting[] settings = [
-        new InputSetting("Username", "The Name Used To Refer To The User.", "User", SettingCategory.User, new UserInputProfile(bannedChars: "\n\"\' ")),
+        new InputSetting("Username", "The Name Used To Refer To The User.", "User", SettingCategory.User, new UserInputProfile(bannedChars: "\n\"\'")),
         new DropdownSetting("Pronouns", "The Pronouns Used To Refer To The User", "Prefer Not To Say", SettingCategory.User,
         ["Prefer Not To Say", "He/Him", "She/Her", "They/Them", "He/She",  "He/Them", "She/Them"]),
         new InputSetting("API Key", "ChatGPT API Key (I Promise I Don't Steal This Data - The Project Is Open Source Just Check!)", "",
@@ -27,43 +31,49 @@ public class SettingsApp : App
         SettingCategory.ChatGPT, new UserInputProfile(canBeEmpty: true)),
         new InputSetting("Scenario", "Additonal Promt Given To Setup GPT Scenario.", "",
         SettingCategory.ChatGPT, new UserInputProfile(canBeEmpty:true)),
-        new InputSetting("Memory", "How Many Previous Messages In The Conversation Should GPT Remember? (This Has A Large Effect On Token Usage).", "5", SettingCategory.ChatGPT,
+        new InputSetting("Conversation Memory", "How Many Previous Messages In The Conversation Should GPT Remember? (This Has A Large Effect On Token Usage).", "10", SettingCategory.ChatGPT,
         new UserInputProfile(UserInputProfile.InputType.Int, numericMin: 0, numericMax: 50)),
+        new DropdownSetting("Long Term Memory", "Should GPT Use It's Long Term Memory? (When Off GPT Is Unable To Create New Memories).", "Yes", SettingCategory.ChatGPT,
+        YesNoOpt),
         new InputSetting("Temperature", "How Random GPT Responses Are (0 [Not Random] - 2 [Unintelligible])", "1", SettingCategory.ChatGPT,
         new UserInputProfile([UserInputProfile.InputType.Float, UserInputProfile.InputType.Int], numericMin: 0, numericMax: 2)),
         new InputSetting("GPT Name", "The Name Given To GPT", "GPT", SettingCategory.ChatGPT, new UserInputProfile(bannedChars: "\n\"\' ")),
         new DropdownSetting("GPT Model", "What Model Of GPT Should Be Used, 4o Mini Is Very Cheap, While o3 Mini Is More Expensive, But Better For Programming Tasks.", "gpt-4o-mini", SettingCategory.ChatGPT, ["gpt-4o-mini", "o3-mini"]),
-        new DropdownSetting("Welcome Message", "GPT Will Send A Message Upon Console Startup (Will Increase Inital Load Time).", "No", SettingCategory.ChatGPT, ["Yes", "No"]),
-        new DropdownSetting("Use Detailed System Promt", "Should GPT Use A Detailed System Promt, Giving It Details And Info About The Revistone Console, More Token Intensive.", "Yes", SettingCategory.ChatGPT, ["Yes", "No"]),
+        new DropdownSetting("Welcome Message", "GPT Will Send A Message Upon Console Startup (Will Increase Inital Load Time).", "No", SettingCategory.ChatGPT, YesNoOpt),
+        new DropdownSetting("Use Detailed System Promt", "Should GPT Use A Detailed System Promt, Giving It Details And Info About The Revistone Console, More Token Intensive.", "Yes", SettingCategory.ChatGPT, YesNoOpt),
         new InputSetting("Input History", "The Number Of Previous User Inputs Stored (10 - 1,000).", "100", SettingCategory.Input,
         new UserInputProfile([UserInputProfile.InputType.Float, UserInputProfile.InputType.Int], numericMin: 10, numericMax: 1000)),
         new DropdownSetting("Cursor Jump Separators", "The Charchters That The Cursor Uses To Divide Words.", ",. ", SettingCategory.Input,
-        [",. ", ",.!?-_;: ", ",.!?-_;:(){}[] "]),
+        [",. ", ",.!?-_;: ", ",.!?-_;:(){}[] ", ",.!?-_;:(){}[]+-/*^% "]),
+        new DropdownSetting("Input Text Colour", "The Colour Of User Input Text.", "White", SettingCategory.Input, ColourOpt),
+        new DropdownSetting("Input Cursor Colour", "The Colour Of User Input Cursor.", "White", SettingCategory.Input, ColourOpt),
+        new DropdownSetting("Input Cursor Trail Colour", "The Colour Of User Input Cursor Trail.", "Dark Gray", SettingCategory.Input, ColourOpt),
         new DropdownSetting("Create Log File", "Should HoneyC Programs Create A Program Log File?", "Yes", SettingCategory.HoneyC,
-        ["Yes", "No"]),
+        YesNoOpt),
         new DropdownSetting("Show FPS Widget", "Should The FPS Widget Be Shown?", "Yes", SettingCategory.Widget,
-        ["Yes", "No"]),
+        YesNoOpt),
         new DropdownSetting("Show Author Widget", "Should The Author Widget Be Shown?", "Yes", SettingCategory.Widget,
-        ["Yes", "No"]),
+        YesNoOpt),
         new DropdownSetting("Show Time Widget", "Should The Time Widget Be Shown?", "Yes", SettingCategory.Widget,
-        ["Yes", "No"]),
+        YesNoOpt),
         new DropdownSetting("Show Workspace Path Widget", "Should The Workspace Path Widget Be Shown?", "Yes", SettingCategory.Widget,
-        ["Yes", "No"]),
+        YesNoOpt),
         new DropdownSetting("Analytics Update Frequency", "How Often Should Analytics Update? (Can Effect Performance On Low End Devices, All Unsaved Analytics May Be Lost On Console Close).", "0.5s", SettingCategory.Performance,
         ["0.25s", "0.5s", "1s", "2.5s", "5s", "10s", "30s", "60s"]),
         new DropdownSetting("Widget Update Frequency", "How Often Should Widgets Update? (Can Effect Performance On Low End Devices, But Lower Settings Will Make Widgets Appear Laggy).", "0.025s", SettingCategory.Performance,
         ["0.025s", "0.05s", "0.1s", "0.2s", "0.5s", "1s"]),
-        new DropdownSetting("Show Emojis", "Can Emojis Be Used In The Program (Certain Emojis Cause The Console To Misrender, Requiring A Reload To Fix).", "No", SettingCategory.Performance, ["Yes", "No"]),
-        new DropdownSetting("Block Rendering On Crash", "Pauses Rendering On Crash, Showing C# Compiler Error But Preventing Final Rendering Passes.", "Yes", SettingCategory.Debug, ["Yes", "No"]),
-        new DropdownSetting("Show GPT Tool Results", "Outputs GPT Tool Results To The Debug Console (GPT Can Sometimes Be A Little Bit Stupid, Use For Promt Improvement).", "No", SettingCategory.Debug, ["Yes", "No"])
+        new DropdownSetting("Show Emojis", "Can Emojis Be Used In The Program (Certain Emojis Cause The Console To Misrender, Requiring A Reload To Fix).", "No", SettingCategory.Performance, YesNoOpt),
+        new DropdownSetting("Block Rendering On Crash", "Pauses Rendering On Crash, Showing C# Compiler Error But Preventing Final Rendering Passes.", "Yes", SettingCategory.Debug, YesNoOpt),
+        new DropdownSetting("Show GPT Tool Results", "Outputs GPT Tool Results To The Debug Console (GPT Can Sometimes Be A Little Bit Stupid, Use For Promt Improvement).", "No", SettingCategory.Debug, YesNoOpt),
+        new DropdownSetting("Log GPT System Messages", "Outputs GPT System Messages To The Debug Analytics File.", "No", SettingCategory.Debug, YesNoOpt)
     ];
 
     public SettingsApp() : base() { }
-    public SettingsApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour, int speed) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public SettingsApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
 
     public override App[] OnRegister()
     {
-        return [new SettingsApp("Settings", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray(), 10), (CyanDarkBlueGradient.Extend(7, true), 5), [], 70, 40)];
+        return [new SettingsApp("Settings", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Extend(7, true), 5), [], 70, 40)];
     }
 
     public override void OnRevistoneStartup()
@@ -118,13 +128,15 @@ public class SettingsApp : App
     /// </summary>
     static void HandleSettingSet(Setting setting, bool clearConsole = true)
     {
+        ConsoleColor[] inputColur = [(ConsoleColor)Enum.Parse(typeof(ConsoleColor), GetValue("Input Text Colour").Replace(" ", ""))];
+
         int userOption = 0;
         int settingIndex = GetSettingIndex(setting.settingName);
 
         while (true)
         {
             SendConsoleMessage(new ConsoleLine($"--- {setting.settingName} - {setting.category} ---", ConsoleColor.DarkBlue));
-            SendConsoleMessage(new ConsoleLine($"{setting.settingName} - '{setting.currentValue}'", BuildArray(ConsoleColor.Cyan.Extend(setting.settingName.Length + 3), ConsoleColor.White.ToArray())));
+            SendConsoleMessage(new ConsoleLine($"{setting.settingName} - '{setting.currentValue}'", BuildArray(ConsoleColor.Cyan.Extend(setting.settingName.Length + 3), inputColur)));
             ShiftLine();
             SendConsoleMessage(new ConsoleLine($"Summary - {setting.description}", BuildArray(ConsoleColor.Cyan.Extend(9), ConsoleColor.DarkBlue.ToArray())));
             SendConsoleMessage(new ConsoleLine($"Default Value - '{setting.defaultValue}'", BuildArray(ConsoleColor.Cyan.Extend(15), ConsoleColor.DarkBlue.ToArray())));
@@ -147,19 +159,22 @@ public class SettingsApp : App
                 case 0:
                     if (setting is InputSetting inputSetting)
                     {
-                        settings[settingIndex].currentValue = UserInput.GetValidUserInput($"--- Update [{inputSetting.settingName}] ---", inputSetting.inputProfile, setting.currentValue, 5);
+                        settings[settingIndex].currentValue = UserInput.GetValidUserInput($"--- Update [{inputSetting.settingName}] ---", inputSetting.inputProfile, setting.currentValue, maxLineCount: 5);
                     }
                     else if (setting is DropdownSetting dropdownSetting)
                     {
                         settings[settingIndex].currentValue = dropdownSetting.options[UserInput.CreateOptionMenu($"--- Update [{dropdownSetting.settingName}] ---",
                         dropdownSetting.options.Select(x => new ConsoleLine(x, ConsoleColor.Cyan)).ToArray())];
                     }
+
                     SaveSettings();
+                    Analytics.General.SettingsChanged++;
                     OnSettingChanged.Invoke(setting.settingName);
                     break;
                 case 1:
                     settings[settingIndex].currentValue = settings[settingIndex].defaultValue;
                     SaveSettings();
+                    Analytics.General.SettingsChanged++;
                     OnSettingChanged.Invoke(setting.settingName);
                     break;
                 case 2:
@@ -182,12 +197,14 @@ public class SettingsApp : App
     /// </summary>
     public static void HandleSettingGet(string setting)
     {
+        ConsoleColor[] inputColur = [(ConsoleColor)Enum.Parse(typeof(ConsoleColor), GetValue("Input Text Colour").Replace(" ", ""))];
+
         Setting s = settings[GetSettingIndex(setting)];
         SendConsoleMessage(new ConsoleLine($"--- {s.settingName} - {s.category} ---", ConsoleColor.DarkBlue));
-        SendConsoleMessage(new ConsoleLine($"{s.settingName} - '{s.currentValue}'", BuildArray(ConsoleColor.Cyan.Extend(s.settingName.Length + 3), ConsoleColor.White.ToArray())));
+        SendConsoleMessage(new ConsoleLine($"{s.settingName} - '{s.currentValue}'", BuildArray(ConsoleColor.Cyan.Extend(s.settingName.Length + 3), inputColur)));
         ShiftLine();
-        SendConsoleMessage(new ConsoleLine($"Summary: {s.description}", ConsoleColor.DarkBlue));
-        SendConsoleMessage(new ConsoleLine($"Default Value: '{s.defaultValue}'", ConsoleColor.DarkBlue));
+        SendConsoleMessage(new ConsoleLine($"Summary: {s.description}", BuildArray(ConsoleColor.Cyan.Extend(9), ConsoleColor.DarkBlue.ToArray())));
+        SendConsoleMessage(new ConsoleLine($"Default Value: '{s.defaultValue}'", BuildArray(ConsoleColor.Cyan.Extend(15), ConsoleColor.DarkBlue.ToArray())));
     }
 
     // --- SAVE AND LOAD ---
@@ -256,6 +273,16 @@ public class SettingsApp : App
         if (!currentSettings.ContainsKey(settingName.ToLower())) return "";
 
         return currentSettings[settingName.ToLower()];
+    }
+
+    public static ConsoleColor[] GetValueAsConsoleColour(string settingName)
+    {
+        return [(ConsoleColor)Enum.Parse(typeof(ConsoleColor), GetValue(settingName).Replace(" ", ""))];
+    }
+
+    public static bool GetValueAsBool(string settingName, string trueValue = "Yes")
+    {
+        return GetValue(settingName) == "Yes";
     }
 
     // --- SETTING CLASS ---

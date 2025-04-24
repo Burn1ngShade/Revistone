@@ -10,6 +10,8 @@ using System.Text.RegularExpressions;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
+using Revistone.Interaction;
+using System.Runtime.Serialization;
 
 namespace Revistone.Functions;
 
@@ -17,15 +19,18 @@ namespace Revistone.Functions;
 public static class GPTFunctions
 {
     static List<ChatMessage> messageHistory = [];
+    static List<ChatMemory> memoryHistory = [];
 
     // --- PUBLIC FUNCTIONS ---
 
     ///<summary> [DO NOT CALL] Initializes GPT, fetching message history. </summary>
     internal static void InitializeGPT()
     {
-        List<SerializableChatMessage>? serializableChats = LoadFileFromJSON<List<SerializableChatMessage>>(GeneratePath(DataLocation.Console, "History", "GPTMessages.json"));
+        List<SerializableChatMessage>? serializableChats = LoadFileFromJSON<List<SerializableChatMessage>>(GeneratePath(DataLocation.Console, "History/GPT", "Messages.json"));
         if (serializableChats == null) messageHistory = [];
         else messageHistory = serializableChats.Select(x => x.ToChatMessage()).ToList();
+
+        memoryHistory = LoadFileFromJSON<List<ChatMemory>>(GeneratePath(DataLocation.Console, "History/GPT", "Memories.json")) ?? [];
     }
 
     ///<summary> Function to send a query to run a query with ChatGPT. </summary>
@@ -38,7 +43,7 @@ public static class GPTFunctions
         if (client == null) return;
 
         SendConsoleMessage(new ConsoleLine($"Generating GPT Response.", AppRegistry.PrimaryCol), ConsoleLineUpdate.SameLine,
-            new ConsoleAnimatedLine(WaitForGptResponseAnimation, 1, tickMod: AppRegistry.activeApp.colourScheme.speed, enabled: true));
+            new ConsoleAnimatedLine(WaitForGptResponseAnimation, 1, tickMod: 12, enabled: true));
 
         ExecuteQuery(client, messages, o);
         Analytics.General.TotalGPTPromts++;
@@ -117,6 +122,84 @@ public static class GPTFunctions
 
     // --- MESSAGE HISTORY ---
 
+    ///<summary> Class to hold memory that gpt stores inbetween sessions. </summary>
+    public class ChatMemory
+    {
+        public string Content { get; set; } = "";
+        public string Creator { get; set; } = "User";
+        public DateTime CreationTime { get; set; }
+
+        public ChatMemory() { }
+
+        public ChatMemory(string content, string creator = "User")
+        {
+            Content = content;
+            Creator = creator;
+            CreationTime = DateTime.Now;
+        }
+
+        public override string ToString()
+        {
+            return $"[{Creator} - {CreationTime}] {Content}";
+        }
+    }
+
+    ///<summary> Add memory to list of memories for gpt to recall </summary>
+    public static void AddToMemories(string content, string creator = "User")
+    {
+        memoryHistory.Add(new ChatMemory(content, creator));
+        SaveFileAsJSON(GeneratePath(DataLocation.Console, "History/GPT", "Memories.json"), memoryHistory);
+        SendConsoleMessage(new ConsoleLine("GPT Has Stored A Memory.", AppRegistry.PrimaryCol));
+    }
+
+    ///<summary> Creates menu for user to view, edit, and remove memories. </summary>
+    public static void ViewMemories()
+    {
+        int option = 0;
+        while (true)
+        {
+            option = UserInput.CreateMultiPageOptionMenu("GPT Memories", [.. memoryHistory.Select(x => new ConsoleLine(x.ToString(),
+            BuildArray(AppRegistry.SecondaryCol.Extend(x.ToString().IndexOf(']') + 1), AppRegistry.PrimaryCol.Extend(x.ToString().Length))))], [new ConsoleLine("Exit", AppRegistry.PrimaryCol)], 5, option);
+
+            if (option == -1) break;
+            ViewMemory(option);
+        }
+    }
+
+    ///<summary> Creates menu for user to view, edit, and remove specific memory. </summary>
+    static void ViewMemory(int index)
+    {
+        ChatMemory m = memoryHistory[index];
+
+        int option = 0;
+        while (option != 2)
+        {
+            SendConsoleMessage(new ConsoleLine("--- GPT Memories ---", AppRegistry.PrimaryCol));
+            SendConsoleMessage(new ConsoleLine($"Content - '{m.Content}'", BuildArray(AppRegistry.SecondaryCol.Extend(9), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Creator - '{m.Creator}'", BuildArray(AppRegistry.SecondaryCol.Extend(9), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Creation Time - {m.CreationTime}", BuildArray(AppRegistry.SecondaryCol.Extend(15), AppRegistry.PrimaryCol)));
+            ShiftLine();
+
+            option = UserInput.CreateOptionMenu("--- Options ---", ["Edit Memory", "Delete Memory", "Exit"], cursorStartIndex: option);
+            ClearLines(5, true);
+            if (option == 0) m.Content = UserInput.GetValidUserInput($"--- Update Memory ---", new UserInputProfile(), m.Content, maxLineCount: 5);
+            else if (option == 1)
+            {
+                if (UserInput.CreateTrueFalseOptionMenu("Are You Sure You Want To Delete This Memory?"))
+                {
+                    memoryHistory.RemoveAt(index);
+                    SaveFileAsJSON(GeneratePath(DataLocation.Console, "History/GPT", "Memories.json"), memoryHistory);
+                    SendConsoleMessage(new ConsoleLine("Memory Deleted.", AppRegistry.PrimaryCol));
+                    UserInput.WaitForUserInput(space: true);
+                    ClearLines(2, true);
+                    return;
+                }
+            }
+        }
+
+        memoryHistory[index] = m;
+    }
+
     ///<summary> JSON friendly format for chat messages to be saved inbetween sessions. </summary>
     public class SerializableChatMessage
     {
@@ -129,8 +212,8 @@ public static class GPTFunctions
 
         public SerializableChatMessage(ChatMessage message)
         {
-            this.Type = message as UserChatMessage != null ? MessageType.User : MessageType.Assistant;
-            this.Content = message.Content[0].Text;
+            Type = message as UserChatMessage != null ? MessageType.User : MessageType.Assistant;
+            Content = message.Content[0].Text;
         }
 
         public ChatMessage ToChatMessage()
@@ -145,7 +228,7 @@ public static class GPTFunctions
     {
         ChatMessage[] messages = [CreateQuerySystemChatMessage()];
 
-        if (useMessageHistory) messages = messages.Concat(messageHistory.TakeLast(Math.Min(messageHistory.Count, int.Parse(SettingsApp.GetValue("Memory")) + 1))).ToArray();
+        if (useMessageHistory) messages = messages.Concat(messageHistory.TakeLast(Math.Min(messageHistory.Count, int.Parse(SettingsApp.GetValue("Conversation Memory")) + 1))).ToArray();
         else messages = messages.Concat([messageHistory[^1]]).ToArray();
         return messages;
     }
@@ -157,23 +240,14 @@ public static class GPTFunctions
 
         messageHistory.Add(message);
 
-        SaveFileAsJSON(GeneratePath(DataLocation.Console, "History", "GPTMessages.json"), messageHistory.Select(x => new SerializableChatMessage(x)).ToList());
-    }
-
-    ///<summary> Removes last message from message history. </summary>
-    static void ClearLastMessageHistory()
-    {
-        if (messageHistory.Count == 0) return;
-
-        messageHistory.RemoveAt(messageHistory.Count - 1);
-        SaveFileAsJSON(GeneratePath(DataLocation.Console, "History", "GPTMessages.json"), messageHistory.Select(x => new SerializableChatMessage(x)).ToList());
+        SaveFileAsJSON(GeneratePath(DataLocation.Console, "History/GPT", "Messages.json"), messageHistory.Select(x => new SerializableChatMessage(x)).ToList());
     }
 
     ///<summary> Clears the message history of the chatbot. </summary>
     public static void ClearMessageHistory()
     {
         messageHistory = [];
-        SaveFileAsJSON(GeneratePath(DataLocation.Console, "History", "GPTMessages.json"), messageHistory.Select(x => new SerializableChatMessage(x)).ToList());
+        SaveFileAsJSON(GeneratePath(DataLocation.Console, "History/GPT", "Messages.json"), messageHistory.Select(x => new SerializableChatMessage(x)).ToList());
         SendConsoleMessage(new ConsoleLine("ChatGPT Message History Cleared.", ConsoleColor.DarkBlue));
     }
 
@@ -186,6 +260,7 @@ public static class GPTFunctions
 
         bool requiresAction;
         ChatCompletion completion;
+        List<Action> delayedChatTools = [];
 
         do
         {
@@ -211,7 +286,6 @@ public static class GPTFunctions
 
                     UpdatePrimaryConsoleLineAnimation(ConsoleAnimatedLine.None, ConsoleData.primaryLineIndex);
 
-                    bool shouldReturn = false;
                     bool shouldOutputToolCalls = SettingsApp.GetValue("Show GPT Tool Results") == "Yes";
                     foreach (ChatToolCall toolCall in completion.ToolCalls)
                     {
@@ -237,24 +311,26 @@ public static class GPTFunctions
                             case nameof(LoadApp):
                                 toolResult = TryGetJsonFunctionArgument("appName", toolCall, ref success);
                                 if (shouldOutputToolCalls) SendDebugMessage(new ConsoleLine($"[LoadApp Tool Call] {toolResult}", BuildArray(AppRegistry.SecondaryCol.Extend(19), AppRegistry.PrimaryCol)));
-                                if (success) {
-                                    LoadApp(toolResult);
-                                    shouldReturn = true;
-                                }
+                                if (success) delayedChatTools.Add(() => LoadApp(toolResult));
                                 queryMessages.Add(new ToolChatMessage(toolCall.Id, toolResult));
-                                
+                                break;
+                            case nameof(SetSetting):
+                                toolResult = TryGetJsonFunctionArgument("settingName", toolCall, ref success);
+                                if (shouldOutputToolCalls) SendDebugMessage(new ConsoleLine($"[SetSetting Tool Call] {toolResult}", BuildArray(AppRegistry.SecondaryCol.Extend(22), AppRegistry.PrimaryCol)));
+                                if (success) delayedChatTools.Add(() => SetSetting(toolResult));
+                                queryMessages.Add(new ToolChatMessage(toolCall.Id, toolResult));
+                                break;
+                            case nameof(AddToMemories):
+                                toolResult = TryGetJsonFunctionArgument("content", toolCall, ref success);
+                                if (shouldOutputToolCalls) SendDebugMessage(new ConsoleLine($"[AddToMemories Tool Call] {toolResult}", BuildArray(AppRegistry.SecondaryCol.Extend(25), AppRegistry.PrimaryCol)));
+                                if (success) AddToMemories(toolResult, "GPT");
+                                queryMessages.Add(new ToolChatMessage(toolCall.Id, toolResult));
                                 break;
                         }
                     }
 
-                    if (shouldReturn)
-                    {
-                        ClearLastMessageHistory();
-                        return true;
-                    }
-
                     SendConsoleMessage(new ConsoleLine($"Generating GPT Response.", AppRegistry.PrimaryCol), ConsoleLineUpdate.SameLine,
-                    new ConsoleAnimatedLine(WaitForGptResponseAnimation, 1, tickMod: AppRegistry.activeApp.colourScheme.speed, enabled: true));
+                    new ConsoleAnimatedLine(WaitForGptResponseAnimation, 1, tickMod: 12, enabled: true));
 
                     requiresAction = true;
                     break;
@@ -267,6 +343,11 @@ public static class GPTFunctions
 
         Analytics.General.UsedGPTInputTokens += completion.Usage.InputTokenCount;
         Analytics.General.UsedGPTOutputTokens += completion.Usage.OutputTokenCount;
+
+        for (int i = 0; i < delayedChatTools.Count; i++)
+        {
+            delayedChatTools[i].Invoke();
+        }
 
         return true;
     }
@@ -283,14 +364,14 @@ public static class GPTFunctions
             o = new ChatCompletionOptions
             {
                 Temperature = float.Parse(SettingsApp.GetValue("Temperature")),
-                Tools = { getCurrentTimeTool, setTimerTool, cancelTimerTool, loadAppTool },
+                Tools = { getCurrentTimeTool, setTimerTool, cancelTimerTool, loadAppTool, setSetting, remember },
             };
         }
         else
         {
             o = new ChatCompletionOptions
             {
-                Tools = { getCurrentTimeTool, setTimerTool, cancelTimerTool, loadAppTool },
+                Tools = { getCurrentTimeTool, setTimerTool, cancelTimerTool, loadAppTool, setSetting, remember },
             };
         }
 
@@ -326,14 +407,13 @@ public static class GPTFunctions
     ///<summary> Creates the system chat message for a query, this will always be the first information shown to GPT. </summary>
     static SystemChatMessage CreateQuerySystemChatMessage()
     {
-        string msg = $"User's name: {SettingsApp.GetValue("Username")}. User's pronouns: {SettingsApp.GetValue("Pronouns")}. Your Name: {SettingsApp.GetValue("GPT Name")}.";
-        if (SettingsApp.GetValue("Behaviour").Length != 0) msg += $"Your Behaviour: {SettingsApp.GetValue("Behaviour")}";
-        if (SettingsApp.GetValue("Scenario").Length != 0) msg += $"Current Scenario: {SettingsApp.GetValue("Scenario")}";
-        if (SettingsApp.GetValue("Use Detailed System Promt") == "Yes")
-        {
-            msg += string.Join('\n', LoadFile(GeneratePath(DataLocation.Console, "Assets/GPT", "AboutRevistone.txt")));
-        }
+        string msg = $"User's name: {SettingsApp.GetValue("Username")}\nUser's pronouns: {SettingsApp.GetValue("Pronouns")}\nYour Name: {SettingsApp.GetValue("GPT Name")}.\n";
+        if (SettingsApp.GetValue("Behaviour").Length != 0) msg += $"Your Behaviour: {SettingsApp.GetValue("Behaviour")}\n";
+        if (SettingsApp.GetValue("Scenario").Length != 0) msg += $"Current Scenario: {SettingsApp.GetValue("Scenario")}\n";
+        if (SettingsApp.GetValue("Long Term Memory") == "Yes") msg += $"Long Term Memory: {string.Join('\n', memoryHistory.Select(x => x.ToString()))}\n";
+        if (SettingsApp.GetValue("Use Detailed System Promt") == "Yes") msg += string.Join('\n', LoadFile(GeneratePath(DataLocation.Console, "Assets/GPT", "AboutRevistone.txt")));
 
+        if (SettingsApp.GetValue("Log GPT System Messages") == "Yes") Analytics.Debug.Log($"[GPT] System Message: {msg}");
         return new SystemChatMessage(msg);
     }
 
@@ -398,10 +478,31 @@ public static class GPTFunctions
         functionName: nameof(LoadApp),
         functionDescription: @"Loads app of specified name.
         **Argument:**
-        - 'appName' (string) -> App name (case insensitive).
+        - 'appName' (string) -> App name.
         **Examples:**
         - appName: 'revistone' -> Loads The Revistone App.
         - appName: 'FLasH CaRD manager -> Loads The Flash Card Manager App. "
+    );
+
+    static readonly ChatTool setSetting = ChatTool.CreateFunctionTool(
+        functionName: nameof(SetSetting),
+        functionDescription: @"Lets user modify setting of a specified name.
+        **Argument:**
+        - 'settingName' (string) -> Setting name.
+        **Examples:** 
+        - settingName: 'gPT NaMe' -> Lets the user set the 'GPT Name' setting.
+        - settingName: 'userName' -> Lets the user set the 'Username' setting. "
+    );
+
+    static readonly ChatTool remember = ChatTool.CreateFunctionTool(
+        functionName: nameof(AddToMemories),
+        functionDescription: @"Adds memory to the list of permeant memories that GPT can recall.
+        **Argument:**
+        - 'content' (string) -> Memory content.
+        **Examples:**
+        - content: 'The user loves vanilla.' -> Adds the memory 'The user loves vanilla.'
+        - content: 'The user is a software engineer.' -> Adds the memory 'The user is a software engineer.'
+        "
     );
 
     static string GetCurrentTime()
@@ -422,5 +523,10 @@ public static class GPTFunctions
     static void LoadApp(string appName)
     {
         AppCommands.Commands($"load {appName}");
+    }
+
+    static void SetSetting(string settingName)
+    {
+        SettingsApp.HandleSettingSet(settingName);
     }
 }

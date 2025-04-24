@@ -15,9 +15,9 @@ Hotkeys:
 - Shift + Rightwards Arrow -> Extend Selection To The Right.
 - Ctrl + Leftwards Arrow -> Jump To Previous Seperator.
 - Ctrl + Rightwards Arrow -> Jump To Next Seperator.
-- Alt + Leftwards Arrow -> Extend Selection To The Previous Seperator.
-- Alt + Rightwards Arrow -> Extend Selection To The Next Seperator.
-- Alt + Backspace -> Delete Text Up To The Previous Seperator.
+- Tab + Leftwards Arrow -> Extend Selection To The Previous Seperator.
+- Tab + Rightwards Arrow -> Extend Selection To The Next Seperator.
+- Tab + Backspace -> Delete Text Up To The Previous Seperator.
 - Alt + X -> Cut Selected Text To Clipboard.
 - Alt + C -> Copy Selected Text To Clipboard.
 - Alt + V -> Paste Clipboard.
@@ -63,3 +63,5 @@ Settings:
 - Analytics Update Frequency -> How Often Should Analytics Update? (Can Effect Performance On Low End Devices, All Unsaved Analytics May Be Lost On Console Close).
 - Widget Update Frequency -> How Often Should Widgets Update? (Can Effect Performance On Low End Devices, But Lower Settings Will Make Widgets Appear Laggy)
 - Show Emojis -> Can Emojis Be Used In The Program. (Certain Emojis Cause The Console To Misrender, Requiring A Reload To Fix)
+- Show GPT Tool Results -> Outputs GPT Tool Results To The Debug Console
+- Welcome Message -> GPT Will Send A Message Upon Console Startup (Will Increase Inital Load Time).

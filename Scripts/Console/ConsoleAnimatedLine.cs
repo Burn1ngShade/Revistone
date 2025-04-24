@@ -37,8 +37,6 @@ public class ConsoleAnimatedLine
     public ConsoleAnimatedLine() : this(Nothing, "", 5, false) { }
 
     /// <summary> The configuration for dynamically updating a ConsoleLine. </summary>
-    public static ConsoleAnimatedLine AppTheme => new ConsoleAnimatedLine(UpdateAppTheme, AppRegistry.activeApp.colourScheme.speed, true);
-    /// <summary> The configuration for dynamically updating a ConsoleLine. </summary>
     public static ConsoleAnimatedLine None => new ConsoleAnimatedLine(Nothing, "", 5, false);
 
     /// <summary> Update configuration for dynamically updating a ConsoleLine, every tickMod ticks. </summary>
@@ -88,11 +86,13 @@ public class ConsoleAnimatedLine
         lineInfo.Update(lineInfo.lineText, lineInfo.lineColour.Shift(shift), lineInfo.lineBGColour.Shift(shift));
     }
 
-    /// <summary> Updates text colours, via switching cyan and dark cyan. </summary>
-    public static void UpdateAppTheme(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
+    ///<summary> Cycle through an array of ConsoleLines. </summary>
+    public static void CycleLines(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
     {
-        (ConsoleColor oldColour, ConsoleColor newColour)[] colourPairs;
-        colourPairs = Enumerable.Range(0, AppRegistry.SecondaryCol.Length).Select(i => (AppRegistry.SecondaryCol[i], AppRegistry.SecondaryCol.Flip()[i])).ToArray();
-        lineInfo.Update(ColourFunctions.Replace(lineInfo.lineColour, colourPairs));
+        if (animationInfo.metaInfo is (int index, ConsoleLine[] lines))
+        {
+            animationInfo.metaInfo = ((index + 1) % lines.Length, lines);
+            lineInfo.Update(lines[index]);
+        }
     }
 }
