@@ -14,6 +14,11 @@ public static class ConsoleRendererLogic
 {
     static bool blockRender = false;
 
+    static void HandleGlobalException(object sender, UnhandledExceptionEventArgs e)
+    {
+        if (SettingsApp.GetValue("Block Rendering On Crash") == "Yes") blockRender = true;
+    }
+
     //--- CONSOLE LOOPS ---
 
     /// <summary> [DO NOT CALL] Initializes ConsoleRendererLogic. </summary>
@@ -27,12 +32,26 @@ public static class ConsoleRendererLogic
         Manager.Tick += HandleConsoleDisplayBehaviour;
     }
 
-    static void HandleGlobalException(object sender, UnhandledExceptionEventArgs e)
+    ///<summary> [DO NOT CALL] Handles console rendering. </summary>
+    internal static void HandleConsoleRender()
     {
-        if (SettingsApp.GetValue("Block Rendering On Crash") == "Yes") blockRender = true;
+        Stopwatch frameDuration = new Stopwatch();
+
+        while (true)
+        {
+            frameDuration.Restart();
+            RenderConsole();
+
+            while (true)
+            {
+                if (frameDuration.ElapsedTicks >= displayWindowsTickInterval) break;
+            }
+
+            Profiler.RenderTime.Add(frameDuration.ElapsedTicks);
+        }
     }
 
-    /// <summary> Main loop for ConsoleDisplay, handles dynamic lines and rendering console. </summary>
+    /// <summary> Main loop for ConsoleDisplay, handles dynamic lines. </summary>
     static void HandleConsoleDisplayBehaviour(int tickNum)
     {
         //if console display resized
@@ -97,7 +116,7 @@ public static class ConsoleRendererLogic
         else
         {
             UpdateAnimatedLines(tickNum);
-            RenderConsole(tickNum);
+            // RenderConsole();
         }
     }
 
@@ -238,7 +257,7 @@ public static class ConsoleRendererLogic
     static void UpdateConsoleBorderAnimation(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
     {
         if (tickNum % AppRegistry.activeApp.borderColourScheme.speed == 0) lineInfo.Update(lineInfo.lineColour.Shift(1));
-        if (tickNum % (int)(float.Parse(SettingsApp.GetValue("Widget Update Frequency")[..^1]) * 40) == 0) lineInfo.Update(GenerateConsoleBorderString());
+        if (tickNum % widgetTickInterval == 0) lineInfo.Update(GenerateConsoleBorderString());
     }
 
     /// <summary> Generates the console border string using current widget data. </summary>
@@ -281,15 +300,12 @@ public static class ConsoleRendererLogic
     }
 
     /// <summary> Updates the console display, based on current states of consoleLines, before updating consoleLinesBuffer. </summary>
-    static void RenderConsole(int tickNum)
+    public static void RenderConsole()
     {
-        if (blockRender) return;
+        if (blockRender || consoleLines.Length == 0 || consoleLines[0] == null) return;
 
         lock (Manager.renderLockObject)
         {
-            Stopwatch s = new Stopwatch();
-            s.Start();
-
             if (System.Console.WindowTop != 0)
             {
                 try
@@ -313,9 +329,6 @@ public static class ConsoleRendererLogic
             }
 
             ConsoleRenderer.DrawBuffer();
-
-            s.Stop();
-            Profiler.RenderTime.Add(s.ElapsedMilliseconds);
         }
     }
 }

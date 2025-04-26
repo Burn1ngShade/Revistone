@@ -58,14 +58,16 @@ public class SettingsApp : App
         YesNoOpt),
         new DropdownSetting("Show Workspace Path Widget", "Should The Workspace Path Widget Be Shown?", "Yes", SettingCategory.Widget,
         YesNoOpt),
-        new DropdownSetting("Analytics Update Frequency", "How Often Should Analytics Update? (Can Effect Performance On Low End Devices, All Unsaved Analytics May Be Lost On Console Close).", "0.5s", SettingCategory.Performance,
-        ["0.25s", "0.5s", "1s", "2.5s", "5s", "10s", "30s", "60s"]),
+        new DropdownSetting("Target Frame Rate", "The Number Of Times The Console Will Render A Second. Using A Frame Rate Faster Than Your Monitors Refresh Rate Will Actually Slightly Slow Done Responsiveness.", "120", SettingCategory.Performance, ["30", "60", "75", "90", "120", "144", "240"]),
+        new DropdownSetting("Analytics Update Frequency", "How Often Should Analytics Update? (Can Effect Performance On Low End Devices, All Unsaved Analytics May Be Lost On Console Close).", "30s", SettingCategory.Performance,
+        ["5s", "10s", "30s", "60s", "120s", "180s", "300s"]),
         new DropdownSetting("Widget Update Frequency", "How Often Should Widgets Update? (Can Effect Performance On Low End Devices, But Lower Settings Will Make Widgets Appear Laggy).", "0.025s", SettingCategory.Performance,
         ["0.025s", "0.05s", "0.1s", "0.2s", "0.5s", "1s"]),
         new DropdownSetting("Show Emojis", "Can Emojis Be Used In The Program (Certain Emojis Cause The Console To Misrender, Requiring A Reload To Fix).", "No", SettingCategory.Performance, YesNoOpt),
         new DropdownSetting("Block Rendering On Crash", "Pauses Rendering On Crash, Showing C# Compiler Error But Preventing Final Rendering Passes.", "Yes", SettingCategory.Debug, YesNoOpt),
         new DropdownSetting("Show GPT Tool Results", "Outputs GPT Tool Results To The Debug Console (GPT Can Sometimes Be A Little Bit Stupid, Use For Promt Improvement).", "No", SettingCategory.Debug, YesNoOpt),
-        new DropdownSetting("Log GPT System Messages", "Outputs GPT System Messages To The Debug Analytics File.", "No", SettingCategory.Debug, YesNoOpt)
+        new DropdownSetting("Log GPT System Messages", "Outputs GPT System Messages To The Debug Analytics File.", "No", SettingCategory.Debug, YesNoOpt),
+        new DropdownSetting("Force Default Settings", "Override All Settings With Default Value.", "No", SettingCategory.Debug, YesNoOpt),
     ];
 
     public SettingsApp() : base() { }
@@ -271,6 +273,11 @@ public class SettingsApp : App
     public static string GetValue(string settingName)
     {
         if (!currentSettings.ContainsKey(settingName.ToLower())) return "";
+
+        if (currentSettings["force default settings"] == "Yes" && !settingName.Equals("api key", StringComparison.CurrentCultureIgnoreCase))
+        {
+            return settings[GetSettingIndex(settingName)].defaultValue;
+        }
 
         return currentSettings[settingName.ToLower()];
     }

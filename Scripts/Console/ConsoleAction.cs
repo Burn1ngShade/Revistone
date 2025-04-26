@@ -152,7 +152,7 @@ public static class ConsoleAction
     /// <summary> Updates lineInfo at given index, adjusting position of ConsoleLines within console if needed, returns index of updated line.  </summary>
     public static int UpdateEnclosedConsole(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo, int consoleTop, int consoleBot, ref int consoleIndex)
     {
-        if (consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return -1;
+        if (consoleLines.Length == 0 || consoleLines[0] == null || consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return -1;
 
         if (consoleIndex > consoleBot) //need to move back in console
         {

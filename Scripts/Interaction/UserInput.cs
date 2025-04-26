@@ -8,7 +8,6 @@ using static Revistone.Console.Data.ConsoleData;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Revistone.Interaction;
 
@@ -192,6 +191,7 @@ public static class UserInput
         public readonly ConsoleColor[] inputColour;
         public readonly ConsoleColor[] cursorColour;
         public readonly ConsoleColor[] cursorTrailColour;
+        public readonly string spaceChars;
 
         public InputData(string input, string inputPrefix, int maxLineCount)
         {
@@ -208,6 +208,7 @@ public static class UserInput
             this.inputColour = SettingsApp.GetValueAsConsoleColour("Input Text Colour");
             this.cursorColour = SettingsApp.GetValueAsConsoleColour("Input Cursor Colour");
             this.cursorTrailColour = SettingsApp.GetValueAsConsoleColour("Input Cursor Trail Colour");
+            this.spaceChars = SettingsApp.GetValue("Cursor Jump Separators");
 
             Output();
         }
@@ -329,8 +330,6 @@ public static class UserInput
         // Gets information about the locations of the left and right jump points for the pointer.
         public (int left, int right) GetPointerJumpInfo()
         {
-            string spaceChars = SettingsApp.GetValue("Cursor Jump Separators");
-
             string s = input + " ";
             int i = PointerRelativeIndex, j = PointerRelativeIndex - 1;
 

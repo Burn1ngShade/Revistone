@@ -2,51 +2,45 @@
   "DebugMessages": [
     {
       "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\Manager.cs",
+      "CallerMemberName": "Main",
       "CallerLineNumber": 93,
-      "TimeStamp": "2025-04-01T22:10:08.372145+01:00",
+      "TimeStamp": "2025-04-26T11:11:42.348755+01:00",
       "Message": "Console Process Start."
     },
     {
       "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\App\\AppRegistry.cs",
+      "CallerMemberName": "SetActiveApp",
       "CallerLineNumber": 62,
-      "TimeStamp": "2025-04-01T22:10:08.3846268+01:00",
+      "TimeStamp": "2025-04-26T11:11:42.3621536+01:00",
       "Message": "Loaded App: Revistone."
     },
     {
       "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Functions\\PersistentDataFunctions.cs",
-      "CallerLineNumber": 260,
-      "TimeStamp": "2025-04-01T22:10:08.3941441+01:00",
+      "CallerMemberName": "LoadFileFromJSON",
+      "CallerLineNumber": 262,
+      "TimeStamp": "2025-04-26T11:11:42.3713754+01:00",
+      "Message": "The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. Path: $ | LineNumber: 0 | BytePositionInLine: 0."
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Functions\\PersistentDataFunctions.cs",
+      "CallerMemberName": "LoadFileFromJSON",
+      "CallerLineNumber": 262,
+      "TimeStamp": "2025-04-26T11:11:42.3725942+01:00",
       "Message": "The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. Path: $ | LineNumber: 0 | BytePositionInLine: 0."
     },
     {
       "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\Manager.cs",
+      "CallerMemberName": "Main",
       "CallerLineNumber": 113,
-      "TimeStamp": "2025-04-01T22:10:08.3957689+01:00",
+      "TimeStamp": "2025-04-26T11:11:42.3765347+01:00",
       "Message": "Console Process Initialization Complete."
     },
     {
-      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\App\\AppRegistry.cs",
-      "CallerLineNumber": 62,
-      "TimeStamp": "2025-04-01T22:10:13.0138248+01:00",
-      "Message": "Loaded App: Flash Card Manager."
-    },
-    {
-      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\App\\AppRegistry.cs",
-      "CallerLineNumber": 62,
-      "TimeStamp": "2025-04-01T22:10:22.9957514+01:00",
-      "Message": "Loaded App: Revistone."
-    },
-    {
-      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\App\\AppRegistry.cs",
-      "CallerLineNumber": 62,
-      "TimeStamp": "2025-04-01T22:10:26.9520809+01:00",
-      "Message": "Loaded App: Flash Card Manager."
-    },
-    {
       "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\Manager.cs",
-      "CallerLineNumber": 140,
-      "TimeStamp": "2025-04-01T22:10:29.7573125+01:00",
-      "Message": "Console CRASH :( Process Exit. Crash Message: System.InvalidOperationException: Sequence contains no elements\r\n   at System.Linq.ThrowHelper.ThrowNoElementsException()\r\n   at System.Linq.Enumerable.Average[TSource,TAccumulator,TResult](IEnumerable\u00601 source)\r\n   at Revistone.Management.Profiler.ProfileBehaviour(Int32 tickNum) in D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\Profiler.cs:line 46\r\n   at Revistone.Management.Manager.HandleTickBehaviour() in D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\Manager.cs:line 39"
+      "CallerMemberName": "OnProcessExit",
+      "CallerLineNumber": 130,
+      "TimeStamp": "2025-04-26T11:12:17.1233507+01:00",
+      "Message": "Console Process Exit."
     }
   ]
 }

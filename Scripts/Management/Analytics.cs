@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
 using Revistone.App;
-using Revistone.App.BaseApps;
 using System.Runtime.CompilerServices;
 
 using static Revistone.Functions.PersistentDataFunctions;
@@ -10,7 +9,6 @@ namespace Revistone.Management;
 ///<summary> Handles tracking all data about console usage (locally stored). </summary>
 public static class Analytics
 {
-    static readonly ManualResetEvent waitHandle = new(false); // wait handle for the analytics thread
     static readonly object saveLockObject = new(); // to stop multi thread write weirdness
 
     public static GeneralAnalyticsData General { get; set; } = new(); // general data
@@ -19,21 +17,15 @@ public static class Analytics
     public static DebugAnalyticsData Debug { get; set; } = new(); // debug console, as debug lines dont always come through
 
     static readonly string path = GeneratePath(DataLocation.Console, @"Analytics\");
-    static readonly string pathBk = path + @"Backups\";
 
-    ///<summary> [DO NOT CALL] Main loop for analytics. </summary> </summary>
+    static RuntimeAnalytics rAnalytics;
+    static int lastRuntimeTicks = 0;
+
+    ///<summary> Update analytics. </summary> 
     public static void HandleAnalytics()
     {
-        General.TimesOpened++;
-        General.LastOpenDate = DateTime.Now;
-
-        RuntimeAnalytics rAnalytics = new(General);
-        int lastRuntimeTicks = 0;
-
-        while (true)
+        lock (saveLockObject)
         {
-            waitHandle.WaitOne((int)(float.Parse(SettingsApp.GetValue("Analytics Update Frequency")[..^1]) * 1000)); // wait for a second or until signaled
-
             General.TotalRuntimeTicks += Manager.ElapsedTicks - lastRuntimeTicks;
             rAnalytics.Difference(General); // dif between last update and now
             App.TrackAppRuntime(AppRegistry.activeApp.name, rAnalytics); // add dif
@@ -49,28 +41,16 @@ public static class Analytics
     ///<summary> [DO NOT CALL] Initalizes analytics. </summary>
     internal static void InitalizeAnalytics()
     {
-        GeneralAnalyticsData main = LoadFileFromJSON<GeneralAnalyticsData>(path + "General.json") ?? new GeneralAnalyticsData();
-        GeneralAnalyticsData mainBk = LoadFileFromJSON<GeneralAnalyticsData>(pathBk + "GeneralBk.json") ?? new GeneralAnalyticsData();
-        if (mainBk.TotalRuntime > main.TotalRuntime) General = mainBk;
-        else General = main;
-
-        if (General.TotalRuntimeTicks == 0) throw new Exception("Analytics data is corrupted, please delete the analytics folder to reset.");
-
-        AppAnalyticsData app = LoadFileFromJSON<AppAnalyticsData>(path + "App.json") ?? new AppAnalyticsData();
-        AppAnalyticsData appBk = LoadFileFromJSON<AppAnalyticsData>(pathBk + "AppBk.json") ?? new AppAnalyticsData();
-
-        if (appBk.AppsOpened > app.AppsOpened) App = appBk;
-        else App = app;
-
-        WidgetAnalyticsData widget = LoadFileFromJSON<WidgetAnalyticsData>(path + "Widget.json") ?? new WidgetAnalyticsData();
-        WidgetAnalyticsData widgetBk = LoadFileFromJSON<WidgetAnalyticsData>(pathBk + "WidgetBk.json") ?? new WidgetAnalyticsData();
-
-        if (widgetBk.WidgetsCreated > widget.WidgetsCreated) Widget = widgetBk;
-        else Widget = widget;
-
+        General = LoadFileFromJSON<GeneralAnalyticsData>(path + "General.json") ?? new GeneralAnalyticsData();
+        App = LoadFileFromJSON<AppAnalyticsData>(path + "App.json") ?? new AppAnalyticsData();
+        Widget = LoadFileFromJSON<WidgetAnalyticsData>(path + "Widget.json") ?? new WidgetAnalyticsData();
         Debug = new DebugAnalyticsData(); // we only want debug from last run
 
         if (!FileExists(GeneratePath(DataLocation.Console, "Analytics", "Debug.json"))) CreateFile(GeneratePath(DataLocation.Console, "Analytics", "Debug.json"));
+
+        General.TimesOpened++;
+        General.LastOpenDate = DateTime.Now;
+        rAnalytics = new(General);
     }
 
     ///<summary> Saves analytics data. </summary>
@@ -78,17 +58,34 @@ public static class Analytics
     {
         lock (saveLockObject)
         {
-            // create temp files
-            SaveFileAsJSON(pathBk + "GeneralTmp.json", General);
-            SaveFileAsJSON(pathBk + "AppTmp.json", App);
-            SaveFileAsJSON(pathBk + "WidgetTmp.json", Widget);
-            SaveFileAsJSON(pathBk + "DebugTmp.json", Debug);
+            SaveFileAsJSON(path + "GeneralTemp.json", General);
+            SaveFileAsJSON(path + "AppTemp.json", App);
+            SaveFileAsJSON(path + "WidgetTemp.json", Widget);
+            SaveFileAsJSON(path + "DebugTemp.json", Debug);
 
+            if (LoadFileFromJSON<GeneralAnalyticsData>(path + "GeneralTemp.json") != null) // something went wrong during the write
+            {
+                File.Delete(path + "General.json");
+                File.Move(path + "GeneralTemp.json", path + "General.json");
+            }
 
-            File.Replace(pathBk + "GeneralTmp.json", path + "General.json", pathBk + "GeneralBk.json");
-            File.Replace(pathBk + "AppTmp.json", path + "App.json", pathBk + "AppBk.json");
-            File.Replace(pathBk + "WidgetTmp.json", path + "Widget.json", pathBk + "WidgetBk.json");
-            File.Replace(pathBk + "DebugTmp.json", path + "Debug.json", pathBk + "DebugBk.json");
+            if (LoadFileFromJSON<AppAnalyticsData>(path + "AppTemp.json") != null) // something went wrong during the write
+            {
+                File.Delete(path + "App.json");
+                File.Move(path + "AppTemp.json", path + "App.json");
+            }
+
+            if (LoadFileFromJSON<WidgetAnalyticsData>(path + "WidgetTemp.json") != null) // something went wrong during the write
+            {
+                File.Delete(path + "Widget.json");
+                File.Move(path + "WidgetTemp.json", path + "Widget.json");
+            }
+
+            if (LoadFileFromJSON<DebugAnalyticsData>(path + "DebugTemp.json") != null) // something went wrong during the write
+            {
+                File.Delete(path + "Debug.json");
+                File.Move(path + "DebugTemp.json", path + "Debug.json");
+            }
         }
     }
 
@@ -251,10 +248,12 @@ public static class Analytics
     public class DebugAnalyticsData()
     {
         public List<DebugData> DebugMessages { get; private set; } = [];
+        public DateTime LastLogTime { get; private set; } = DateTime.Now;
 
         public void Log<T>(T message, [CallerFilePath] string callerFilePath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
         {
             DebugMessages.Add(new DebugData(message?.ToString() ?? "", callerFilePath, callerMemberName, callerLineNumber));
+            LastLogTime = DateTime.Now;
         }
 
         public class DebugData(string message, string callerFilePath, string callerMemberName, int callerLineNumber)

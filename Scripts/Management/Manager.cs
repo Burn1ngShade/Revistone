@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Revistone.App;
+using Revistone.App.BaseApps;
 using Revistone.Console;
 using Revistone.Console.Data;
 using Revistone.Console.Widget;
@@ -23,7 +24,7 @@ public static class Manager
 
     static readonly Thread tickBehaviourThread = new(HandleTickBehaviour); // tick thread
     static readonly Thread realTimeInputThread = new(UserRealtimeInput.KeyRegistry); // thread for input
-    static readonly Thread analyticThread = new(Analytics.HandleAnalytics); // analytic thread
+    static readonly Thread renderThread = new(ConsoleRendererLogic.HandleConsoleRender); // thread for rendering
 
     /// <summary> [DO NOT CALL] Calls the Tick event, occours every 25ms (40 calls per seconds). </summary>
     static void HandleTickBehaviour()
@@ -47,12 +48,13 @@ public static class Manager
                     break;
                 }
             }
-            tickSleepStart.Reset();
 
             _deltaTime = tickStartTime.ElapsedMilliseconds;
             Profiler.TickTime.Add(_deltaTime);
             tickStartTime.Restart();
             ElapsedTicks++;
+
+            if (ElapsedTicks % ConsoleData.analyticTickInterval == 0) Analytics.HandleAnalytics();
         }
     }
 
@@ -98,10 +100,11 @@ public static class Manager
         ConsoleRendererLogic.InitializeConsoleRendererLogic(); // init rendering pt2
         Profiler.InitializeProfiler(); // init fps tracking (profiler)
         GPTFunctions.InitializeGPT(); // init gpt
+        ConsoleData.InitalizeConsoleData(); // init some console setting values
 
-        analyticThread.Start();
         tickBehaviourThread.Start();
         realTimeInputThread.Start();
+        renderThread.Start();
 
         System.Console.CancelKeyPress += new ConsoleCancelEventHandler(OnCancelKeyPress); // prevent ctrl c from closing the program
         AppDomain.CurrentDomain.ProcessExit += OnProcessExit; // on user close
@@ -125,7 +128,7 @@ public static class Manager
     {
         Analytics.General.LastCloseDate = DateTime.Now;
         Analytics.Debug.Log($"Console Process Exit.");
-        Analytics.SaveAnalytics();
+        Analytics.HandleAnalytics();
     }
 
     ///<summary> Called upon crash of the console. </summary>
@@ -133,6 +136,6 @@ public static class Manager
     {
         Analytics.General.LastCloseDate = DateTime.Now;
         Analytics.Debug.Log($"Console Unexpected (Crash D:) Process Exit.\n Crash Message: {e.ExceptionObject}");
-        Analytics.SaveAnalytics();
+        Analytics.HandleAnalytics();
     }
 }

@@ -1,15 +1,15 @@
 {
-  "AppsOpened": 22,
+  "AppsOpened": 24,
   "Apps": [
     {
       "AppName": "Revistone",
-      "TimesOpened": 15,
-      "TotalRuntimeTicks": 7099,
-      "TotalRuntime": "00:02:57.4750000",
-      "KeyPresses": 208,
-      "LinesEntered": 7,
-      "OptionMenusUsed": 12,
-      "CommandsUsed": 4
+      "TimesOpened": 17,
+      "TotalRuntimeTicks": 10678,
+      "TotalRuntime": "00:04:26.9500000",
+      "KeyPresses": 454,
+      "LinesEntered": 20,
+      "OptionMenusUsed": 20,
+      "CommandsUsed": 10
     },
     {
       "AppName": "Paint",

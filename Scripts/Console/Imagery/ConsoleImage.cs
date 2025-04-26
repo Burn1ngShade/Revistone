@@ -279,7 +279,7 @@ public class ConsoleImage
     ///<summary> Takes a screenshot of the primary console. </summary>
     public static void TakePrimaryScreenshot(string name = "")
     {
-        if (!IsNameValid(name, true)) return;
+        if (!IsNameValid(name, true) || ConsoleData.screenWarningUpdated) return;
 
         int primarySize = ConsoleData.debugStartIndex - 1;
         ConsoleLine[] c = new ConsoleLine[primarySize];
@@ -299,7 +299,7 @@ public class ConsoleImage
     ///<summary> Takes a screenshot of the debug console. </summary>
     public static void TakeDebugScreenshot(string name = "")
     {
-        if (!IsNameValid(name, true)) return; 
+        if (!IsNameValid(name, true) || ConsoleData.screenWarningUpdated) return; 
 
         ConsoleLine[] c = new ConsoleLine[7];
 
