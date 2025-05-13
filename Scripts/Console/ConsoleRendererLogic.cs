@@ -35,12 +35,13 @@ public static class ConsoleRendererLogic
     ///<summary> [DO NOT CALL] Handles console rendering. </summary>
     internal static void HandleConsoleRender()
     {
-        Stopwatch frameDuration = new Stopwatch();
+        Stopwatch frameDuration = new();
 
         while (true)
         {
             frameDuration.Restart();
             RenderConsole();
+            Profiler.RenderLogicTime.Add(frameDuration.ElapsedTicks);
 
             while (true)
             {
@@ -116,7 +117,6 @@ public static class ConsoleRendererLogic
         else
         {
             UpdateAnimatedLines(tickNum);
-            // RenderConsole();
         }
     }
 
@@ -130,7 +130,6 @@ public static class ConsoleRendererLogic
             if (!consoleLineUpdates[i].enabled || (tickNum - consoleLineUpdates[i].initTick) % consoleLineUpdates[i].tickMod != 0) continue; //not dynamic or not right tick
             consoleLineUpdates[i].update.Invoke(consoleLines[i], consoleLineUpdates[i], tickNum);
         }
-
     }
 
     //--- CONSOLE DISPLAY METHODS ---
@@ -276,6 +275,12 @@ public static class ConsoleRendererLogic
     /// <summary> Writes given line to screen, using value of consoleLines. </summary>
     static void WriteConsoleLine(int lineIndex)
     {
+        if (consoleLines[lineIndex] == null)
+        {
+            Analytics.Debug.Log("Console Write Fail.");
+            return;
+        }
+
         //if user decides to set an empty array for colours (please dont do this)
         if (consoleLines[lineIndex].lineColour.Length == 0) consoleLines[lineIndex].Update(ConsoleColor.White.ToArray());
         if (consoleLines[lineIndex].lineBGColour.Length == 0) consoleLines[lineIndex].Update(consoleLines[lineIndex].lineText, consoleLines[lineIndex].lineColour, ConsoleColor.Black.ToArray());
@@ -302,33 +307,30 @@ public static class ConsoleRendererLogic
     /// <summary> Updates the console display, based on current states of consoleLines, before updating consoleLinesBuffer. </summary>
     public static void RenderConsole()
     {
-        if (blockRender || consoleLines.Length == 0 || consoleLines[0] == null) return;
+        if (blockRender || consoleLines.Length == 0 || consoleLines[^1] == null || consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return;
 
-        lock (Manager.renderLockObject)
+        if (System.Console.WindowTop != 0)
         {
-            if (System.Console.WindowTop != 0)
+            try
             {
-                try
-                {
-                    if (OperatingSystem.IsWindows()) System.Console.SetWindowPosition(0, 0);
-                }
-                catch (IOException) { } //needed as its not possible to detect user changing window size (to my knowledge)
+                if (OperatingSystem.IsWindows()) System.Console.SetWindowPosition(0, 0);
             }
-
-            for (int i = 0; i < consoleLines.Length; i++)
-            {
-                if (consoleLines[i].updated) continue;
-
-                if (System.Console.WindowHeight != windowSize.height || System.Console.WindowWidth != windowSize.width)
-                {
-                    return;
-                }
-
-                WriteConsoleLine(i);
-                consoleLinesBuffer[i].Update(consoleLines[i]);
-            }
-
-            ConsoleRenderer.DrawBuffer();
+            catch (IOException) { } //needed as its not possible to detect user changing window size (to my knowledge)
         }
+
+        for (int i = 0; i < consoleLines.Length; i++)
+        {
+            if (consoleLines[i].updated) continue;
+
+            if (System.Console.WindowHeight != windowSize.height || System.Console.WindowWidth != windowSize.width)
+            {
+                return;
+            }
+
+            WriteConsoleLine(i);
+            consoleLinesBuffer[i].Update(consoleLines[i]);
+        }
+
+        ConsoleRenderer.DrawBuffer();
     }
 }

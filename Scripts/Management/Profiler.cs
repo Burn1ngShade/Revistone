@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using Revistone.App;
 using Revistone.Console;
-using Revistone.Console.Data;
 using Revistone.Functions;
 
 using static Revistone.Console.ConsoleAction;
@@ -15,12 +14,13 @@ public static class Profiler
 {
     public static bool Enabled { get; private set; }
     public static int Tps { get; private set; } // number of logic updates per second (Ticks per second)
-    public static int Fps {get; private set; } // number of times console is rendered per second
+    public static int Fps { get; private set; } // number of times console is rendered per second
 
     public static List<long> TickTime { get; private set; } = []; // total duration of a tick
     public static List<long> CalcTime { get; private set; } = []; // time for all methods following the event Tick to run
 
     public static List<long> RenderTime { get; private set; } = [];
+    public static List<long> RenderLogicTime { get; private set; } = [];
 
     /// <summary> [DO NOT CALL] Initializes Profiler. </summary>
     internal static void InitializeProfiler()
@@ -63,18 +63,19 @@ public static class Profiler
                 UpdateDebugConsoleLine(new ConsoleLine($"Tick Num: {tickNum}, Lost Duration {CalcTime.Where(s => s > 25).Sum(s => s - 25)} ms, Total Duration: {Math.Round((double)CalcTime.Sum(), 2)} ms", AppRegistry.PrimaryCol), debugStartIndex + 2);
                 UpdateDebugConsoleLine(new ConsoleLine(calcTicks, ColourTickInfo(calcTicks)), debugStartIndex + 3);
                 UpdateDebugConsoleLine(new ConsoleLine(compTicks, ColourTickInfo(compTicks, 25, 30)), debugStartIndex + 4);
-                UpdateDebugConsoleLine(new ConsoleLine($"Last Debug File Log: {(DateTime.Now - Analytics.Debug.LastLogTime).ToString(@"hh\:mm\:ss")}", AppRegistry.PrimaryCol), debugStartIndex + 7);
+                UpdateDebugConsoleLine(new ConsoleLine($"Render Frames (System Ticks): Avg - {RenderLogicTime.Sum() / RenderLogicTime.Count} | Target - {Stopwatch.Frequency / Fps}", AppRegistry.PrimaryCol), debugStartIndex + 5);
             }
 
             CalcTime.Clear();
             TickTime.Clear();
             RenderTime.Clear();
+            RenderLogicTime.Clear();
         }
 
         if (Enabled && GetConsoleLine(debugLineIndex + 1).lineText.Length != 0) // stats that require more realtime updates
         {
-            UpdateDebugConsoleLine(new ConsoleLine($"Primary Line Index: {primaryLineIndex}, Debug Line Index: {debugLineIndex}", AppRegistry.PrimaryCol), debugStartIndex + 6);
-            UpdateDebugConsoleLine(new ConsoleLine($"Window Width: {windowSize.width}, Window Height: {windowSize.height}", AppRegistry.PrimaryCol), debugStartIndex + 5);
+            UpdateDebugConsoleLine(new ConsoleLine($"Window Width: {windowSize.width}, Window Height: {windowSize.height}", AppRegistry.PrimaryCol), debugStartIndex + 6);
+            UpdateDebugConsoleLine(new ConsoleLine($"Primary Line Index: {primaryLineIndex}, Debug Line Index: {debugLineIndex}", AppRegistry.PrimaryCol), debugStartIndex + 7);
         }
     }
 

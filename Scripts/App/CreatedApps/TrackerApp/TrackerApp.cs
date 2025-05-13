@@ -1,6 +1,7 @@
 using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.Console;
+using Revistone.App.Command;    
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
@@ -14,7 +15,7 @@ public class TrackerApp : App
     // --- APP BOILER ---
 
     public TrackerApp() : base() { }
-    public TrackerApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public TrackerApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 80) { }
 
     public override App[] OnRegister()
     {

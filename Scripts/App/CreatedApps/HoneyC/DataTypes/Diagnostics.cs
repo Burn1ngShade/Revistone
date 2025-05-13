@@ -53,7 +53,6 @@ public static class Diagnostics
         ];
 
         int errorStartIndex = tokens.Take(index).Select(x => x.content.Length + 1).Sum() + 2;
-        SendDebugMessage(errorStartIndex);
 
         SendConsoleMessages(errorStrings.Select((x, i) => new ConsoleLine(x, [ConsoleColor.Red],
         i == 1 ? ColourFunctions.AdvancedHighlight(errorStrings[1].Length, ConsoleColor.Black, ConsoleColor.DarkGray, (errorStartIndex, tokens[index].content.Length)) : [ConsoleColor.Black])).ToArray());

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Revistone.App;
-using Revistone.App.BaseApps;
 using Revistone.Console;
 using Revistone.Console.Data;
 using Revistone.Console.Widget;
@@ -12,7 +11,7 @@ namespace Revistone.Management;
 /// <summary> Main management class, handles initialization, Tick, and main interaction behaviour. </summary>
 public static class Manager
 {
-    public static readonly object renderLockObject = new();
+   // public static readonly object renderLockObject = new();
     public static readonly Random rng = new();
 
     public static event TickEventHandler Tick = new((tickNum) => { });
@@ -29,32 +28,21 @@ public static class Manager
     /// <summary> [DO NOT CALL] Calls the Tick event, occours every 25ms (40 calls per seconds). </summary>
     static void HandleTickBehaviour()
     {
-        Stopwatch tickStartTime = new(); //time tick starts
-        Stopwatch tickSleepStart = new(); //tick delay start
-        tickStartTime.Start();
+        Stopwatch tickDuration = new(); //time tick starts
 
         while (true)
         {
-            Tick.Invoke(ElapsedTicks);
-            Profiler.CalcTime.Add(tickStartTime.ElapsedMilliseconds);
+            tickDuration.Restart();
 
-            tickSleepStart.Start();
-            long targetThreadDelay = Math.Max(25 - (tickStartTime.ElapsedMilliseconds + Math.Max(_deltaTime - 25, 0)), 0);
-            while (true)
-            {
-                if (tickSleepStart.ElapsedMilliseconds >= targetThreadDelay)
-                {
-                    tickSleepStart.Reset();
-                    break;
-                }
-            }
+            Tick.Invoke(ElapsedTicks); // invoke all tick event watchers
+            Profiler.CalcTime.Add(tickDuration.ElapsedMilliseconds); // how long it took for all tick event to run
 
-            _deltaTime = tickStartTime.ElapsedMilliseconds;
+            long targetThreadDelay = (int)(Math.Max(25 - Math.Max(_deltaTime - 25, 0), 0) / 1000d * Stopwatch.Frequency); // how long to wait for next tick (25ms - delta time)
+            while (true) if (tickDuration.ElapsedTicks >= targetThreadDelay) break;
+
+            _deltaTime = tickDuration.ElapsedMilliseconds;
             Profiler.TickTime.Add(_deltaTime);
-            tickStartTime.Restart();
             ElapsedTicks++;
-
-            if (ElapsedTicks % ConsoleData.analyticTickInterval == 0) Analytics.HandleAnalytics();
         }
     }
 

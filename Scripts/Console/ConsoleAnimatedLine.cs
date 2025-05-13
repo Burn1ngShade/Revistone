@@ -42,14 +42,12 @@ public class ConsoleAnimatedLine
     /// <summary> Update configuration for dynamically updating a ConsoleLine, every tickMod ticks. </summary>
     public void Update(Action<ConsoleLine, ConsoleAnimatedLine, int> update, object metaInfo, int tickMod = 5, bool enabled = false)
     {
-        lock (Manager.renderLockObject)
-        {
-            this.enabled = enabled;
-            this.update = update;
-            this.initTick = Manager.ElapsedTicks - 1;
-            this.metaInfo = metaInfo;
-            this.tickMod = tickMod;
-        }
+        // lock (Manager.renderLockObject) { }
+        this.enabled = enabled;
+        this.update = update;
+        this.initTick = Manager.ElapsedTicks - 1;
+        this.metaInfo = metaInfo;
+        this.tickMod = tickMod;
     }
 
     /// <summary> Update configuration for dynamically updating a ConsoleLine, every tickMod ticks. </summary>

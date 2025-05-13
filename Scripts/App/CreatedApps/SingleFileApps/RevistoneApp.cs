@@ -1,6 +1,7 @@
 using Revistone.Interaction;
 using Revistone.Console;
 using Revistone.Functions;
+using Revistone.App.Command;
 
 using static Revistone.Functions.ColourFunctions;
 using Revistone.Management;
@@ -10,14 +11,18 @@ namespace Revistone.App.BaseApps;
 public class RevistoneApp : App
 {
     public RevistoneApp() : base() { }
-    public RevistoneApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public RevistoneApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 100) { }
 
     public override App[] OnRegister()
     {
         return [ new RevistoneApp("Revistone", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5),
-                [(new UserInputProfile(UserInputProfile.InputType.FullText, "boop", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop!", AppRegistry.PrimaryCol)), "Boop!"),
-                (new UserInputProfile(UserInputProfile.InputType.FullText, "render test", caseSettings: StringFunctions.CapitalCasing.Lower, removeTrailingWhitespace: true, removeLeadingWhitespace: true), (s) => { RenderTest(); }, "Debug render test."),
+                [
+                    new AppCommand(
+                        new UserInputProfile(["boop!", "boop"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                        (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop!", AppRegistry.PrimaryCol)), "Boop!", "Boop.", 1),
+                    new AppCommand(
+                        new UserInputProfile("render test", caseSettings: StringFunctions.CapitalCasing.Lower, removeTrailingWhitespace: true, removeLeadingWhitespace: true),
+                        (s) => { RenderTest();}, "Render Test", "Displays Render Stress Test For The Console.")
                 ],
                 98, 37) ];
     }

@@ -5,13 +5,13 @@ using Revistone.App.BaseApps;
 using Revistone.Console;
 using Revistone.Console.Data;
 using Revistone.Management;
+using Revistone.Interaction;
 using System.Text.RegularExpressions;
+using Revistone.App.Command;
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
-using Revistone.Interaction;
-using System.Runtime.Serialization;
 
 namespace Revistone.Functions;
 
@@ -36,8 +36,7 @@ public static class GPTFunctions
     ///<summary> Function to send a query to run a query with ChatGPT. </summary>
     public static void Query(string query, bool useMessageHistory)
     {
-        AddToMessageHistory(new UserChatMessage(query));
-        ChatMessage[] messages = GetRelevantChatMessages(useMessageHistory);
+        ChatMessage[] messages = GetRelevantChatMessages(useMessageHistory, new UserChatMessage(query));
 
         (ChatClient? client, ChatCompletionOptions o) = CreateResponseModel();
         if (client == null) return;
@@ -45,7 +44,7 @@ public static class GPTFunctions
         SendConsoleMessage(new ConsoleLine($"Generating GPT Response.", AppRegistry.PrimaryCol), ConsoleLineUpdate.SameLine,
             new ConsoleAnimatedLine(WaitForGptResponseAnimation, 1, tickMod: 12, enabled: true));
 
-        ExecuteQuery(client, messages, o);
+        ExecuteQuery(client, messages, o, useMessageHistory);
         Analytics.General.TotalGPTPromts++;
     }
 
@@ -95,17 +94,17 @@ public static class GPTFunctions
     ///<summary> Colours formatted GPT response. </summary>
     static ConsoleLine[] ColourFormattedGPTResponse(List<string> lines)
     {
-        ConsoleLine[] consoleLines = new ConsoleLine[lines.Count];
+        ConsoleLine[] consoleLines = lines.Select(x => ConsoleLine.Clean(new ConsoleLine(x))).ToArray();
 
-        Regex regex = new Regex(@"\*\*(.*?)\*\*");
+        Regex boldRegex = new(@"\*\*(.*?)\*\*");
 
-        for (int i = 0; i < lines.Count; i++)
+        for (int i = 0; i < consoleLines.Length; i++)
         {
-            string originalLine = lines[i];
+            string originalLine = consoleLines[i].lineText;
             List<(int start, int length)> indices = [];
             int shift = 0;
 
-            string processedLine = regex.Replace(originalLine, match =>
+            originalLine = boldRegex.Replace(originalLine, match =>
             {
                 string highlightedText = match.Groups[1].Value;
                 indices.Add((match.Index - shift, highlightedText.Length));
@@ -113,11 +112,11 @@ public static class GPTFunctions
                 return highlightedText;
             });
 
-            consoleLines[i] = new ConsoleLine(processedLine, AdvancedHighlight(processedLine.Length, ConsoleColor.DarkBlue, ConsoleColor.Cyan, indices.ToArray()));
+            consoleLines[i] = new ConsoleLine(originalLine, AdvancedHighlight(originalLine.Length, ConsoleColor.DarkBlue, ConsoleColor.Cyan, [.. indices]));
         }
 
 
-        return [.. consoleLines.Select(ConsoleLine.Clean)];
+        return consoleLines;
     }
 
     // --- MESSAGE HISTORY ---
@@ -224,12 +223,14 @@ public static class GPTFunctions
     }
 
     ///<summary> Gathers all context messages needed to generate a response. </summary>
-    static ChatMessage[] GetRelevantChatMessages(bool useMessageHistory)
+    static ChatMessage[] GetRelevantChatMessages(bool useMessageHistory, ChatMessage userQuery)
     {
         ChatMessage[] messages = [CreateQuerySystemChatMessage()];
 
+        if (useMessageHistory) AddToMessageHistory(userQuery);
+
         if (useMessageHistory) messages = messages.Concat(messageHistory.TakeLast(Math.Min(messageHistory.Count, int.Parse(SettingsApp.GetValue("Conversation Memory")) + 1))).ToArray();
-        else messages = messages.Concat([messageHistory[^1]]).ToArray();
+        else messages = [.. messages, userQuery];
         return messages;
     }
 
@@ -254,7 +255,7 @@ public static class GPTFunctions
     // --- GPT LOGIC ---
 
     ///<summary> Executes and handles chat tools for the given query. </summary>
-    static bool ExecuteQuery(ChatClient client, ChatMessage[] messages, ChatCompletionOptions options)
+    static bool ExecuteQuery(ChatClient client, ChatMessage[] messages, ChatCompletionOptions options, bool useMessageHistory)
     {
         List<ChatMessage> queryMessages = messages.ToList();
 
@@ -338,7 +339,7 @@ public static class GPTFunctions
 
         } while (requiresAction);
 
-        AddToMessageHistory(new AssistantChatMessage(completion));
+        if (useMessageHistory) AddToMessageHistory(new AssistantChatMessage(completion));
         SendFormattedGPTResponse(completion, messages.Length);
 
         Analytics.General.UsedGPTInputTokens += completion.Usage.InputTokenCount;

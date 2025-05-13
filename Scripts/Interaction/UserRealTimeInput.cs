@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using Revistone.App.BaseApps;
 using Revistone.Console.Data;
 using Revistone.Console.Image;
 using Revistone.Management;
@@ -69,8 +70,8 @@ public static class UserRealtimeInput
         // --- Permanent Hotkeys ---
 
         if (KeyPressed(0x11) && KeyPressed(0x10) && KeyPressedDown(80)) Profiler.SetEnabled(!Profiler.Enabled); // ctrl + shift + p
-        if (KeyPressedDown(123)) ConsoleImage.TakePrimaryScreenshot(); // f12
-        if (KeyPressedDown(122)) ConsoleImage.TakeDebugScreenshot(); // f11
+        if (KeyPressedDown(123)) ScreenshotsApp.TakePrimaryScreenshot(); // f12
+        if (KeyPressedDown(122)) ScreenshotsApp.TakeDebugScreenshot(); // f11
     }
 
     /// <summary> Returns if key currently pressed down. </summary>

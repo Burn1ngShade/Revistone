@@ -34,4 +34,16 @@ public static class NumericalFunctions
 
         return double.TryParse(s, out var result);
     }
+
+    ///<summary> Attempts to parse string to a time in seconds. </summary>
+    public static bool TryParseTime(string time, out double timeInSeconds)
+    {
+        timeInSeconds = 0;
+
+        if (double.TryParse(time, out double dDuration)) timeInSeconds = dDuration;
+        else if (TimeSpan.TryParse(time, out TimeSpan duration)) timeInSeconds = duration.TotalSeconds;
+        else return false;
+
+        return true;
+    }
 }

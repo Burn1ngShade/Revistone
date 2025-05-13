@@ -2,10 +2,12 @@ using Revistone.Interaction;
 using Revistone.Functions;
 using Revistone.Console;
 using Revistone.Console.Image;
+using Revistone.App.Command;
 
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
 using static Revistone.Console.ConsoleAction;
+using Revistone.Management;
 
 namespace Revistone.App.BaseApps;
 
@@ -13,16 +15,19 @@ namespace Revistone.App.BaseApps;
 public class PaintApp : App
 {
     public PaintApp() : base() { }
-    public PaintApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public PaintApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 85) { }
 
     public override App[] OnRegister()
     {
         return [new PaintApp("Paint", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Extend(7, true), 5), [], 70, 51)];
     }
 
+    public static (string path, string name) StaticImage = ("", "");
+
     public override void OnAppInitalisation()
     {
         base.OnAppInitalisation();
+
         MainMenu();
     }
 
@@ -38,6 +43,12 @@ public class PaintApp : App
             UpdateLineExceptionStatus(true, i);
         }
 
+        if (StaticImage.path.Length != 0) // editing image ovveride
+        {
+            EditImage(StaticImage.name);
+            return; // we do not want normal menu
+        }
+
         int option = 0;
 
         while (option != 4)
@@ -46,6 +57,7 @@ public class PaintApp : App
         }
     }
 
+    ///<summary> let user create a .cimg file. </summary>
     private void CreateImage()
     {
         int width = int.Parse(UserInput.GetValidUserInput("Image Width: ", new UserInputProfile(UserInputProfile.InputType.Int, numericMin: 3, numericMax: 60)));
@@ -53,7 +65,7 @@ public class PaintApp : App
 
         string imageName = UserInput.GetValidUserInput("Image Name: ", new UserInputProfile(UserInputProfile.InputType.FullText));
 
-        ConsoleImage.SaveToCIMG(GeneratePath(DataLocation.Console, "Assets/Stickers", $"{imageName}.cimg"), new ConsoleImage(width, height));
+        ConsoleImage.SaveToCIMG(GeneratePath(DataLocation.App, "Paint", $"{imageName}.cimg"), new ConsoleImage(width, height));
 
         SendConsoleMessage(new ConsoleLine("Image Created! Press Enter Key To Continue.", ConsoleColor.DarkBlue));
         ShiftLine();
@@ -62,9 +74,10 @@ public class PaintApp : App
         EditImage($"{imageName}.cimg");
     }
 
+    ///<summary> Menu to select .cimg file. </summary>
     private void SelectImage()
     {
-        string[] imageFiles = GetSubFiles(GeneratePath(DataLocation.Console, "Assets/Stickers"));
+        string[] imageFiles = GetSubFiles(GeneratePath(DataLocation.App, "Paint"));
 
         if (imageFiles.Length == 0)
         {
@@ -82,14 +95,17 @@ public class PaintApp : App
         EditImage(imageFiles[option]);
     }
 
-    private void EditImage(string filePath)
+    ///<summary> Main window to edit .cimg file. </summary>
+    public void EditImage(string filePath)
     {
         ClearPrimaryConsole();
+
+        Analytics.Debug.Log(filePath + " : " + StaticImage);
 
         int currentColour = 0;
         (int x, int y) = (0, 0);
 
-        ConsoleImage? image = ConsoleImage.LoadFromCIMG(GeneratePath(DataLocation.Console, "Assets/Stickers", filePath));
+        ConsoleImage? image = ConsoleImage.LoadFromCIMG(StaticImage.name.Length != 0 ? StaticImage.path : GeneratePath(DataLocation.App, "Paint", filePath));
         if (image == null) return;
 
         UpdateCursor(0, 0);
@@ -147,9 +163,17 @@ public class PaintApp : App
                     {
                         image.SetPixelChar(x, y, ' ');
                         image.SetPixelForeground(x, y, ConsoleColor.White);
-                        ConsoleImage.SaveToCIMG(GeneratePath(DataLocation.Console, "Assets/Stickers", filePath), image);
+                        ConsoleImage.SaveToCIMG(StaticImage.name.Length != 0 ? StaticImage.path : GeneratePath(DataLocation.App, "Paint", filePath), image);
                     }
                     ClearPrimaryConsole();
+
+                    if (StaticImage.name.Length != 0)
+                    {
+                        StaticImage = ("", "");
+                        AppRegistry.SetActiveApp("Revistone");
+                        ReloadConsole();
+                    }
+
                     return;
             }
 
@@ -219,7 +243,7 @@ public class PaintApp : App
 
     private void DeleteImage()
     {
-        string[] imageFiles = GetSubFiles(GeneratePath(DataLocation.Console, "Assets/Stickers"));
+        string[] imageFiles = GetSubFiles(GeneratePath(DataLocation.App, "Paint"));
 
         if (imageFiles.Length == 0)
         {
@@ -234,7 +258,7 @@ public class PaintApp : App
 
         if (option == -1) return;
 
-        DeleteFile(GeneratePath(DataLocation.Console, "Assets/Stickers", imageFiles[option]));
+        DeleteFile(GeneratePath(DataLocation.App, "Paint", imageFiles[option]));
         SendConsoleMessage(new ConsoleLine("Image Deleted! Press Enter Key To Continue.", ConsoleColor.DarkBlue));
         ShiftLine();
         UserInput.WaitForUserInput();
@@ -255,5 +279,35 @@ public class PaintApp : App
             new ConsoleLine("[R]: Resize Image.", colours),
             new ConsoleLine("[E]: Exit.", colours)
         );
+    }
+
+    // --- CONSOLE STICKERS ---
+
+    /// <summary> Displays Sticker In Console. </summary>
+    public static bool DisplaySticker(string sticker)
+    {
+        if (!sticker.EndsWith(".cimg")) sticker += ".cimg";
+
+        string path = GeneratePath(DataLocation.Console, "Assets/Stickers", sticker); // console base stickers
+        if (!File.Exists(path)) path = GeneratePath(DataLocation.App, "Paint", sticker); // user created stickers
+        if (!File.Exists(path)) path = GeneratePath(DataLocation.Workspace, sticker); // workspace location sticker
+        if (!File.Exists(path))
+        {
+            SendConsoleMessage(new ConsoleLine($"Sticker Could Not Be Found - '{sticker}'", BuildArray(AppRegistry.PrimaryCol.Extend(29), AppRegistry.SecondaryCol)));
+            return false; // ts does not exist
+        }
+
+        ConsoleImage? stickerImage = ConsoleImage.LoadFromCIMG(path);
+        stickerImage?.Output();
+        return true;
+    }
+
+    ///<summary> List all base and user created console stickers (excluding workspace). </summary>
+    public static void ListStickers()
+    {
+        string[] defaultStickers = [.. GetSubFiles(GeneratePath(DataLocation.Console, "Assets", "Stickers")).Select(x => x[..5])];
+        string[] userStickers = [.. GetSubFiles(GeneratePath(DataLocation.App, "Paint")).Select(x => x[..5])];
+
+        UserInput.CreateCategorisedReadMenu("Stickers", 5, ("Default", defaultStickers), (SettingsApp.GetValue("Username"), userStickers));
     }
 }

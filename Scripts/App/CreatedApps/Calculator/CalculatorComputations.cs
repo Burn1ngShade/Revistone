@@ -40,7 +40,7 @@ public static class CalculatorComputations
 
         DebugHeaderOutput($"> Validating Variable Name [{variableName}]", flags);
 
-        UserInputProfile validVariable = new UserInputProfile(inputFormat: "[C:]", outputFormat: UserInputProfile.OutputFormat.NoOutput);
+        UserInputProfile validVariable = new UserInputProfile(validInputFormat: "[C:]", outputFormat: UserInputProfile.OutputFormat.NoOutput);
 
         if (!validVariable.InputValid(variableName)) { ThrowInterpreterError($"Name [{variableName}] Is Invalid, Variable Names Must Be Purely Letters", flags); return false; }
         if (operators.ContainsKey(variableName) || constants.ContainsKey(variableName) || functions.ContainsKey(variableName))

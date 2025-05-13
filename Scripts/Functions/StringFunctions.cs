@@ -1,6 +1,5 @@
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using Revistone.Console;
 
 namespace Revistone.Functions;
 

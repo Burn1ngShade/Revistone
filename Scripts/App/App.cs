@@ -1,6 +1,6 @@
+using Revistone.App.Command;
 using Revistone.Console;
 using Revistone.Functions;
-using Revistone.Interaction;
 
 namespace Revistone.App;
 
@@ -15,13 +15,14 @@ public abstract class App
     public int minWidthBuffer; //app only displays with atleast this width
     public int minHeightBuffer; //app only displays with atleast this height
 
-    public bool baseCommands; //wether or not base commands work
-    public (UserInputProfile format, Action<string> payload, string summary)[] appCommands = []; //custom commands
+    public int displayPriority = 0; //used to determine order of menu display
+    public bool useBaseCommands; //whether or not base commands work
+    public AppCommand[] appCommands = []; //custom commands
 
     //--- CONSTRUCTORS ---
 
     /// <summary> Base class for apps to inherit. </summary>
-    public App(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) colourScheme, (ConsoleColor[] colours, int speed) borderColourScheme, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true)
+    public App(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) colourScheme, (ConsoleColor[] colours, int speed) borderColourScheme, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true, int displayPriority = 0)
     {
         this.name = name;
 
@@ -31,8 +32,9 @@ public abstract class App
         this.minWidthBuffer = minAppWidth;
         this.minHeightBuffer = Math.Max(minAppHeight, 15);
 
-        this.baseCommands = baseCommands;
+        this.useBaseCommands = baseCommands;
         this.appCommands = appCommands;
+        this.displayPriority = displayPriority;
     }
 
     /// <summary> Base class for apps to inherit. </summary>
@@ -75,7 +77,7 @@ public abstract class App
     /// <summary> Called on console startup, return all instances of class you want registered to console. </summary>
     public virtual App[] OnRegister()
     {
-        return new App[0];
+        return [];
     }
 
     //--- Useful Functions ---

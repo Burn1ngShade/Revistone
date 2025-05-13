@@ -10,7 +10,10 @@ using Revistone.Management;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
 using static Revistone.Console.ConsoleAction;
-using Microsoft.VisualBasic;
+using System.Text.RegularExpressions;
+using Revistone.App.BaseApps.HoneyC;
+using Revistone.Console.Image;
+using Revistone.App.BaseApps;
 
 namespace Revistone.Functions;
 
@@ -24,6 +27,13 @@ public static class WorkspaceFunctions
     public static string DisplayPath => dir.FullName[(dir.FullName.IndexOf(path, StringComparison.OrdinalIgnoreCase) + 15)..^1]; // use when displaying path
     public static string RawPath => path;
 
+    static readonly string[] ValidTextFileExtensions = {
+        ".txt", ".md", ".csv", ".log", ".xml", ".json", ".yaml", ".yml", ".ini",
+        ".cfg", ".bat", ".cmd", ".sh", ".py", ".java", ".c", ".c#", ".cpp", ".html",
+        ".css", ".js", ".ts", ".tex", ".sql", ".ps1", ".toml", ".env", ".lst",
+        ".srt", ".vtt", ".nfo", ".properties", ".pl", ".rb", ".go", ".rss", ".xhtml", ".hc"
+    };
+
     // --- PATHS ---
 
     ///<summary> Gets the path of the parent folder of the current workspace folder. </summary>
@@ -32,7 +42,7 @@ public static class WorkspaceFunctions
         if (path == RootPath) return path;
 
         path = path[..path[..^1].LastIndexOf('\\')];
-        if (DirectoryExists(path)) path = GetFinalPathName(path);
+        if (DirectoryExists(path)) path = GetTruePathName(path);
         path += @"\";
         return path[path.IndexOf(RootPath, StringComparison.OrdinalIgnoreCase)..];
     }
@@ -46,13 +56,20 @@ public static class WorkspaceFunctions
             return false;
         }
 
+        string newPathLastDir = Path.GetFileName(newPath.EndsWith('\\') ? newPath[..^1] : newPath);
+        if (Regex.IsMatch(newPathLastDir, @"^\.+$"))
+        {
+            SendConsoleMessage(new ConsoleLine($"Invalid Command.", AppRegistry.PrimaryCol));
+            return false;
+        }
+
         if (newPath.Equals(path, StringComparison.CurrentCultureIgnoreCase))
         {
             SendConsoleMessage(new ConsoleLine($"Already In Directory - '{DisplayPath}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
             return false;
         }
 
-        newPath = GetFinalPathName(newPath);
+        newPath = GetTruePathName(newPath);
         if (!newPath.EndsWith('\\')) newPath += @"\";
         path = newPath[newPath.IndexOf(RootPath, StringComparison.OrdinalIgnoreCase)..];
         dir = new(path);
@@ -63,12 +80,13 @@ public static class WorkspaceFunctions
         return true;
     }
 
-    ///<summary> Info about each workspace query, allowing for query modifiers (e.g -r, -p). </summary>
+    ///<summary> Info about each workspace query, allowing for query modifiers (e.g -r, -p, -j). </summary>
     struct WorkspaceQuery
     {
         public readonly string Path;
-        public readonly string Name;
-        public DirectoryInfo Dir;
+        public readonly DirectoryInfo Dir;
+
+        public string Name;
 
         public readonly string Location => Path + Name;
         public readonly string Info; // info about query, e.g. "At Root Directory"
@@ -80,9 +98,8 @@ public static class WorkspaceFunctions
             { "-j", false}, // jump to
         };
 
-        public WorkspaceQuery(string queryName)
+        public WorkspaceQuery(string queryName, bool isFile = false)
         {
-
             while (queryName.Length >= 2)
             {
                 bool foundModifier = false;
@@ -119,12 +136,20 @@ public static class WorkspaceFunctions
             }
 
             Name = queryName;
+
+            if (isFile) VerifyFileExtension();
+        }
+
+        public void VerifyFileExtension()
+        {
+            string fileExtension = System.IO.Path.GetExtension(Name);
+            if (fileExtension.Length == 0) Name += ".txt"; // default file extension
         }
     }
 
     // --- DIRECTORIES ---
 
-    ///<summary> Creates a directory within workspace. </summary>
+    ///<summary> Creates a directory within the workspace. </summary>
     public static bool CreateWorkspaceDirectory(string dirName)
     {
         WorkspaceQuery q = new(dirName);
@@ -191,6 +216,7 @@ public static class WorkspaceFunctions
         (string name, FileInfo info)[] files = [.. GetSubFiles(path).Select(x => (x, new FileInfo(path + x))).OrderByDescending(x => x.Item2.Length)];
 
         SendConsoleMessage(new ConsoleLine($"Created On - {dir.CreationTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(12), AppRegistry.PrimaryCol)));
+        SendConsoleMessage(new ConsoleLine($"Last Modified - {dir.LastWriteTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(16), AppRegistry.PrimaryCol)));
         SendConsoleMessage(new ConsoleLine("")); // prevent some shiftline weirdness
         SendConsoleMessage(new ConsoleLine("Directories:", AppRegistry.SecondaryCol));
         for (int i = 0; i < Math.Min(directories.Length, 6); i++)
@@ -212,84 +238,211 @@ public static class WorkspaceFunctions
     }
 
     ///<summary> Displays info about files within the current workspace directory. </summary>
-    public static void ListWorkspaceFiles()
+    public static void ListWorkspaceFiles(int option = 0)
     {
+        (string name, FileInfo info)[] files = [.. GetSubFiles(path).Select(x => (x, new FileInfo(path + x))).OrderByDescending(x => x.Item2.Length)];
 
+        if (files.Length == 0)
+        {
+            SendConsoleMessage(new ConsoleLine("No Files Found.", AppRegistry.PrimaryCol));
+            return;
+        }
+
+        while (true)
+        {
+            option = UserInput.CreateMultiPageOptionMenu($"{DisplayPath}", [.. files.Select(x => new ConsoleLine($"{x.name} - {x.info.Length} Bytes", AppRegistry.SecondaryCol))], [new ConsoleLine("Exit", AppRegistry.PrimaryCol)], 5, option);
+
+            if (option == -1) break; // exit option
+
+            (string name, FileInfo info) = files[option];
+
+            SendConsoleMessage(new ConsoleLine($"--- {DisplayPath}\\{info.Name} ---", AppRegistry.PrimaryCol));
+            SendConsoleMessage(new ConsoleLine($"Created On - {info.CreationTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(12), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Last Modified - {info.LastWriteTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(16), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Size - {info.Length} Bytes.", BuildArray(AppRegistry.SecondaryCol.Extend(6), AppRegistry.PrimaryCol)));
+            SendConsoleMessage("");
+
+            int fileOption = UserInput.CreateOptionMenu("--- Options ---", [new ConsoleLine("Open File", AppRegistry.SecondaryCol), new ConsoleLine("Remove File", AppRegistry.SecondaryCol), new ConsoleLine("Exit", AppRegistry.PrimaryCol)]);
+
+            ClearLines(5, true);
+
+            if (fileOption == 0) OpenWorkspaceFile(name);
+            else if (fileOption == 1)
+            {
+                DeleteWorkspaceFile(name);
+                ListWorkspaceFiles(option);
+                return;
+            }
+            else break;
+        }
     }
 
     ///<summary> Displays info about directories within the current workspace directory. </summary>
-    public static void ListWorkspaceDirectories()
+    public static void ListWorkspaceDirectories(int option = 0)
     {
+        (string name, DirectoryInfo info)[] directories = [.. GetSubDirectories(path).Select(x => (x, new DirectoryInfo(path + x))).OrderByDescending(x => x.Item2.GetFiles().Length)];
 
+        if (directories.Length == 0)
+        {
+            SendConsoleMessage(new ConsoleLine("No Directories Found.", AppRegistry.PrimaryCol));
+            return;
+        }
+
+        while (true)
+        {
+            option = UserInput.CreateMultiPageOptionMenu($"{DisplayPath}", [.. directories.Select(x => new ConsoleLine($"{x.name} - {x.info.GetFiles().Length} Files, {x.info.GetDirectories().Length} Directories", AppRegistry.SecondaryCol))], [new ConsoleLine("Exit", AppRegistry.PrimaryCol)], 5, option);
+
+            if (option == -1) break; // exit option
+
+            (string name, DirectoryInfo info) = directories[option];
+
+            SendConsoleMessage(new ConsoleLine($"--- {DisplayPath}\\{info.Name} ---", AppRegistry.PrimaryCol));
+            SendConsoleMessage(new ConsoleLine($"Created On - {info.CreationTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(12), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Last Modified - {info.LastWriteTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(16), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Directories - {info.GetDirectories().Length}.", BuildArray(AppRegistry.SecondaryCol.Extend(11), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Files - {info.GetFiles().Length}.", BuildArray(AppRegistry.SecondaryCol.Extend(6), AppRegistry.PrimaryCol)));
+            SendConsoleMessage("");
+
+            int directoryOption = UserInput.CreateOptionMenu("--- Options ---", [new ConsoleLine("Open Directory", AppRegistry.SecondaryCol), new ConsoleLine("Remove Directory", AppRegistry.SecondaryCol), new ConsoleLine("Exit", AppRegistry.PrimaryCol)]);
+
+            ClearLines(6, true);
+
+            if (directoryOption == 0)
+            {
+                UpdatePath(RawPath + $@"{name}\");
+                return;
+            }
+            else if (directoryOption == 1)
+            {
+                DeleteWorkspaceDirectory(name);
+                ListWorkspaceDirectories(option);
+                return;
+            }
+        }
     }
 
     // --- FILES ---
 
+    ///<summary> Create a workspace file. </summary>
     public static bool CreateWorkspaceFile(string fileName)
     {
-        string fileExtension = Path.GetExtension(fileName);
-        if (fileExtension.Length == 0) fileName += ".txt";
-
-        if (!IsNameValid(fileName, true)) return false;
-        if (FileExists(path + fileName))
+        if (fileName.Length == 0 || fileName[0] == '.')
         {
-            SendConsoleMessage(new ConsoleLine($"File Already Exists - '{fileName}'.", AppRegistry.PrimaryCol));
+            SendConsoleMessage(new ConsoleLine("File Name Can Not Be Empty.", AppRegistry.PrimaryCol));
             return false;
         }
 
-        SaveFile(path + fileName, []);
-        SendConsoleMessage(new ConsoleLine($"Created Text File - '{fileName}'.", AppRegistry.PrimaryCol));
+        WorkspaceQuery q = new(fileName, true);
+
+        if (!IsNameValid(q.Name, true)) return false;
+        if (FileExists(q.Location))
+        {
+            SendConsoleMessage(new ConsoleLine($"File Already Exists {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(22 + q.Info.Length), AppRegistry.SecondaryCol)));
+            return false;
+        }
+
+        SaveFile(q.Location, []);
+        SendConsoleMessage(new ConsoleLine($"Created Text File {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(20 + q.Info.Length), AppRegistry.SecondaryCol)));
         Analytics.General.FilesCreated++;
+
+        if (q.modifiers["-j"]) OpenWorkspaceFile(fileName); // open the new file
 
         return true;
     }
 
+    ///<summary> Delete a workspace file. </summary>
     public static bool DeleteWorkspaceFile(string fileName)
     {
-        if (!FileExists(path + fileName) || fileName == "")
+        WorkspaceQuery q = new(fileName, true);
+
+        if (!FileExists(q.Location))
         {
-            SendConsoleMessage(new ConsoleLine($"File Does Not Exist - '{fileName}'.", AppRegistry.PrimaryCol));
+            SendConsoleMessage(new ConsoleLine($"File Does Not Exist {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(22 + q.Info.Length), AppRegistry.SecondaryCol)));
             return false;
         }
 
-        if (!UserInput.CreateTrueFalseOptionMenu($"Are You Sure You Want To Delete File: {fileName}")) return false;
+        if (!UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Are You Sure You Want To Delete File {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(38 + q.Info.Length), AppRegistry.SecondaryCol)))) return false;
 
-        DeleteFile(path + fileName);
-        SendConsoleMessage(new ConsoleLine($"Deleted File - '{fileName}'.", AppRegistry.PrimaryCol));
+        DeleteFile(q.Location);
+        SendConsoleMessage(new ConsoleLine($"Deleted File {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(15 + q.Info.Length), AppRegistry.SecondaryCol)));
         Analytics.General.FilesDeleted++;
 
         return true;
     }
 
+    ///<summary> Opens a workspace file. </summary>
     public static bool OpenWorkspaceFile(string fileName)
     {
-        if (!FileExists(path + fileName) || fileName == "")
+        WorkspaceQuery q = new(fileName, true);
+
+        if (!FileExists(q.Location))
         {
-            SendConsoleMessage(new ConsoleLine($"File Does Not Exist - '{fileName}'.", AppRegistry.PrimaryCol));
+            SendConsoleMessage(new ConsoleLine($"File Does Not Exist {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(20 + q.Info.Length), AppRegistry.SecondaryCol)));
             return false;
         }
 
-        string fileExtension = Path.GetExtension(fileName);
-        if (fileExtension != ".txt" && fileExtension != ".hc")
+        string fileExtension = Path.GetExtension(q.Name);
+        if (!ValidTextFileExtensions.Contains(fileExtension))
         {
-            SendConsoleMessage(new ConsoleLine($"Can't Open File Extension: '{fileExtension}'.", AppRegistry.PrimaryCol));
+            if (fileExtension == ".cimg") // console images
+            {
+                PaintApp.StaticImage = (q.Location, q.Name);
+                AppRegistry.SetActiveApp("Paint");
+                ReloadConsole();
+                return true;
+            }
+
+            SendConsoleMessage(new ConsoleLine($"Can't Open File Extension - '{fileExtension}'", BuildArray(AppRegistry.PrimaryCol.Extend(28), AppRegistry.SecondaryCol)));
             return false;
         }
 
-        string[] content = LoadFile(path + fileName);
-        SaveFile(path + fileName, UserInput.GetMultiUserInput(Path.GetFileNameWithoutExtension(GetFinalPathName(path + fileName)), content));
+        string[] content = LoadFile(q.Location);
+        SaveFile(q.Location, UserInput.GetMultiUserInput(Path.GetFileNameWithoutExtension(GetTruePathName(q.Location)), content));
         Analytics.General.FilesOpened++;
 
         return true;
     }
 
+    ///<summary> Runs a workspace file. </summary>
+    public static bool RunWorkspaceFile(string fileName)
+    {
+        WorkspaceQuery q = new(fileName, true);
+
+        if (!FileExists(q.Location))
+        {
+            SendConsoleMessage(new ConsoleLine($"File Does Not Exist {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(20 + q.Info.Length), AppRegistry.SecondaryCol)));
+            return false;
+        }
+
+        string fileExtension = Path.GetExtension(q.Name);
+
+        if (fileExtension == ".hc")
+        {
+            HoneyCInterpreter.Interpret(LoadFile(q.Location));
+            return true;
+        }
+
+        if (fileExtension == ".cimg")
+        {
+            ConsoleImage? stickerImage = ConsoleImage.LoadFromCIMG(q.Location);
+            stickerImage?.Output();
+            return true;
+        }
+
+        SendConsoleMessage(new ConsoleLine($"Can't Run File Extension - '{fileExtension}'", BuildArray(AppRegistry.PrimaryCol.Extend(28), AppRegistry.SecondaryCol)));
+        return false;
+    }
+
+    // --- LOW LEVEL FILE SYSTEM ---
+
     [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
     static extern uint GetFinalPathNameByHandle(SafeFileHandle hFile, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpszFilePath, uint cchFilePath, uint dwFlags);
     private const uint FILE_NAME_NORMALIZED = 0x0;
 
-    static string GetFinalPathNameByHandle(SafeFileHandle fileHandle)
+    ///<summary> Gets the correct captilisation of a path, from a fileHandle. </summary>
+    static string GetTruePathNameByHandle(SafeFileHandle fileHandle)
     {
-        StringBuilder outPath = new StringBuilder(1024);
+        StringBuilder outPath = new(1024);
 
         var size = GetFinalPathNameByHandle(fileHandle, outPath, (uint)outPath.Capacity, FILE_NAME_NORMALIZED);
         if (size == 0 || size > outPath.Capacity)
@@ -313,7 +466,8 @@ public static class WorkspaceFunctions
          IntPtr templateFile);
     private const uint FILE_FLAG_BACKUP_SEMANTICS = 0x02000000;
 
-    public static string GetFinalPathName(string dirtyPath)
+    ///<summary> Gets the correct captilisation of a path. </summary>
+    public static string GetTruePathName(string dirtyPath)
     {
         // use 0 for access so we can avoid error on our metadata-only query (see dwDesiredAccess docs on CreateFile)
         // use FILE_FLAG_BACKUP_SEMANTICS for attributes so we can operate on directories (see Directories in remarks section for CreateFile docs)
@@ -325,7 +479,7 @@ public static class WorkspaceFunctions
             if (directoryHandle.IsInvalid)
                 throw new Win32Exception(Marshal.GetLastWin32Error());
 
-            return GetFinalPathNameByHandle(directoryHandle);
+            return GetTruePathNameByHandle(directoryHandle);
         }
     }
 }

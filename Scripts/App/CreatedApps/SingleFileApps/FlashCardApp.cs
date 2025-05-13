@@ -2,6 +2,7 @@ using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.Console;
 using Revistone.Management;
+using Revistone.App.Command;
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
@@ -16,7 +17,7 @@ public class FlashCardApp : App
     // --- APP BOILER ---
 
     public FlashCardApp() : base() { }
-    public FlashCardApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public FlashCardApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 40) { }
 
     public override App[] OnRegister()
     {
@@ -441,7 +442,7 @@ public class FlashCardApp : App
             SendConsoleMessage(new ConsoleLine($"Total Time Spent: {timeSpent:hh\\:mm\\:ss}", AppRegistry.SecondaryCol));
             ShiftLine();
             SendConsoleMessage(new ConsoleLine($"Questions Answered: {questionsCompleted}", AppRegistry.SecondaryCol));
-            SendConsoleMessage(new ConsoleLine($"Questions Answered Correctley: {questionsCompletedCorrect}", AppRegistry.SecondaryCol));
+            SendConsoleMessage(new ConsoleLine($"Questions Answered Correctly: {questionsCompletedCorrect}", AppRegistry.SecondaryCol));
         }
 
         public override string ToString()

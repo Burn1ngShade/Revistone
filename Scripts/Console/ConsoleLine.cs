@@ -48,13 +48,11 @@ public class ConsoleLine
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
     public void Update(string lineText, ConsoleColor[] lineColour, ConsoleColor[] lineColourBG)
     {
-        lock (Management.Manager.renderLockObject)
-        {
-            this._lineText = lineText;
-            this._lineColour = lineColour;
-            this._lineBGColour = lineColourBG;
-            this._updated = false;
-        }
+        // lock (Management.Manager.renderLockObject) { }
+        this._lineText = lineText;
+        this._lineColour = lineColour;
+        this._lineBGColour = lineColourBG;
+        this._updated = false;
     }
 
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
@@ -62,17 +60,17 @@ public class ConsoleLine
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
     public void Update(string lineText) { Update(lineText, _lineColour); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(string lineText, ConsoleColor lineColour) { Update(lineText, new ConsoleColor[1] { lineColour }); }
+    public void Update(string lineText, ConsoleColor lineColour) { Update(lineText, [lineColour]); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
     public void Update(ConsoleColor[] lineColour) { Update(lineText, lineColour); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(string lineText, ConsoleColor[] lineColour) { Update(lineText, lineColour, new ConsoleColor[] { ConsoleColor.Black }); }
+    public void Update(string lineText, ConsoleColor[] lineColour) { Update(lineText, lineColour, [ConsoleColor.Black]); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(string lineText, ConsoleColor lineColour, ConsoleColor lineColourBG) { Update(lineText, new ConsoleColor[1] { lineColour }, new ConsoleColor[1] { lineColourBG }); }
+    public void Update(string lineText, ConsoleColor lineColour, ConsoleColor lineColourBG) { Update(lineText, [lineColour], [lineColourBG]); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
     public void Update(ConsoleColor[] lineColour, ConsoleColor[] lineColourBG) { Update(lineText, lineColour, lineColourBG); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(ConsoleColor lineColour, ConsoleColor lineColourBG) { Update(lineText, new ConsoleColor[1] { lineColour }, new ConsoleColor[1] { lineColourBG }); }
+    public void Update(ConsoleColor lineColour, ConsoleColor lineColourBG) { Update(lineText, [lineColour], [lineColourBG]); }
 
     /// <summary> Marks ConsoleLine as updated (try to avoid). </summary>
     public void MarkAsUpToDate()

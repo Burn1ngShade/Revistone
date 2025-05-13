@@ -636,8 +636,8 @@ public static class UserInput
                 .. pgExtraOptions,
             ];
 
-            SendConsoleMessage(new ConsoleLine($"--- {title} Page [{currentPage + 1}/{totalPages + 1}] ---",
-            BuildArray(AppRegistry.PrimaryCol.Extend(title.Length + 10),
+            SendConsoleMessage(new ConsoleLine($"--- {title} - Page [{currentPage + 1}/{totalPages + 1}] ---",
+            BuildArray(AppRegistry.PrimaryCol.Extend(title.Length + 12),
             AppRegistry.SecondaryCol.Extend($"[{currentPage + 1}/{currentPage + 1}]".Length, true),
             AppRegistry.PrimaryCol.Extend(4))));
 
@@ -681,8 +681,8 @@ public static class UserInput
 
         while (true)
         {
-            SendConsoleMessage(new ConsoleLine($"--- {title} Page [{page + 1}/{pages + 1}] ---",
-            BuildArray(AppRegistry.PrimaryCol.Extend(title.Length + 10),
+            SendConsoleMessage(new ConsoleLine($"--- {title} - Page [{page + 1}/{pages + 1}] ---",
+            BuildArray(AppRegistry.PrimaryCol.Extend(title.Length + 12),
             AppRegistry.SecondaryCol.Extend($"[{page + 1}/{pages + 1}]".Length, true),
             AppRegistry.PrimaryCol.Extend(4))));
 
@@ -730,7 +730,7 @@ public static class UserInput
         int pointer = 0;
         while (true)
         {
-            (ConsoleLine, Action)[] options = [.. categories.Select(c => (new ConsoleLine(c.title, AppRegistry.SecondaryCol), (Action)(() => { CreateReadMenu($"{c.title}:", messagesPerPage, c.messages); })))];
+            (ConsoleLine, Action)[] options = [.. categories.Select(c => (new ConsoleLine(c.title, AppRegistry.SecondaryCol), (Action)(() => { CreateReadMenu($"{title} -> {c.title}", messagesPerPage, c.messages); })))];
             options = [.. options, (new ConsoleLine("Exit", AppRegistry.PrimaryCol), () => { })];
 
             pointer = CreateOptionMenu($"--- {title} ---", options, cursorStartIndex: pointer);

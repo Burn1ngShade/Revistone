@@ -1,6 +1,7 @@
 using Revistone.Console;
 using Revistone.Functions;
 using Revistone.Interaction;
+using Revistone.App.Command;
 
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.TitleFunctions;
@@ -11,7 +12,7 @@ namespace Revistone.App.BaseApps;
 public class FontShowcaseApp : App
 {
     public FontShowcaseApp() : base() { }
-    public FontShowcaseApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public FontShowcaseApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 20) { }
 
     public override App[] OnRegister()
     {

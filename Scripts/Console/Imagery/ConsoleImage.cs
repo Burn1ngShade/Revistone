@@ -247,71 +247,31 @@ public class ConsoleImage
     {
         if (!IsPathValid(filePath)) return new ConsoleImage();
 
-        using (FileStream fs = new(filePath, FileMode.Open))
-        using (BinaryReader reader = new(fs))
+        using FileStream fs = new(filePath, FileMode.Open);
+        using BinaryReader reader = new(fs);
+        
+        if (fs.Length <= 8) return new ConsoleImage(); // will crash trying to read .cimg
+
+        if (reader.ReadString() != "CIMG")
         {
-            if (reader.ReadString() != "CIMG")
+            Analytics.Debug.Log($"Error: File At Path {filePath} Is Not A CIMG file.");
+            return null;
+        }
+
+        int width = reader.ReadInt32();
+        int height = reader.ReadInt32();
+        ConsolePixel defaultPixel = new(reader.ReadChar(), (ConsoleColor)reader.ReadByte(), (ConsoleColor)reader.ReadByte());
+
+        ConsoleImage image = new(width, height, defaultPixel);
+
+        for (int x = 0; x < image.Width; x++)
+        {
+            for (int y = 0; y < image.Height; y++)
             {
-                Analytics.Debug.Log($"Error: File At Path {filePath} Is Not A CIMG file.");
-                return null;
+                image.pixels[x, y] = new ConsolePixel(reader.ReadChar(), (ConsoleColor)reader.ReadByte(), (ConsoleColor)reader.ReadByte());
             }
-
-            int width = reader.ReadInt32();
-            int height = reader.ReadInt32();
-            ConsolePixel defaultPixel = new(reader.ReadChar(), (ConsoleColor)reader.ReadByte(), (ConsoleColor)reader.ReadByte());
-
-            ConsoleImage image = new(width, height, defaultPixel);
-
-            for (int x = 0; x < image.Width; x++)
-            {
-                for (int y = 0; y < image.Height; y++)
-                {
-                    image.pixels[x, y] = new ConsolePixel(reader.ReadChar(), (ConsoleColor)reader.ReadByte(), (ConsoleColor)reader.ReadByte());
-                }
-            }
-
-            return image;
-        }
-    }
-
-    // --- General Console ---
-
-    ///<summary> Takes a screenshot of the primary console. </summary>
-    public static void TakePrimaryScreenshot(string name = "")
-    {
-        if (!IsNameValid(name, true) || ConsoleData.screenWarningUpdated) return;
-
-        int primarySize = ConsoleData.debugStartIndex - 1;
-        ConsoleLine[] c = new ConsoleLine[primarySize];
-
-        for (int i = 1; i < primarySize + 1; i++)
-        {
-            c[primarySize - i] = ConsoleAction.GetConsoleLine(i);
         }
 
-        ConsoleImage image = new(ConsoleData.windowSize.width, primarySize);
-        image.SetPixels(0, 0, c);
-        SaveToCIMG(GeneratePath(DataLocation.Console, "History/Screenshots", name.Length == 0 ? $"Primary{DateTime.Now:[yyyy-MM-dd_HH-mm-ss]}.cimg" : $"{name}.cimg"), image);
-
-        ConsoleAction.SendDebugMessage(new ConsoleLine("Screenshot Taken.", AppRegistry.PrimaryCol));
-    }
-
-    ///<summary> Takes a screenshot of the debug console. </summary>
-    public static void TakeDebugScreenshot(string name = "")
-    {
-        if (!IsNameValid(name, true) || ConsoleData.screenWarningUpdated) return; 
-
-        ConsoleLine[] c = new ConsoleLine[7];
-
-        for (int i = ConsoleData.debugStartIndex + 1; i < ConsoleData.debugStartIndex + 8; i++)
-        {
-            c[ConsoleData.debugBufferStartIndex - i + 6] = ConsoleAction.GetConsoleLine(i);
-        }
-
-        ConsoleImage image = new(ConsoleData.windowSize.width, 8);
-        image.SetPixels(0, 0, c);
-        SaveToCIMG(GeneratePath(DataLocation.Console, "History/Screenshots", name.Length == 0 ? $"Debug{DateTime.Now:[yyyy-MM-dd_HH-mm-ss]}.cimg" : $"{name}.cimg"), image);
-
-        ConsoleAction.SendDebugMessage(new ConsoleLine("Debug Screenshot Taken.", AppRegistry.PrimaryCol));
+        return image;
     }
 }

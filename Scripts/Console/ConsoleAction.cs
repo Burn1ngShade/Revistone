@@ -1,5 +1,6 @@
 using static Revistone.Console.Data.ConsoleData;
 using Revistone.App;
+using Revistone.Management;
 
 namespace Revistone.Console;
 
@@ -175,7 +176,7 @@ public static class ConsoleAction
                     break;
                 }
             }
-
+            consoleLineUpdates[consoleBot] = ConsoleAnimatedLine.None; 
             consoleIndex = consoleBot;
         }
 
@@ -302,6 +303,7 @@ public static class ConsoleAction
     /// <summary> Sends ConsoleLine into debug console area. </summary>
     public static int SendDebugMessage(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo)
     {
+        if (Profiler.Enabled) return -1;
         return UpdateEnclosedConsole(lineInfo, updateInfo, windowSize.height - 7, windowSize.height - 2, ref debugLineIndex);
     }
 

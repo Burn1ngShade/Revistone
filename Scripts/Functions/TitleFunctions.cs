@@ -13,12 +13,12 @@ public static class TitleFunctions
         AnsiRegular, Ascii3D, AsciiNewRoman, Banner3, Big,
         BigMoneyNE, BigMoneyNW, BigMoneySE, BigMoneySW, Block,
         Blocks, Cards, Chiseled, Colossal, DancingFont, 
-        Digital, Double, DrPepper, Epic, FlowerPower, 
-        Graceful, Graffiti, Impossible, Merlin1, Puffy, 
-        Slant, Small, SmallSlant, Standard, TinkerToy
+        Digital, Double, DrPepper, EftiRobot, Epic, FlowerPower, 
+        Graceful, Graffiti, Impossible, Merlin1, O8, Pawp, Puffy, 
+        Slant, Small, SmallSlant, Speed, Standard, TinkerToy, Univers
     }
 
-    static string validChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.!?';:()[]{}-_+=*&^<>%@£";
+    static readonly string validChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.!?';:()[]{}-_+=*&^<>%@£";
 
     /// <summary> Creates an array of strings that forms a title of given text, and given font. </summary>
     public static string[] CreateTitle(string text, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true, int bottomSpace = 0, int topSpace = 0)

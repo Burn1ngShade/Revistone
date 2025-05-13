@@ -1,25 +1,25 @@
 {
-  "AppsOpened": 24,
+  "AppsOpened": 30,
   "Apps": [
     {
       "AppName": "Revistone",
-      "TimesOpened": 17,
-      "TotalRuntimeTicks": 10678,
-      "TotalRuntime": "00:04:26.9500000",
-      "KeyPresses": 454,
-      "LinesEntered": 20,
-      "OptionMenusUsed": 20,
-      "CommandsUsed": 10
+      "TimesOpened": 22,
+      "TotalRuntimeTicks": 53306,
+      "TotalRuntime": "00:22:12.6500000",
+      "KeyPresses": 590,
+      "LinesEntered": 28,
+      "OptionMenusUsed": 26,
+      "CommandsUsed": 17
     },
     {
       "AppName": "Paint",
-      "TimesOpened": 2,
-      "TotalRuntimeTicks": 360,
-      "TotalRuntime": "00:00:09",
-      "KeyPresses": 14,
-      "LinesEntered": 2,
-      "OptionMenusUsed": 2,
-      "CommandsUsed": 2
+      "TimesOpened": 3,
+      "TotalRuntimeTicks": 1560,
+      "TotalRuntime": "00:00:39",
+      "KeyPresses": 108,
+      "LinesEntered": 10,
+      "OptionMenusUsed": 4,
+      "CommandsUsed": 5
     },
     {
       "AppName": "Screenshots",

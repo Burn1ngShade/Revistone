@@ -1,25 +1,25 @@
 {
-  "WidgetsCreated": 51,
+  "WidgetsCreated": 59,
   "WidgetsDestroyed": 0,
   "Widgets": [
     {
       "WidgetName": "Frame Rate",
-      "TimesCreated": 13,
+      "TimesCreated": 15,
       "TimesDestroyed": 0
     },
     {
       "WidgetName": "Author",
-      "TimesCreated": 13,
+      "TimesCreated": 15,
       "TimesDestroyed": 0
     },
     {
       "WidgetName": "Current Time",
-      "TimesCreated": 13,
+      "TimesCreated": 15,
       "TimesDestroyed": 0
     },
     {
       "WidgetName": "Workspace Path",
-      "TimesCreated": 12,
+      "TimesCreated": 14,
       "TimesDestroyed": 0
     }
   ]

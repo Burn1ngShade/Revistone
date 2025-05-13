@@ -2,6 +2,8 @@ using Revistone.Console;
 using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.Management;
+using Revistone.App.Command;
+
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 
@@ -10,7 +12,7 @@ namespace Revistone.App.BaseApps.Tetris;
 public class TetrisApp : App
 {
     public TetrisApp() : base() { }
-    public TetrisApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public TetrisApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 70) { }
 
     public override App[] OnRegister()
     {

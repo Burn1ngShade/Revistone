@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Revistone.App;
+using Revistone.Console.Data;
 using System.Runtime.CompilerServices;
 
 using static Revistone.Functions.PersistentDataFunctions;
@@ -20,6 +21,11 @@ public static class Analytics
 
     static RuntimeAnalytics rAnalytics;
     static int lastRuntimeTicks = 0;
+
+    public static void HandleAnalytics(int tickNum)
+    {
+        if (tickNum % ConsoleData.analyticTickInterval == 0) HandleAnalytics();
+    }
 
     ///<summary> Update analytics. </summary> 
     public static void HandleAnalytics()
@@ -51,6 +57,8 @@ public static class Analytics
         General.TimesOpened++;
         General.LastOpenDate = DateTime.Now;
         rAnalytics = new(General);
+
+        Manager.Tick += HandleAnalytics; // track tick events
     }
 
     ///<summary> Saves analytics data. </summary>
@@ -248,12 +256,10 @@ public static class Analytics
     public class DebugAnalyticsData()
     {
         public List<DebugData> DebugMessages { get; private set; } = [];
-        public DateTime LastLogTime { get; private set; } = DateTime.Now;
 
         public void Log<T>(T message, [CallerFilePath] string callerFilePath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
         {
             DebugMessages.Add(new DebugData(message?.ToString() ?? "", callerFilePath, callerMemberName, callerLineNumber));
-            LastLogTime = DateTime.Now;
         }
 
         public class DebugData(string message, string callerFilePath, string callerMemberName, int callerLineNumber)

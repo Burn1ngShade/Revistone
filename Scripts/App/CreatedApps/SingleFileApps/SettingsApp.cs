@@ -1,6 +1,7 @@
 using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.Console;
+using Revistone.App.Command;
 
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Console.ConsoleAction;
@@ -59,8 +60,8 @@ public class SettingsApp : App
         new DropdownSetting("Show Workspace Path Widget", "Should The Workspace Path Widget Be Shown?", "Yes", SettingCategory.Widget,
         YesNoOpt),
         new DropdownSetting("Target Frame Rate", "The Number Of Times The Console Will Render A Second. Using A Frame Rate Faster Than Your Monitors Refresh Rate Will Actually Slightly Slow Done Responsiveness.", "120", SettingCategory.Performance, ["30", "60", "75", "90", "120", "144", "240"]),
-        new DropdownSetting("Analytics Update Frequency", "How Often Should Analytics Update? (Can Effect Performance On Low End Devices, All Unsaved Analytics May Be Lost On Console Close).", "30s", SettingCategory.Performance,
-        ["5s", "10s", "30s", "60s", "120s", "180s", "300s"]),
+        new DropdownSetting("Analytics Update Frequency", "How Often Should Analytics Update? (Can Effect Performance On Low End Devices, Very Frequent Settings Should Only Be Used For Debugging).", "60s", SettingCategory.Performance,
+        ["10s", "30s", "60s", "120s", "180s", "300s"]),
         new DropdownSetting("Widget Update Frequency", "How Often Should Widgets Update? (Can Effect Performance On Low End Devices, But Lower Settings Will Make Widgets Appear Laggy).", "0.025s", SettingCategory.Performance,
         ["0.025s", "0.05s", "0.1s", "0.2s", "0.5s", "1s"]),
         new DropdownSetting("Show Emojis", "Can Emojis Be Used In The Program (Certain Emojis Cause The Console To Misrender, Requiring A Reload To Fix).", "No", SettingCategory.Performance, YesNoOpt),
@@ -71,7 +72,7 @@ public class SettingsApp : App
     ];
 
     public SettingsApp() : base() { }
-    public SettingsApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public SettingsApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 90) { }
 
     public override App[] OnRegister()
     {
@@ -205,8 +206,8 @@ public class SettingsApp : App
         SendConsoleMessage(new ConsoleLine($"--- {s.settingName} - {s.category} ---", ConsoleColor.DarkBlue));
         SendConsoleMessage(new ConsoleLine($"{s.settingName} - '{s.currentValue}'", BuildArray(ConsoleColor.Cyan.Extend(s.settingName.Length + 3), inputColur)));
         ShiftLine();
-        SendConsoleMessage(new ConsoleLine($"Summary: {s.description}", BuildArray(ConsoleColor.Cyan.Extend(9), ConsoleColor.DarkBlue.ToArray())));
-        SendConsoleMessage(new ConsoleLine($"Default Value: '{s.defaultValue}'", BuildArray(ConsoleColor.Cyan.Extend(15), ConsoleColor.DarkBlue.ToArray())));
+        SendConsoleMessage(new ConsoleLine($"Summary - {s.description}", BuildArray(ConsoleColor.Cyan.Extend(9), ConsoleColor.DarkBlue.ToArray())));
+        SendConsoleMessage(new ConsoleLine($"Default Value - '{s.defaultValue}'", BuildArray(ConsoleColor.Cyan.Extend(15), ConsoleColor.DarkBlue.ToArray())));
     }
 
     // --- SAVE AND LOAD ---

@@ -3,6 +3,7 @@ using Revistone.Console.Image;
 using Revistone.Functions;
 using Revistone.Console;
 using Revistone.Management;
+using Revistone.App.Command;
 
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Console.ConsoleAction;
@@ -18,7 +19,7 @@ public class PongApp : App
     (int score, int pos) player2;
 
     public PongApp() : base() { }
-    public PongApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, (UserInputProfile format, Action<string> payload, string summary)[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands) { }
+    public PongApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 50) { }
 
     public override App[] OnRegister()
     {

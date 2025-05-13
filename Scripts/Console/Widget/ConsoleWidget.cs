@@ -114,7 +114,7 @@ public abstract class ConsoleWidget
     }
 
     ///<summary> Attempts to get widget, fails if widget of name does not exist. </summary>    
-    static ConsoleWidget? TryGetWidget(string widgetName)
+    protected static ConsoleWidget? TryGetWidget(string widgetName)
     {
         return widgets.Find(w => w.name == widgetName);
     }
@@ -150,7 +150,7 @@ public abstract class ConsoleWidget
         TryAddWidget(new FunctionWidget("Frame Rate", int.MinValue, () => ($"FPS: {Profiler.Fps}", false), false));
         TryAddWidget(new FunctionWidget("Workspace Path", -100, () => ($"Path: {WorkspaceFunctions.DisplayPath}", false), ["Revistone"], false));
         TryAddWidget(new FunctionWidget("Author", 100, () => ("Creator: Isaac Honeyman", false), false));
-        TryAddWidget(new TimeWidget("Current Time", int.MaxValue, DateTime.Now, false, true, false));
+        TryAddWidget(new FunctionWidget("Current Time", int.MaxValue, () => (DateTime.Now.ToString("HH:mm:ss"), false)));
 
         SettingsApp.OnSettingChanged += OnSettingChange;
 

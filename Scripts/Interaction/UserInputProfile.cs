@@ -14,7 +14,7 @@ public class UserInputProfile
 
     //--- REQS ---
 
-    public string inputFormat = "";
+    public string[] validInputFormats = [];
     public string bannedChars = "";
 
     public InputType[] validInputTypes; //type that input can be
@@ -43,13 +43,13 @@ public class UserInputProfile
     //--- CONSTRUCTORS ---
 
     /// <summary> The configuration of the requirements of user input. </summary>
-    public UserInputProfile(InputType[] validInputTypes, string inputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
+    public UserInputProfile(InputType[] validInputTypes, string[] validInputFormats, string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
     int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
     bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
     float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard)
     {
         this.validInputTypes = validInputTypes;
-        this.inputFormat = inputFormat;
+        this.validInputFormats = validInputFormats;
         this.bannedChars = bannedChars;
         this.caseRequirements = caseRequirements;
         this.charCount = charCount;
@@ -64,20 +64,35 @@ public class UserInputProfile
         this.outputFormat = outputFormat;
     }
 
-    /// <summary> The configuration of the requirements of user input. </summary>
-    public UserInputProfile(InputType validType, string inputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
+    public UserInputProfile(InputType[] validInputTypes, string validInputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
     int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
     bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
     float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard) :
-    this([validType], inputFormat, bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, outputFormat)
+    this(validInputTypes, validInputFormat.Length == 0 ? [] : [validInputFormat], bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, outputFormat)
     { }
 
     /// <summary> The configuration of the requirements of user input. </summary>
-    public UserInputProfile(string inputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
+    public UserInputProfile(InputType validType, string validInputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
     int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
     bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
     float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard) :
-    this([], inputFormat, bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, outputFormat)
+    this([validType], validInputFormat.Length == 0 ? [] : [validInputFormat], bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, outputFormat)
+    { }
+
+    /// <summary> The configuration of the requirements of user input. </summary>
+    public UserInputProfile(string validInputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
+    int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
+    bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
+    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard) :
+    this([], validInputFormat.Length == 0 ? [] : [validInputFormat], bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, outputFormat)
+    { }
+
+    /// <summary> The configuration of the requirements of user input. </summary>
+    public UserInputProfile(string[] validInputFormats, string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
+    int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
+    bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
+    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard) :
+    this([], validInputFormats, bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, outputFormat)
     { }
 
     //--- FUNCTIONS ---
@@ -101,7 +116,15 @@ public class UserInputProfile
         InputType inputType = GetInputType(modInput);
         int words = modInput.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
 
-        if (inputFormat != "" && !StringFunctions.InFormat(modInput, inputFormat)) errors.Add($"Input Does Not Meet Required Format: {inputFormat}!");
+        if (validInputFormats.Length != 0)
+        {
+            bool foundFormat = false;
+            foreach (string format in validInputFormats) {
+                if (StringFunctions.InFormat(modInput, format)) { foundFormat = true; break; }
+            }
+            if (!foundFormat) errors.Add($"Input Does Not Meet Required Format: {validInputFormats.ToElementString()}!");
+        }
+        // if (validInputFormats != "" && !StringFunctions.InFormat(modInput, validInputFormats)) errors.Add($"Input Does Not Meet Required Format: {validInputFormats}!");
         char[] bannedChar = modInput.Where(c => bannedChars.Contains(c.ToString())).ToArray();
         if (bannedChar.Length > 0) errors.Add($"Input Can Not Have Characters: {bannedChar.ToElementString()}!");
         if (validInputTypes.Length != 0 && !validInputTypes.Contains(inputType)) errors.Add($"Input Recognised As [{inputType}], Should Be {validInputTypes.ToElementString()}!");
