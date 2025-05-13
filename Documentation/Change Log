@@ -5,6 +5,8 @@ First full version, which is fairly bug free im fairly happy with,
 still a lot more i want to and need to do with this but a good start
 
 Stats:
++ 1,848 Lines
++ 16 Files
 +------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                         | files      | code       | comment    | blank      | total      |
 +------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
@@ -21,7 +23,6 @@ Stats:
 +------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 
 Overview:
-
 Simplified Process Down To 2 Threads (From 3)
 Added Summarys To All Scripts!
 More Consitent Name Conventions!
@@ -75,6 +76,9 @@ Summary:
 Adds, abilty to freely resize console, aswell as custom functions for ConsoleAnimatedLines, 
 setting up groundwork for images, videos and a colourCreator overhaul
 
+Stats:
++ 215 Lines
++ 0 Files
 +------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                         | files      | code       | comment    | blank      | total      |
 +------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
@@ -128,6 +132,9 @@ Summary:
 Add the ability to create images and videos! Also changes to App structure, allowing for apps to be created within script, 
 and to easily save data for apps, as well as a ColourFunction overhaul, reducing colour code by up to 8x!
 
+Stats:
++ 643 Lines
++ 5 Files
 +----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                       | files      | code       | comment    | blank      | total      |
 +----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
@@ -195,6 +202,9 @@ Summary:
 Adds realtimeinput, allowing the user to more easily create realtime applications, as well exception lines, which while currentley limited
 only preventing scroll in enclosedconsoleupdate, will act very differnetly to a normal line.
 
+Stats:
++ 113 Lines
++ 0 Files
 +----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                       | files      | code       | comment    | blank      | total      |
 +----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
@@ -244,6 +254,9 @@ major overhaul to images videos app persistend data and more, left the console s
 addressing all issues ive seen so far, next update will focus on fixing performance as well as cleaning parts 
 of code, with a few features and perhaps a new app. 
 
+Stats:
++ 1081 Lines
++ 2 Files
 +---------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                | files      | code       | comment    | blank      | total      |
 +---------------------------------------------------------------------+------------+------------+------------+------------+------------+
@@ -323,6 +336,9 @@ games easily (and possibly more advanced rendering) and is first version id cons
 on user side (though code base needs update, coming soon). And BG colour support!
 As far as i know this version is the first without any rendering crashes (im 100% wrong)
 
+Stats:
++ 637 Lines
++ 2 Files
 +---------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                | files      | code       | comment    | blank      | total      |
 +---------------------------------------------------------------------+------------+------------+------------+------------+------------+
@@ -399,6 +415,9 @@ Finally working on the project again after 10 months and some failed prototypes.
 to the user cursor, and 2 larger multiscript apps. HoneyC will be greatly expanded within 0.6, with plans of bytecode format and a
 far more advance commands and terminal
 
+Stats:
++ 1645 Lines
++ 9 Files
 +--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                                 | files      | code       | comment    | blank      | total      |
 +--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
@@ -459,6 +478,9 @@ fixed puncation in commands
 Summary:
 Biggest ever single update, as i use this project more in my daily life alot is added to make this project useful as a daily tool. Key additions are the 900 lines of work on the HoneyC programming language to fledge into a fully capable language, chatGPT support, a settings app allowing for customisation of the HoneyC application. new Tetris game app, overhaul to tracker app and much much more!!!! 1.0 planned to release with completion of the HoneyC language, though i've been working with this project for over a year and half, and plan to just keep working on it over time.
 
+Stats:
++ 2497 Lines
++ 14 Files
 +----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                                         | files      | code       | comment    | blank      | total      |
 +----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
@@ -527,6 +549,9 @@ Fixed cash warning from 6.0 dotnet files
 Summary:
 Performance issues resolved, seeing upwards of 40 to 50x improvements to performance!!!! New dynamic widget system which allows for another major way to create custom content for the console, and new fonts and fontshowcase app.
 
+Stats:
++ 485 Lines
++ 3 Files
 +----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                                         | files      | code       | comment    | blank      | total      |
 +----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
@@ -584,3 +609,39 @@ Borders not going all the way to the edge of the screen
 Fixed using number 99 for many enumerable.repeats on titles, instead of title.length
 Current App Title Being Slightly Too Far To The Right
 Renamed Revistone.Apps to Revistone.App for consistency
+
+--- WORKING TITLE --- [Major] 0.7.0 (14/05/25)
+
+Summary: 
+Biggest update ever (again! technically beaten on lines, but lots of code modifided and removed), the console feels like a completely new tool after every update, only took 2 months this time! 
+
+Stats:
++ 2342 Lines 
++ 6 Files
++----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                         | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                            |         57 |      8,812 |        692 |      2,002 |     11,506 |
+| App                                                                                          |         33 |      4,680 |        194 |        958 |      5,832 |
+| App (Files)                                                                                  |          2 |        136 |         30 |         48 |        214 |
+| App\Command                                                                                  |          3 |        337 |         15 |         38 |        390 |
+| App\CreatedApps                                                                              |         28 |      4,207 |        149 |        872 |      5,228 |
+| App\CreatedApps\Calculator                                                                   |          4 |        592 |         12 |        142 |        746 |
+| App\CreatedApps\HoneyC                                                                       |          7 |        778 |         35 |        148 |        961 |
+| App\CreatedApps\HoneyC (Files)                                                               |          3 |        385 |         10 |         77 |        472 |
+| App\CreatedApps\HoneyC\DataTypes                                                             |          4 |        393 |         25 |         71 |        489 |
+| App\CreatedApps\SingleFileApps                                                               |          8 |      1,675 |         86 |        354 |      2,115 |
+| App\CreatedApps\Tetris                                                                       |          3 |        450 |          2 |         87 |        539 |
+| App\CreatedApps\TrackerApp                                                                   |          6 |        712 |         14 |        141 |        867 |
+| Console                                                                                      |         11 |      1,315 |        210 |        335 |      1,860 |
+| Console (Files)                                                                              |          7 |        869 |        160 |        219 |      1,248 |
+| Console\Imagery                                                                              |          2 |        216 |         34 |         58 |        308 |
+| Console\Widget                                                                               |          2 |        230 |         16 |         58 |        304 |
+| Functions                                                                                    |          7 |      1,549 |        171 |        396 |      2,116 |
+| Interaction                                                                                  |          3 |        877 |         83 |        217 |      1,177 |
+| Management                                                                                   |          3 |        391 |         34 |         96 |        521 |
++----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Specifics:
+
+BugsFixes:

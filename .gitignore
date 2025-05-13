@@ -4,4 +4,8 @@ PersistentData/Console/History
 PersistentData/Console/Settings
 PersistentData/Workspace/**
 
+bin/Debug/net8.0/PersistentData/Console/Analytics
+bin/Debug/net8.0/PersistentData/Console/History
+bin/Debug/net8.0/PersistentData/Console/Settings
+
 !PersistentData/Workspace/Welcome.txt

@@ -1,0 +1,11 @@
+Thanks For Using Revistone! <3
+
+--- What Can It Do ---
+At A Base Level, Revistone Is A Console OS For Everyday Life, Be It Tracking Your Progress In The Gym, 
+Revising With The Help Of Flash Cards And Chat GPT, Or Just Playing Games, Writing A Couple To Do Notes,
+The Console Is Whatever You Make Of It!
+
+--- For Developers ---
+Expand The Functionality Of The Console Via Creating Apps Or Widgets, The Built In Way To Easily Expand
+What The Console Does For You. The Project Is Open Source However, So Do What You Like! 
+Make Something You Want Added To The Main Console, Create A Request On The Github Page.

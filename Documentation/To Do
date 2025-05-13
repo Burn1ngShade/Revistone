@@ -1,42 +1,13 @@
 --- TO DO ---
-[App Ideas]
-GPT Create Memory
-GPT Read Command
-GPT Write Command
-Improved Command System
-GPT Update Settings
-Description field to apps
-Menu Priority valuegpt 
-
-CODE CLEANUP // its lowkey getting bad :(
-UI Overhaul
-More in use features for workspace
-Better ui display for revistone widgets
-More Colours + 120 FPS
-
-
-FPS Update
+- Spotify API Support
+- Sand Simulation
+- Settings App Improvements
+- More Colours
 
 --- KNOWN BUGS ---
-Some menus can be made to small, and destroy the ui
+Leaving rendering test on for extended period on vscode version of console will brick after a while (idk if this is even my fault)
 
 --- DONE ---
-Fixed bug crashing when profiler tired to work with 0 frames
-Fixed Console.Image bug with resizing
-Fixed Crash from gpt with insufficent tokens
 
 --- ADDED ---
 
---- CODE OVERHAUL PROGRESS ---
-
-Done:
-Profiler
-Manager
-Analytics
-UserRealTimeInput
-UserInputProfile
-FlashCardApp
-UserInput
-WorkspaceFunctinos
-
-InProgress:

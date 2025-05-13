@@ -34,7 +34,11 @@ public static class Profiler
         if (screenWarningUpdated) return;
 
         ClearDebugConsole();
-        if (state) SendDebugMessage(new ConsoleLine("Gathering Data...", AppRegistry.SecondaryCol));
+        if (state)
+        {
+            Enabled = !state;
+            SendDebugMessage(new ConsoleLine("Gathering Data...", AppRegistry.SecondaryCol));
+        }
         Enabled = state;
     }
 
