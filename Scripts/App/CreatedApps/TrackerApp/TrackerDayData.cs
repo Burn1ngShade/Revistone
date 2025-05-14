@@ -66,6 +66,8 @@ class TrackerDayData
 
     public void Display()
     {
+        ConsoleColor[] inputColour = SettingsApp.GetValueAsConsoleColour("Input Text Colour");
+
         (string name, DateOnly startDate, DateOnly endDate)[] arc = LoadFile(GeneratePath(DataLocation.App, "Tracker", $"ArcData"), 3, true).Select(x => (x[0], DateOnly.Parse(x[1]), DateOnly.Parse(x[2]))).ToArray();
         string arcString = string.Join(' ', arc.Where(x => x.startDate <= date && x.endDate >= date).Select(x => $"[{x.name}]"));
 
@@ -73,15 +75,17 @@ class TrackerDayData
         SendConsoleMessage(new ConsoleLine($"{dayString} {arcString}", BuildArray(ConsoleColor.DarkBlue.Extend(dayString.Length), ConsoleColor.Red.Extend(arcString.Length))));
         foreach (TrackerStat stat in stats)
         {
-            SendConsoleMessage(new ConsoleLine(stat.ToString(), BuildArray(ConsoleColor.Cyan.Extend(stat.statName.Length + 2), ConsoleColor.White.ToArray())));
+            SendConsoleMessage(new ConsoleLine(stat.ToString(), BuildArray(ConsoleColor.Cyan.Extend(stat.statName.Length + 2), inputColour)));
         }
         ShiftLine();
     }
 
     public void DisplayAsMenu(ref int pointer)
     {
-        ConsoleLine[] dayStatsSelect = stats.Select(
-            x => new ConsoleLine($"{x} ", BuildArray(ConsoleColor.Cyan.Extend(x.statName.Length + 2), ConsoleColor.White.ToArray(1000)))).ToArray();
+        ConsoleColor[] inputColour = SettingsApp.GetValueAsConsoleColour("Input Text Colour").ExtendEnd(1000);
+
+        ConsoleLine[] dayStatsSelect = [.. stats.Select(
+            x => new ConsoleLine($"{x} ", BuildArray(ConsoleColor.Cyan.Extend(x.statName.Length + 2), inputColour)))];
         dayStatsSelect = dayStatsSelect.Concat(new ConsoleLine[] { new ConsoleLine("Exit", ConsoleColor.DarkBlue) }).ToArray();
 
         (string name, DateOnly startDate, DateOnly endDate)[] arc = LoadFile(GeneratePath(DataLocation.App, "Tracker", $"ArcData"), 3, true).Select(x => (x[0], DateOnly.Parse(x[1]), DateOnly.Parse(x[2]))).ToArray();

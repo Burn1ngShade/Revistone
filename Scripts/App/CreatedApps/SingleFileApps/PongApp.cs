@@ -24,7 +24,7 @@ public class PongApp : App
     public override App[] OnRegister()
     {
         return [
-                    new PongApp("Pong", (ConsoleColor.DarkBlue.ToArray(), CyanGradient, BlueGradient), (CyanDarkBlueGradient, 5), [], 60, 40)
+                    new PongApp("Pong", (ConsoleColor.DarkBlue.ToArray(), CyanGradient, BlueGradient), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 60, 40)
                 ];
     }
 

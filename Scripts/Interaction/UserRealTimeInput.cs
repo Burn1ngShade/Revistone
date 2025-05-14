@@ -1,7 +1,6 @@
 using System.Runtime.InteropServices;
 using Revistone.App.BaseApps;
 using Revistone.Console.Data;
-using Revistone.Console.Image;
 using Revistone.Management;
 
 namespace Revistone.Interaction;

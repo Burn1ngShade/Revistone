@@ -19,7 +19,7 @@ public class TrackerApp : App
 
     public override App[] OnRegister()
     {
-        return [new TrackerApp("Tracker", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.DarkCyan.ToArray()), (CyanDarkBlueGradient.Extend(7, true), 5), [], 70, 50)];
+        return [new TrackerApp("Tracker", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.DarkCyan.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 70, 50)];
     }
 
     public override void ExitApp()

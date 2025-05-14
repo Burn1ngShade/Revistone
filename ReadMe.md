@@ -5,9 +5,10 @@ Revistone, is a console based application, capable of managing and streamlining 
 ## Future Goals!
 **HoneyC (Sudo Language):** Complete and advance the HoneyC language into a fully completed weakly typed, OOP language. This will eventually be spun into it's own project, so dependencies are kept to a minimal, for rendering purposes only. 
 
-**GPT Integration:** Expand the current functionality of GPT to be more integrated with the console, including a knowledge of Revistone and the ability to interact with the console.
+**Spotify Integration:** Integration within in the console in the form of commands and GPT interaction, allowing spotify to be fully useable from within the console.
 
-**Multicore Rendering:** The main bottleneck for performance currently is updating the console, currently done via the tick thread, but could quite easily expanded to use multithreading.
+**Graphic Improvements:** Since seperating rendering into its own thread, I now want to focus on adding > 16 colours to the console, as well as easy and complete support for rendering square pixels. 
+
 ## Usage Guide
 ### Creating Apps
 To create an app, create a new script within the project, preferabley [here!](Scripts/App/CreatedApps). All apps must use the follow the boiler plate below, where we create a class for the app, give it a empty constructor **[MUST]**, a constructor to actually create instances of the app, and an override to OnRegister(), where you return all instances of the app you wish to use in the console.
@@ -47,7 +48,7 @@ namespace Revistone.Console.Widget;
 
 public class NewWidget : Widget
 {
-    public NewWidget(string name, uint order, bool canRemove = true) : base(name, order, canRemove) { }
+    public NewWidget(string name, int order, string[] widgetEnabledApps, bool canRemove = true) : base(name, order, widgetEnabledApps, canRemove) { }
 
     public override string GetContent(ref bool shouldRemove)
     {

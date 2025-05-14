@@ -1,4 +1,3 @@
-using OpenAI.VectorStores;
 using static System.ConsoleColor;
 
 namespace Revistone.Functions;

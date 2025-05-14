@@ -2,7 +2,6 @@ using Revistone.App.BaseApps.Calculator;
 using Revistone.App.BaseApps.HoneyC;
 using Revistone.App.BaseApps;
 using Revistone.Console;
-using Revistone.Console.Image;
 using Revistone.Console.Widget;
 using Revistone.Functions;
 using Revistone.Interaction;
@@ -11,7 +10,6 @@ using Revistone.Management;
 using static Revistone.App.Command.AppCommandsData;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
-using static Revistone.Functions.PersistentDataFunctions;
 using static Revistone.Functions.WorkspaceFunctions;
 
 namespace Revistone.App.Command;
@@ -154,42 +152,11 @@ public static class AppCommands
             (s) => PaintApp.DisplaySticker(s[7..].Trim()), "Sticker [Name]", "Displays Given Console Sticker From Base/User/Workspace Stickers.", 39, AppCommand.CommandType.Console),
         new AppCommand(
             new UserInputProfile(["liststickers", "allstickers"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-            (s) => PaintApp.ListStickers(), "List Stickers", "Displays List Of All Default And User Stickers (Excluding Workspace).", 38, AppCommand.CommandType.Console)
+            (s) => PaintApp.ListStickers(), "List Stickers", "Displays List Of All Default And User Stickers (Excluding Workspace).", 38, AppCommand.CommandType.Console),
+        new AppCommand(
+            new UserInputProfile(["version", "releaseversion", "currentversion", "buildversion"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => SendConsoleMessage(new ConsoleLine($"Build Version - {Manager.ConsoleVersion}", BuildArray(AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol))), "Version", "Displays Console Version.", 0, AppCommand.CommandType.Console)
     ];
-
-// --- BASE COMMANDS ---
-
-/// <summary> Displays Sticker. </summary>
-static void DisplaySticker(string sticker)
-{
-    if (File.Exists(GeneratePath(DataLocation.Console, "Assets", $"Stickers/{sticker}.cimg")))
-    {
-        ConsoleImage? stickerImage = ConsoleImage.LoadFromCIMG(GeneratePath(DataLocation.Console, "Assets", $"Stickers/{sticker}.cimg"));
-        stickerImage?.Output();
-    }
-    else
-    {
-        SendConsoleMessage(new ConsoleLine($"Sticker [{sticker}] Could Not Be Found!", AppRegistry.PrimaryCol));
-    }
-}
-
-///<summary> Displays list of console stickers. </summary>
-static void StickerList()
-{
-    string[] stickers = GetSubFiles(GeneratePath(DataLocation.Console, "Assets", "Stickers"));
-    UserInput.CreateReadMenu("Stickers", 4, stickers.Select(x => new ConsoleLine(x[..^5], AppRegistry.SecondaryCol)).ToArray());
-}
-
-///<summary> Confirms user choice and kills terminal. </summary>
-static void KillTerminal()
-{
-    SendConsoleMessage(new ConsoleLine("[WARNING] This Will Force Close Console (Crash).", ConsoleColor.DarkRed));
-    if (UserInput.CreateTrueFalseOptionMenu("Kill Terminal?", cursorStartIndex: 1))
-    {
-        throw new Exception("User Killed Terminal.");
-    }
-    ClearLines(updateCurrentLine: true);
-}
 
 // --- STATIC FUNCTIONS ---
 

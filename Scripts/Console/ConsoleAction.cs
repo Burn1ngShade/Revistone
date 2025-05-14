@@ -1,6 +1,7 @@
-using static Revistone.Console.Data.ConsoleData;
 using Revistone.App;
 using Revistone.Management;
+
+using static Revistone.Console.Data.ConsoleData;
 
 namespace Revistone.Console;
 

@@ -159,7 +159,7 @@ public static class UserInput
             data.Output();
         }
 
-        if (data.history.data.Count == 0 || data.history.data[^1] != data.input) data.history.data.Add(data.input);
+        if ((data.history.data.Count == 0 || data.history.data[^1] != data.input) && data.input.Length != 0) data.history.data.Add(data.input);
         SaveFile(GeneratePath(DataLocation.Console, "History", "UserInput.txt"), [.. data.history.data.TakeLast(Math.Min(data.history.data.Count, int.Parse(SettingsApp.GetValue("Input History"))))]);
 
         data.Clean(clear);

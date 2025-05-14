@@ -76,7 +76,7 @@ public class SettingsApp : App
 
     public override App[] OnRegister()
     {
-        return [new SettingsApp("Settings", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Extend(7, true), 5), [], 70, 40)];
+        return [new SettingsApp("Settings", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 70, 40)];
     }
 
     public override void OnRevistoneStartup()

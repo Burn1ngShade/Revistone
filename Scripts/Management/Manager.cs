@@ -11,6 +11,8 @@ namespace Revistone.Management;
 /// <summary> Main management class, handles initialization, Tick, and main interaction behaviour. </summary>
 public static class Manager
 {
+    public static readonly string ConsoleVersion = "0.7.0";
+
    // public static readonly object renderLockObject = new();
     public static readonly Random rng = new();
 

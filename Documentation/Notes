@@ -6,4 +6,6 @@ Update Magnitudes:
 [Major] -> big update, used for rehauls, or exspansions to mechanics
 [QuickFix] -> update that was console breaking, required immediate fix (couldnt wait)
 
-//note magnitude does not mean the same for parts of an update, e.g a major bug may not be the same as to a major feature or update in size
+// note magnitude does not mean the same for parts of an update, e.g a major bug may not be the same as to a major feature or update in size.
+
+// note bug sections of update will be much smaller than the actual bugs fixed, while I try my best, logging every bug when writing the change log is difficult and many are most likely missed.

@@ -3,6 +3,7 @@
 - Sand Simulation
 - Settings App Improvements
 - More Colours
+- Console Image Support For Square Colours
 
 --- KNOWN BUGS ---
 Leaving rendering test on for extended period on vscode version of console will brick after a while (idk if this is even my fault)

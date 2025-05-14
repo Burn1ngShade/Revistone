@@ -16,7 +16,7 @@ public class TetrisApp : App
 
     public override App[] OnRegister()
     {
-        return [ new TetrisApp("Tetris", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Extend(7, true), 5),
+        return [ new TetrisApp("Tetris", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5),
             [], 98, 40) ];
     }
 

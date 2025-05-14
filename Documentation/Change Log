@@ -613,9 +613,9 @@ Renamed Revistone.Apps to Revistone.App for consistency
 --- WORKING TITLE --- [Major] 0.7.0 (14/05/25)
 
 Summary: 
-Biggest update ever (again! technically beaten on lines, but lots of code modifided and removed), the console feels like a completely new tool after every update, only took 2 months this time! 
+Biggest update ever (again! technically beaten on lines, but lots of code modifided and removed), the console feels like a completely new tool after every update, only took 2 months this time! Biggest features include total file structure recomp, brand new workspace, console stickers and image overhaul, new app commands features, whole console UI improvements, analytics, FPS decoupling from TPS!!! and much much more. 2x as many commands and setting!! (46 from 23 commands and 30 from 14 settings). Even bigger things planned for the next update, infinite colours, full displays, spotify support and more
 
-Stats:
+Stats: 
 + 2342 Lines 
 + 6 Files
 +----------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
@@ -644,4 +644,71 @@ Stats:
 
 Specifics:
 
+[Major]
+
+ConsoleRenderLogic -> FPS seperated from Ticks!!! Now have custom framerate within the revistone console (up to 240fps), run on seperate thread to ticks
+PersistentData -> Complete file restructure, split into three main sub directories -> App, Console, Workspace, much cleaner and sensical file layout 
+PersistentDataFunctions -> Renamed (prev. AppPersistentData), Complete overhaul support for saving and loading json files, functions for generating and validating paths
+NEW: Analytics -> Added new analytics tracking, all stored locally, general, app, widget stats, and debug analytics file allowing for debug output where other console output methods wont work
+PersistentDataFunctions -> Renamed (prev. AppPersistentData), Complete overhaul support for saving and loading json files, functions for generating and validating paths and much more
+GPTFunctions -> Messages now saved inbetween sessions, feeback while waiting for response, bold text highlighting, newer more efficent model, multiple model options, new detailed system promt giving info about console, welcome message, improved ChatTool promts, new ChatTools (load app, set setting, memory making), making and using long term memories
+NEW: PaintApp -> paint app, for creating console images and stickers, 6 default console stickers let the user create and edit their own, or edit workspace stickers
+ConsoleImage -> Completely redone consoleImage, now supports background colour and far more dynamic, using new ConsolePixel, new custom data type .cimg. 
+NEW: Screenshot App -> NEW app for viewing and deleting screenshots and debug screenshots, New console and debug console screenshots
+NEW: WorkspaceFunctions -> NEW, new inbuilt file system into the console, it's finally a real CLI!!! Allows for file and directory creation, modification, deletion and all other features of a normal file system.
+UserInput -> UI updates, new menu navigation, multipage menus save cursor location between pages, new TrueFalseOptionMenu options, MultiLineUserInput for editing large amounts of text, e.g. files (The UI for this is so clean btw), and categorised read menus
+NEW: AppCommand -> Base type for commands within the console, allow for categorised commands, commands to have multiple formats, and have cleaner descriptions and names
+AppCommandRegistry -> Renamed (prev. AppCommands) New commands, (sticker, list stickers, screenshot, dscreenshot, kill, mkdir, rmdir, cdir, pdir, rdir, dir, fdir, ddir, mkfile, rmfile, open, run, store gpt, memory gpt, remove timer, modify timer, exit, version), hotkeys and help menus now use improved categorised UI, help and apphelp morphed
+NEW: AppCommandData -> All data for base commands, seperated for clarity, UI of all commands 
+
+[Notable]
+
+SettingsApp -> New Categories (performance, debug), New Settings (analytics update frequency, widget update frequency, gpt model, welcome message, use detailed system promt, show workspace path widget, show emojis, block rendering on crash, show GPT tool results, long term memory, input text colour, input cursor colour, input cursor trail colour, target frame rate, force default settings), small UI tweaks, code cleanup, GetSetting directly as consolecolour or bool
+ConsolePixel -> NEW datatype for ConsoleImages
+Manager -> Added handling for console exits and crashes, variable renames, removed renderLockObject, added version number, tick function recomped
+FlashCardApp -> Now shows user incorrect answer on wrong answer, UI updated to rest of console standard, exit quizes midway through, can now rename flash card sets, editing questions much easier and streamlined, no longer space sensitive
+ConsoleWidget -> order now uses int, widgets can be set to only display within certain apps, clarity renames, new default widget
+DefaultWidget -> general FunctionWidget added, simplifying custom widget creation, timer widget greatly improved, can now modify and pause timers.
+Profiler -> Redone UI, tracks new FPS, and more useful info.
+
+[Minor]
+
+App -> Removed speed from colour schemes, apps now have menu priority
+PongApp -> UI improvements, uses new consoleImage
+ConsoleLine -> Overwrite now overwrites background colour, Clean improvements, block / space out emojis
+REMOVED: ConsoleVideo -> Was a cool idea but never really used within the console, may bring it back along with screenrecordings and animatedstickers at some point
+ColourFunctions -> New contrastColour dictionary
+AppRegistry -> Renames for clarity
+StringFunctions -> added IsEmoji function, and improved wide charchter detection
+UserInputProfile -> Now supports Profiles with multiple valid input formats
+UserRealTimeInput -> Moved generalhotkeys here, renamed KeyPressedUp to KeyReleased, ConsoleKey equivelents to byte functions
+Revistone -> Pride command removed (moved to stickers dw)
+ConsoleAnimatedLine -> Removed UpdateAppTheme, Added CycleLines option
+ConsoleData -> Cleanedup code, now tracks console related settings
+Tracker App -> Small UI updates to use custom colours
+NumericalFunctions -> Parse time function
+TitleFunctions -> 5 new fonts (EftiRobot, O8, Pawp, TinkerToy, Univers) (now 35 total)
+
 BugsFixes:
+
+[Major]
+Crash prevention when opening profiler while window too small
+Fixed console borders overflowing onto next line
+
+[Notable]
+Prevent Certain GPT Crashes
+Certain app commands would use wrong part of query
+Bottom line of enclosedconsole would not properly update animated line upon update
+
+[Minor]
+Debug messages now blocked from showing while profiler enabled
+Certain settings not longer called every frame unnecessarily
+Certain buggy wide charchters now detected
+Certain console messages used SetColour instead of AppColour
+Editing question in flashcardmanager would reset ui pointer
+GPT temp messages where still added to message history
+
+
+
+
+

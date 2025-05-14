@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Revistone")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3cb190ef13d8ccd894954595de7d81171b0936f1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1ed480bbe179aa5305a2da2f64a8b97397a7332e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Revistone")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Revistone")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

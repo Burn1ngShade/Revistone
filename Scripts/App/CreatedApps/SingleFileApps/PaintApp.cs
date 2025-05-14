@@ -19,7 +19,7 @@ public class PaintApp : App
 
     public override App[] OnRegister()
     {
-        return [new PaintApp("Paint", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Extend(7, true), 5), [], 70, 51)];
+        return [new PaintApp("Paint", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 70, 51)];
     }
 
     public static (string path, string name) StaticImage = ("", "");

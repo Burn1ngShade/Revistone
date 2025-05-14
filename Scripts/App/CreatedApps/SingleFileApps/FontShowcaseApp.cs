@@ -16,7 +16,7 @@ public class FontShowcaseApp : App
 
     public override App[] OnRegister()
     {
-        return [new FontShowcaseApp("Font Showcase", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Extend(7, true), 5), [], 70, 40)];
+        return [new FontShowcaseApp("Font Showcase", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 70, 40)];
     }
 
     string exampleText = "Revistone!";
