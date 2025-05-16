@@ -40,6 +40,7 @@ public static class ConsoleRendererLogic
         while (true)
         {
             frameDuration.Restart();
+
             RenderConsole();
             Profiler.RenderLogicTime.Add(frameDuration.ElapsedTicks);
 
@@ -128,6 +129,7 @@ public static class ConsoleRendererLogic
         for (int i = 0; i < consoleLines.Length; i++)
         {
             if (!consoleLineUpdates[i].enabled || (tickNum - consoleLineUpdates[i].initTick) % consoleLineUpdates[i].tickMod != 0) continue; //not dynamic or not right tick
+
             consoleLineUpdates[i].update.Invoke(consoleLines[i], consoleLineUpdates[i], tickNum);
         }
     }

@@ -54,7 +54,7 @@ public class TimerWidget : ConsoleWidget // widget for displaying some form of t
         if (duration <= 0)
         {
             shouldRemove = true;
-            if (OperatingSystem.IsWindows()) System.Console.Beep(300, 1000);
+            SoundFunctions.PlaySound("TimerEnd");
             SendDebugMessage(new ConsoleLine($"Timer Has Ended - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(18), AppRegistry.SecondaryCol)));
             return $"{name}: 00:00:00";
         }

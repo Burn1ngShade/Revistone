@@ -17,6 +17,7 @@ using Revistone.App.BaseApps;
 
 namespace Revistone.Functions;
 
+/// <summary> Class filled with functions to manage console workspace. </summary>
 public static class WorkspaceFunctions
 {
     public static readonly string RootPath = @"PersistentData\Workspace\"; // path of root directory

@@ -5,7 +5,7 @@ namespace Revistone.App.Command;
 ///<summary> Class representing a command within the console. </summary>
 public class AppCommand
 {
-    public enum CommandType { Console, Apps, Workspace, ChatGPT, Widget, AppSpecific }
+    public enum CommandType { Console, Apps, Workspace, ChatGPT, Widget, AppSpecific, Developer }
 
     public UserInputProfile format;
     public Action<string> action;

@@ -305,8 +305,8 @@ public class PaintApp : App
     ///<summary> List all base and user created console stickers (excluding workspace). </summary>
     public static void ListStickers()
     {
-        string[] defaultStickers = [.. GetSubFiles(GeneratePath(DataLocation.Console, "Assets", "Stickers")).Select(x => x[..5])];
-        string[] userStickers = [.. GetSubFiles(GeneratePath(DataLocation.App, "Paint")).Select(x => x[..5])];
+        string[] defaultStickers = [.. GetSubFiles(GeneratePath(DataLocation.Console, "Assets", "Stickers")).Select(x => x[..^5])];
+        string[] userStickers = [.. GetSubFiles(GeneratePath(DataLocation.App, "Paint")).Select(x => x[..^5])];
 
         UserInput.CreateCategorisedReadMenu("Stickers", 5, ("Default", defaultStickers), (SettingsApp.GetValue("Username"), userStickers));
     }

@@ -57,7 +57,7 @@ public abstract class App
     /// <summary> Called after user input, use to respond to user input. </summary>
     public virtual void OnUserInput(string userInput)
     {
-        AppCommands.Commands(userInput);
+        AppCommandRegistry.Commands(userInput);
     }
 
     /// <summary> Called once a tick (25ms). </summary>

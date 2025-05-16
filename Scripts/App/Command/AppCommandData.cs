@@ -105,4 +105,11 @@ public static class AppCommandsData
         }
         ClearLines(updateCurrentLine: true);
     }
+
+    public static void RenderTestCommand()
+    {
+        ConsoleLine[] lines = [.. Enumerable.Range(0, 30).Select(i => new ConsoleLine(new string('a', 200), AllColours.Repeat(13), AllColours.Repeat(13)))];
+        ConsoleAnimatedLine[] animation = [.. Enumerable.Range(0, 30).Select(i => new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, 5, true))];
+        SendConsoleMessages(lines, animation);
+    }
 }

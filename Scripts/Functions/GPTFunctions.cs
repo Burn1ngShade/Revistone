@@ -513,17 +513,17 @@ public static class GPTFunctions
 
     static void CreateTimer(string duration)
     {
-        AppCommands.Commands($"timer {duration}");
+        AppCommandRegistry.Commands($"timer {duration}");
     }
 
     static void CancelTimer()
     {
-        AppCommands.Commands("cancel timer");
+        AppCommandRegistry.Commands("cancel timer");
     }
 
     static void LoadApp(string appName)
     {
-        AppCommands.Commands($"load {appName}");
+        AppCommandRegistry.Commands($"load {appName}");
     }
 
     static void SetSetting(string settingName)

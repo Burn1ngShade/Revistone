@@ -21,8 +21,8 @@ public class RevistoneApp : App
                         new UserInputProfile(["boop!", "boop"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                         (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop!", AppRegistry.PrimaryCol)), "Boop!", "Boop.", 1),
                     new AppCommand(
-                        new UserInputProfile("render test", caseSettings: StringFunctions.CapitalCasing.Lower, removeTrailingWhitespace: true, removeLeadingWhitespace: true),
-                        (s) => { RenderTest();}, "Render Test", "Displays Render Stress Test For The Console.")
+                        new UserInputProfile(["1-up", "oneup", "one-up", "mario"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                        (s) => { AppCommandRegistry.Commands("sticker oneup"); SoundFunctions.PlaySound("OneUp"); }, "1-Up", "Nintendo Wont Be Happy..."),
                 ],
                 98, 37) ];
     }
@@ -58,13 +58,6 @@ public class RevistoneApp : App
             GPTFunctions.Query($"User Has Logged In, Last Log Out Time: {Analytics.General.LastCloseDate}, Log In Time: {Analytics.General.LastOpenDate}", true);
         }
         firstOpen = false;
-    }
-
-    static void RenderTest()
-    {
-        ConsoleLine[] lines = Enumerable.Range(0, 30).Select(i => new ConsoleLine(new string('a', 200), AllColours.Repeat(13), AllColours.Repeat(13))).ToArray();
-        ConsoleAnimatedLine[] animation = Enumerable.Range(0, 30).Select(i => new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, 5, true)).ToArray();
-        ConsoleAction.SendConsoleMessages(lines, animation);
     }
 
     static string[] keyword = [

@@ -15,9 +15,9 @@ using static Revistone.Functions.WorkspaceFunctions;
 namespace Revistone.App.Command;
 
 /// <summary> Class pertaining all logic for app commands. </summary>
-public static class AppCommands
+public static class AppCommandRegistry
 {
-    static readonly AppCommand[] newBaseCommands = [
+    static readonly AppCommand[] baseCommands = [
         new AppCommand(
             new UserInputProfile("help", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => DisplayCommands(), "Help", "Lists All Base Commands And Their Functionality.", int.MaxValue, AppCommand.CommandType.Console),
@@ -142,7 +142,7 @@ public static class AppCommands
             new UserInputProfile("calc[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
             (s) => CalculatorInterpreter.Intepret(s[4..].Trim()), "Calc [Query]", "Runs Given Calculator Query.", 50, AppCommand.CommandType.Apps),
         new AppCommand(
-            new UserInputProfile("comp[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true), 
+            new UserInputProfile("comp[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
             (s) => HoneyCInterpreter.Interpret([s[4..].Trim()]), "Comp [Query]", "Runs Given HoneyC Query.", 51, AppCommand.CommandType.Apps),
         new AppCommand(
             new UserInputProfile("run[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
@@ -154,68 +154,83 @@ public static class AppCommands
             new UserInputProfile(["liststickers", "allstickers"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => PaintApp.ListStickers(), "List Stickers", "Displays List Of All Default And User Stickers (Excluding Workspace).", 38, AppCommand.CommandType.Console),
         new AppCommand(
-            new UserInputProfile(["version", "releaseversion", "currentversion", "buildversion"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-            (s) => SendConsoleMessage(new ConsoleLine($"Build Version - {Manager.ConsoleVersion}", BuildArray(AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol))), "Version", "Displays Console Version.", 0, AppCommand.CommandType.Console)
+            new UserInputProfile(["version", "releaseversion", "buildversion", "build"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => SendConsoleMessage(new ConsoleLine($"Build Version - {Manager.ConsoleVersion}", BuildArray(AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol))), "Version", "Displays Console Version.", 0, AppCommand.CommandType.Console),
+        
+        // developer commands
+
+        new AppCommand(
+            new UserInputProfile(["tickevent", "ticklisteners"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => SendConsoleMessage(new ConsoleLine(Manager.GetTickListeners().ToElementString(), AppRegistry.PrimaryCol)), "Tick Event", "Displays All Methods Invoked By Tick Event.", 100, AppCommand.CommandType.Developer),
+        new AppCommand(
+            new UserInputProfile("render test", caseSettings: StringFunctions.CapitalCasing.Lower, removeTrailingWhitespace: true, removeLeadingWhitespace: true),
+            (s) => RenderTestCommand(), "Render Test", "Displays Render Stress Test For The Console.", 90, AppCommand.CommandType.Developer)
     ];
 
-// --- STATIC FUNCTIONS ---
+    // --- STATIC FUNCTIONS ---
 
-/// <summary> Checks for and calls and commands if found within user input. </summary>
-public static bool Commands(string userInput)
-{
-    foreach (AppCommand command in AppRegistry.activeApp.appCommands)
+    /// <summary> Checks for and calls and commands if found within user input. </summary>
+    public static bool Commands(string userInput)
     {
-        command.format.outputFormat = UserInputProfile.OutputFormat.NoOutput; //prevent accidentley leaving output on standard from crashing
-
-        if (command.format.InputValid(userInput))
+        foreach (AppCommand command in AppRegistry.activeApp.appCommands)
         {
-            command.action.Invoke(userInput);
-            Analytics.General.CommandsUsed++;
-            return true;
+            command.format.outputFormat = UserInputProfile.OutputFormat.NoOutput; //prevent accidentley leaving output on standard from crashing
+
+            if (command.format.InputValid(userInput))
+            {
+                command.action.Invoke(userInput);
+                Analytics.General.CommandsUsed++;
+                return true;
+            }
         }
+
+        if (!AppRegistry.activeApp.useBaseCommands) return false;
+
+        foreach (AppCommand command in baseCommands)
+        {
+            command.format.outputFormat = UserInputProfile.OutputFormat.NoOutput; //prevent accidentley leaving output on standard from crashing
+
+            if (command.format.InputValid(userInput))
+            {
+                if (command.type == AppCommand.CommandType.Developer && !SettingsApp.GetValueAsBool("Developer Mode"))
+                {
+                    SendConsoleMessage(new ConsoleLine("Developer Commands Can Only Be Used In Developer Mode.", AppRegistry.PrimaryCol));
+                    return false;
+                }
+
+                command.action.Invoke(userInput);
+                Analytics.General.CommandsUsed++;
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    if (!AppRegistry.activeApp.useBaseCommands) return false;
-
-    foreach (AppCommand command in newBaseCommands)
+    static void DisplayCommands()
     {
-        command.format.outputFormat = UserInputProfile.OutputFormat.NoOutput; //prevent accidentley leaving output on standard from crashing
+        Dictionary<string, List<(ConsoleLine, int)>> commandList = [];
 
-        if (command.format.InputValid(userInput))
+        foreach (AppCommand c in baseCommands)
         {
-            command.action.Invoke(userInput);
-            Analytics.General.CommandsUsed++;
-            return true;
+            if (!commandList.ContainsKey(c.type.ToString()))
+            {
+                commandList.Add(c.type.ToString(), []);
+            }
+            commandList[c.type.ToString()].Add((new ConsoleLine($"{c.name} - {c.summary}", BuildArray(AppRegistry.SecondaryCol.Extend(c.name.Length + 3), [.. AppRegistry.PrimaryCol])), c.displayPriority));
         }
-    }
 
-    return false;
-}
-
-static void DisplayCommands()
-{
-    Dictionary<string, List<(ConsoleLine, int)>> commandList = [];
-
-    foreach (AppCommand c in newBaseCommands)
-    {
-        if (!commandList.ContainsKey(c.type.ToString()))
+        foreach (AppCommand c in AppRegistry.activeApp.appCommands)
         {
-            commandList.Add(c.type.ToString(), []);
+            string catName = c.type == AppCommand.CommandType.AppSpecific ? AppRegistry.activeApp.name : c.type.ToString();
+
+            if (!commandList.ContainsKey(catName))
+            {
+                commandList.Add(catName, []);
+            }
+            commandList[catName].Add((new ConsoleLine($"{c.name} - {c.summary}", BuildArray(AppRegistry.SecondaryCol.Extend(c.name.Length + 3), [.. AppRegistry.PrimaryCol])), c.displayPriority));
         }
-        commandList[c.type.ToString()].Add((new ConsoleLine($"{c.name} - {c.summary}", BuildArray(AppRegistry.SecondaryCol.Extend(c.name.Length + 3), [.. AppRegistry.PrimaryCol])), c.displayPriority));
+
+        UserInput.CreateCategorisedReadMenu("Help", 5, commandList.Select(x => (x.Key, x.Value.OrderByDescending(x => x.Item2).Select(x => x.Item1).ToArray())).ToArray());
     }
-
-    foreach (AppCommand c in AppRegistry.activeApp.appCommands)
-    {
-        string catName = c.type == AppCommand.CommandType.AppSpecific ? AppRegistry.activeApp.name : c.type.ToString();
-
-        if (!commandList.ContainsKey(catName))
-        {
-            commandList.Add(catName, []);
-        }
-        commandList[catName].Add((new ConsoleLine($"{c.name} - {c.summary}", BuildArray(AppRegistry.SecondaryCol.Extend(c.name.Length + 3), [.. AppRegistry.PrimaryCol])), c.displayPriority));
-    }
-
-    UserInput.CreateCategorisedReadMenu("Help", 5, commandList.Select(x => (x.Key, x.Value.OrderByDescending(x => x.Item2).Select(x => x.Item1).ToArray())).ToArray());
-}
 }

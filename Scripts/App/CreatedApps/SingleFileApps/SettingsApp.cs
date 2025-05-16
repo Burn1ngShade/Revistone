@@ -65,6 +65,7 @@ public class SettingsApp : App
         new DropdownSetting("Widget Update Frequency", "How Often Should Widgets Update? (Can Effect Performance On Low End Devices, But Lower Settings Will Make Widgets Appear Laggy).", "0.025s", SettingCategory.Performance,
         ["0.025s", "0.05s", "0.1s", "0.2s", "0.5s", "1s"]),
         new DropdownSetting("Show Emojis", "Can Emojis Be Used In The Program (Certain Emojis Cause The Console To Misrender, Requiring A Reload To Fix).", "No", SettingCategory.Performance, YesNoOpt),
+        new DropdownSetting("Developer Mode", "Enables Certain Debugging Tools And Commands", "No", SettingCategory.Debug, YesNoOpt),
         new DropdownSetting("Block Rendering On Crash", "Pauses Rendering On Crash, Showing C# Compiler Error But Preventing Final Rendering Passes.", "Yes", SettingCategory.Debug, YesNoOpt),
         new DropdownSetting("Show GPT Tool Results", "Outputs GPT Tool Results To The Debug Console (GPT Can Sometimes Be A Little Bit Stupid, Use For Promt Improvement).", "No", SettingCategory.Debug, YesNoOpt),
         new DropdownSetting("Log GPT System Messages", "Outputs GPT System Messages To The Debug Analytics File.", "No", SettingCategory.Debug, YesNoOpt),

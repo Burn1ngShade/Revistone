@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using Revistone.App;
 using Revistone.Console;
 using Revistone.Console.Data;
@@ -11,9 +12,9 @@ namespace Revistone.Management;
 /// <summary> Main management class, handles initialization, Tick, and main interaction behaviour. </summary>
 public static class Manager
 {
-    public static readonly string ConsoleVersion = "0.7.0";
+    public static readonly string ConsoleVersion = "0.8.0";
 
-   // public static readonly object renderLockObject = new();
+    //public static readonly object renderLockObject = new();
     public static readonly Random rng = new();
 
     public static event TickEventHandler Tick = new((tickNum) => { });
@@ -46,6 +47,11 @@ public static class Manager
             Profiler.TickTime.Add(_deltaTime);
             ElapsedTicks++;
         }
+    }
+
+    public static string[] GetTickListeners()
+    {
+        return [.. Tick.GetInvocationList().Select(x => x.Method.Name)];
     }
 
     /// <summary> Handles default behaviour of user interaction, can be interrupted via ConsoleInteraction methods.  </summary>
