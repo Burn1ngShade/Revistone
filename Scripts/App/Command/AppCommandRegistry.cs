@@ -156,6 +156,14 @@ public static class AppCommandRegistry
         new AppCommand(
             new UserInputProfile(["version", "releaseversion", "buildversion", "build"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => SendConsoleMessage(new ConsoleLine($"Build Version - {Manager.ConsoleVersion}", BuildArray(AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol))), "Version", "Displays Console Version.", 0, AppCommand.CommandType.Console),
+        new AppCommand(
+            new UserInputProfile(["analyticsbackup", "backupanalytics"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => Analytics.CreateAnalyticsBackup(), "Backup Analytics", "Create A Manual Backup Of Analytics (To Safegard 1/10000 Corruptions).", 2, AppCommand.CommandType.Console
+        ),
+        new AppCommand(
+            new UserInputProfile(["restoreanalytics", "analyticsrestore"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => Analytics.RestoreAnalyticsBackup(), "Restore Analytics", "Uses Last Manual Backup Of Analytics To Restore Corrupted Analytics Data.", 1, AppCommand.CommandType.Console
+        ),
         
         // developer commands
 

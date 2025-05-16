@@ -4,6 +4,10 @@ using Revistone.Console.Data;
 using System.Runtime.CompilerServices;
 
 using static Revistone.Functions.PersistentDataFunctions;
+using static Revistone.Functions.ColourFunctions;
+
+using Revistone.Console;
+using Revistone.Interaction;
 
 namespace Revistone.Management;
 
@@ -95,6 +99,61 @@ public static class Analytics
                 File.Move(path + "DebugTemp.json", path + "Debug.json");
             }
         }
+    }
+
+    ///<summary> Create analytics backup. </summary>
+    public static void CreateAnalyticsBackup()
+    {
+        if (!UserInput.CreateTrueFalseOptionMenu("Back Up Analytics? This Will Overwrite Previous Backup."))
+        {
+            ConsoleAction.SendConsoleMessage(new ConsoleLine("Analytics Backup Cancelled.", AppRegistry.PrimaryCol));
+            return;
+        }
+
+        SaveFileAsJSON(path + "Backup/General.json", General);
+        SaveFileAsJSON(path + "Backup/App.json", App);
+        SaveFileAsJSON(path + "Backup/Widget.json", Widget);
+
+        ConsoleAction.SendConsoleMessage(new ConsoleLine("Analytics Backup Created.", AppRegistry.PrimaryCol));
+    }
+
+    ///<summary> Attempts to restore corrupted data from most recent backup. </summary>
+    public static void RestoreAnalyticsBackup()
+    {
+        ConsoleColor[][] c = [
+            BuildArray(AppRegistry.PrimaryCol.Extend(24), AppRegistry.SecondaryCol),
+            BuildArray(AppRegistry.PrimaryCol.Extend(21), AppRegistry.SecondaryCol),
+            BuildArray(AppRegistry.PrimaryCol.Extend(28), AppRegistry.SecondaryCol)
+        ];
+
+        GeneralAnalyticsData? g = LoadFileFromJSON<GeneralAnalyticsData>(path + "Backup/General.json", false);
+        if (g == null) ConsoleAction.SendConsoleMessage(new ConsoleLine("Backup File Not Found - 'General.json'", c[0]));
+        else if (g.TotalRuntimeTicks <= General.TotalRuntimeTicks) ConsoleAction.SendConsoleMessage(new ConsoleLine("File Not Corrupted - 'General.json'", c[1]));
+        else
+        {
+            General = g;
+            ConsoleAction.SendConsoleMessage(new ConsoleLine("File Restored From Backup - 'General.json'", c[2]));
+        }
+
+        AppAnalyticsData? a = LoadFileFromJSON<AppAnalyticsData>(path + "Backup/App.json", false);
+        if (a == null) ConsoleAction.SendConsoleMessage(new ConsoleLine("Backup File Not Found - 'App.json'", c[0]));
+        else if (a.AppsOpened <= App.AppsOpened) ConsoleAction.SendConsoleMessage(new ConsoleLine("File Not Corrupted - 'App.json'", c[1]));
+        else
+        {
+            App = a;
+            ConsoleAction.SendConsoleMessage(new ConsoleLine("File Restored From Backup - 'App.json'", c[2]));
+        }
+
+        WidgetAnalyticsData? w = LoadFileFromJSON<WidgetAnalyticsData>(path + "Backup/Widget.json", false);
+        if (w == null) ConsoleAction.SendConsoleMessage(new ConsoleLine("Backup File Not Found - 'Widget.json'", c[0]));
+        else if (w.WidgetsCreated <= Widget.WidgetsCreated) ConsoleAction.SendConsoleMessage(new ConsoleLine("File Not Corrupted - 'Widget.json'", c[1]));
+        else
+        {
+            Widget = w;
+            ConsoleAction.SendConsoleMessage(new ConsoleLine("File Restored From Backup - 'Widget.json'", c[2]));
+        }
+
+        SaveAnalytics();
     }
 
     // --- ANALYTICS OBJECTS ---

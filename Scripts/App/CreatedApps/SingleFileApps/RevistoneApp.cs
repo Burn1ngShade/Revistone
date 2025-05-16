@@ -21,8 +21,8 @@ public class RevistoneApp : App
                         new UserInputProfile(["boop!", "boop"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                         (s) => ConsoleAction.SendConsoleMessage(new ConsoleLine("Boop!", AppRegistry.PrimaryCol)), "Boop!", "Boop.", 1),
                     new AppCommand(
-                        new UserInputProfile(["1-up", "oneup", "one-up", "mario"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-                        (s) => { AppCommandRegistry.Commands("sticker oneup"); SoundFunctions.PlaySound("OneUp"); }, "1-Up", "Nintendo Wont Be Happy..."),
+                        new UserInputProfile(["1-up", "oneup", "one-up", "mario", "1up"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+                        (s) => { AppCommandRegistry.Commands("sticker oneup"); SoundFunctions.PlaySound("OneUp"); }, "1-Up", "Nintendo Wont Be Happy."),
                 ],
                 98, 37) ];
     }

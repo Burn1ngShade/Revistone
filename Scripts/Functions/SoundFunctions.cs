@@ -9,13 +9,18 @@ namespace Revistone.Functions;
 public static class SoundFunctions
 {
     ///<summary> Play sound from console assets of given fileName, volume from 0 - 1. </summary>
-    public static bool PlaySound(string fileName, float volume = 0.5f)
+    public static bool PlaySound(string fileName, int delay = 0, float volume = 0.5f)
     {
-        if (!fileName.EndsWith(".wav")) fileName += ".wav";
-        string path = GeneratePath(DataLocation.Console, $"Assets/Sounds/{fileName}");
-
-        PlayWav(path, volume);
+        if (!fileName.EndsWith(".wav")) fileName += ".wav"; 
+        PlayWav(new SoundProfile(GeneratePath(DataLocation.Console, $"Assets/Sounds/{fileName}"), delay, volume));
         return true;
+    }
+
+    public struct SoundProfile(string path, int delay, float volume)
+    {
+        public string path = path;
+        public int delay = delay;
+        public float volume = volume;
     }
 
     const int CALLBACK_NULL = 0x00000000;
@@ -61,9 +66,15 @@ public static class SoundFunctions
     static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume); // set volume of WAV output.
 
     ///<summary> Play WAV sound file. </summary>
-    static void PlayWav(string path, float volume)
+    static void PlayWav(SoundProfile wavProfile)
     {
-        byte[] wavData = File.ReadAllBytes(path);
+        if (!FileExists(wavProfile.path))
+        {
+            Analytics.Debug.Log($"Sound File Does Not Exist - {wavProfile.path}");
+            return;
+        }
+
+        byte[] wavData = File.ReadAllBytes(wavProfile.path);
         using (MemoryStream stream = new MemoryStream(wavData))
         using (BinaryReader reader = new BinaryReader(stream))
         {
@@ -107,13 +118,15 @@ public static class SoundFunctions
             byte[] audioData = reader.ReadBytes(dataSize);
 
             // Play buffer
-            Thread t = new(() => PlayBuffer(audioData, format, volume));
+            Thread t = new(() => PlayBuffer(audioData, format, wavProfile));
             t.Start();
         }
     }
 
-    static void PlayBuffer(byte[] audioData, WAVEFORMATEX format, float volume)
+    static void PlayBuffer(byte[] audioData, WAVEFORMATEX format, SoundProfile wavProfile)
     {
+        if (wavProfile.delay > 0) Thread.Sleep(wavProfile.delay); // it's sound does not need to be ms precise
+
         IntPtr hWaveOut;
         int result = waveOutOpen(out hWaveOut, -1, ref format, 0, 0, CALLBACK_NULL);
         if (result != 0)
@@ -122,8 +135,8 @@ public static class SoundFunctions
             return;
         }
 
-        volume = Math.Clamp(volume, 0f, 1f);
-        ushort volumeLevel = (ushort)(volume * 0xFFFF);
+        wavProfile.volume = Math.Clamp(wavProfile.volume, 0f, 1f);
+        ushort volumeLevel = (ushort)(wavProfile.volume * 0xFFFF);
         uint combinedVolume = ((uint)volumeLevel) | ((uint)volumeLevel << 16);
         waveOutSetVolume(hWaveOut, combinedVolume);
 

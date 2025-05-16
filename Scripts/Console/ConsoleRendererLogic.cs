@@ -14,7 +14,7 @@ public static class ConsoleRendererLogic
 {
     static bool blockRender = false;
 
-    static void HandleGlobalException(object sender, UnhandledExceptionEventArgs e)
+    static void OnProcessCrash(object sender, UnhandledExceptionEventArgs e)
     {
         if (SettingsApp.GetValue("Block Rendering On Crash") == "Yes") blockRender = true;
     }
@@ -28,7 +28,7 @@ public static class ConsoleRendererLogic
         debugLineIndex = debugBufferStartIndex;
         consoleReload = true;
 
-        AppDomain.CurrentDomain.UnhandledException += HandleGlobalException;
+        AppDomain.CurrentDomain.UnhandledException += OnProcessCrash;
         Manager.Tick += HandleConsoleDisplayBehaviour;
     }
 
@@ -309,7 +309,7 @@ public static class ConsoleRendererLogic
     /// <summary> Updates the console display, based on current states of consoleLines, before updating consoleLinesBuffer. </summary>
     public static void RenderConsole()
     {
-        if (blockRender || consoleLines.Length == 0 || consoleLines[^1] == null || consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return;
+        if (blockRender || consoleLines.Length == 0 || consoleLines[^1] == null || consoleLinesBuffer.Length == 0 || consoleLinesBuffer[^1] == null || consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return;
 
         if (System.Console.WindowTop != 0)
         {

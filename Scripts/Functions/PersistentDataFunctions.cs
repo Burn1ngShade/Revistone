@@ -246,10 +246,14 @@ public static class PersistentDataFunctions
     }
 
     /// <summary> Loads data from given file, if not in JSON format, the default value for given type is returned. </summary>
-    public static T? LoadFileFromJSON<T>(string path)
+    public static T? LoadFileFromJSON<T>(string path, bool createIfMissing = true)
     {
         if (!IsPathValid(path)) return default;
-        if (!FileExists(path)) CreateFile(path);
+        if (!FileExists(path))
+        {
+            if (createIfMissing) CreateFile(path);
+            else return default;    
+        }
 
         string json = File.ReadAllText(path);
         try
