@@ -610,7 +610,7 @@ Fixed using number 99 for many enumerable.repeats on titles, instead of title.le
 Current App Title Being Slightly Too Far To The Right
 Renamed Revistone.Apps to Revistone.App for consistency
 
---- WORKING TITLE --- [Major] 0.7.0 (14/05/25)
+--- Files And Frames --- [Major] 0.7.0 (14/05/25)
 
 Summary: 
 Biggest update ever (again! technically beaten on lines, but lots of code modifided and removed), the console feels like a completely new tool after every update, only took 2 months this time! Biggest features include total file structure recomp, brand new workspace, console stickers and image overhaul, new app commands features, whole console UI improvements, analytics, FPS decoupling from TPS!!! and much much more. 2x as many commands and setting!! (46 from 23 commands and 30 from 14 settings). Even bigger things planned for the next update, infinite colours, full displays, spotify support and more
@@ -668,7 +668,7 @@ ConsolePixel -> NEW datatype for ConsoleImages
 Manager -> Added handling for console exits and crashes, variable renames, removed renderLockObject, added version number, tick function recomped
 FlashCardApp -> Now shows user incorrect answer on wrong answer, UI updated to rest of console standard, exit quizes midway through, can now rename flash card sets, editing questions much easier and streamlined, no longer space sensitive
 ConsoleWidget -> order now uses int, widgets can be set to only display within certain apps, clarity renames, new default widget
-DefaultWidget -> general FunctionWidget added, simplifying custom widget creation, timer widget greatly improved, can now modify and pause timers.
+DefaultWidget -> general FunctionWidget added, simplifying custom widget creation, timer widget greatly improved, can now modify and pause timers, make beep upon completion.
 Profiler -> Redone UI, tracks new FPS, and more useful info.
 
 [Minor]
@@ -708,7 +708,22 @@ Certain console messages used SetColour instead of AppColour
 Editing question in flashcardmanager would reset ui pointer
 GPT temp messages where still added to message history
 
+--- 0.8.0 --- [Major] 0.8.0 (TBD)
 
+Specifics:
+AppCommandRegistry -> New developer commands, only useable in developer mode (render test (moved), tick event), new commands (backup analytics, restore analytics)
+Revistone -> New One Up command, render test moved 
+SettingsApp -> developer mode setting
+DefaultWidget -> timer now plays jingle upon completion
+NEW: SoundFunctions -> Functions libary for playing wav files within the console, with volume control, and multiplay
+PersistentDataFunctions -> Option not to create json file if not found on load
+Analytics -> Manual backup restore system added, to protect against rare corruptions
+Paint -> New default sticker (oneup)
 
+BugFixes:
+Renamed AppCommands -> AppCommandRegistry 
+ListStickers command cut of sticker names incorrectly
+Missing summarys added
+BlockRender now uses OnProcessCrash instead of HandleGlobalException
 
 

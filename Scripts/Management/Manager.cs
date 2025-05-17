@@ -14,7 +14,7 @@ public static class Manager
 {
     public static readonly string ConsoleVersion = "0.8.0";
 
-    //public static readonly object renderLockObject = new();
+    public static readonly object renderLockObject = new();
     public static readonly Random rng = new();
 
     public static event TickEventHandler Tick = new((tickNum) => { });
@@ -106,6 +106,8 @@ public static class Manager
         AppDomain.CurrentDomain.ProcessExit += OnProcessExit; // on user close
         AppDomain.CurrentDomain.UnhandledException += OnProcessCrash; // on crash
 
+        ConsoleVolatileEnvironment.TryRestoreEnvironment();
+
         Analytics.Debug.Log("Console Process Initialization Complete.");
         HandleConsoleBehaviour(); // main console loop
     }
@@ -122,6 +124,8 @@ public static class Manager
     ///<summary> Called upon standard close of the console. </summary>
     static void OnProcessExit(object? sender, EventArgs e)
     {
+        ConsoleVolatileEnvironment.TrySaveEnvironment();
+
         Analytics.General.LastCloseDate = DateTime.Now;
         Analytics.Debug.Log($"Console Process Exit.");
         Analytics.HandleAnalytics();
@@ -130,6 +134,8 @@ public static class Manager
     ///<summary> Called upon crash of the console. </summary>
     static void OnProcessCrash(object sender, UnhandledExceptionEventArgs e)
     {
+        ConsoleVolatileEnvironment.TryRestoreEnvironment();
+
         Analytics.General.LastCloseDate = DateTime.Now;
         Analytics.Debug.Log($"Console Unexpected (Crash D:) Process Exit.\n Crash Message: {e.ExceptionObject}");
         Analytics.HandleAnalytics();

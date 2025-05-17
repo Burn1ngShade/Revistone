@@ -3,6 +3,8 @@ using Revistone.App.BaseApps;
 using Revistone.Console.Data;
 using Revistone.Management;
 
+using static Revistone.Functions.PersistentDataFunctions;
+
 namespace Revistone.Interaction;
 
 /// <summary> Deal with realtime input, without the use of an external libary </summary>

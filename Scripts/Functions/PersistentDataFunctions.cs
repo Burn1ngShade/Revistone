@@ -233,11 +233,11 @@ public static class PersistentDataFunctions
     // --- JSON Commands ---
 
     /// <summary> Saves fileData to given file with given name in the JSON format. </summary>
-    public static bool SaveFileAsJSON<T>(string path, T data)
+    public static bool SaveFileAsJSON<T>(string path, T data, bool includeFields = false)
     {
         if (!IsPathValid(path)) return false;
 
-        string json = JsonSerializer.Serialize<T>(data, new JsonSerializerOptions { WriteIndented = true });
+        string json = JsonSerializer.Serialize<T>(data, new JsonSerializerOptions { WriteIndented = true, IncludeFields = includeFields });
 
         if (!FileExists(path)) CreateFile(path);
         File.WriteAllText(path, json);
@@ -246,19 +246,19 @@ public static class PersistentDataFunctions
     }
 
     /// <summary> Loads data from given file, if not in JSON format, the default value for given type is returned. </summary>
-    public static T? LoadFileFromJSON<T>(string path, bool createIfMissing = true)
+    public static T? LoadFileFromJSON<T>(string path, bool createIfMissing = true, bool includeFields = false)
     {
         if (!IsPathValid(path)) return default;
         if (!FileExists(path))
         {
             if (createIfMissing) CreateFile(path);
-            else return default;    
+            else return default;
         }
 
         string json = File.ReadAllText(path);
         try
         {
-            T? data = JsonSerializer.Deserialize<T>(json);
+            T? data = JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions { IncludeFields = includeFields });
             return data;
         }
         catch (Exception e)

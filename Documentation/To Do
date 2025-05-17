@@ -8,6 +8,11 @@
 --- KNOWN BUGS ---
 Leaving rendering test on for extended period on vscode version of console will brick after a while (idk if this is even my fault)
 
+- Know Info.
+    KeyRegistry thread continues to run, program does NOT crash,
+    Rendering stops completely 
+    Apparently both render and tick threads remain operational
+
 --- DONE ---
 
 --- ADDED ---

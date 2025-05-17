@@ -2,6 +2,7 @@ PersistentData/App
 PersistentData/Console/Analytics
 PersistentData/Console/History
 PersistentData/Console/Settings
+PersistentData/Console/VolatileEnvironment.json
 PersistentData/Workspace/**
 
 bin/Debug/net8.0/PersistentData/Console/Analytics

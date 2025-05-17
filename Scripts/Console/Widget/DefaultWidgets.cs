@@ -35,13 +35,14 @@ public class TimerWidget : ConsoleWidget // widget for displaying some form of t
 
     public bool paused = false;
 
-    public TimerWidget(string name, int order, long duration, string[] widgetEnabledApps, bool canRemove = true) : base(name, order, canRemove, widgetEnabledApps)
+    public TimerWidget(string name, int order, long duration, string[] widgetEnabledApps, bool canRemove = true, bool paused = false) : base(name, order, canRemove, widgetEnabledApps)
     {
         this.duration = duration;
         this.lastUpdate = Manager.ElapsedTicks;
+        this.paused = paused;
     }
 
-    public TimerWidget(string name, int order, long duration, bool canRemove = true) : this(name, order, duration, [], canRemove) { }
+    public TimerWidget(string name, int order, long duration, bool canRemove = true, bool paused = false) : this(name, order, duration, [], canRemove, paused) { }
 
     public override string GetContent(ref bool shouldRemove)
     {
@@ -88,14 +89,14 @@ public class TimerWidget : ConsoleWidget // widget for displaying some form of t
         SendConsoleMessage(new ConsoleLine($"Timer Created - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol)));
     }
 
-    /// <summary> Delete Timer Widget. </summary>
+    /// <summary> Delete timer widget. </summary>
     public static void CancelTimer(string name)
     {
         if (TryRemoveWidget(name)) SendConsoleMessage(new ConsoleLine($"Timer Cancelled - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(18), AppRegistry.SecondaryCol)));
         else SendConsoleMessage(new ConsoleLine($"Timer Does Not Exist - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
     }
 
-    ///<summary> Toggles Timer Pause Status. </summary>
+    ///<summary> Toggles timer pause status. </summary>
     public static void TogglePauseTimer(string name)
     {
         ConsoleWidget? consoleWidget = TryGetWidget(name);
@@ -108,6 +109,7 @@ public class TimerWidget : ConsoleWidget // widget for displaying some form of t
         else SendConsoleMessage(new ConsoleLine($"Timer Does Not Exist - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
     }
 
+    ///<summary> Adjust the duration of timer. </summary>
     public static void AdjustTimer(string name, string time)
     {
         ConsoleWidget? consoleWidget = TryGetWidget(name);
@@ -135,5 +137,18 @@ public class TimerWidget : ConsoleWidget // widget for displaying some form of t
             }
         }
         else SendConsoleMessage(new ConsoleLine($"Timer Does Not Exist - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
+    }
+
+    ///<summary> Get A List Of Timers And There Remaining Duration. </summary>
+    public static (string name, int order, long duration, bool paused)[] GetActiveTimerInfo()
+    {
+        List<(string name, int order, long duration, bool paused)> timers = [];
+
+        foreach (ConsoleWidget w in widgets)
+        {
+            if (w is TimerWidget tw) timers.Add((tw.name, tw.order, tw.duration, tw.paused));
+        }
+
+        return [.. timers];
     }
 }

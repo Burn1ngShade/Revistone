@@ -67,7 +67,7 @@ public static class Profiler
                 UpdateDebugConsoleLine(new ConsoleLine($"Tick Num: {tickNum}, Lost Duration {CalcTime.Where(s => s > 25).Sum(s => s - 25)} ms, Total Duration: {Math.Round((double)CalcTime.Sum(), 2)} ms", AppRegistry.PrimaryCol), debugStartIndex + 2);
                 UpdateDebugConsoleLine(new ConsoleLine(calcTicks, ColourTickInfo(calcTicks)), debugStartIndex + 3);
                 UpdateDebugConsoleLine(new ConsoleLine(compTicks, ColourTickInfo(compTicks, 25, 30)), debugStartIndex + 4);
-                UpdateDebugConsoleLine(new ConsoleLine($"Render Frames (System Ticks): Avg - {RenderLogicTime.Sum() / RenderLogicTime.Count} | Target - {Stopwatch.Frequency / Fps}", AppRegistry.PrimaryCol), debugStartIndex + 5);
+                UpdateDebugConsoleLine(new ConsoleLine(RenderLogicTime.Count == 0 ? "Render Mode - Single Threaded" : $"Render Frames (System Ticks): Avg - {RenderLogicTime.Sum() / RenderLogicTime.Count} | Target - {Stopwatch.Frequency / Fps}", AppRegistry.PrimaryCol), debugStartIndex + 5);
             }
 
             CalcTime.Clear();

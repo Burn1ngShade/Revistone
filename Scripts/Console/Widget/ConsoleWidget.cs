@@ -29,7 +29,7 @@ public abstract class ConsoleWidget
 
     // --- WIDGET BEHAVIOUR ---
 
-    static List<ConsoleWidget> widgets = [];
+    protected static List<ConsoleWidget> widgets = [];
 
     ///<summary> Returns all console widgets content. </summary> 
     public static string[] GetWidgetContents()
