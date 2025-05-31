@@ -1,11 +1,11 @@
-About The Console: Revistone is a virtual OS with a command-line interface, menus, and real-time input. Created by Isaac Honeyman, it serves as an all-in-one application with apps, commands, and widgets and is what ur integrated into. The user has access to a workspace, which allows them to create, modify, and delete files and directorys like a standard command-line interface.
-- Apps: Different way to interact with the console  
-- Commands: Perform tasks  
-- Widgets: Display information  
+About The Console: Revistone is a virtual OS with a command-line interface, menus, and real-time input. Created by Isaac Honeyman, it serves as an all-in-one application with apps, commands, and widgets and is what YOUR integrated into. The user has access to a workspace, which allows them to create, modify, and delete files and directorys like a standard command-line interface.
+- Apps: Different way to interact with the console
+- Commands: Perform tasks
+- Widgets: Display information
 
-Custom file types:  
-- .cimg (console images)  
-- .hc (HoneyC, the system’s custom programming language)  
+Custom file types:
+- .cimg (console images)
+- .hc (HoneyC, the system’s custom programming language)
 
 General Hotkeys:
 - Ctrl + Shift + P -> Toggles Profiler.
@@ -33,51 +33,113 @@ Input Hotkeys:
 - Alt + A -> Select All.
 
 File Hotkeys:
-- Shift + Up Arrow -> Jumps A Page Up.
-- Shift + Down Arrow -> Jumps A Page Down.
+- Shift + Up Arrow -> Jump A Page Up.
+- Shift + Down Arrow -> Jump A Page Down.
 - Tab + Up Arrow -> Removes Empty Line.
 - Tab + Down Arrow -> Inserts Empty Line.
 
-Apps:
-- Revistone -> Start app, used for command-line interface, workspace, and GPT interaction
+Apps [- Name -> Description]:
+- Revistone-> Start app, used for command - line interface, workspace, and GPT interaction
 - Tracker -> Daily logger app
-- Paint -> For creating and editing .cimg files
+- Paint -> For creating and editing.cimg files
 - Flash Card Manager -> For creating and using virtual flash cards
 - Debit Card Manager -> Test app, allowing user to create and manager virtual bank accounts
 - Font Showcase -> Allows user to view all the fonts available within the console, with text of their choice
-- Settings -> App for editing and viewing console settings 
+- Settings -> App for editing and viewing console settings
 - Screenshots -> App for viewing screenshots
 - Pong -> The classic game Pong
 - Tetris -> The classic game Tetris
 
-Settings:
-- Username -> The Name Used To Refer To The User. 
+Settings [- Name -> Description]:
+- Username -> The Name Used To Refer To The User.
 - Pronouns -> The Pronouns Used To Refer To The User
-- API Key -> ChatGPT API Key
-- Behaviour -> Additional Promt Given To Dictate GPT Behaviour.
-- Scenario -> Additonal Promt Given To Setup GPT Scenario.
-- Conversation Memory -> How Many Previous Messages In The Conversation Should GPT Remember?
-- Long Term Memory -> Should GPT You It's Long Term Memory?
-- Temperature -> How Random GPT Responses Are (0 [Not Random] - 2 [Unintelligible])
-- GPT Name -> The Name Given To ChatGPT
-- GPT Model -> What Model Of GPT Should Be Used, 4o Mini Is Very Cheap, While o3 Mini Is More Expensive, But Better For Programming Tasks.
-- Welcome Message -> GPT Will Send A Message Upon Console Startup (Will Increase Inital Load Time).
-- Use Detailed System Promt -> Should GPT Use A Detailed System Promt, Giving It Details And Info About The Revistone Console, More Token Intensive.
-- Input History -> The Number Of Previous User Inputs Stored. (10 - 1,000)
+- Auto Resume -> Should The Console Load Last Used App On Startup?
+- Input History -> The Number Of Previous User Inputs Stored (10 - 1,000).
 - Cursor Jump Separators -> The Charchters That The Cursor Uses To Divide Words.
 - Input Text Colour -> The Colour Of User Input Text.
 - Input Cursor Colour -> The Colour Of User Input Cursor.
 - Input Cursor Trail Colour -> The Colour Of User Input Cursor Trail.
-- Create Log File -> Should HoneyC Programs Create A Program Log File?
-- Show FPS Widget -> Should The FPS Widget Be Shown
+- Detailed Read Menus -> Should Read Menus Display The Number Of Options In Each Category?
+- Show FPS Widget -> Should The FPS Widget Be Shown?
 - Show Author Widget -> Should The Author Widget Be Shown?
 - Show Time Widget -> Should The Time Widget Be Shown?
 - Show Workspace Path Widget -> Should The Workspace Path Widget Be Shown?
-- Target Frame Rate -> The Numer Of Times The Console Will Render A Second.
-- Analytics Update Frequency -> How Often Should Analytics Update? (Can Effect Performance On Low End Devices, All Unsaved Analytics May Be Lost On Console Close).
+- API Key -> ChatGPT API Key (I Promise I Don't Steal This Data - The Project Is Open Source Just Check!)
+- Behaviour -> Additional Promt Given To Dictate GPT Behaviour.
+- Scenario -> Additonal Promt Given To Setup GPT Scenario.
+- Conversation Memory -> How Many Previous Messages In The Conversation Should GPT Remember? (This Has A Large Effect On Token Usage).
+- Long Term Memory -> Should GPT Use It's Long Term Memory? (When Off GPT Is Unable To Create New Memories).
+- Temperature -> How Random GPT Responses Are (0 [Not Random] - 2 [Unintelligible])
+- GPT Name -> The Name Given To GPT
+- GPT Model -> What Model Of GPT Should Be Used, 4o Mini Is Very Cheap, While o3 Mini Is More Expensive, But Better For Programming Tasks.
+- Welcome Message -> GPT Will Send A Message Upon Console Startup (Will Increase Inital Load Time).
+- Use Detailed System Promt -> Should GPT Use A Detailed System Promt, Giving It Details And Info About The Revistone Console, More Token Intensive.
+- Target Frame Rate -> The Number Of Times The Console Will Render A Second. Using A Frame Rate Faster Than Your Monitors Refresh Rate Will Actually Slightly Slow Done Responsiveness.
+- Analytics Update Frequency -> How Often Should Analytics Update? (Can Effect Performance On Low End Devices, Very Frequent Settings Should Only Be Used For Debugging).
 - Widget Update Frequency -> How Often Should Widgets Update? (Can Effect Performance On Low End Devices, But Lower Settings Will Make Widgets Appear Laggy).
 - Show Emojis -> Can Emojis Be Used In The Program (Certain Emojis Cause The Console To Misrender, Requiring A Reload To Fix).
-- Block Rendering On Crash -> Pauses Rendering On Crash To Show Compiler Errors.
-- Show GPT Tool Results -> Outputs GPT Tool Results To The Debug Console.
+- Developer Mode -> Enables Debugging Tools And Commands
+- Block Rendering On Crash -> Pauses Rendering On Crash, Showing C# Compiler Error But Preventing Final Rendering Passes.
+- Show GPT Tool Results -> Outputs GPT Tool Results To The Debug Console (GPT Can Sometimes Be A Little Bit Stupid, Use For Promt Improvement).
 - Log GPT System Messages -> Outputs GPT System Messages To The Debug Analytics File.
 - Force Default Settings -> Override All Settings With Default Value.
+- Create Log File -> Should HoneyC Programs Create A Program Log File?
+
+Commands [- Name [Type] -> Description]:
+- Help [Console] -> Lists All Base Commands And Their Functionality.
+- Apps [Apps] -> Lists All Apps And Their Functionality.
+- Load [AppName] [Apps] -> Loads App Of Entered Name.
+- Reload [Apps] -> Reloads Current App.
+- Settings [Apps] -> Loads Settings App.
+- Hub [Apps] -> Loads Revistone App.
+- Hotkeys [Console] -> Displays List Of Console Hotkeys.
+- Clear [Console] -> Clears The Primary Console.
+- Clear Debug [Console] -> Clears The Debug Console.
+- Debug [Message] [Console] -> Sends Message To Debug Console.
+- Toggle Profiler [Console] -> Toggles Profiler On Or Off.
+- GPT [Message] [ChatGPT] -> Interact With Custom Revistone ChatGPT Model.
+- Temp GPT [Message] [ChatGPT] -> Interact With Custom Revistone ChatGPT Model, Without Message History.
+- Clear GPT [ChatGPT] -> Wipe Message History Of ChatGPT Model.
+- Remember GPT [Message] [ChatGPT] -> Store A Permeant Memory To GPT.
+- Memories GPT [ChatGPT] -> View List Of GPT Memories.
+- Set Setting [Setting] [Apps] -> Set The Value Of Given Setting.
+- Get Setting [Setting] [Apps] -> Get The Value Of Given Setting.
+- Time [Console] -> Displays The Current System Time.
+- Runtime [Console] -> Displays The Current Console Session Uptime.
+- Mkdir [Directory] [Workspace] -> Create A Workspace Directory.
+- Rmdir [Directory] [Workspace] -> Delete A Workspace Directory.
+- Cdir [Directory] [Workspace] -> Change Workspace Directory.
+- Pdir [Workspace] -> Go To Parent Directory.
+- Rdir [Workspace] -> Go To Root Directory.
+- Dir [Workspace] -> Gets Files And Directories Within The Current Directory.
+- Fdir [Workspace] -> Gets Files Within The Current Directory.
+- Ddir [Workspace] -> Gets Directories Within The Current Directory.
+- Mkfile [File] [Workspace] -> Create A File Within The Current Directory.
+- Rmfile [File] [Workspace] -> Deletes A File Within The Current Directory.
+- Open [File] [Workspace] -> Opens A File Within The Current Directory.
+- Timer [Duration] [Widget] -> Creates A Timer Of Given Duration (hh:mm:ss).
+- Cancel Timer [Widget] -> Removes Active Timer.
+- Toggle Timer [Widget] -> Pauses Or Unpauses Timer.
+- Modify Timer [Duration] [Widget] -> Modify The Timers Duration By Given Duration (hh:mm:ss).
+- Stopwatch [Widget] -> Creates A Stopwatch.
+- Cancel Stopwatch [Widget] -> Removes Active Stopwatch.
+- Toggle Stopwatch [Widget] -> Pauses Or Unpauses Stopwatch.
+- Quit [Console] -> Closes The Revistone Terminal.
+- Kill [Console] -> Force Closes The Revistone Terminal (Crashes It).
+- Screenshots [Apps] -> Load Screenshots App.
+- Screenshot [Name] [Console] -> Take A Screenshot Of The Primary Console.
+- Debug Screenshot [Name] [Console] -> Take A Screenshot Of The Debug Console.
+- Calc [Query] [Apps] -> Runs Given Calculator Query.
+- Comp [Query] [Apps] -> Runs Given HoneyC Query.
+- Run [File] [Workspace] -> Runs A File Within The Current Directory.
+- Sticker [Name] [Console] -> Displays Given Console Sticker From Base/User/Workspace Stickers.
+- List Stickers [Console] -> Displays List Of All Default And User Stickers (Excluding Workspace).
+- Version [Console] -> Displays Console Version.
+- Analytics [Console] -> Displays Analytics Data.
+- Backup Analytics [Console] -> Create A Manual Backup Of Analytics (To Safegard 1/10000 Corruptions).
+- Restore Analytics [Console] -> Uses Last Manual Backup Of Analytics To Restore Corrupted Analytics Data.
+- Tip [Console] -> Displays A Random Console Tip.
+- Tips [Console] -> Displays List Of Console Tips.
+- Tick Event [Developer] -> Displays All Methods Invoked By Tick Event.
+- Render Test [Developer] -> Displays Render Stress Test For The Console.
+- Gen Revistone About [Developer] -> Generates A File For The GPT Model To Use As About Information.

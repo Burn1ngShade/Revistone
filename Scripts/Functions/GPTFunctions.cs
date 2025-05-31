@@ -414,7 +414,7 @@ public static class GPTFunctions
         if (SettingsApp.GetValue("Long Term Memory") == "Yes") msg += $"Long Term Memory: {string.Join('\n', memoryHistory.Select(x => x.ToString()))}\n";
         if (SettingsApp.GetValue("Use Detailed System Promt") == "Yes") msg += string.Join('\n', LoadFile(GeneratePath(DataLocation.Console, "Assets/GPT", "AboutRevistone.txt")));
 
-        if (SettingsApp.GetValue("Log GPT System Messages") == "Yes") Analytics.Debug.Log($"[GPT] System Message: {msg}");
+        if (SettingsApp.GetValue("Log GPT System Messages") == "Yes") DeveloperTools.Log($"[GPT] System Message: {msg}");
         return new SystemChatMessage(msg);
     }
 
@@ -528,6 +528,6 @@ public static class GPTFunctions
 
     static void SetSetting(string settingName)
     {
-        SettingsApp.HandleSettingSet(settingName);
+        SettingsApp.SettingSetMenu(settingName);
     }
 }

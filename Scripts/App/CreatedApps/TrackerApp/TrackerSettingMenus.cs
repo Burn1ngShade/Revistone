@@ -241,7 +241,6 @@ public static class TrackerSettingMenus
     static void DeleteSave()
     {
         string savePath = GetSavePath();
-        SendDebugMessage(savePath);
         if (savePath.Length > 0)
         {
             DeleteFile(GeneratePath(DataLocation.App, "Tracker", $"Saves/{savePath}"));

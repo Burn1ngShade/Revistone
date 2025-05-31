@@ -59,7 +59,7 @@ public static class AppRegistry
 
         ConsoleWidget.UpdateWidgetHideInApp(activeApp.name);
 
-        Analytics.Debug.Log($"Loaded App: {activeApp.name}.");
+        DeveloperTools.Log($"Loaded App: {activeApp.name}.");
 
         return true;
     }

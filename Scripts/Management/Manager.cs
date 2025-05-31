@@ -1,11 +1,13 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Revistone.App;
+using Revistone.App.BaseApps;
 using Revistone.Console;
 using Revistone.Console.Data;
 using Revistone.Console.Widget;
 using Revistone.Functions;
 using Revistone.Interaction;
+
+using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.Management;
 
@@ -13,8 +15,8 @@ namespace Revistone.Management;
 public static class Manager
 {
     public static readonly string ConsoleVersion = "0.8.0";
+    public static readonly object ConsoleLock = new(); // lock for console interaction
 
-    public static readonly object renderLockObject = new();
     public static readonly Random rng = new();
 
     public static event TickEventHandler Tick = new((tickNum) => { });
@@ -24,9 +26,22 @@ public static class Manager
     static long _deltaTime = 0; // duration of last tick in ms
     public static double DeltaTime => _deltaTime / 1000d; // duration of last tick in seconds
 
+    static Thread? mainThread; // main thread
     static readonly Thread tickBehaviourThread = new(HandleTickBehaviour); // tick thread
     static readonly Thread realTimeInputThread = new(UserRealtimeInput.KeyRegistry); // thread for input
     static readonly Thread renderThread = new(ConsoleRendererLogic.HandleConsoleRender); // thread for rendering
+
+    public static readonly long[] threadCycles = new long[4]; // tracks thread cycles for each threaad DO NOT CALL
+    public static readonly List<string>[] threadCheckpoints =
+    [
+        new(), // main thread
+        new(), // tick behaviour thread
+        new(), // real time input thread
+        new()  // render thread
+    ];
+
+    public static readonly string[] consoleTips = LoadFile(GeneratePath(DataLocation.Console, "Assets/RevistoneTips.txt")); // tips to display to user
+    public static string GetConsoleTip => consoleTips[rng.Next(0, consoleTips.Length)]; // get random tip
 
     /// <summary> [DO NOT CALL] Calls the Tick event, occours every 25ms (40 calls per seconds). </summary>
     static void HandleTickBehaviour()
@@ -35,9 +50,17 @@ public static class Manager
 
         while (true)
         {
+            threadCheckpoints[1].Clear();
+
             tickDuration.Restart();
 
-            Tick.Invoke(ElapsedTicks); // invoke all tick event watchers
+            lock (ConsoleLock)
+            {
+                threadCheckpoints[1].Add("Tick Invoke Start");
+                Tick.Invoke(ElapsedTicks); // invoke all tick event watchers
+                threadCheckpoints[1].Add("Tick Invoke End");
+            }
+
             Profiler.CalcTime.Add(tickDuration.ElapsedMilliseconds); // how long it took for all tick event to run
 
             long targetThreadDelay = (int)(Math.Max(25 - Math.Max(_deltaTime - 25, 0), 0) / 1000d * Stopwatch.Frequency); // how long to wait for next tick (25ms - delta time)
@@ -46,12 +69,29 @@ public static class Manager
             _deltaTime = tickDuration.ElapsedMilliseconds;
             Profiler.TickTime.Add(_deltaTime);
             ElapsedTicks++;
+
+            threadCycles[1]++; // increment tick behaviour thread cycle count
         }
     }
 
+    ///<summary> Returns list of tick listeners for debugging purposes. </summary>
     public static string[] GetTickListeners()
     {
         return [.. Tick.GetInvocationList().Select(x => x.Method.Name)];
+    }
+
+    public static string[] GetThreadStatus()
+    {
+        return [
+            $"Main Thread: {mainThread?.ThreadState} - {threadCycles[0]} Cycles",
+            "Check Points: " + string.Join(", ", threadCheckpoints[0]),
+            $"Tick Behaviour Thread: {tickBehaviourThread.ThreadState} - {threadCycles[1]} Cycles",
+            "Check Points: " + string.Join(", ", threadCheckpoints[1]),
+            $"Real Time Input Thread: {realTimeInputThread.ThreadState} - {threadCycles[2]} Cycles",
+            "Check Points: " + string.Join(", ", threadCheckpoints[2]),
+            $"Render Thread: {renderThread.ThreadState} - {threadCycles[3]} Cycles",
+            "Check Points: " + string.Join(", ", threadCheckpoints[3])
+        ];
     }
 
     /// <summary> Handles default behaviour of user interaction, can be interrupted via ConsoleInteraction methods.  </summary>
@@ -79,6 +119,8 @@ public static class Manager
                 ConsoleAction.ShiftLine();
                 AppRegistry.activeApp.OnUserInput(userInput);
             }
+
+            threadCycles[0]++; // increment main thread cycle count
         }
     }
 
@@ -86,10 +128,9 @@ public static class Manager
     public static void Main(string[] args)
     {
         Analytics.InitalizeAnalytics(); // called to track start up process
-        Analytics.Debug.Log("Console Process Start.");
+        DeveloperTools.Log("Console Process Start.");
 
         AppRegistry.InitializeAppRegistry(); // init all apps
-        AppRegistry.SetActiveApp("Revistone");
 
         ConsoleWidget.InitializeWidgets(); // init border widgets
         ConsoleRenderer.InitializeRenderer(); // init rendering
@@ -98,9 +139,20 @@ public static class Manager
         GPTFunctions.InitializeGPT(); // init gpt
         ConsoleData.InitalizeConsoleData(); // init some console setting values
 
+        mainThread = Thread.CurrentThread; // set main thread
         tickBehaviourThread.Start();
         realTimeInputThread.Start();
         renderThread.Start();
+
+        if (!SettingsApp.GetValueAsBool("Advanced Session Log", "Off"))
+        {
+            Thread debugThread = new(DeveloperTools.HandleAdvancedSessionLog);
+            debugThread.Start();
+        }
+        else
+        {
+            DeleteFile(DeveloperTools.AdvancedSessionLog.advancedSessionLogPath); // delete advanced session log from last session if not enabled
+        }
 
         System.Console.CancelKeyPress += new ConsoleCancelEventHandler(OnCancelKeyPress); // prevent ctrl c from closing the program
         AppDomain.CurrentDomain.ProcessExit += OnProcessExit; // on user close
@@ -108,7 +160,7 @@ public static class Manager
 
         ConsoleVolatileEnvironment.TryRestoreEnvironment();
 
-        Analytics.Debug.Log("Console Process Initialization Complete.");
+        DeveloperTools.Log("Console Process Initialization Complete.");
         HandleConsoleBehaviour(); // main console loop
     }
 
@@ -127,8 +179,9 @@ public static class Manager
         ConsoleVolatileEnvironment.TrySaveEnvironment();
 
         Analytics.General.LastCloseDate = DateTime.Now;
-        Analytics.Debug.Log($"Console Process Exit.");
+        DeveloperTools.Log($"Console Process Exit.");
         Analytics.HandleAnalytics();
+        DeveloperTools.SessionLog.Update(); // save session log
     }
 
     ///<summary> Called upon crash of the console. </summary>
@@ -137,7 +190,8 @@ public static class Manager
         ConsoleVolatileEnvironment.TryRestoreEnvironment();
 
         Analytics.General.LastCloseDate = DateTime.Now;
-        Analytics.Debug.Log($"Console Unexpected (Crash D:) Process Exit.\n Crash Message: {e.ExceptionObject}");
+        DeveloperTools.Log($"Console Unexpected (Crash D:) Process Exit.\n Crash Message: {e.ExceptionObject}", true);
         Analytics.HandleAnalytics();
+        DeveloperTools.SessionLog.Update(); // save session log
     }
 }

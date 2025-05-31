@@ -426,7 +426,7 @@ public static class UserInput
     public static string GetValidUserInput(string promt, UserInputProfile inputProfile, string prefilledText = "", string inputPrefix = "> ", int maxLineCount = 1) { return GetValidUserInput(new ConsoleLine(promt, AppRegistry.PrimaryCol), inputProfile, prefilledText, inputPrefix, maxLineCount); }
 
     /// <summary> Waits for user to input given key, pausing program until pressed. Returns the key inputted. </summary>
-    public static ConsoleKey WaitForUserInput(ConsoleKey[] keys, bool clear = true, bool space = false, bool goNextLine = false)
+    public static ConsoleKey WaitForUserInput(ConsoleKey[] keys, bool clear = true, bool space = false, bool goNextLine = false, ConsoleLine? customMessage = null)
     {
         if (keys.Length == 0) return ConsoleKey.None;
 
@@ -434,9 +434,13 @@ public static class UserInput
 
         ConsoleColor[] colours = AdvancedHighlight(30, AppRegistry.PrimaryCol, (AppRegistry.SecondaryCol, 6, 2 + keys[0].ToString().Length));
 
-        ConsoleLine[] waitLines = [
-        new ConsoleLine($"Press [{keys[0]}] To Continue", colours), new ConsoleLine($"Press [{keys[0]}] To Continue.", colours),
-        new ConsoleLine($"Press [{keys[0]}] To Continue..", colours), new ConsoleLine($"Press [{keys[0]}] To Continue...", colours) ];
+        ConsoleLine[] waitLines = customMessage != null ?
+            [customMessage,
+            new ConsoleLine(customMessage.lineText + ".", customMessage.lineColour, customMessage.lineBGColour),
+            new ConsoleLine(customMessage.lineText + "..", customMessage.lineColour, customMessage.lineBGColour),
+            new ConsoleLine(customMessage.lineText + "...", customMessage.lineColour, customMessage.lineBGColour)] :
+            [ new ConsoleLine($"Press [{keys[0]}] To Continue", colours), new ConsoleLine($"Press [{keys[0]}] To Continue.", colours),
+            new ConsoleLine($"Press [{keys[0]}] To Continue..", colours), new ConsoleLine($"Press [{keys[0]}] To Continue...", colours) ];
 
         SendConsoleMessage(waitLines[1], ConsoleLineUpdate.SameLine,
         new ConsoleAnimatedLine(ConsoleAnimatedLine.CycleLines, tickMod: 12, metaInfo: (1, waitLines), enabled: true));
@@ -727,10 +731,12 @@ public static class UserInput
     /// <summary> Creates menu from given messages, split by category, spliting into pages, allowing user to view. </summary>
     public static void CreateCategorisedReadMenu(string title, int messagesPerPage, params (string title, ConsoleLine[] messages)[] categories)
     {
+        bool detailedReadMenus = SettingsApp.GetValueAsBool("Detailed Read Menus");
+
         int pointer = 0;
         while (true)
         {
-            (ConsoleLine, Action)[] options = [.. categories.Select(c => (new ConsoleLine(c.title, AppRegistry.SecondaryCol), (Action)(() => { CreateReadMenu($"{title} -> {c.title}", messagesPerPage, c.messages); })))];
+            (ConsoleLine, Action)[] options = [.. categories.Select(c => (new ConsoleLine($"{c.title}{(detailedReadMenus ? $" [{c.messages.Length}]" : "")}", BuildArray(AppRegistry.SecondaryCol.Extend(c.title.Length), AppRegistry.PrimaryCol.Extend(10))), (Action)(() => { CreateReadMenu($"{title} -> {c.title}", messagesPerPage, c.messages); })))];
             options = [.. options, (new ConsoleLine("Exit", AppRegistry.PrimaryCol), () => { })];
 
             pointer = CreateOptionMenu($"--- {title} ---", options, cursorStartIndex: pointer);
@@ -746,14 +752,15 @@ public static class UserInput
     }
 
     ///<summary> Allows user to edit, remove, and append multiple lines to a given string[]. </summary>
-    public static string[] GetMultiUserInput(string title, string[] content, int minDisplayLineCount = 3, int maxDisplayLineCount = 10)
+    public static string[] GetMultiUserInput(string title, string[] content, int minDisplayLineCount = 3, int maxDisplayLineCount = 10, bool readOnly = false)
     {
+        if (readOnly) title = $"{title} - [Read Only]";
         MultiInputData data = new(title, content, minDisplayLineCount, maxDisplayLineCount);
 
         while (true)
         {
             (ConsoleKeyInfo key, bool interrupted) = UserRealtimeInput.GetKey();
-            (bool tab, bool shift) = (UserRealtimeInput.KeyPressed(0x09), UserRealtimeInput.KeyPressed(0x10));
+            (bool tab, bool shift, bool alt) = (UserRealtimeInput.KeyPressed(0x09), UserRealtimeInput.KeyPressed(0x10), UserRealtimeInput.KeyPressed(0x12));
 
             if (interrupted)
             {
@@ -764,22 +771,41 @@ public static class UserInput
             switch (key.Key)
             {
                 case ConsoleKey.Enter:
+                    if (readOnly) break;
                     primaryLineIndex = data.window.top + 1 + data.curOffset;
                     data.content[data.curIndex + data.curOffset] = GetUserInput(prefilledText: data.content[data.curIndex + data.curOffset],
                     inputPrefix: $"{(data.curIndex + data.curOffset + 1).ToString().PadLeft(data.window.botLine)}. ");
                     data.RenderLine(data.curOffset);
                     break;
                 case ConsoleKey.W or ConsoleKey.UpArrow or ConsoleKey.J:
-                    if (tab)
+                    if (tab && !readOnly)
                     {
-                        if (data.content[data.curIndex + data.curOffset].Trim().Length == 0) data.content.RemoveAt(data.curIndex + data.curOffset);
+                        if (data.content.Count > data.curIndex + data.curOffset && data.content[data.curIndex + data.curOffset].Trim().Length == 0) data.content.RemoveAt(data.curIndex + data.curOffset);
                     }
                     else data.ShiftCur(shift ? -data.window.height : -1);
                     data.RenderWindow();
                     break;
                 case ConsoleKey.S or ConsoleKey.DownArrow or ConsoleKey.K:
-                    if (tab) data.content.Insert(data.curIndex + data.curOffset, "");
+                    if (tab && !readOnly) data.content.Insert(data.curIndex + data.curOffset, "");
                     else data.ShiftCur(shift ? data.window.height : 1);
+                    data.RenderWindow();
+                    break;
+                case ConsoleKey.PageUp:
+                    if (tab)
+                    {
+                        data.curIndex = 0;
+                        data.curOffset = 0;
+                    }
+                    else data.ShiftCur(-data.window.height);
+                    data.RenderWindow();
+                    break;
+                case ConsoleKey.PageDown:
+                    if (tab)
+                    {
+                        data.curIndex = Math.Max(data.content.Count - data.window.height, 0);
+                        data.curOffset = Math.Max(data.window.height - 1, 0);
+                    }
+                    else data.ShiftCur(data.window.height);
                     data.RenderWindow();
                     break;
                 case ConsoleKey.E:

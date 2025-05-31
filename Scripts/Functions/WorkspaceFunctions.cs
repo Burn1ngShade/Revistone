@@ -49,24 +49,24 @@ public static class WorkspaceFunctions
     }
 
     ///<summary> Updates workspace folder path. </summary>
-    public static bool UpdatePath(string newPath)
+    public static bool UpdatePath(string newPath, bool output = true)
     {
         if (!DirectoryExists(newPath))
         {
-            SendConsoleMessage(new ConsoleLine($"Directory Does Not Exist - '{newPath[15..^1]}'", BuildArray(AppRegistry.PrimaryCol.Extend(27), AppRegistry.SecondaryCol)));
+            if (output) SendConsoleMessage(new ConsoleLine($"Directory Does Not Exist - '{newPath[15..^1]}'", BuildArray(AppRegistry.PrimaryCol.Extend(27), AppRegistry.SecondaryCol)));
             return false;
         }
 
         string newPathLastDir = Path.GetFileName(newPath.EndsWith('\\') ? newPath[..^1] : newPath);
         if (Regex.IsMatch(newPathLastDir, @"^\.+$"))
         {
-            SendConsoleMessage(new ConsoleLine($"Invalid Command.", AppRegistry.PrimaryCol));
+            if (output) SendConsoleMessage(new ConsoleLine($"Invalid Command.", AppRegistry.PrimaryCol));
             return false;
         }
 
         if (newPath.Equals(path, StringComparison.CurrentCultureIgnoreCase))
         {
-            SendConsoleMessage(new ConsoleLine($"Already In Directory - '{DisplayPath}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
+            if (output) SendConsoleMessage(new ConsoleLine($"Already In Directory - '{DisplayPath}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
             return false;
         }
 
@@ -74,7 +74,7 @@ public static class WorkspaceFunctions
         if (!newPath.EndsWith('\\')) newPath += @"\";
         path = newPath[newPath.IndexOf(RootPath, StringComparison.OrdinalIgnoreCase)..];
         dir = new(path);
-        SendConsoleMessage(new ConsoleLine($"Changed To Directory - '{DisplayPath}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
+        if (output) SendConsoleMessage(new ConsoleLine($"Changed To Directory - '{DisplayPath}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
 
         Analytics.General.DirectoriesOpened++;
 

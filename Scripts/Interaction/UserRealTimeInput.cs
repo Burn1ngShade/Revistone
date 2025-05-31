@@ -3,8 +3,6 @@ using Revistone.App.BaseApps;
 using Revistone.Console.Data;
 using Revistone.Management;
 
-using static Revistone.Functions.PersistentDataFunctions;
-
 namespace Revistone.Interaction;
 
 /// <summary> Deal with realtime input, without the use of an external libary </summary>
@@ -25,6 +23,8 @@ public static class UserRealtimeInput
             ConsoleKeyInfo c = System.Console.ReadKey(true);
             Analytics.General.KeyPresses++;
             lastKey = (c, DateTime.Now);
+
+            Manager.threadCycles[2]++; // increment realtime input thread cycle count
         }
     }
 

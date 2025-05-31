@@ -20,6 +20,8 @@ public static class AppCommandsData
     ];
 
     public static readonly (string keyCombo, string description)[] inputHotkeys = [
+        ("Up Arrow", "Jump To Previous Element In Input"),
+        ("Down Arrow", "Jump To Next Element In Input History"),
         ("Shift + Up Arrow", "Jump To Top Of Input History."),
         ("Shift + Down Arrow", "Jump To End Of Input History."),
         ("Shift + Left Arrow", "Extend Selection To The Left."),
@@ -40,9 +42,19 @@ public static class AppCommandsData
         ("Alt + A", "Select All."),
     ];
 
+    public static readonly (string keyCombo, string description)[] menuHotkeys = [
+        ("Enter", "Select Option."),
+        ("W | J | Up Arrow", "Jump To Previous Option."),
+        ("S | K | Down Arrow", "Jump To Next Option."),
+        ("Shift + W | Shift + J | Page Up", "Jump To Top Option."),
+        ("Shift + S | Shift + K | Page Down", "Jump To Bottom Option."),
+    ];
+
     public static readonly (string keyCombo, string description)[] fileHotkeys = [
-        ("Shift + Up Arrow", "Jump A Page Up."),
-        ("Shift + Down Arrow", "Jump A Page Down."),
+        ("Shift + Up Arrow | Page Up", "Jump A Page Up."),
+        ("Shift + Down Arrow | Page Down", "Jump A Page Down."),
+        ("Tab + Page Up", "Jump To Top Of File."),
+        ("Tab + Page Down", "Jump To End Of File."),
         ("Tab + Up Arrow", "Removes Empty Line."),
         ("Tab + Down Arrow", "Inserts Empty Line."),
     ];
@@ -55,6 +67,7 @@ public static class AppCommandsData
         UserInput.CreateCategorisedReadMenu("Hotkeys", 5,
         ("General", generalHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}] - {x.description}", BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 4), [.. AppRegistry.PrimaryCol]))).ToArray()),
         ("Input", inputHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}] - {x.description}", BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 4), [.. AppRegistry.PrimaryCol]))).ToArray()),
+        ("Menu", menuHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}] - {x.description}", BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 4), [.. AppRegistry.PrimaryCol]))).ToArray()),
         ("File", fileHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}] - {x.description}", BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 4), [.. AppRegistry.PrimaryCol]))).ToArray()));
     }
 
@@ -88,8 +101,8 @@ public static class AppCommandsData
     {
         if (SettingsApp.SettingExists(userInput))
         {
-            if (readOnly) SettingsApp.HandleSettingGet(userInput);
-            else SettingsApp.HandleSettingSet(userInput);
+            if (readOnly) SettingsApp.SettingGetMenu(userInput);
+            else SettingsApp.SettingSetMenu(userInput);
         }
         else SendConsoleMessage(new ConsoleLine($"Setting Could Not Be Found - '{userInput}'", BuildArray(AppRegistry.PrimaryCol.Extend(29), AppRegistry.SecondaryCol)));
     }
@@ -108,8 +121,8 @@ public static class AppCommandsData
 
     public static void RenderTestCommand()
     {
-        ConsoleLine[] lines = [.. Enumerable.Range(0, 30).Select(i => new ConsoleLine(new string('a', 200), AllColours.Repeat(13), AllColours.Repeat(13)))];
-        ConsoleAnimatedLine[] animation = [.. Enumerable.Range(0, 30).Select(i => new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, 5, true))];
+        ConsoleLine[] lines = [.. Enumerable.Range(0, 40).Select(i => new ConsoleLine(new string('a', 200), AllColours.Repeat(13), AllColours.Repeat(13)))];
+        ConsoleAnimatedLine[] animation = [.. Enumerable.Range(0, 40).Select(i => new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, 5, true))];
         SendConsoleMessages(lines, animation);
     }
 }

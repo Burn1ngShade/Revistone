@@ -10,18 +10,18 @@ public class AppCommand
     public UserInputProfile format;
     public Action<string> action;
 
-    public string name;
-    public string summary;
+    public string commandName;
+    public string description;
 
     public CommandType type;
     public int displayPriority;
 
-    public AppCommand(UserInputProfile format, Action<string> action, string name, string summary, int displayPriority = 0, CommandType type = CommandType.AppSpecific)
+    public AppCommand(UserInputProfile format, Action<string> action, string commandName, string description, int displayPriority = 0, CommandType type = CommandType.AppSpecific)
     {
         this.format = format;
         this.action = action;
-        this.name = name;
-        this.summary = summary;
+        this.commandName = commandName;
+        this.description = description;
         this.type = type;
         this.displayPriority = displayPriority;
     }

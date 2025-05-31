@@ -10,10 +10,12 @@ namespace Revistone.Functions;
 /// <summary> Class pertaining all logic for easy saving of data for apps. </summary>
 public static class PersistentDataFunctions
 {
-    public enum DataLocation { App, Console, Workspace }
+    public enum DataLocation { App, Console, Workspace, ConsoleAnalytics, ConsoleAssets, ConsoleHistory, ConsoleDebug }
     public enum SaveType { Overwrite, PartialOverwrite, Append, Insert }
 
-    static readonly string[] dataPaths = [@"PersistentData\App\", @"PersistentData\Console\", @"PersistentData\Workspace\"];
+    static readonly string[] dataPaths =
+        [@"PersistentData\App\", @"PersistentData\Console\", @"PersistentData\Workspace\",
+        @"PersistentData\Console\Analytics\", @"PersistentData\Console\Assets\", @"PersistentData\Console\History\", @"PersistentData\Console\Debug\"];
     static readonly string[] reservedNames = ["CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"];
 
     // --- Useful ---
@@ -37,7 +39,7 @@ public static class PersistentDataFunctions
 
         if (!isValid)
         {
-            Analytics.Debug.Log($"Error: Invalid File Path {path}");
+            DeveloperTools.Log($"Error: Invalid File Path {path}");
         }
 
         return isValid;
@@ -263,7 +265,7 @@ public static class PersistentDataFunctions
         }
         catch (Exception e)
         {
-            Analytics.Debug.Log(e.Message);
+            DeveloperTools.Log(e.Message);
             return default;
         }
     }

@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 using Revistone.App;
 using Revistone.Console.Data;
-using System.Runtime.CompilerServices;
 
 using static Revistone.Functions.PersistentDataFunctions;
 using static Revistone.Functions.ColourFunctions;
@@ -19,7 +18,6 @@ public static class Analytics
     public static GeneralAnalyticsData General { get; set; } = new(); // general data
     public static AppAnalyticsData App { get; set; } = new(); // data app specific
     public static WidgetAnalyticsData Widget { get; set; } = new(); // widget stuff
-    public static DebugAnalyticsData Debug { get; set; } = new(); // debug console, as debug lines dont always come through
 
     static readonly string path = GeneratePath(DataLocation.Console, @"Analytics\");
 
@@ -28,7 +26,11 @@ public static class Analytics
 
     public static void HandleAnalytics(int tickNum)
     {
-        if (tickNum % ConsoleData.analyticTickInterval == 0) HandleAnalytics();
+        if (tickNum % ConsoleData.analyticTickInterval == 0)
+        {
+            HandleAnalytics();
+            DeveloperTools.SessionLog.Update();
+        }
     }
 
     ///<summary> Update analytics. </summary> 
@@ -54,7 +56,6 @@ public static class Analytics
         General = LoadFileFromJSON<GeneralAnalyticsData>(path + "General.json") ?? new GeneralAnalyticsData();
         App = LoadFileFromJSON<AppAnalyticsData>(path + "App.json") ?? new AppAnalyticsData();
         Widget = LoadFileFromJSON<WidgetAnalyticsData>(path + "Widget.json") ?? new WidgetAnalyticsData();
-        Debug = new DebugAnalyticsData(); // we only want debug from last run
 
         if (!FileExists(GeneratePath(DataLocation.Console, "Analytics", "Debug.json"))) CreateFile(GeneratePath(DataLocation.Console, "Analytics", "Debug.json"));
 
@@ -70,10 +71,15 @@ public static class Analytics
     {
         lock (saveLockObject)
         {
+            if (LoadFileFromJSON<GeneralAnalyticsData>(path + "General.json")?.TotalRuntimeTicks > General.TotalRuntimeTicks)
+            {
+                DeveloperTools.Log(new ConsoleLine("Analytics - General.json is newer than current data, not saving.", AppRegistry.PrimaryCol), true);
+                return; // something wrong with general file
+            }
+
             SaveFileAsJSON(path + "GeneralTemp.json", General);
             SaveFileAsJSON(path + "AppTemp.json", App);
             SaveFileAsJSON(path + "WidgetTemp.json", Widget);
-            SaveFileAsJSON(path + "DebugTemp.json", Debug);
 
             if (LoadFileFromJSON<GeneralAnalyticsData>(path + "GeneralTemp.json") != null) // something went wrong during the write
             {
@@ -92,13 +98,35 @@ public static class Analytics
                 File.Delete(path + "Widget.json");
                 File.Move(path + "WidgetTemp.json", path + "Widget.json");
             }
-
-            if (LoadFileFromJSON<DebugAnalyticsData>(path + "DebugTemp.json") != null) // something went wrong during the write
-            {
-                File.Delete(path + "Debug.json");
-                File.Move(path + "DebugTemp.json", path + "Debug.json");
-            }
         }
+    }
+
+    ///<summary> View analytics data within console. </summary>
+    public static void ViewAnalytics(int option = 0)
+    {
+        option = UserInput.CreateOptionMenu("---- Analytics ---", [
+            new ConsoleLine("General Analytics", AppRegistry.SecondaryCol),
+            new ConsoleLine("App Analytics", AppRegistry.SecondaryCol),
+            new ConsoleLine("Widget Analytics", AppRegistry.SecondaryCol),
+            new ConsoleLine("Exit", AppRegistry.PrimaryCol),
+        ], cursorStartIndex: option);
+
+        switch (option)
+        {
+            case 0:
+                UserInput.GetMultiUserInput("General Analytics", LoadFile(GeneratePath(DataLocation.Console, "Analytics/General.json")), readOnly: true);
+                break;
+            case 1:
+                UserInput.GetMultiUserInput("App Analytics", LoadFile(GeneratePath(DataLocation.Console, "Analytics/App.json")), readOnly: true);
+                break;
+            case 2:
+                UserInput.GetMultiUserInput("Widget Analytics", LoadFile(GeneratePath(DataLocation.Console, "Analytics/Widget.json")), readOnly: true);
+                break;
+            default:
+                return; // if exit
+        }
+
+        ViewAnalytics(option);
     }
 
     ///<summary> Create analytics backup. </summary>
@@ -308,27 +336,6 @@ public static class Analytics
             public long LinesEntered { get; set; } = 0;
             public long OptionMenusUsed { get; set; } = 0;
             public long CommandsUsed { get; set; } = 0;
-        }
-    }
-
-    ///<summary> Holds all analytics pertaining to app behaviour. </summary>
-    public class DebugAnalyticsData()
-    {
-        public List<DebugData> DebugMessages { get; private set; } = [];
-
-        public void Log<T>(T message, [CallerFilePath] string callerFilePath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
-        {
-            DebugMessages.Add(new DebugData(message?.ToString() ?? "", callerFilePath, callerMemberName, callerLineNumber));
-        }
-
-        public class DebugData(string message, string callerFilePath, string callerMemberName, int callerLineNumber)
-        {
-            public string CallerFilePath { get; set; } = callerFilePath;
-            public string CallerMemberName { get; set; } = callerMemberName;
-            public int CallerLineNumber { get; set; } = callerLineNumber;
-
-            public DateTime TimeStamp { get; set; } = DateTime.Now;
-            public string Message { get; set; } = message;
         }
     }
 }

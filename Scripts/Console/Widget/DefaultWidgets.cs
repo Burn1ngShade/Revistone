@@ -34,25 +34,31 @@ public class TimerWidget : ConsoleWidget // widget for displaying some form of t
     long lastUpdate; // tick
 
     public bool paused = false;
+    public bool stopwatch;
 
-    public TimerWidget(string name, int order, long duration, string[] widgetEnabledApps, bool canRemove = true, bool paused = false) : base(name, order, canRemove, widgetEnabledApps)
+    public bool persistent = true; // if timer should be persistent across sesssions
+
+    public TimerWidget(string name, int order, long duration, string[] widgetEnabledApps, bool canRemove = true, bool paused = false, bool stopwatch = false, bool persistent = true) : base(name, order, canRemove, widgetEnabledApps)
     {
         this.duration = duration;
         this.lastUpdate = Manager.ElapsedTicks;
         this.paused = paused;
+        this.stopwatch = stopwatch;
+        this.persistent = persistent;
     }
 
-    public TimerWidget(string name, int order, long duration, bool canRemove = true, bool paused = false) : this(name, order, duration, [], canRemove, paused) { }
+    public TimerWidget(string name, int order, long duration, bool canRemove = true, bool paused = false, bool stopwatch = false, bool persistent = true) : this(name, order, duration, [], canRemove, paused, stopwatch, persistent) { }
 
     public override string GetContent(ref bool shouldRemove)
     {
         if (!paused)
         {
-            duration -= Manager.ElapsedTicks - lastUpdate;
+            if (stopwatch) duration += Manager.ElapsedTicks - lastUpdate; // stop watch adds time.
+            else duration -= Manager.ElapsedTicks - lastUpdate; // timer removes time.
             lastUpdate = Manager.ElapsedTicks;
         }
 
-        if (duration <= 0)
+        if (duration <= 0 && !stopwatch)
         {
             shouldRemove = true;
             SoundFunctions.PlaySound("TimerEnd");
@@ -61,11 +67,11 @@ public class TimerWidget : ConsoleWidget // widget for displaying some form of t
         }
 
         TimeSpan time = TimeSpan.FromSeconds(duration / 40);
-        return time.ToString(@"hh\:mm\:ss");
+        return $"{name}: {time:hh\\:mm\\:ss}";
     }
 
     /// <summary> Create Timer Widget from time. </summary>
-    public static void CreateTimer(string name, string time)
+    public static void CreateTimer(string name, string time, bool stopwatch = false, int order = 100, bool persistent = true)
     {
         if (WidgetExists(name))
         {
@@ -85,7 +91,7 @@ public class TimerWidget : ConsoleWidget // widget for displaying some form of t
             return;
         }
 
-        TryAddWidget(new TimerWidget(name, 100, (long)(timerInSeconds * 40), true));
+        TryAddWidget(new TimerWidget(name, order, (long)(timerInSeconds * 40), true, stopwatch: stopwatch, persistent: persistent));
         SendConsoleMessage(new ConsoleLine($"Timer Created - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol)));
     }
 
@@ -140,13 +146,13 @@ public class TimerWidget : ConsoleWidget // widget for displaying some form of t
     }
 
     ///<summary> Get A List Of Timers And There Remaining Duration. </summary>
-    public static (string name, int order, long duration, bool paused)[] GetActiveTimerInfo()
+    public static (string name, int order, long duration, bool paused, bool stopwatch)[] GetActiveTimerInfo()
     {
-        List<(string name, int order, long duration, bool paused)> timers = [];
+        List<(string name, int order, long duration, bool paused, bool stopwatch)> timers = [];
 
         foreach (ConsoleWidget w in widgets)
         {
-            if (w is TimerWidget tw) timers.Add((tw.name, tw.order, tw.duration, tw.paused));
+            if (w is TimerWidget tw && tw.persistent) timers.Add((tw.name, tw.order, tw.duration, tw.paused, tw.stopwatch));
         }
 
         return [.. timers];

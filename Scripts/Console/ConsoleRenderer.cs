@@ -186,17 +186,17 @@ public static class ConsoleRenderer
         FillBuffer(' ', foreground, background);
     }
 
-    /// <summary> Draws buffer to console. </summary>
-    public static void DrawBuffer()
-    {
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool WriteConsoleOutputW(
+    [DllImport("kernel32.dll", SetLastError = true)]
+    static extern bool WriteConsoleOutputW(
           SafeFileHandle hConsoleOutput,
           CharInfo[] lpBuffer,
           Coord dwBufferSize,
           Coord dwBufferCoord,
           ref Rectangle lpWriteRegion);
 
+    /// <summary> Draws buffer to console. </summary>
+    public static void DrawBuffer()
+    {
         Rectangle rect = new(left, top, right, bottom);
         WriteConsoleOutputW(outputHandle, buffer, new Coord(width, height), new Coord(0, 0), ref rect);
     }

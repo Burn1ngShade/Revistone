@@ -253,7 +253,7 @@ public class ConsoleImage
 
         if (reader.ReadString() != "CIMG")
         {
-            Analytics.Debug.Log($"Error: File At Path {filePath} Is Not A CIMG file.");
+            DeveloperTools.Log($"Error: File At Path {filePath} Is Not A CIMG file.");
             return null;
         }
 

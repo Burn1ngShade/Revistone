@@ -1,0 +1,46 @@
+{
+  "SessionStartTime": "2025-05-31T18:59:28.6110987+01:00",
+  "FlagSession": false,
+  "Messages": [
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\Manager.cs",
+      "CallerMemberName": "Main",
+      "CallerLineNumber": 131,
+      "TimeStamp": "2025-05-31T18:59:28.611186+01:00",
+      "Message": "Console Process Start.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\DeveloperTools.cs",
+      "CallerMemberName": "HandleAdvancedSessionLog",
+      "CallerLineNumber": 89,
+      "TimeStamp": "2025-05-31T18:59:28.6384096+01:00",
+      "Message": "Advanced Session Log Enabled, 5000ms Intervals.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\App\\AppRegistry.cs",
+      "CallerMemberName": "SetActiveApp",
+      "CallerLineNumber": 62,
+      "TimeStamp": "2025-05-31T18:59:28.6462428+01:00",
+      "Message": "Loaded App: Revistone.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleVolatileEnvironment.cs",
+      "CallerMemberName": "TryRestoreEnvironment",
+      "CallerLineNumber": 66,
+      "TimeStamp": "2025-05-31T18:59:28.6465041+01:00",
+      "Message": "Volatile Environment Restore - Success.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\Manager.cs",
+      "CallerMemberName": "Main",
+      "CallerLineNumber": 163,
+      "TimeStamp": "2025-05-31T18:59:28.6465072+01:00",
+      "Message": "Console Process Initialization Complete.",
+      "FlagSession": false
+    }
+  ]
+}

@@ -147,10 +147,10 @@ public abstract class ConsoleWidget
     ///<summary> [DO NOT CALL] Initializes Widgets. </summary>
     internal static void InitializeWidgets()
     {
-        TryAddWidget(new FunctionWidget("Frame Rate", int.MinValue, () => ($"FPS: {Profiler.Fps}", false), false));
+        TryAddWidget(new FunctionWidget("Frame Rate", int.MinValue + 100, () => ($"FPS: {Profiler.Fps}", false), false));
         TryAddWidget(new FunctionWidget("Workspace Path", -100, () => ($"Path: {WorkspaceFunctions.DisplayPath}", false), ["Revistone"], false));
         TryAddWidget(new FunctionWidget("Author", 100, () => ("Creator: Isaac Honeyman", false), false));
-        TryAddWidget(new FunctionWidget("Current Time", int.MaxValue, () => (DateTime.Now.ToString("HH:mm:ss"), false)));
+        TryAddWidget(new FunctionWidget("Current Time", int.MaxValue - 100, () => (DateTime.Now.ToString("HH:mm:ss"), false)));
 
         SettingsApp.OnSettingChanged += OnSettingChange;
 

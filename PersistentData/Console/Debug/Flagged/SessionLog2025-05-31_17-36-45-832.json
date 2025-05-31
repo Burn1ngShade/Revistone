@@ -1,0 +1,70 @@
+{
+  "SessionStartTime": "2025-05-31T17:36:45.8323708+01:00",
+  "FlagSession": true,
+  "Messages": [
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\Manager.cs",
+      "CallerMemberName": "Main",
+      "CallerLineNumber": 111,
+      "TimeStamp": "2025-05-31T17:36:45.8324546+01:00",
+      "Message": "Console Process Start.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\DeveloperTools.cs",
+      "CallerMemberName": "HandleAdvancedSessionLog",
+      "CallerLineNumber": 85,
+      "TimeStamp": "2025-05-31T17:36:45.8584375+01:00",
+      "Message": "Advanced Session Log Enabled, 5000ms Intervals.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleVolatileEnvironment.cs",
+      "CallerMemberName": "TryRestoreEnvironment",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:36:45.8584851+01:00",
+      "Message": "Volatile Environment Restore - Failed.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\App\\AppRegistry.cs",
+      "CallerMemberName": "SetActiveApp",
+      "CallerLineNumber": 62,
+      "TimeStamp": "2025-05-31T17:36:45.8588638+01:00",
+      "Message": "Loaded App: Revistone.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\Manager.cs",
+      "CallerMemberName": "Main",
+      "CallerLineNumber": 143,
+      "TimeStamp": "2025-05-31T17:36:45.858865+01:00",
+      "Message": "Console Process Initialization Complete.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:37:40.8123184+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 465531364 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleVolatileEnvironment.cs",
+      "CallerMemberName": "TrySaveEnvironment",
+      "CallerLineNumber": 32,
+      "TimeStamp": "2025-05-31T17:37:40.8219468+01:00",
+      "Message": "Volatile Environment Save - Success.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\Manager.cs",
+      "CallerMemberName": "OnProcessExit",
+      "CallerLineNumber": 162,
+      "TimeStamp": "2025-05-31T17:37:40.8219486+01:00",
+      "Message": "Console Process Exit.",
+      "FlagSession": false
+    }
+  ]
+}

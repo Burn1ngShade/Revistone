@@ -70,7 +70,7 @@ public static class SoundFunctions
     {
         if (!FileExists(wavProfile.path))
         {
-            Analytics.Debug.Log($"Sound File Does Not Exist - {wavProfile.path}");
+            DeveloperTools.Log($"Sound File Does Not Exist - {wavProfile.path}");
             return;
         }
 
@@ -131,7 +131,7 @@ public static class SoundFunctions
         int result = waveOutOpen(out hWaveOut, -1, ref format, 0, 0, CALLBACK_NULL);
         if (result != 0)
         {
-            Analytics.Debug.Log($"WaveOutOpen failed: {result}");
+            DeveloperTools.Log($"WaveOutOpen failed: {result}");
             return;
         }
 

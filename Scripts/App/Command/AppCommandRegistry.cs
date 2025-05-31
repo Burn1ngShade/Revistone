@@ -17,7 +17,7 @@ namespace Revistone.App.Command;
 /// <summary> Class pertaining all logic for app commands. </summary>
 public static class AppCommandRegistry
 {
-    static readonly AppCommand[] baseCommands = [
+    public static readonly AppCommand[] baseCommands = [
         new AppCommand(
             new UserInputProfile("help", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => DisplayCommands(), "Help", "Lists All Base Commands And Their Functionality.", int.MaxValue, AppCommand.CommandType.Console),
@@ -124,6 +124,15 @@ public static class AppCommandRegistry
             new UserInputProfile(["modify timer[A:]"], caseSettings: StringFunctions.CapitalCasing.Lower, removeTrailingWhitespace: true, removeLeadingWhitespace: true),
             (s) => TimerWidget.AdjustTimer("Timer", s[12..]), "Modify Timer [Duration]", "Modify The Timers Duration By Given Duration (hh:mm:ss).", 70, AppCommand.CommandType.Widget),
         new AppCommand(
+            new UserInputProfile(["stopwatch", "sw"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => TimerWidget.CreateTimer("Stopwatch", "0", true), "Stopwatch", "Creates A Stopwatch.", 65, AppCommand.CommandType.Widget),
+        new AppCommand(
+            new UserInputProfile(["removestopwatch", "removesw", "cancelstopwatch", "cancelsw"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => TimerWidget.CancelTimer("Stopwatch"), "Cancel Stopwatch", "Removes Active Stopwatch.", 64, AppCommand.CommandType.Widget),
+        new AppCommand(
+            new UserInputProfile(["pausestopwatch", "pausesw", "stopstopwatch", "stopsw", "togglestopwatch", "togglesw"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => TimerWidget.TogglePauseTimer("Stopwatch"), "Toggle Stopwatch", "Pauses Or Unpauses Stopwatch.", 63, AppCommand.CommandType.Widget),
+        new AppCommand(
             new UserInputProfile(["exit", "leave", "quit"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => ExitTerminalCommand(false), "Quit", "Closes The Revistone Terminal.", -100, AppCommand.CommandType.Console),
         new AppCommand(
@@ -157,12 +166,24 @@ public static class AppCommandRegistry
             new UserInputProfile(["version", "releaseversion", "buildversion", "build"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => SendConsoleMessage(new ConsoleLine($"Build Version - {Manager.ConsoleVersion}", BuildArray(AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol))), "Version", "Displays Console Version.", 0, AppCommand.CommandType.Console),
         new AppCommand(
+            new UserInputProfile("analytics", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => Analytics.ViewAnalytics(), "Analytics", "Displays Analytics Data.", 3, AppCommand.CommandType.Console
+        ),
+        new AppCommand(
             new UserInputProfile(["analyticsbackup", "backupanalytics"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => Analytics.CreateAnalyticsBackup(), "Backup Analytics", "Create A Manual Backup Of Analytics (To Safegard 1/10000 Corruptions).", 2, AppCommand.CommandType.Console
         ),
         new AppCommand(
             new UserInputProfile(["restoreanalytics", "analyticsrestore"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => Analytics.RestoreAnalyticsBackup(), "Restore Analytics", "Uses Last Manual Backup Of Analytics To Restore Corrupted Analytics Data.", 1, AppCommand.CommandType.Console
+        ),
+        new AppCommand(
+            new UserInputProfile("tip", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => SendConsoleMessage(new ConsoleLine($"Tip - {Manager.GetConsoleTip}", BuildArray(AppRegistry.PrimaryCol.Extend(6), AppRegistry.SecondaryCol))), "Tip", "Displays A Random Console Tip.", 11, AppCommand.CommandType.Console
+        ),
+        new AppCommand(
+            new UserInputProfile("tips", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => UserInput.GetMultiUserInput("Tips", Manager.consoleTips, readOnly: true), "Tips", "Displays List Of Console Tips.", 11, AppCommand.CommandType.Console
         ),
         
         // developer commands
@@ -172,7 +193,10 @@ public static class AppCommandRegistry
             (s) => SendConsoleMessage(new ConsoleLine(Manager.GetTickListeners().ToElementString(), AppRegistry.PrimaryCol)), "Tick Event", "Displays All Methods Invoked By Tick Event.", 100, AppCommand.CommandType.Developer),
         new AppCommand(
             new UserInputProfile("render test", caseSettings: StringFunctions.CapitalCasing.Lower, removeTrailingWhitespace: true, removeLeadingWhitespace: true),
-            (s) => RenderTestCommand(), "Render Test", "Displays Render Stress Test For The Console.", 90, AppCommand.CommandType.Developer)
+            (s) => RenderTestCommand(), "Render Test", "Displays Render Stress Test For The Console.", 90, AppCommand.CommandType.Developer),
+        new AppCommand(
+            new UserInputProfile("genrevistoneabout", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => { DeveloperTools.GenerateGPTAboutFile(); SendConsoleMessage(new ConsoleLine("About Revistone File Generated.", AppRegistry.PrimaryCol));}, "Gen Revistone About", "Generates A File For The GPT Model To Use As About Information.", 80, AppCommand.CommandType.Developer),
     ];
 
     // --- STATIC FUNCTIONS ---
@@ -225,7 +249,7 @@ public static class AppCommandRegistry
             {
                 commandList.Add(c.type.ToString(), []);
             }
-            commandList[c.type.ToString()].Add((new ConsoleLine($"{c.name} - {c.summary}", BuildArray(AppRegistry.SecondaryCol.Extend(c.name.Length + 3), [.. AppRegistry.PrimaryCol])), c.displayPriority));
+            commandList[c.type.ToString()].Add((new ConsoleLine($"{c.commandName} - {c.description}", BuildArray(AppRegistry.SecondaryCol.Extend(c.commandName.Length + 3), [.. AppRegistry.PrimaryCol])), c.displayPriority));
         }
 
         foreach (AppCommand c in AppRegistry.activeApp.appCommands)
@@ -236,7 +260,7 @@ public static class AppCommandRegistry
             {
                 commandList.Add(catName, []);
             }
-            commandList[catName].Add((new ConsoleLine($"{c.name} - {c.summary}", BuildArray(AppRegistry.SecondaryCol.Extend(c.name.Length + 3), [.. AppRegistry.PrimaryCol])), c.displayPriority));
+            commandList[catName].Add((new ConsoleLine($"{c.commandName} - {c.description}", BuildArray(AppRegistry.SecondaryCol.Extend(c.commandName.Length + 3), [.. AppRegistry.PrimaryCol])), c.displayPriority));
         }
 
         UserInput.CreateCategorisedReadMenu("Help", 5, commandList.Select(x => (x.Key, x.Value.OrderByDescending(x => x.Item2).Select(x => x.Item1).ToArray())).ToArray());

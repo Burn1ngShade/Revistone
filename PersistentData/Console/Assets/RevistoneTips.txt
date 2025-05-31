@@ -1,0 +1,14 @@
+Using -j When Creating A Directory/File Will Jump Into The New Created Directory/File!
+Using -p When Creating A Directory/File Will Create The File In The Parent Directory!
+Using -r When Creating A Directory/File Will Create The File In The Root Directory!
+Something Not Looking Quite Right? Use Reload Command To Fix Display Errors!
+Want To Restart A Flash Card Set? Press E Between Questions To Quit!
+Set A Timer Incorrectly? Use The Modify Timer Command To Add Or Remove Time!
+Dont Like The Default Stickers? Create Your Own Using The Paint App!
+Stickers Can Be Stored And Edited Directly From The Workspace Using The Open Command!
+Have To Go While A Timer Is Running? Don't Worry, The Console Will Remember Your Timers For The Next Time You Use It!
+The Flash Card App Is A Great Way To Learn New Things, And Try And Beat Your Personal Bests!
+Always Support Open Source!
+It's There First Time Living Aswell <3
+Want To See How You Use The Console? Use Analytics Command To View Your Stats!
+Remember To Backup Your Analytics! Use Analytics Backup!

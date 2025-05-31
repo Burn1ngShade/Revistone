@@ -7,6 +7,7 @@ using Revistone.App.Command;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
+using Revistone.Console.Widget;
 
 //FCS -> Flash Card Set
 
@@ -134,12 +135,13 @@ public class FlashCardApp : App
     /// <summary> Loop for flashcard use.</summary>
     // --- FLASH CARD USEAGE ---
 
-    void UseFCS(FlashCardSet s)
+    void UseFCS(FlashCardSet s, bool subset = false)
     {
-        FlashCard[] shuffledQuestions = s.questions.OrderBy(a => Manager.rng.Next()).ToArray();
+        FlashCard[] shuffledQuestions = [.. s.questions.OrderBy(a => Manager.rng.Next())];
         List<int> correctQuestions = new List<int>();
 
         DateTime startTime = DateTime.Now;
+        TimerWidget.CreateTimer("Flash Cards", "0", true, -int.MaxValue, false); // far left so easier to see
 
         for (int i = 0; i < shuffledQuestions.Length; i++)
         {
@@ -163,11 +165,12 @@ public class FlashCardApp : App
                     break;
                 case 1:
                     MultiChoiceFlashCard mcfc = (MultiChoiceFlashCard)shuffledQuestions[i];
+                    (string answer, int index)[] shuffledAnswers = [.. mcfc.answers.Select((x, i) => (x, i)).OrderBy(a => Manager.rng.Next())];
                     SendConsoleMessage(new ConsoleLine("Promt:", AppRegistry.PrimaryCol));
                     SendConsoleMessage(new ConsoleLine(mcfc.promt, AppRegistry.SecondaryCol));
                     ShiftLine();
-                    answer = UserInput.CreateOptionMenu("Answer: ", mcfc.answers.ToArray()).ToString();
-                    correctAnswer = mcfc.answers[mcfc.answerIndex];
+                    answer = shuffledAnswers[UserInput.CreateOptionMenu("Answer: ", shuffledAnswers.Select(x => x.answer).ToArray())].index.ToString();
+                    correctAnswer = mcfc.answerIndex.ToString();
                     break;
                 case 2:
                     FillTheGapFlashCard ftgfc = (FillTheGapFlashCard)shuffledQuestions[i];
@@ -186,12 +189,21 @@ public class FlashCardApp : App
             }
             else
             {
+                if (shuffledQuestions[i] is MultiChoiceFlashCard mcfc) // fix UI to show actual answer instead of index
+                {
+                    answer = mcfc.answers[int.Parse(answer.Trim())];
+                    correctAnswer = mcfc.answers[mcfc.answerIndex];
+                }
                 SendConsoleMessage(new ConsoleLine("Answer Incorrect!", ConsoleColor.DarkRed));
                 SendConsoleMessage(new ConsoleLine($"Your Answer: {answer.Trim()}", BuildArray(AppRegistry.SecondaryCol.Extend(12), inputCol)));
                 SendConsoleMessage(new ConsoleLine($"Correct Answer: {correctAnswer}", AppRegistry.SecondaryCol));
             }
 
-            if (UserInput.WaitForUserInput([ConsoleKey.Enter, ConsoleKey.E], space: true) == ConsoleKey.E) return;
+            if (UserInput.WaitForUserInput([ConsoleKey.Enter, ConsoleKey.E], space: true, customMessage: new ConsoleLine("Press [Enter] To Continue Or [E] To Exit", BuildArray(AppRegistry.PrimaryCol.Extend(6), AppRegistry.SecondaryCol.Extend(7), AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol.Extend(3), AppRegistry.PrimaryCol.Extend(8)))) == ConsoleKey.E)
+            {
+                TimerWidget.CancelTimer("Flash Cards");
+                return;
+            }
         }
 
         TimeSpan time = DateTime.Now - startTime;
@@ -212,6 +224,8 @@ public class FlashCardApp : App
         }
         else if (s.questionHighscore == correctQuestions.Count && s.bestTime > time) s.bestTime = time;
 
+        TimerWidget.CancelTimer("Flash Cards");
+
         //stats 
         ClearPrimaryConsole();
         SendConsoleMessage(new ConsoleLine($"'{StringFunctions.SplitAtCapitalisation(s.name)}' Complete!", AppRegistry.PrimaryCol));
@@ -220,9 +234,18 @@ public class FlashCardApp : App
         SendConsoleMessage(new ConsoleLine($"Time: {time:mm\\:ss}", AppRegistry.SecondaryCol));
         ShiftLine();
         s.PrintStats();
+        if (!subset) SaveFCS(s);
 
-        SaveFCS(s);
-        UserInput.WaitForUserInput(space: true);
+        if (correctQuestions.Count < s.questions.Count)
+        {
+            if (UserInput.WaitForUserInput([ConsoleKey.Enter, ConsoleKey.R], space: true, customMessage: new ConsoleLine("Press [Enter] To Continue Or [R] To Retry Incorrect Questions", BuildArray(AppRegistry.PrimaryCol.Extend(6), AppRegistry.SecondaryCol.Extend(7), AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol.Extend(3), AppRegistry.PrimaryCol.Extend(19)))) == ConsoleKey.R)
+            {
+                FlashCardSet incorrectSet = new FlashCardSet($"{s.name}{(subset ? "" : " - Incorrect Answers")}", [.. shuffledQuestions.Where((x, i) => !correctQuestions.Contains(i))]);
+                UseFCS(incorrectSet, true);
+            }
+        }
+        else UserInput.WaitForUserInput(space: true);
+
     }
 
     // --- FLASH CARD SET MODIFICATIONS ---
@@ -522,7 +545,7 @@ public class FlashCardApp : App
         /// <summary>Checks if given answer to flash card is correct.</summary>
         public override bool CheckAnswer(string answer)
         {
-            return int.Parse(answer) == answerIndex;
+            return answer == answerIndex.ToString();
         }
 
         public override string ToString()

@@ -39,9 +39,17 @@ public static class ConsoleRendererLogic
 
         while (true)
         {
+            Manager.threadCheckpoints[3].Clear();
+
             frameDuration.Restart();
 
-            RenderConsole();
+            lock (Manager.ConsoleLock)
+            {
+                Manager.threadCheckpoints[3].Add("Render Start");
+                RenderConsole();
+                Manager.threadCheckpoints[3].Add("Render End");
+            }
+
             Profiler.RenderLogicTime.Add(frameDuration.ElapsedTicks);
 
             while (true)
@@ -50,6 +58,8 @@ public static class ConsoleRendererLogic
             }
 
             Profiler.RenderTime.Add(frameDuration.ElapsedTicks);
+
+            Manager.threadCycles[3]++; // increment render thread cycle count
         }
     }
 
@@ -277,12 +287,6 @@ public static class ConsoleRendererLogic
     /// <summary> Writes given line to screen, using value of consoleLines. </summary>
     static void WriteConsoleLine(int lineIndex)
     {
-        if (consoleLines[lineIndex] == null)
-        {
-            Analytics.Debug.Log("Console Write Fail.");
-            return;
-        }
-
         //if user decides to set an empty array for colours (please dont do this)
         if (consoleLines[lineIndex].lineColour.Length == 0) consoleLines[lineIndex].Update(ConsoleColor.White.ToArray());
         if (consoleLines[lineIndex].lineBGColour.Length == 0) consoleLines[lineIndex].Update(consoleLines[lineIndex].lineText, consoleLines[lineIndex].lineColour, ConsoleColor.Black.ToArray());
@@ -309,23 +313,33 @@ public static class ConsoleRendererLogic
     /// <summary> Updates the console display, based on current states of consoleLines, before updating consoleLinesBuffer. </summary>
     public static void RenderConsole()
     {
-        if (blockRender || consoleLines.Length == 0 || consoleLines[^1] == null || consoleLinesBuffer.Length == 0 || consoleLinesBuffer[^1] == null || consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return;
+        if (blockRender || consoleLines.Length < AppRegistry.activeApp.minHeightBuffer)
+        {
+            Manager.threadCheckpoints[3].Add("Render Blocked");
+            return;
+        }
 
         if (System.Console.WindowTop != 0)
         {
+            Manager.threadCheckpoints[3].Add("Render Window OOps");
             try
             {
                 if (OperatingSystem.IsWindows()) System.Console.SetWindowPosition(0, 0);
             }
-            catch (IOException) { } //needed as its not possible to detect user changing window size (to my knowledge)
+            catch (IOException e)
+            {
+                DeveloperTools.Log(e.Message, true, true);
+            } //needed as its not possible to detect user changing window size (to my knowledge)
         }
 
         for (int i = 0; i < consoleLines.Length; i++)
         {
-            if (consoleLines[i].updated) continue;
+            Manager.threadCheckpoints[3].Add($"Render Line {i}");
+            if (consoleLines[i] == null || consoleLines[i].updated) continue;
 
             if (System.Console.WindowHeight != windowSize.height || System.Console.WindowWidth != windowSize.width)
             {
+                Manager.threadCheckpoints[3].Add("Screen Changed");
                 return;
             }
 
@@ -333,6 +347,8 @@ public static class ConsoleRendererLogic
             consoleLinesBuffer[i].Update(consoleLines[i]);
         }
 
+        Manager.threadCheckpoints[3].Add("Draw Buffer Start");
         ConsoleRenderer.DrawBuffer();
+        Manager.threadCheckpoints[3].Add("Draw Buffer End");
     }
 }

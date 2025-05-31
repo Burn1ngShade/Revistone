@@ -1,0 +1,3870 @@
+{
+  "SessionStartTime": "2025-05-31T17:42:47.4595564+01:00",
+  "FlagSession": true,
+  "Messages": [
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\Manager.cs",
+      "CallerMemberName": "Main",
+      "CallerLineNumber": 114,
+      "TimeStamp": "2025-05-31T17:42:47.45964+01:00",
+      "Message": "Console Process Start.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\DeveloperTools.cs",
+      "CallerMemberName": "HandleAdvancedSessionLog",
+      "CallerLineNumber": 85,
+      "TimeStamp": "2025-05-31T17:42:47.4872792+01:00",
+      "Message": "Advanced Session Log Enabled, 5000ms Intervals.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\App\\AppRegistry.cs",
+      "CallerMemberName": "SetActiveApp",
+      "CallerLineNumber": 62,
+      "TimeStamp": "2025-05-31T17:42:47.495384+01:00",
+      "Message": "Loaded App: Revistone.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleVolatileEnvironment.cs",
+      "CallerMemberName": "TryRestoreEnvironment",
+      "CallerLineNumber": 66,
+      "TimeStamp": "2025-05-31T17:42:47.4956047+01:00",
+      "Message": "Volatile Environment Restore - Success.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Management\\Manager.cs",
+      "CallerMemberName": "Main",
+      "CallerLineNumber": 146,
+      "TimeStamp": "2025-05-31T17:42:47.4956071+01:00",
+      "Message": "Console Process Initialization Complete.",
+      "FlagSession": false
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:01.8690722+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50102 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:03.2450555+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50036 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:05.2466994+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55330 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:15.1200622+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51889 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:16.1494353+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42608 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:16.3163543+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44001 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:16.3341398+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 52670 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:16.3509104+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42588 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:16.3684428+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50208 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:16.4852039+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42313 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:16.6225144+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 80824 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:16.7569039+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 93549 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:17.1220418+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 64477 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:17.6181557+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43600 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:18.9968584+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 76340 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:19.011115+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 58840 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:21.7844148+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59123 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:21.8347082+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44401 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:21.8656364+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59133 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:21.9840617+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59072 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:22.0013746+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47967 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:22.0182037+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43179 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:22.6022373+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47620 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:22.6223426+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 75924 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:22.6717036+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 76797 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:22.7019526+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 52349 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:23.2196452+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50693 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:23.5582838+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 94261 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:23.5923163+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 90048 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:23.6179067+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47390 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:23.9851673+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43763 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:24.0019677+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42833 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:24.0360035+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48555 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:24.0529591+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44436 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:24.1202114+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47391 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:24.1840093+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 54513 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:24.2523607+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 58334 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:24.2693437+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44748 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:24.2863339+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44805 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:24.3251431+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 96068 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:24.3603766+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 102081 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.3458651+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 62010 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.4500934+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42029 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.4840592+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47550 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.5178308+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45948 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.5681978+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45220 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.602505+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51289 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.6215019+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 64863 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.7177098+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45269 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.7523796+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 54488 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.8702709+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 53734 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.9349763+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 63566 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.9686356+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44722 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:25.9860688+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49233 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:26.0495543+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51382 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:26.0669623+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48892 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:26.0844727+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49978 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:26.2826017+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 105554 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:26.3173185+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55385 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:26.3512468+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47471 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:26.3848955+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44726 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:26.4183306+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42531 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:26.4356951+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48510 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:26.4698926+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50227 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:27.2456719+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48255 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:32.8684207+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48043 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:33.8734541+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 90097 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:39.7469315+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 57435 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:40.750105+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 72018 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:49.8698294+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 57127 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:50.0698686+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 41871 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:50.0871162+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47394 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:50.2206936+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43950 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:50.3711689+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46280 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:50.7571203+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 109062 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:50.7735721+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 81071 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:50.7881836+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 62236 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:50.9352919+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 54213 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.0022147+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44142 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.0195646+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48390 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.1218304+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 64206 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.1514757+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46379 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.2185892+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46057 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.335655+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45524 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.3700081+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51726 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.4370892+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45685 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.5714958+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 52215 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.5854073+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55708 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.6024427+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45280 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.6195914+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46422 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.7215016+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 60497 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.7405249+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 65090 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.7460894+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55576 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.7581451+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 78784 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.7707153+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42260 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.7895733+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 63450 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.8190671+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44859 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:51.8704+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 54926 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:52.0374999+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45859 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:52.3222374+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55507 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:52.4689799+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50484 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:52.4860715+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45670 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:52.5032395+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46618 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:52.5536618+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45808 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:52.6224449+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 62737 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:52.6853152+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45281 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:54.2688862+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 41722 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:55.6544896+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59752 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:55.7052052+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48638 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:55.8356439+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 54209 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:55.8527518+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46002 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:55.870908+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 56505 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:56.4980972+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 63077 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:58.25776+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 92337 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:58.2888965+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 61183 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:58.3866764+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 60974 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:58.453795+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46046 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:58.520615+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43108 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:58.5860997+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 71419 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:59.2548351+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 61623 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:43:59.9988756+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 64550 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:00.0202764+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47177 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:00.0543015+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48472 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:00.1051732+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50290 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:00.9194118+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 57759 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:00.9370408+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51210 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:01.0879317+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50396 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:01.2525204+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 62377 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:01.3197199+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46902 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:01.3533999+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45035 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:01.3869292+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43537 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:01.7212311+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51120 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:01.8339749+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 85589 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:01.8528886+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 64000 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:01.8729037+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 116725 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:02.6820498+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 89837 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:02.709648+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 150844 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:02.7728824+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 90555 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:02.8077141+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 56470 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:03.497208+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 57390 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:03.642716+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 121487 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:03.7082399+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 71764 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:03.7590671+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 91481 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:03.7928626+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 129550 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:03.8412371+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 66903 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:03.8906981+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 77826 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.1034738+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44163 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.1202778+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42978 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.1377891+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50040 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.1883052+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46726 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.3401175+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59635 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.3722961+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 71712 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.3898777+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50393 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.4048739+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 66562 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.4223256+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49439 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.4522768+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49435 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.4716781+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 68954 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.4886245+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44395 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.5504316+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 159556 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.5775133+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 187337 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.5964701+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 64480 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.6221446+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48341 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.7051577+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 80014 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.7722134+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 87102 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.8063263+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49369 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.822583+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 79149 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.8391794+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 82548 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.8756374+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 72830 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.922729+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 54162 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.9389517+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 78825 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:04.9566837+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 93909 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.0054019+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 70419 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.0221942+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42851 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.0714222+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 75528 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.0894953+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55641 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.104959+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 71219 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.1226095+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51446 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.138446+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 74972 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.1553368+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43821 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.172971+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 92930 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.187842+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 65297 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.2208124+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 79594 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.2385052+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51841 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.2720082+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43279 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.2899652+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 54495 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.3229215+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 79360 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.338918+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 76563 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.3713593+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 74300 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.4053692+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48332 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.4361061+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 57275 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.467043+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59270 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.5048909+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45050 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.5278269+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 104262 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.573368+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 80270 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.606541+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 81656 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.6407453+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 91966 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.6716897+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59376 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.7183929+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50280 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.7687727+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45390 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.7868071+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55212 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.8035676+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42428 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.8376024+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48594 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:05.8860604+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 67811 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.1211074+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 58582 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.1382695+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46541 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.1719063+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44623 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.2058853+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48045 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.2218789+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 76516 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.2385938+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42067 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.2895304+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50110 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.3054378+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 75664 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.3230861+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51408 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.3382281+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 68015 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.3557784+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50421 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.3727686+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 86484 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.3886778+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 75671 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.4222039+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43511 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.4398308+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51201 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.4740063+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 91678 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.4954553+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47327 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:06.5470454+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 182320 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:07.5124125+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 194261 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:07.6900899+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 66049 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:07.7210867+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59885 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:07.7379775+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43822 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:07.7548801+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43945 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:07.8055205+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47956 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:07.822259+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42302 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:07.8397311+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49637 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:07.856139+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 80672 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:07.8723839+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 79001 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:07.9199467+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 58846 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:07.9378158+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 53614 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.0205205+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 76936 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.0372913+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42629 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.0549867+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51876 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.0890385+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 90434 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.1255256+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 73122 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.1561235+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55883 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.1722131+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 77477 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.22309+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50335 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.2694306+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46662 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.2878644+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59272 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.3212228+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 83490 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.3381326+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44010 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.3552069+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45662 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.3722999+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45868 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.4337812+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 156366 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.4632859+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 169930 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.5222738+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48100 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.5397747+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49931 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.5551309+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 70150 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.5894229+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51147 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.6049841+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 72202 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.6358548+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 58626 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.6527311+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43670 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.7076413+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 90510 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.7395904+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 69359 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.7553625+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 74305 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.8236663+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 57917 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.8718513+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 65099 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.8892496+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48904 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.9054891+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 78984 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.9354812+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49850 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.9524124+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44230 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:08.9735015+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 85800 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.0741923+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 90090 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.1065319+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 73304 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.1223328+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 74585 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.1524106+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50696 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.1867698+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51838 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.2713693+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 54225 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.3577519+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 72021 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.4728443+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 67354 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.4856156+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44320 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.5359978+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45405 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.5544491+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59437 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.7226074+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 56425 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.8205383+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 62430 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.8558717+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 61571 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.872207+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 79919 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.8890908+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43758 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:09.9704268+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 63230 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:10.153804+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 41916 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:10.3542214+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45569 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:10.3854219+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 186885 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:10.4048578+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 69244 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:10.4205119+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 73112 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:10.4384446+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 54243 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:10.6505877+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 162634 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:10.7048183+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42203 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:10.8197361+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 65692 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:10.8697684+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 41879 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:10.9201459+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45369 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:11.088227+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55659 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:11.3764651+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48804 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:13.4535431+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59772 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:13.4868992+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 41812 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:13.5369174+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 41755 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:13.7038633+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44314 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:13.8043101+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46018 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:14.4080612+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 78756 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:14.487432+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42910 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:14.7219428+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 53259 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:15.3193255+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 56708 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:15.3364738+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46401 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:15.4105687+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 115836 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:15.487862+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 64371 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:16.4094114+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 89922 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:18.3937193+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 131493 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:19.386095+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46776 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:19.4224786+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 72081 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:19.5229233+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46004 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:19.5533204+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 53905 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:19.5700017+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 41756 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:19.5889788+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 64693 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.027324+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 89793 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.06908+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42476 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.0869036+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 53159 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.1372896+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45427 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.1878716+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47395 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.3597977+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 94067 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.4186653+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46832 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.4859064+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47310 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.503153+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47409 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.5206056+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49448 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.5376248+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45134 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.5709992+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42009 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:20.8210572+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42057 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:21.104751+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45038 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:21.3579962+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 73905 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:21.3815468+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 152046 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:21.407583+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 93576 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:21.4542576+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49977 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:21.5715972+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48247 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:21.7216869+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42420 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:22.2183083+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49133 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:22.3592653+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 76084 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:23.3727264+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50073 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:24.403859+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 60521 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:24.4231121+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 67441 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:24.503137+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50038 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:24.5374226+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51110 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:24.5876379+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43700 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:24.6211777+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43636 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:25.1880724+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43456 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:25.3764783+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 92218 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:25.9208183+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 67906 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:25.9709895+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43294 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:26.1046258+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44561 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:26.3833807+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 162338 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:26.4048385+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47782 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:26.4249877+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 118051 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:27.4716789+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48399 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:27.6803668+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 128301 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:27.7068032+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55940 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:27.7206524+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55073 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:27.8041494+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43181 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:27.9375666+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42371 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:27.9718892+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51483 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:28.3232785+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55286 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:28.3444617+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 86704 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:28.3865701+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45957 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:28.4041724+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50948 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:28.4546738+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46588 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:28.705097+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45618 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:28.7219077+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43017 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:28.8698611+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 62705 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:28.8866598+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42911 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:28.9207657+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49305 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:28.9878316+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45491 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.0220554+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50495 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.0849146+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45178 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.1039316+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 65054 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.1374521+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43355 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.1719032+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 52778 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.3306981+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 129429 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.3580152+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 106362 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.404028+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43355 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.4887419+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55329 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.6186766+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49219 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.6368469+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 56572 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.6536157+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42607 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.6712222+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51013 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.8379361+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 41980 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:29.8717405+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46306 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:30.0441214+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 98656 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:30.0701589+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51956 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:30.0876628+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49970 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:30.1043919+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42219 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:30.2212825+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43529 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:30.2546862+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42293 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:30.3458927+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 120255 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:30.3727025+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59657 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:30.686623+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 55617 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:30.703353+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42229 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:30.7217927+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59333 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:31.3280358+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 103711 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:32.3721445+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 63514 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:32.8022996+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51223 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:32.8199688+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51624 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:32.8384729+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59974 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:33.3441589+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 98124 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:33.3730608+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 80521 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:33.386834+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 54325 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:33.4041363+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47958 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:33.4212623+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46205 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:33.455399+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49619 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:33.870065+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 62924 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:33.8878961+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 53237 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:33.9717135+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46395 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:34.1889849+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47517 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:34.3424266+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 75699 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:34.5717936+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43368 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:34.8718491+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 41963 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:34.9719653+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42719 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:35.1226932+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48797 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:35.3601027+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 82004 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:35.4530353+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 54146 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:35.4704702+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49292 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:35.5381514+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51718 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:35.6218231+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44886 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:35.8727929+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51148 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:35.8926945+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 73916 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:35.9226923+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49868 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:35.9874761+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 64366 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:36.0046027+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 46199 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:36.1050177+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45690 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:36.1901362+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59391 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:36.2372061+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 53539 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:36.2716665+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 52821 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:36.3219537+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44455 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:36.3603508+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 92181 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:36.4072651+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 93996 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:36.4205566+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 49502 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:36.4556338+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59020 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:36.872983+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 48038 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:37.0367241+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 53940 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:37.0543952+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 51642 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:37.0897373+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 61641 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:37.3591808+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 69182 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:37.3772981+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 97735 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:37.8212384+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59791 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:37.8562786+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 58646 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:37.9203358+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 57133 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:37.9381663+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 53237 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:37.9721006+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 47598 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:38.2768843+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 89245 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:38.6373311+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 62431 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:38.7043989+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45585 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:38.7211775+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42733 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:38.771223+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42037 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:38.7881185+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43889 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:38.8723448+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 50478 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:39.2763876+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 81751 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:40.3124327+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 109600 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:40.3469133+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 136318 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:40.4722783+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45181 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:40.572584+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44613 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:41.3288331+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 102695 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:41.4058073+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 61170 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:42.3587974+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 70805 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:42.3763434+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 92016 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:42.3859844+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 54644 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:43.3736462+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 42006 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:44.4048349+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 58611 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:44.4400082+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 59979 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:44.4719986+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 69816 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:44.5724358+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45925 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:44.9060088+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43812 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:45.3766783+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 81327 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:46.3060919+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 43405 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:46.3929813+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 77076 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:46.5892083+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 45321 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:46.6228668+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 44844 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:47.1220944+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 69509 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:47.1731778+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 52407 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    },
+    {
+      "CallerFilePath": "D:\\A-Level\\Tools\\RevistoneClone\\Scripts\\Console\\ConsoleRendererLogic.cs",
+      "CallerMemberName": "HandleConsoleRender",
+      "CallerLineNumber": 49,
+      "TimeStamp": "2025-05-31T17:44:47.410426+01:00",
+      "Message": "[Console Renderer] Frame took too long to render: 80514 ticks, expected: 41666.666666666664 ticks.",
+      "FlagSession": true
+    }
+  ]
+}

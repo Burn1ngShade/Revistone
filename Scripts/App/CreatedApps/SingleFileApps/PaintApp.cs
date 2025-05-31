@@ -100,8 +100,6 @@ public class PaintApp : App
     {
         ClearPrimaryConsole();
 
-        Analytics.Debug.Log(filePath + " : " + StaticImage);
-
         int currentColour = 0;
         (int x, int y) = (0, 0);
 
