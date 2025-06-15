@@ -92,7 +92,7 @@ public abstract class App
     }
 
     /// <summary> Called when console is closed, use to clean up app. </summary>
-    public virtual void OnConsoleClose()
+    public virtual void OnRevistoneClose()
     {
         
     }

@@ -334,9 +334,9 @@ public class ScenarioMakerApp : App
         SendConsoleMessages([.. StringFunctions.FitToConsole(currentScenario.gpt.GetLastMessages(1)[0]).Select(x => new ConsoleLine(x, AppRegistry.PrimaryCol))]);
     }
 
-    public override void OnConsoleClose()
+    public override void OnRevistoneClose()
     {
-        base.OnConsoleClose();
+        base.OnRevistoneClose();
         if (currentScenario != null) Scenario.SaveScenario(currentScenario, false);
     }
 

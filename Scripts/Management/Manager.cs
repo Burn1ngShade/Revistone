@@ -163,7 +163,7 @@ public static class Manager
     ///<summary> Called upon standard close of the console. </summary>
     static void OnProcessExit(object? sender, EventArgs e)
     {
-        AppRegistry.activeApp.OnConsoleClose();
+        AppRegistry.activeApp.OnRevistoneClose();
         ConsoleVolatileEnvironment.TrySaveEnvironment();
 
         Analytics.General.LastCloseDate = DateTime.Now;
@@ -175,7 +175,7 @@ public static class Manager
     ///<summary> Called upon crash of the console. </summary>
     static void OnProcessCrash(object sender, UnhandledExceptionEventArgs e)
     {
-        AppRegistry.activeApp.OnConsoleClose();
+        AppRegistry.activeApp.OnRevistoneClose();
         ConsoleVolatileEnvironment.TryRestoreEnvironment();
 
         Analytics.General.LastCloseDate = DateTime.Now;

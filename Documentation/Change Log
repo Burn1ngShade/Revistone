@@ -711,8 +711,10 @@ GPT temp messages where still added to message history
 --- Sound, Sanitizing And Scenarios --- [Major] 0.8.0 (15/06/25)
 
 Summary:
-Update i've been working of over the course of my a-levels. Main inclusions are sound (though rn minimally used), debugging modes and tools, new scenario maker app, and settings overhaul, volatile enviroment saving and small improvements all over the console. Left the update here as i wanted to give full colour rendering a very good go - possibly as a rendering option as it will most likely cost performance, as well as possible spotify support and continued work on the whole console, possibly marking a 1.0.0 release! 
+Update i've been working of over the course of my a-levels. Main inclusions are sound (though rn minimally used), debugging modes and tools, new scenario maker app, and settings overhaul, volatile enviroment saving and small improvements all over the console. Left the update here as i wanted to give full colour rendering a very good go - possibly as a rendering option as it will most likely cost performance, as well as possible spotify support and continued work on the whole console, possibly marking a 1.0.0 release!
 
+Note:
+I miss alot of stuff in these update documentations, i will try to do a better job in future updates but the code is open source, who really cares im the only person who uses this and just make these for fun.
 
 Stats: 
 + 20 Commands (63)
@@ -767,7 +769,7 @@ General -> old debug messages removed, scripts split from functions to functions
 [Minor]
 Revistone -> New One Up command, render test moved
 AppCommandData -> New menu hotkey menu
-App -> Apps now have description parameter used in menu and gpt
+App -> Apps now have description parameter used in menu and gpt, now can interact on console close.
 Paint -> New default sticker (oneup)
 ConsoleWidget -> Can now display date aswell as time within widget 
 
