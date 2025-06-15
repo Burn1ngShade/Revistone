@@ -35,6 +35,9 @@ internal static class ConsoleData
     public static int analyticTickInterval;
     public static double displayWindowsTickInterval;
 
+    public static bool showDate;
+    public static int maxWorkspacePathLength = 15;
+
     public static void InitalizeConsoleData()
     {
         SettingsApp.OnSettingChanged += OnSettingChange; //register setting change event
@@ -42,6 +45,7 @@ internal static class ConsoleData
         OnSettingChange("Widget Update Frequency"); //set init value
         OnSettingChange("Analytics Update Frequency"); //set init value
         OnSettingChange("Target Frame Rate"); //set init value
+        OnSettingChange("Workspace Path Widget Collapsing"); // set init value
     }
 
     static void OnSettingChange(string settingName)
@@ -56,6 +60,11 @@ internal static class ConsoleData
                 break;
             case "Target Frame Rate":
                 displayWindowsTickInterval = 1d / int.Parse(SettingsApp.GetValue("Target Frame Rate")) * Stopwatch.Frequency;
+                break;
+            case "Workspace Path Widget Collapsing":
+                var val = SettingsApp.GetValue("Workspace Path Widget Collapsing");
+                if (val == "No") maxWorkspacePathLength = -1;
+                else maxWorkspacePathLength = int.Parse(val);
                 break;
 
         }

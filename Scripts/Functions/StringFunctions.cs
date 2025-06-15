@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using Revistone.Console.Data;
 
 namespace Revistone.Functions;
 
@@ -31,6 +32,44 @@ public static class StringFunctions
     {
         return str.Remove(index, Math.Min(length, str.Length - index))
                 .Insert(index, replace);
+    }
+
+    ///<summary> Converts a string to array format, split to fit into the console. </summary>
+    public static string[] FitToConsole(this string str)
+    {
+        List<string> lines = [];
+        string currentLine = "";
+
+        foreach (char c in str)
+        {
+            if (c == '\n')
+            {
+                if (currentLine.Length != 0) lines.Add(currentLine);
+                currentLine = "";
+                continue;
+            }
+
+            if (currentLine.Length >= ConsoleData.windowSize.width - 1)
+            {
+                int lastWordIndex = currentLine.LastIndexOf(' ');
+
+                if (lastWordIndex == -1 || lastWordIndex == currentLine.Length - 1)
+                {
+                    lines.Add(currentLine);
+                    currentLine = "";
+                }
+                else
+                {
+                    lines.Add(currentLine[..(lastWordIndex + 1)]);
+                    currentLine = currentLine[(lastWordIndex + 1)..];
+                }
+            }
+
+            currentLine += c;
+        }
+        if (currentLine.Length != 0) lines.Add(currentLine);
+
+        return [.. lines];
     }
 
     /// <summary> Modifications to the captilisation of a string. </summary>

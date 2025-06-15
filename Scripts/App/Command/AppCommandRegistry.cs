@@ -6,11 +6,12 @@ using Revistone.Console.Widget;
 using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.Management;
+using Revistone.Modules;
 
 using static Revistone.App.Command.AppCommandsData;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
-using static Revistone.Functions.WorkspaceFunctions;
+using static Revistone.Modules.Workspace;
 
 namespace Revistone.App.Command;
 
@@ -53,19 +54,19 @@ public static class AppCommandRegistry
             (s) => Profiler.SetEnabled(!Profiler.Enabled), "Toggle Profiler", "Toggles Profiler On Or Off.", 60, AppCommand.CommandType.Console),
         new AppCommand(
             new UserInputProfile("gpt[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
-            (s) => GPTFunctions.Query(s[3..].TrimStart(), true), "GPT [Message]", "Interact With Custom Revistone ChatGPT Model.", 100, AppCommand.CommandType.ChatGPT),
+            (s) => GPTClient.Default.Query(new GPTClient.GPTQuery(s[3..].TrimStart())), "GPT [Message]", "Interact With Custom Revistone ChatGPT Model.", 100, AppCommand.CommandType.ChatGPT),
         new AppCommand(
             new UserInputProfile("temp gpt[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
-            (s) => GPTFunctions.Query(s[8..].TrimStart(), false), "Temp GPT [Message]", "Interact With Custom Revistone ChatGPT Model, Without Message History.", 90, AppCommand.CommandType.ChatGPT),
+            (s) => GPTClient.Default.Query(new GPTClient.GPTQuery(s[8..].TrimStart(), useMessageHistory: false, addToMessageHistory : false)), "Temp GPT [Message]", "Interact With Custom Revistone ChatGPT Model, Without Message History.", 90, AppCommand.CommandType.ChatGPT),
         new AppCommand(
             new UserInputProfile("cleargpt", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-            (s) => GPTFunctions.ClearMessageHistory(), "Clear GPT", "Wipe Message History Of ChatGPT Model.", 80, AppCommand.CommandType.ChatGPT),
+            (s) => GPTClient.Default.ClearMessageHistory(), "Clear GPT", "Wipe Message History Of ChatGPT Model.", 80, AppCommand.CommandType.ChatGPT),
         new AppCommand(
             new UserInputProfile("remember gpt[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
-            (s) => GPTFunctions.AddToMemories(s[12..].TrimStart()), "Remember GPT [Message]", "Store A Permeant Memory To GPT.", 70, AppCommand.CommandType.ChatGPT),
+            (s) => GPTClient.Default.AddToMemories(s[12..].TrimStart()), "Remember GPT [Message]", "Store A Permeant Memory To GPT.", 70, AppCommand.CommandType.ChatGPT),
         new AppCommand(
             new UserInputProfile(["memoriesgpt", "memgpt", "memorygpt"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-            (s) => GPTFunctions.ViewMemories(), "Memories GPT", "View List Of GPT Memories.", 60, AppCommand.CommandType.ChatGPT),
+            (s) => GPTClient.Default.ViewMemories(), "Memories GPT", "View List Of GPT Memories.", 60, AppCommand.CommandType.ChatGPT),
         new AppCommand(
             new UserInputProfile("set setting[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
             (s) => SettingInteractCommand(s[11..].TrimStart(), false), "Set Setting [Setting]", "Set The Value Of Given Setting.", 69, AppCommand.CommandType.Apps),
@@ -112,6 +113,18 @@ public static class AppCommandRegistry
             new UserInputProfile("open[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
             (s) => OpenWorkspaceFile(s[4..].Trim()), "Open [File]", "Opens A File Within The Current Directory.", 58, AppCommand.CommandType.Workspace),
         new AppCommand(
+            new UserInputProfile(["ren[A:]", "rename[A:]"], caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+            (s) => RenameWorkspaceEntry(s[(s.StartsWith("rename")?6:3)..].Trim()), "Rename [File/Directory]", "Rename A File Or Directory.", 57, AppCommand.CommandType.Workspace),   
+        new AppCommand(
+            new UserInputProfile("copy[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+            (s) => CopyWorkspaceEntry(s[4..].Trim(), false), "Copy [File/Directory]", "Copy A File Or Directory.", 56, AppCommand.CommandType.Workspace),
+        new AppCommand(
+            new UserInputProfile("cut[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
+            (s) => CopyWorkspaceEntry(s[3..].Trim(), true), "Cut [File/Directory]", "Cut A File Or Directory.", 55, AppCommand.CommandType.Workspace),
+        new AppCommand(
+            new UserInputProfile("paste", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => PasteWorkspaceEntry(), "Paste [File/Directory]", "Pastes A File Or Directory.", 55, AppCommand.CommandType.Workspace),
+        new AppCommand(
             new UserInputProfile("timer[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
             (s) => TimerWidget.CreateTimer("Timer", s[5..].Trim()), "Timer [Duration]", "Creates A Timer Of Given Duration (hh:mm:ss).", 100, AppCommand.CommandType.Widget),
         new AppCommand(
@@ -137,7 +150,7 @@ public static class AppCommandRegistry
             (s) => ExitTerminalCommand(false), "Quit", "Closes The Revistone Terminal.", -100, AppCommand.CommandType.Console),
         new AppCommand(
             new UserInputProfile(["kill", "forceexit", "forceleave", "forcequit"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-            (s) => ExitTerminalCommand(true), "Kill", "Force Closes The Revistone Terminal (Crashes It).", -100, AppCommand.CommandType.Console),
+            (s) => ExitTerminalCommand(true), "Kill", "Force Closes The Revistone Terminal (Crashes It).", -102, AppCommand.CommandType.Console),
         new AppCommand(
             new UserInputProfile("screenshots", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => LoadAppCommand("Screenshots"), "Screenshots", "Load Screenshots App.", 59, AppCommand.CommandType.Apps),

@@ -88,6 +88,57 @@ public static class PersistentDataFunctions
         }
     }
 
+    ///<summary> Checks if a directory is a sub directory of another directory </summary>
+    public static bool IsSubDirectory(string dir, string subDir)
+    {
+        if (dir.EndsWith('/') || dir.EndsWith('\\')) dir = dir[..^1];
+        if (subDir.EndsWith('/') || subDir.EndsWith('\\')) subDir = subDir[..^1];
+
+        var baseDirInfo = new DirectoryInfo(dir);
+        var subDirInfo = new DirectoryInfo(subDir);
+
+        if (baseDirInfo.FullName.ToLower() == subDirInfo.FullName.ToLower()) return true;
+
+        while (subDirInfo.Parent != null)
+        {
+            if (subDirInfo.Parent.FullName.ToLower() == baseDirInfo.FullName.ToLower())
+            {
+                return true;
+            }
+
+            subDirInfo = subDirInfo.Parent;
+        }
+
+        return false;
+    }
+
+    ///<summary> Copy directory and contents. </summary>
+    public static void CopyDirectory(string sourceDir, string destinationDir, bool recursive = true)
+    {
+        // Get information about the source directory
+        var sourceDirectoryInfo = new DirectoryInfo(sourceDir);
+
+        // Create the destination directory if it doesn't exist
+        Directory.CreateDirectory(destinationDir);
+
+        // Copy all files
+        foreach (FileInfo file in sourceDirectoryInfo.GetFiles())
+        {
+            string targetFilePath = Path.Combine(destinationDir, file.Name);
+            file.CopyTo(targetFilePath, overwrite: true);
+        }
+
+        // Copy all subdirectories
+        if (recursive)
+        {
+            foreach (DirectoryInfo subDir in sourceDirectoryInfo.GetDirectories())
+            {
+                string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
+                CopyDirectory(subDir.FullName, newDestinationDir, recursive);
+            }
+        }
+    }
+
     /// <summary> Deletes directory with given name. </summary>
     public static void DeleteDirectory(string path)
     {

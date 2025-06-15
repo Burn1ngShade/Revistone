@@ -1,7 +1,7 @@
 using Revistone.App;
 using Revistone.App.BaseApps;
 using Revistone.Console.Widget;
-using Revistone.Functions;
+using Revistone.Modules;
 using Revistone.Management;
 
 using static Revistone.Functions.PersistentDataFunctions;
@@ -23,7 +23,7 @@ public class ConsoleVolatileEnvironment
         ConsoleVolatileEnvironment environment = new()
         {
             ActiveTimers = TimerWidget.GetActiveTimerInfo(),
-            WorkspacePath = WorkspaceFunctions.RawPath,
+            WorkspacePath = Workspace.RawPath,
             OpenApp = AppRegistry.activeApp.name,
         };
 
@@ -56,7 +56,7 @@ public class ConsoleVolatileEnvironment
             ConsoleWidget.TryAddWidget(new TimerWidget(name, order, duration, paused: paused, stopwatch: stopwatch));
         }
 
-        WorkspaceFunctions.UpdatePath(environment.WorkspacePath, false);
+        Workspace.UpdatePath(environment.WorkspacePath, false);
 
         if (SettingsApp.GetValueAsBool("Auto Resume")) AppRegistry.SetActiveApp(environment.OpenApp);
         else AppRegistry.SetActiveApp("Revistone");

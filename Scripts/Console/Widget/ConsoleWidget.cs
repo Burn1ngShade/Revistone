@@ -1,6 +1,7 @@
 using Revistone.App.BaseApps;
-using Revistone.Functions;
+using Revistone.Modules;
 using Revistone.Management;
+using Revistone.Console.Data;
 
 namespace Revistone.Console.Widget;
 
@@ -134,8 +135,10 @@ public abstract class ConsoleWidget
         }
         else if (settingName == "Show Time Widget")
         {
+            string val = SettingsApp.GetValue("Show Time Widget");
+            ConsoleData.showDate = val == "Date And Time";
             ConsoleWidget? w = TryGetWidget("Current Time");
-            if (w != null) w.hide = SettingsApp.GetValue("Show Time Widget") != "Yes";
+            if (w != null) w.hide = val == "No";
         }
         else if (settingName == "Show Workspace Path Widget")
         {
@@ -148,9 +151,11 @@ public abstract class ConsoleWidget
     internal static void InitializeWidgets()
     {
         TryAddWidget(new FunctionWidget("Frame Rate", int.MinValue + 100, () => ($"FPS: {Profiler.Fps}", false), false));
-        TryAddWidget(new FunctionWidget("Workspace Path", -100, () => ($"Path: {WorkspaceFunctions.DisplayPath}", false), ["Revistone"], false));
+        TryAddWidget(new FunctionWidget("Workspace Path", -100,
+            () => ($"Path: {(Workspace.DisplayPath.Length + 3 > ConsoleData.maxWorkspacePathLength && ConsoleData.maxWorkspacePathLength != -1 ? $"...{Workspace.DisplayPath[^(ConsoleData.maxWorkspacePathLength - 3)..]}" : Workspace.DisplayPath)}", false),
+            ["Revistone"], false));
         TryAddWidget(new FunctionWidget("Author", 100, () => ("Creator: Isaac Honeyman", false), false));
-        TryAddWidget(new FunctionWidget("Current Time", int.MaxValue - 100, () => (DateTime.Now.ToString("HH:mm:ss"), false)));
+        TryAddWidget(new FunctionWidget("Current Time", int.MaxValue - 100, () => (ConsoleData.showDate ? $"{DateTime.Now:dd-MM-yy} | {DateTime.Now:HH:mm:ss}" : DateTime.Now.ToString("HH:mm:ss"), false)));
 
         SettingsApp.OnSettingChanged += OnSettingChange;
 

@@ -18,12 +18,12 @@ public class FlashCardApp : App
     // --- APP BOILER ---
 
     public FlashCardApp() : base() { }
-    public FlashCardApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 40) { }
+    public FlashCardApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 40) { }
 
     public override App[] OnRegister()
     {
         return [
-                new FlashCardApp("Flash Card Manager", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.DarkGreen.ToArray(), ConsoleColor.Green.ToArray()), (Alternate(DarkGreenAndDarkBlue, 6, 3), 5), [], 70, 40)
+                new FlashCardApp("Flash Card Manager", "Pratice And Memorise Topics.", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.DarkGreen.ToArray(), ConsoleColor.Green.ToArray()), (Alternate(DarkGreenAndDarkBlue, 6, 3), 5), [], 70, 40)
             ];
     }
 
@@ -51,7 +51,7 @@ public class FlashCardApp : App
     {
         ClearPrimaryConsole();
 
-        UserInput.CreateOptionMenu("Options:", [("Use Flash Cards", MainMenuSelectFCS), ("Edit Flash Cards", MainMenuEditFCS),
+        UserInput.CreateOptionMenu("--- Options ---", [("Use Flash Cards", MainMenuSelectFCS), ("Edit Flash Cards", MainMenuEditFCS),
                 ("Stats", MainMenuStats), ("Exit", ExitApp)]);
 
         if (AppRegistry.activeApp.name != "Flash Card Manager") return;
@@ -91,7 +91,7 @@ public class FlashCardApp : App
     {
         ClearPrimaryConsole();
 
-        int i = UserInput.CreateOptionMenu("Options:", ["General Stats", "Flash Card Set Stats", "Exit"]);
+        int i = UserInput.CreateOptionMenu("--- Options ---", ["General Stats", "Flash Card Set Stats", "Exit"]);
 
         if (i == 0)
         {
@@ -265,7 +265,7 @@ public class FlashCardApp : App
         ShiftLine();
         bool deleted = false;
 
-        int i = UserInput.CreateOptionMenu("Options:", [
+        int i = UserInput.CreateOptionMenu("--- Options ---", [
                     ("New Question", () => s.questions.Add(CreateQuestion(s))),
                     ("View Questions", () => ViewQuestions(s)),
                     ("Rename Flash Card Set", () => RenameFCS(s)),
@@ -328,7 +328,7 @@ public class FlashCardApp : App
                 List<string> answers = new List<string>();
                 while (true)
                 {
-                    if (answers.Count >= 2 && UserInput.CreateOptionMenu("Options: ", ["New Choice", "Finish"]) == 1)
+                    if (answers.Count >= 2 && UserInput.CreateOptionMenu("--- Options --- ", ["New Choice", "Finish"]) == 1)
                     {
                         return new MultiChoiceFlashCard(promt, answers, UserInput.CreateOptionMenu("Select The Correct Answer: ", answers.ToArray()));
                     }
@@ -343,11 +343,13 @@ public class FlashCardApp : App
                 List<int> validQuestionIndexes = [];
                 while (true)
                 {
-                    if (validQuestionIndexes.Count > 0 && UserInput.CreateOptionMenu("Options: ", ["New Choice", "Finish"]) == 1)
+                    if (validQuestionIndexes.Count > 0 && UserInput.CreateOptionMenu("--- Options --- ", ["New Choice", "Finish"]) == 1)
                     {
                         return new FillTheGapFlashCard(promt, validQuestionIndexes);
                     }
+                    SendConsoleMessage(new ConsoleLine(promt, AppRegistry.SecondaryCol));
                     int questionIndex = int.Parse(UserInput.GetValidUserInput($"Input Valid Question Word Index {validQuestionIndexes.Count + 1}:", new UserInputProfile(UserInputProfile.InputType.Int, bannedChars: ":")));
+                    ClearLines(1, true);
                     if (validQuestionIndexes.Contains(questionIndex) || questionIndex < 0 || questionIndex >= promt.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length)
                     {
                         SendConsoleMessage(new ConsoleLine("Index Already Registered, Or Out Of Bounds Of The Promt!", ConsoleColor.DarkRed));
@@ -400,11 +402,11 @@ public class FlashCardApp : App
             ShiftLine();
             bool reload = false;
 
-            pointer = UserInput.CreateOptionMenu("Options: ", [
+            pointer = UserInput.CreateOptionMenu("--- Options --- ", [
                         (new ConsoleLine("Edit Question", AppRegistry.SecondaryCol), () => { if (UserInput.CreateTrueFalseOptionMenu("Edit Question:")) { s.questions[questionPointer] = CreateQuestion(s, s.questions[questionPointer]); reload = true;}} ),
                         (new ConsoleLine("Delete Question", AppRegistry.SecondaryCol), () => { if (UserInput.CreateTrueFalseOptionMenu("Delete Question:")) { s.questions.RemoveAt(questionPointer); reload = true;}}),
                         (new ConsoleLine("Next Question", AppRegistry.PrimaryCol), () => questionPointer = questionPointer < s.questions.Count - 1 ? questionPointer + 1 : 0),
-                        (new ConsoleLine("Previous Question", AppRegistry.PrimaryCol), () => questionPointer = questionPointer > 0 ? questionPointer - 1 : s.questions.Count - 1),
+                        (new ConsoleLine("Last Question", AppRegistry.PrimaryCol), () => questionPointer = questionPointer > 0 ? questionPointer - 1 : s.questions.Count - 1),
                         (new ConsoleLine("Exit", AppRegistry.PrimaryCol), () => {}),
                         ],
             cursorStartIndex: pointer);

@@ -8,6 +8,7 @@ namespace Revistone.App;
 public abstract class App
 {
     public string name;
+    public string description;
 
     public (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) colourScheme;
     public (ConsoleColor[] colours, int speed) borderColourScheme;
@@ -22,9 +23,10 @@ public abstract class App
     //--- CONSTRUCTORS ---
 
     /// <summary> Base class for apps to inherit. </summary>
-    public App(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) colourScheme, (ConsoleColor[] colours, int speed) borderColourScheme, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true, int displayPriority = 0)
+    public App(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) colourScheme, (ConsoleColor[] colours, int speed) borderColourScheme, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true, int displayPriority = 0)
     {
         this.name = name;
+        this.description = description;
 
         this.colourScheme = colourScheme;
         this.borderColourScheme = borderColourScheme;
@@ -38,7 +40,7 @@ public abstract class App
     }
 
     /// <summary> Base class for apps to inherit. </summary>
-    public App() : this("app", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.DarkCyan.ToArray()), ([], 5), []) { }
+    public App() : this("app", "default app.", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.DarkCyan.ToArray()), ([], 5), []) { }
 
     //--- METHODS ---
 
@@ -63,7 +65,7 @@ public abstract class App
     /// <summary> Called once a tick (25ms). </summary>
     public virtual void OnUpdate(int tickNum)
     {
-        
+
     }
 
     /// <summary> Called when revistone app is first started, just after OnRegister. </summary>
@@ -87,5 +89,11 @@ public abstract class App
     {
         AppRegistry.SetActiveApp("Revistone");
         ConsoleAction.ReloadConsole();
+    }
+
+    /// <summary> Called when console is closed, use to clean up app. </summary>
+    public virtual void OnConsoleClose()
+    {
+        
     }
 }

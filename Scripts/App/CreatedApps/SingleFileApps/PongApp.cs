@@ -19,13 +19,13 @@ public class PongApp : App
     (int score, int pos) player2;
 
     public PongApp() : base() { }
-    public PongApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 50) { }
+    public PongApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 50) { }
 
     public override App[] OnRegister()
     {
         return [
-                    new PongApp("Pong", (ConsoleColor.DarkBlue.ToArray(), CyanGradient, BlueGradient), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 60, 40)
-                ];
+            new PongApp("Pong", "The Classic Game.", (ConsoleColor.DarkBlue.ToArray(), CyanGradient, BlueGradient), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 60, 40)
+        ];
     }
 
     public override void OnAppInitalisation()

@@ -478,7 +478,7 @@ public static class UserInput
     static int metaOptionsLines = 0;
 
     /// <summary> Creates menu from given options, allowing user to pick one. </summary>
-    public static int CreateOptionMenu(ConsoleLine title, ConsoleLine[] options, bool clear = true, int cursorStartIndex = 0)
+    public static int CreateOptionMenu(ConsoleLine title, ConsoleLine[] options, bool clear = true, int cursorStartIndex = 0, bool smartHotkeys = true)
     {
         if (options.Length < 2) return 0;
 
@@ -507,6 +507,12 @@ public static class UserInput
             metaOptions[i] = consoleLines[optionLines[0] - metaOptions.Length + i];
         }
 
+        List<string> textOptions = [.. options.Select(x => x.lineText.ToLower().Replace(" ", "")[1..])];
+        int[] smartHotkeyIndexIndexes = [
+            textOptions.FindIndex(s => s.StartsWith("next")),
+            textOptions.FindIndex(s => s.StartsWith("last")),
+            textOptions.IndexOf("exit"),
+        ]; // auto detects location of nextpage, lastpage and exit button and assings keybinds (if in menu)
 
         while (true)
         {
@@ -548,14 +554,29 @@ public static class UserInput
                         if (shift) pointer = optionLines[^1];
                         else pointer = pointer + 1 > optionLines[^1] ? optionLines[0] : pointer + 1;
                         break;
-                    case ConsoleKey.Enter:
-                        Analytics.General.OptionMenusUsed++;
-
-                        if (clear)
+                    case ConsoleKey.A or ConsoleKey.LeftArrow:
+                        if (smartHotkeyIndexIndexes[1] != -1)
                         {
-                            GoToLine(optionLines[^1]);
-                            ClearLines(optionLines[^1] - (optionLines[0] - 1 + (title.lineText == "" ? 1 : 0)), true, true);
+                            ExitMenu();
+                            return smartHotkeyIndexIndexes[1];
                         }
+                        break;
+                    case ConsoleKey.D or ConsoleKey.RightArrow:
+                        if (smartHotkeyIndexIndexes[0] != -1)
+                        {
+                            ExitMenu();
+                            return smartHotkeyIndexIndexes[0];
+                        }
+                        break;
+                    case ConsoleKey.Escape:
+                        if (smartHotkeyIndexIndexes[2] != -1)
+                        {
+                            ExitMenu();
+                            return smartHotkeyIndexIndexes[2];
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        ExitMenu();
                         return pointer - optionLines[0];
                 }
             }
@@ -565,40 +586,51 @@ public static class UserInput
                 consoleLines[i].Update(options[i - optionLines[0]].lineText + (pointer == i ? " <-" : ""));
             }
         }
+
+        void ExitMenu()
+        {
+            Analytics.General.OptionMenusUsed++;
+
+            if (clear)
+            {
+                GoToLine(optionLines[^1]);
+                ClearLines(optionLines[^1] - (optionLines[0] - 1 + (title.lineText == "" ? 1 : 0)), true, true);
+            }
+        }
     }
 
     /// <summary> Creates menu from given options, allowing user to pick one. </summary>
-    public static int CreateOptionMenu(string title, ConsoleLine[] options, bool clear = true, int cursorStartIndex = 0)
+    public static int CreateOptionMenu(string title, ConsoleLine[] options, bool clear = true, int cursorStartIndex = 0, bool smartHotkeys = true)
     {
-        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), options, clear, cursorStartIndex);
+        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), options, clear, cursorStartIndex, smartHotkeys);
     }
 
     /// <summary> Creates menu from given consoleLine options, allowing user to pick one, and invoking the associated action. </summary>
-    public static int CreateOptionMenu(string title, (ConsoleLine name, Action action)[] options, bool clear = true, int cursorStartIndex = 0)
+    public static int CreateOptionMenu(string title, (ConsoleLine name, Action action)[] options, bool clear = true, int cursorStartIndex = 0, bool smartHotkeys = true)
     {
-        int option = CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), options.Select(option => option.name).ToArray(), clear, cursorStartIndex);
+        int option = CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), options.Select(option => option.name).ToArray(), clear, cursorStartIndex, smartHotkeys);
         options[option].action.Invoke();
         return option;
     }
 
     /// <summary> Creates menu from given text options, allowing user to pick one, and invoking the associated action. </summary>
-    public static int CreateOptionMenu(ConsoleLine title, (string name, Action action)[] options, bool clear = true, int cursorStartIndex = 0)
+    public static int CreateOptionMenu(ConsoleLine title, (string name, Action action)[] options, bool clear = true, int cursorStartIndex = 0, bool smartHotkeys = true)
     {
-        int option = CreateOptionMenu(title, options.Select(option => new ConsoleLine(option.name, AppRegistry.SecondaryCol)).ToArray(), clear, cursorStartIndex);
+        int option = CreateOptionMenu(title, options.Select(option => new ConsoleLine(option.name, AppRegistry.SecondaryCol)).ToArray(), clear, cursorStartIndex, smartHotkeys);
         options[option].action.Invoke();
         return option;
     }
 
     /// <summary> Creates menu from given text options, allowing user to pick one, and invoking the associated action. </summary>
-    public static int CreateOptionMenu(string title, (string name, Action action)[] options, bool clear = true, int cursorStartIndex = 0)
+    public static int CreateOptionMenu(string title, (string name, Action action)[] options, bool clear = true, int cursorStartIndex = 0, bool smartHotkeys = true)
     {
-        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), options, clear, cursorStartIndex);
+        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), options, clear, cursorStartIndex, smartHotkeys);
     }
 
     /// <summary> Creates menu from given text options, allowing user to pick one. </summary>
-    public static int CreateOptionMenu(string title, string[] options, bool clear = true, int cursorStartIndex = 0)
+    public static int CreateOptionMenu(string title, string[] options, bool clear = true, int cursorStartIndex = 0, bool smartHotkeys = true)
     {
-        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), options.Select(option => new ConsoleLine(option, AppRegistry.SecondaryCol)).ToArray(), clear, cursorStartIndex);
+        return CreateOptionMenu(new ConsoleLine(title, AppRegistry.PrimaryCol), options.Select(option => new ConsoleLine(option, AppRegistry.SecondaryCol)).ToArray(), clear, cursorStartIndex, smartHotkeys);
     }
 
     /// <summary> Creates menu, allowing user to select either yes or no. </summary>

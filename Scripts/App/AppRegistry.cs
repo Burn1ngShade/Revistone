@@ -8,7 +8,7 @@ namespace Revistone.App;
 public static class AppRegistry
 {
     //must have Revistone assigned here so its first in list and loaded by default
-    public static List<App> _appRegistry = new List<App>() { };
+    private static List<App> _appRegistry = new List<App>() { };
     public static List<App> appRegistry { get { return _appRegistry; } }
 
     static int _activeAppIndex = 0;

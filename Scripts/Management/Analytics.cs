@@ -7,6 +7,7 @@ using static Revistone.Functions.ColourFunctions;
 
 using Revistone.Console;
 using Revistone.Interaction;
+using System.Diagnostics;
 
 namespace Revistone.Management;
 
@@ -69,10 +70,18 @@ public static class Analytics
     ///<summary> Saves analytics data. </summary>
     public static void SaveAnalytics()
     {
+        if (General.TotalRuntimeTicks != App.Apps.Sum(x => x.TotalRuntimeTicks))
+        {
+            ConsoleAction.SendDebugMessage(DeveloperTools.DefaultErrorMessage);
+            DeveloperTools.Log($"General Ticks: {General.TotalRuntimeTicks}, App Ticks: {App.Apps.Sum(x => x.TotalRuntimeTicks)}", true);
+            DeveloperTools.Log(General.CommandsUsed, true);
+        }
+
         lock (saveLockObject)
         {
             if (LoadFileFromJSON<GeneralAnalyticsData>(path + "General.json")?.TotalRuntimeTicks > General.TotalRuntimeTicks)
             {
+                ConsoleAction.SendDebugMessage(DeveloperTools.DefaultErrorMessage);
                 DeveloperTools.Log(new ConsoleLine("Analytics - General.json is newer than current data, not saving.", AppRegistry.PrimaryCol), true);
                 return; // something wrong with general file
             }

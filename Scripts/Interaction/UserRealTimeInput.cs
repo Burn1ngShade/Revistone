@@ -24,7 +24,7 @@ public static class UserRealtimeInput
             Analytics.General.KeyPresses++;
             lastKey = (c, DateTime.Now);
 
-            Manager.threadCycles[2]++; // increment realtime input thread cycle count
+            DeveloperTools.ThreadCycles[2]++; // increment realtime input thread cycle count
         }
     }
 

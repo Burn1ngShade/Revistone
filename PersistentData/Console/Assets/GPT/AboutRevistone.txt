@@ -13,6 +13,8 @@ General Hotkeys:
 - F12 -> Takes A Screenshot Of The Primary Console.
 
 Input Hotkeys:
+- Up Arrow -> Jump To Previous Element In Input
+- Down Arrow -> Jump To Next Element In Input History
 - Shift + Up Arrow -> Jump To Top Of Input History.
 - Shift + Down Arrow -> Jump To End Of Input History.
 - Shift + Left Arrow -> Extend Selection To The Left.
@@ -32,23 +34,33 @@ Input Hotkeys:
 - Alt + L -> Select Line.
 - Alt + A -> Select All.
 
+Menu Hotkeys:
+- Enter -> Select Option.
+- W | J | Up Arrow -> Jump To Previous Option.
+- S | K | Down Arrow -> Jump To Next Option.
+- Shift + W | Shift + J | Page Up -> Jump To Top Option.
+- Shift + S | Shift + K | Page Down -> Jump To Bottom Option.
+
 File Hotkeys:
-- Shift + Up Arrow -> Jump A Page Up.
-- Shift + Down Arrow -> Jump A Page Down.
+- Shift + Up Arrow | Page Up -> Jump A Page Up.
+- Shift + Down Arrow | Page Down -> Jump A Page Down.
+- Tab + Page Up -> Jump To Top Of File.
+- Tab + Page Down -> Jump To End Of File.
 - Tab + Up Arrow -> Removes Empty Line.
 - Tab + Down Arrow -> Inserts Empty Line.
 
 Apps [- Name -> Description]:
-- Revistone-> Start app, used for command - line interface, workspace, and GPT interaction
-- Tracker -> Daily logger app
-- Paint -> For creating and editing.cimg files
-- Flash Card Manager -> For creating and using virtual flash cards
-- Debit Card Manager -> Test app, allowing user to create and manager virtual bank accounts
-- Font Showcase -> Allows user to view all the fonts available within the console, with text of their choice
-- Settings -> App for editing and viewing console settings
-- Screenshots -> App for viewing screenshots
-- Pong -> The classic game Pong
-- Tetris -> The classic game Tetris
+- Debit Card Manager - The First Ever Console App (Useless But History).
+- Flash Card Manager - Pratice And Memorise Topics.
+- Font Showcase - View All The ASCII Fonts The Console Supports.
+- Paint - Create And View Your Own Console Stickers.
+- Pong - The Classic Game.
+- Revistone - Hub App For The Console.
+- Scenario Maker - Create Worlds To Experience Through GPT.
+- Screenshots - View Console Screenshots.
+- Settings - For Editing And Viewing Console Settings.
+- Tracker - Track Your Goals And Daily Life
+- Tetris - It's Tetris.
 
 Settings [- Name -> Description]:
 - Username -> The Name Used To Refer To The User.
@@ -64,6 +76,7 @@ Settings [- Name -> Description]:
 - Show Author Widget -> Should The Author Widget Be Shown?
 - Show Time Widget -> Should The Time Widget Be Shown?
 - Show Workspace Path Widget -> Should The Workspace Path Widget Be Shown?
+- Workspace Path Widget Collapsing -> Collapse Workspace Path Widget To Save Space On The Border Bar
 - API Key -> ChatGPT API Key (I Promise I Don't Steal This Data - The Project Is Open Source Just Check!)
 - Behaviour -> Additional Promt Given To Dictate GPT Behaviour.
 - Scenario -> Additonal Promt Given To Setup GPT Scenario.
@@ -79,9 +92,10 @@ Settings [- Name -> Description]:
 - Widget Update Frequency -> How Often Should Widgets Update? (Can Effect Performance On Low End Devices, But Lower Settings Will Make Widgets Appear Laggy).
 - Show Emojis -> Can Emojis Be Used In The Program (Certain Emojis Cause The Console To Misrender, Requiring A Reload To Fix).
 - Developer Mode -> Enables Debugging Tools And Commands
+- Advanced Session Log -> Uses An Extra Thread To Run A Debbugging Loop, Useful For Debugging But Will Cause A Performance Hit. Modify Time Between Updates Based On Use Case.
 - Block Rendering On Crash -> Pauses Rendering On Crash, Showing C# Compiler Error But Preventing Final Rendering Passes.
 - Show GPT Tool Results -> Outputs GPT Tool Results To The Debug Console (GPT Can Sometimes Be A Little Bit Stupid, Use For Promt Improvement).
-- Log GPT System Messages -> Outputs GPT System Messages To The Debug Analytics File.
+- Log GPT Messages -> Outputs GPT System Messages To The Debug Analytics File.
 - Force Default Settings -> Override All Settings With Default Value.
 - Create Log File -> Should HoneyC Programs Create A Program Log File?
 
@@ -117,6 +131,10 @@ Commands [- Name [Type] -> Description]:
 - Mkfile [File] [Workspace] -> Create A File Within The Current Directory.
 - Rmfile [File] [Workspace] -> Deletes A File Within The Current Directory.
 - Open [File] [Workspace] -> Opens A File Within The Current Directory.
+- Rename [File/Directory] [Workspace] -> Rename A File Or Directory.
+- Copy [File/Directory] [Workspace] -> Copy A File Or Directory.
+- Cut [File/Directory] [Workspace] -> Cut A File Or Directory.
+- Paste [File/Directory] [Workspace] -> Pastes A File Or Directory.
 - Timer [Duration] [Widget] -> Creates A Timer Of Given Duration (hh:mm:ss).
 - Cancel Timer [Widget] -> Removes Active Timer.
 - Toggle Timer [Widget] -> Pauses Or Unpauses Timer.

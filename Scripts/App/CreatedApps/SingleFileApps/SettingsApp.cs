@@ -8,6 +8,7 @@ using static Revistone.Functions.ColourFunctions;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.App.BaseApps.SettingsApp.Setting;
 using static Revistone.Functions.PersistentDataFunctions;
+using System.Dynamic;
 
 namespace Revistone.App.BaseApps;
 
@@ -59,9 +60,11 @@ public class SettingsApp : App
         new DropdownSetting("Show Author Widget",
             "Should The Author Widget Be Shown?", "Yes", YesNoOpt, SettingCategory.Appearance),
         new DropdownSetting("Show Time Widget",
-            "Should The Time Widget Be Shown?", "Yes", YesNoOpt, SettingCategory.Appearance),
+            "Should The Time Widget Be Shown?", "Time Only", ["Time Only", "Date And Time", "No"], SettingCategory.Appearance),
         new DropdownSetting("Show Workspace Path Widget",
             "Should The Workspace Path Widget Be Shown?", "Yes", YesNoOpt, SettingCategory.Appearance),
+        new DropdownSetting("Workspace Path Widget Collapsing",
+            "Collapse Workspace Path Widget To Save Space On The Border Bar", "30", ["No", "15", "30", "50", "75", "100"], SettingCategory.Appearance),
         // --- CHATGPT SETTINGS ---
         new InputSetting("API Key",
             "ChatGPT API Key (I Promise I Don't Steal This Data - The Project Is Open Source Just Check!)", "", new UserInputProfile(canBeEmpty: true), SettingCategory.ChatGPT),
@@ -87,7 +90,7 @@ public class SettingsApp : App
         new DropdownSetting("Target Frame Rate",
             "The Number Of Times The Console Will Render A Second. Using A Frame Rate Faster Than Your Monitors Refresh Rate Will Actually Slightly Slow Done Responsiveness.", "120", ["30", "60", "75", "90", "120", "144", "240"], SettingCategory.Performance),
         new DropdownSetting("Analytics Update Frequency",
-            "How Often Should Analytics Update? (Can Effect Performance On Low End Devices, Very Frequent Settings Should Only Be Used For Debugging).", "180s", ["60s", "120s", "180s", "300s", "600s"], SettingCategory.Performance),
+            "How Often Should Analytics Update? (Can Effect Performance On Low End Devices, Very Frequent Settings Should Only Be Used For Debugging).", "180s", ["10s", "60s", "120s", "180s", "300s", "600s"], SettingCategory.Performance),
         new DropdownSetting("Widget Update Frequency",
             "How Often Should Widgets Update? (Can Effect Performance On Low End Devices, But Lower Settings Will Make Widgets Appear Laggy).", "0.025s",
             ["0.025s", "0.05s", "0.1s", "0.2s", "0.5s", "1s"], SettingCategory.Performance),
@@ -102,8 +105,8 @@ public class SettingsApp : App
             "Pauses Rendering On Crash, Showing C# Compiler Error But Preventing Final Rendering Passes.", "No", YesNoOpt, SettingCategory.Developer),
         new DropdownSetting("Show GPT Tool Results",
             "Outputs GPT Tool Results To The Debug Console (GPT Can Sometimes Be A Little Bit Stupid, Use For Promt Improvement).", "No", YesNoOpt, SettingCategory.Developer),
-        new DropdownSetting("Log GPT System Messages",
-            "Outputs GPT System Messages To The Debug Analytics File.", "No", YesNoOpt, SettingCategory.Developer),
+        new DropdownSetting("Log GPT Messages",
+            "Outputs GPT System Messages To The Debug Analytics File.", "None", ["None", "System Message", "Full Context Message", "Query Info"], SettingCategory.Developer),
         new DropdownSetting("Force Default Settings",
             "Override All Settings With Default Value.", "No", YesNoOpt, SettingCategory.Developer),
         new DropdownSetting("Create Log File",
@@ -111,11 +114,11 @@ public class SettingsApp : App
     ];
 
     public SettingsApp() : base() { }
-    public SettingsApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 90) { }
+    public SettingsApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 90) { }
 
     public override App[] OnRegister()
     {
-        return [new SettingsApp("Settings", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 70, 40)];
+        return [new SettingsApp("Settings", "For Editing And Viewing Console Settings.", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 70, 40)];
     }
 
     public override void OnRevistoneStartup()
@@ -294,8 +297,14 @@ public class SettingsApp : App
         {
             int s = GetSettingIndex(settingsTxt[i][0]);
             if (s == -1) continue;
-            settings[s].currentValue = settingsTxt[i][1];
+
+            if (settings[s] is DropdownSetting ds && !ds.options.Contains(settingsTxt[i][1])) // prevent crashes on version update
+                settings[s].currentValue = ds.defaultValue;
+            else
+                settings[s].currentValue = settingsTxt[i][1];
         }
+
+        SaveSettings(); // force update broken settings prevent silly people crashing project
 
         UpdateSettingsDict();
     }

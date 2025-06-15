@@ -15,10 +15,10 @@ using Revistone.App.BaseApps.HoneyC;
 using Revistone.Console.Image;
 using Revistone.App.BaseApps;
 
-namespace Revistone.Functions;
+namespace Revistone.Modules;
 
-/// <summary> Class filled with functions to manage console workspace. </summary>
-public static class WorkspaceFunctions
+/// <summary> Class for interacting with console workspace. </summary>
+public static class Workspace
 {
     public static readonly string RootPath = @"PersistentData\Workspace\"; // path of root directory
 
@@ -27,6 +27,8 @@ public static class WorkspaceFunctions
 
     public static string DisplayPath => dir.FullName[(dir.FullName.IndexOf(path, StringComparison.OrdinalIgnoreCase) + 15)..^1]; // use when displaying path
     public static string RawPath => path;
+
+    static (WorkspaceQuery q, bool cut) WorkspaceClipboard = (new WorkspaceQuery("."), false);
 
     static readonly string[] ValidTextFileExtensions = {
         ".txt", ".md", ".csv", ".log", ".xml", ".json", ".yaml", ".yml", ".ini",
@@ -85,6 +87,8 @@ public static class WorkspaceFunctions
     struct WorkspaceQuery
     {
         public readonly string Path;
+        public readonly string FileExtension;
+
         public readonly DirectoryInfo Dir;
 
         public string Name;
@@ -99,9 +103,9 @@ public static class WorkspaceFunctions
             { "-j", false}, // jump to
         };
 
-        public WorkspaceQuery(string queryName, bool isFile = false)
+        public WorkspaceQuery(string queryName, bool isFile = false, bool permitModifiers = true, string defaultFileExtension = ".txt")
         {
-            while (queryName.Length >= 2)
+            while (queryName.Length >= 2 && permitModifiers)
             {
                 bool foundModifier = false;
                 foreach (string key in modifiers.Keys)
@@ -138,14 +142,164 @@ public static class WorkspaceFunctions
 
             Name = queryName;
 
-            if (isFile) VerifyFileExtension();
+            if (isFile)
+            {
+                FileExtension = VerifyFileExtension(defaultFileExtension);
+            }
+            else FileExtension = ".Directory";
         }
 
-        public void VerifyFileExtension()
+        ///<summary> Checks the file has a extension, and adds .txt if none found. </summary>        
+        public string VerifyFileExtension(string defaultFileExtension)
         {
             string fileExtension = System.IO.Path.GetExtension(Name);
-            if (fileExtension.Length == 0) Name += ".txt"; // default file extension
+            if (fileExtension.Length == 0)
+            {
+                Name += defaultFileExtension; // default file extension
+                return defaultFileExtension;
+            }
+
+            return fileExtension;
         }
+    }
+
+    ///<summary> Renames Given File OR Directory. </summary>
+    public static bool RenameWorkspaceEntry(string name)
+    {
+        if (FileExists(path + name) || FileExists(path + name + ".txt"))
+        {
+            WorkspaceQuery q = new(name, true);
+            string newName = UserInput.GetUserInput("--- Enter New File Name ---", true);
+
+            if (newName.Length == 0 || newName[0] == '.')
+            {
+                SendConsoleMessage(new ConsoleLine("File Name Can Not Be Empty.", AppRegistry.PrimaryCol));
+                return false;
+            }
+
+            WorkspaceQuery nq = new(newName, true, false, q.FileExtension);
+
+            if (nq.FileExtension != q.FileExtension)
+            {
+                SendConsoleMessage(new ConsoleLine($"File Must Remain The Same Type - '{q.FileExtension}'", BuildArray(AppRegistry.PrimaryCol.Extend(33), AppRegistry.SecondaryCol)));
+                return false;
+            }
+
+            if (!IsNameValid(nq.Name, true)) return false;
+            if (FileExists(nq.Location))
+            {
+                SendConsoleMessage(new ConsoleLine($"File Already Exists {nq.Info}- '{nq.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(22 + nq.Info.Length), AppRegistry.SecondaryCol)));
+                return false;
+            }
+
+            File.Move(q.Location, nq.Location);
+            SendConsoleMessage(new ConsoleLine($"File '{q.Name}' Renamed - '{nq.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(5), AppRegistry.SecondaryCol.Extend(q.Name.Length + 2), AppRegistry.PrimaryCol.Extend(11), AppRegistry.SecondaryCol)));
+            return true;
+        }
+        else if (DirectoryExists(path + name))
+        {
+            WorkspaceQuery q = new(name);
+            string newName = UserInput.GetUserInput("--- Enter New Directory Name ---", true);
+
+            if (!IsNameValid(newName, true)) return false;
+
+            WorkspaceQuery nq = new(newName, permitModifiers: false);
+
+            if (DirectoryExists(nq.Location))
+            {
+                SendConsoleMessage(new ConsoleLine($"Directory Already Exists {nq.Info}- '{nq.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(25 + nq.Info.Length), AppRegistry.SecondaryCol)));
+                return false;
+            }
+
+            Directory.Move(q.Location, nq.Location);
+            SendConsoleMessage(new ConsoleLine($"Directory '{q.Name}' Renamed - '{nq.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(10), AppRegistry.SecondaryCol.Extend(q.Name.Length + 2), AppRegistry.PrimaryCol.Extend(11), AppRegistry.SecondaryCol)));
+            return true;
+
+        }
+
+        SendConsoleMessage(new ConsoleLine($"No File Or Directory Exists - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(30), AppRegistry.SecondaryCol)));
+        return false;
+    }
+
+    ///<summary> Cut either a file or directory, to be pasted elsewhere. </summary>
+    public static bool CopyWorkspaceEntry(string name, bool cut)
+    {
+        if (FileExists(path + name) || FileExists(path + name + ".txt"))
+        {
+            WorkspaceQuery q = new(name, true);
+            WorkspaceClipboard = (q, cut);
+            SendConsoleMessage(new ConsoleLine($"File {(cut ? "Cut" : "Copied")} To Workspace Clipboard - '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(cut ? 33 : 37), AppRegistry.SecondaryCol)));
+            return true;
+        }
+        else if (DirectoryExists(path + name) && !Regex.IsMatch(@"^\.+$", name) && name.Length != 0 && IsNameValid(name, false, false))
+        {
+            WorkspaceQuery q = new(name);
+            WorkspaceClipboard = (q, cut);
+            SendConsoleMessage(new ConsoleLine($"Directory {(cut ? "Cut" : "Copied")} To Workspace Clipboard - '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(cut ? 38 : 42), AppRegistry.SecondaryCol)));
+            return true;
+        }
+
+        SendConsoleMessage(new ConsoleLine($"No File Or Directory Exists - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(30), AppRegistry.SecondaryCol)));
+        return false;
+    }
+
+    ///<summary> Pastes contents of workspace clipboard. </summary>
+    public static bool PasteWorkspaceEntry()
+    {
+        if (WorkspaceClipboard.q.Name == ".")
+        {
+            SendConsoleMessage(new ConsoleLine("Workspace Clipboard Is Empty.", AppRegistry.PrimaryCol));
+            return false;
+        }
+
+        if (WorkspaceClipboard.q.FileExtension != ".Directory")
+        {
+            string name = WorkspaceClipboard.q.Name;
+            while (File.Exists(path + name)) // so you can copy in same location
+            {
+                name = name[..^WorkspaceClipboard.q.FileExtension.Length] + " (Copy)" + WorkspaceClipboard.q.FileExtension;
+            }
+
+            if (WorkspaceClipboard.cut)
+            {
+                File.Move(WorkspaceClipboard.q.Location, path + name);
+                SendConsoleMessage(new ConsoleLine($"File Pasted - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(14), AppRegistry.SecondaryCol)));
+            }
+            else
+            {
+                File.Copy(WorkspaceClipboard.q.Location, path + name);
+                SendConsoleMessage(new ConsoleLine($"File Copied - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(14), AppRegistry.SecondaryCol)));
+            }
+        }
+        else
+        {
+            if (IsSubDirectory(WorkspaceClipboard.q.Location, path))
+            {
+                SendConsoleMessage(new ConsoleLine("Can't Paste Directory Into A Subdirectory Of Itself.", AppRegistry.PrimaryCol));
+                return false;
+            }
+
+            string name = WorkspaceClipboard.q.Name;
+            while (Directory.Exists(path + name)) // so you can copy in same location
+            {
+                name += " (Copy)";
+            }
+
+            if (WorkspaceClipboard.cut)
+            {
+                Directory.Move(WorkspaceClipboard.q.Location, path + name);
+                SendConsoleMessage(new ConsoleLine($"Directory Pasted - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(19), AppRegistry.SecondaryCol)));
+            }
+            else
+            {
+                CopyDirectory(WorkspaceClipboard.q.Location, path + name);
+                SendConsoleMessage(new ConsoleLine($"Directory Pasted - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(19), AppRegistry.SecondaryCol)));
+            }
+        }
+
+        WorkspaceClipboard = (new WorkspaceQuery("."), false);
+
+        return true;
     }
 
     // --- DIRECTORIES ---
@@ -382,10 +536,9 @@ public static class WorkspaceFunctions
             return false;
         }
 
-        string fileExtension = Path.GetExtension(q.Name);
-        if (!ValidTextFileExtensions.Contains(fileExtension))
+        if (!ValidTextFileExtensions.Contains(q.FileExtension))
         {
-            if (fileExtension == ".cimg") // console images
+            if (q.FileExtension == ".cimg") // console images
             {
                 PaintApp.StaticImage = (q.Location, q.Name);
                 AppRegistry.SetActiveApp("Paint");
@@ -393,7 +546,7 @@ public static class WorkspaceFunctions
                 return true;
             }
 
-            SendConsoleMessage(new ConsoleLine($"Can't Open File Extension - '{fileExtension}'", BuildArray(AppRegistry.PrimaryCol.Extend(28), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Can't Open File Extension - '{q.FileExtension}'", BuildArray(AppRegistry.PrimaryCol.Extend(28), AppRegistry.SecondaryCol)));
             return false;
         }
 
@@ -415,22 +568,20 @@ public static class WorkspaceFunctions
             return false;
         }
 
-        string fileExtension = Path.GetExtension(q.Name);
-
-        if (fileExtension == ".hc")
+        if (q.FileExtension == ".hc")
         {
             HoneyCInterpreter.Interpret(LoadFile(q.Location));
             return true;
         }
 
-        if (fileExtension == ".cimg")
+        if (q.FileExtension == ".cimg")
         {
             ConsoleImage? stickerImage = ConsoleImage.LoadFromCIMG(q.Location);
             stickerImage?.Output();
             return true;
         }
 
-        SendConsoleMessage(new ConsoleLine($"Can't Run File Extension - '{fileExtension}'", BuildArray(AppRegistry.PrimaryCol.Extend(28), AppRegistry.SecondaryCol)));
+        SendConsoleMessage(new ConsoleLine($"Can't Run File Extension - '{q.FileExtension}'", BuildArray(AppRegistry.PrimaryCol.Extend(28), AppRegistry.SecondaryCol)));
         return false;
     }
 

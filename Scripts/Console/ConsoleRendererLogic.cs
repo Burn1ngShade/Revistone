@@ -39,15 +39,11 @@ public static class ConsoleRendererLogic
 
         while (true)
         {
-            Manager.threadCheckpoints[3].Clear();
-
             frameDuration.Restart();
 
             lock (Manager.ConsoleLock)
             {
-                Manager.threadCheckpoints[3].Add("Render Start");
                 RenderConsole();
-                Manager.threadCheckpoints[3].Add("Render End");
             }
 
             Profiler.RenderLogicTime.Add(frameDuration.ElapsedTicks);
@@ -59,7 +55,7 @@ public static class ConsoleRendererLogic
 
             Profiler.RenderTime.Add(frameDuration.ElapsedTicks);
 
-            Manager.threadCycles[3]++; // increment render thread cycle count
+            DeveloperTools.ThreadCycles[3]++; // increment render thread cycle count
         }
     }
 
@@ -276,6 +272,15 @@ public static class ConsoleRendererLogic
     {
         string[] widgets = ConsoleWidget.GetWidgetContents();
         string jointWidgets = string.Join("--------", widgets);
+
+        int collapsedWidgets = 0;
+        while (jointWidgets.Length > windowSize.width - 10)
+        {
+            widgets = widgets[..^1];
+            collapsedWidgets++;
+            jointWidgets = string.Join("--------", [.. widgets, $" [+{collapsedWidgets} More] "]);
+        }
+
         int leftBuffer = Math.Max((int)Math.Floor((windowSize.width - jointWidgets.Length) / 2f), 0);
         int rightBuffer = Math.Max((int)Math.Ceiling((windowSize.width - jointWidgets.Length) / 2f), 1) - 1;
 
@@ -315,13 +320,11 @@ public static class ConsoleRendererLogic
     {
         if (blockRender || consoleLines.Length < AppRegistry.activeApp.minHeightBuffer)
         {
-            Manager.threadCheckpoints[3].Add("Render Blocked");
             return;
         }
 
         if (System.Console.WindowTop != 0)
         {
-            Manager.threadCheckpoints[3].Add("Render Window OOps");
             try
             {
                 if (OperatingSystem.IsWindows()) System.Console.SetWindowPosition(0, 0);
@@ -334,12 +337,10 @@ public static class ConsoleRendererLogic
 
         for (int i = 0; i < consoleLines.Length; i++)
         {
-            Manager.threadCheckpoints[3].Add($"Render Line {i}");
             if (consoleLines[i] == null || consoleLines[i].updated) continue;
 
             if (System.Console.WindowHeight != windowSize.height || System.Console.WindowWidth != windowSize.width)
             {
-                Manager.threadCheckpoints[3].Add("Screen Changed");
                 return;
             }
 
@@ -347,8 +348,6 @@ public static class ConsoleRendererLogic
             consoleLinesBuffer[i].Update(consoleLines[i]);
         }
 
-        Manager.threadCheckpoints[3].Add("Draw Buffer Start");
         ConsoleRenderer.DrawBuffer();
-        Manager.threadCheckpoints[3].Add("Draw Buffer End");
     }
 }

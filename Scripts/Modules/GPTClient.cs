@@ -12,114 +12,115 @@ using Revistone.App.Command;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
+using Revistone.Functions;
 
-namespace Revistone.Functions;
+namespace Revistone.Modules;
 
-/// <summary> Class filled with functions unrelated to console, but useful for interacting with chatGPT API. </summary>
-public static class GPTFunctions
+/// <summary> Class for interacting with chat GPT API within the console. </summary>
+public class GPTClient
 {
-    static List<ChatMessage> messageHistory = [];
-    static List<ChatMemory> memoryHistory = [];
+    // --- SINGLETON --- // default gpt for general use
 
-    // --- PUBLIC FUNCTIONS ---
+    public static GPTClient Default { get; private set; } = new GPTClient();
 
     ///<summary> [DO NOT CALL] Initializes GPT, fetching message history. </summary>
     internal static void InitializeGPT()
     {
-        List<SerializableChatMessage>? serializableChats = LoadFileFromJSON<List<SerializableChatMessage>>(GeneratePath(DataLocation.Console, "History/GPT", "Messages.json"));
-        if (serializableChats == null) messageHistory = [];
-        else messageHistory = serializableChats.Select(x => x.ToChatMessage()).ToList();
+        string msgPath = GeneratePath(DataLocation.Console, "History/GPT", "Messages.json");
+        string memPath = GeneratePath(DataLocation.Console, "History/GPT", "Memories.json");
 
-        memoryHistory = LoadFileFromJSON<List<ChatMemory>>(GeneratePath(DataLocation.Console, "History/GPT", "Memories.json")) ?? [];
+        List<SerializableChatMessage>? serializableChats = LoadFileFromJSON<List<SerializableChatMessage>>(msgPath);
+        Default = new GPTClient(serializableChats == null ? [] : [.. serializableChats.Select(x => x.ToChatMessage())], msgPath,
+            LoadFileFromJSON<List<ChatMemory>>(memPath) ?? [], memPath);
     }
 
-    ///<summary> Function to send a query to run a query with ChatGPT. </summary>
-    public static void Query(string query, bool useMessageHistory)
-    {
-        ChatMessage[] messages = GetRelevantChatMessages(useMessageHistory, new UserChatMessage(query));
+    // --- GPT PROPERTIES ---
 
-        (ChatClient? client, ChatCompletionOptions o) = CreateResponseModel();
+    List<ChatMessage> messageHistory = [];
+    readonly string messageHistoryPath = "";
+
+    List<ChatMemory> memoryHistory = [];
+    readonly string memoryHistoryPath = "";
+
+    GPTQuery? currentQuery = null;
+
+    public enum QueryMode
+    {
+        User,
+        System,
+    }
+
+    ///<summary> Information behind a query to a GPTClient. </summary>
+    public class GPTQuery
+    {
+        public string Query { get; private set; } = ""; // the query to send to gpt
+
+        public QueryMode Mode { get; private set; } = QueryMode.User;
+
+        public bool UseMessageHistory { get; private set; } = true; // whether to use message history
+        public bool AddToMessageHistory { get; private set; } = true; // whether to add the query to message history
+        public bool OutputToConsole { get; private set; } = true; // whether to output the response to console
+        public bool UseLongTermMemory { get; private set; } = true; // should use memories
+        public bool UseSystemPromt { get; private set; } = true; // use console info e.g. user name about console file
+        public bool UseAdditonalSystemPromt { get; private set; } = true;
+
+        public bool MinimalUI { get; private set; } = true; // hides top ui bar
+        public string WaitMessage { get; private set; } = "Waiting For GPT Repsonse"; // message to display while waiting for gpt response
+
+        public bool BaseToolCalls { get; private set; }
+        public List<ChatTool> AdditionalTools { get; private set; }
+        public Func<ChatToolCall, bool, string?>? AdditionalToolHandling { get; private set; }
+
+        public GPTQuery(string query, QueryMode mode = QueryMode.User, bool useMessageHistory = true, bool addToMessageHistory = true, bool useLongTermMemory = true, bool useSystemPromt = true, bool useAdditonalSystemPromt = true, bool outputToConsole = true, bool minimalUI = false, string waitMessage = "Waiting For GPT Response", List<ChatTool>? additionalTools = null, Func<ChatToolCall, bool, string?>? additionalToolCallHandling = null, bool baseToolCalls = true)
+        {
+            Query = query;
+            Mode = mode;
+            UseMessageHistory = useMessageHistory;
+            AddToMessageHistory = addToMessageHistory;
+            UseLongTermMemory = useLongTermMemory;
+            UseSystemPromt = useSystemPromt;
+            UseAdditonalSystemPromt = useAdditonalSystemPromt;
+            OutputToConsole = outputToConsole;
+            MinimalUI = minimalUI;
+            WaitMessage = waitMessage;
+            AdditionalTools = additionalTools ?? [];
+            AdditionalToolHandling = additionalToolCallHandling;
+            BaseToolCalls = baseToolCalls;
+        }
+    }
+
+    public string additionalSystemPromt = ""; // additional system prompt to add to the default system prompt
+
+    public GPTClient() { }
+
+    public GPTClient(List<ChatMessage> messageHistory, string messageHistoryPath, List<ChatMemory> memoryHistory, string memoryHistoryPath, string additionalSystemPromt = "")
+    {
+        this.messageHistory = messageHistory;
+        this.messageHistoryPath = messageHistoryPath;
+        this.memoryHistory = memoryHistory;
+        this.memoryHistoryPath = memoryHistoryPath;
+        this.additionalSystemPromt = additionalSystemPromt;
+    }
+
+    // --- INTERACTION FUNCTIONS ---
+
+    ///<summary> Function to send a query to run a query with ChatGPT. </summary>
+    public void Query(GPTQuery query)
+    {
+        currentQuery = query;
+        ChatMessage[] messages = GetRelevantChatMessages();
+
+        (ChatClient? client, ChatCompletionOptions o) = CreateResponseModel(query);
         if (client == null) return;
 
-        SendConsoleMessage(new ConsoleLine($"Generating GPT Response.", AppRegistry.PrimaryCol), ConsoleLineUpdate.SameLine,
+        SendConsoleMessage(new ConsoleLine($"{query.WaitMessage}.", AppRegistry.PrimaryCol), ConsoleLineUpdate.SameLine,
             new ConsoleAnimatedLine(WaitForGptResponseAnimation, 1, tickMod: 12, enabled: true));
 
-        ExecuteQuery(client, messages, o, useMessageHistory);
+        ExecuteQuery(client, messages, o, query);
         Analytics.General.TotalGPTPromts++;
     }
 
-    ///<summary> Outputs a GPT response in a console friendly format. </summary>
-    static void SendFormattedGPTResponse(ChatCompletion response, int messageCount)
-    {
-        UpdatePrimaryConsoleLineAnimation(ConsoleAnimatedLine.None, ConsoleData.primaryLineIndex);
-
-        List<string> lines = new List<string>() { };
-        string currentLine = "";
-
-        foreach (char c in response.Content[0].Text)
-        {
-            if (c == '\n')
-            {
-                if (currentLine.Length != 0) lines.Add(currentLine);
-                currentLine = "";
-                continue;
-            }
-
-            if (currentLine.Length >= ConsoleData.windowSize.width - 1)
-            {
-                int lastWordIndex = currentLine.LastIndexOf(' ');
-
-                if (lastWordIndex == -1 || lastWordIndex == currentLine.Length - 1)
-                {
-                    lines.Add(currentLine);
-                    currentLine = "";
-                }
-                else
-                {
-                    lines.Add(currentLine[..(lastWordIndex + 1)]);
-                    currentLine = currentLine[(lastWordIndex + 1)..];
-                }
-            }
-
-            currentLine += c;
-        }
-        lines.Add(currentLine);
-
-        ConsoleLine[] colouredResponse = ColourFormattedGPTResponse(lines);
-
-        SendConsoleMessage(new ConsoleLine($"[{SettingsApp.GetValue("GPT Name")}] ({SettingsApp.GetValue("GPT Model")}) - {response.Usage.TotalTokenCount} Tokens Used ({response.Usage.InputTokenCount} Input, {response.Usage.OutputTokenCount} Output). {messageCount} Messages Used.", ConsoleColor.Cyan));
-        SendConsoleMessages(colouredResponse);
-    }
-
-    ///<summary> Colours formatted GPT response. </summary>
-    static ConsoleLine[] ColourFormattedGPTResponse(List<string> lines)
-    {
-        ConsoleLine[] consoleLines = lines.Select(x => ConsoleLine.Clean(new ConsoleLine(x))).ToArray();
-
-        Regex boldRegex = new(@"\*\*(.*?)\*\*");
-
-        for (int i = 0; i < consoleLines.Length; i++)
-        {
-            string originalLine = consoleLines[i].lineText;
-            List<(int start, int length)> indices = [];
-            int shift = 0;
-
-            originalLine = boldRegex.Replace(originalLine, match =>
-            {
-                string highlightedText = match.Groups[1].Value;
-                indices.Add((match.Index - shift, highlightedText.Length));
-                shift += 4;
-                return highlightedText;
-            });
-
-            consoleLines[i] = new ConsoleLine(originalLine, AdvancedHighlight(originalLine.Length, ConsoleColor.DarkBlue, ConsoleColor.Cyan, [.. indices]));
-        }
-
-
-        return consoleLines;
-    }
-
-    // --- MESSAGE HISTORY ---
+    // --- CHAT MEMORY ---
 
     ///<summary> Class to hold memory that gpt stores inbetween sessions. </summary>
     public class ChatMemory
@@ -144,15 +145,15 @@ public static class GPTFunctions
     }
 
     ///<summary> Add memory to list of memories for gpt to recall </summary>
-    public static void AddToMemories(string content, string creator = "User")
+    public void AddToMemories(string content, string creator = "User")
     {
         memoryHistory.Add(new ChatMemory(content, creator));
-        SaveFileAsJSON(GeneratePath(DataLocation.Console, "History/GPT", "Memories.json"), memoryHistory);
+        SaveFileAsJSON(memoryHistoryPath, memoryHistory);
         SendConsoleMessage(new ConsoleLine("GPT Has Stored A Memory.", AppRegistry.PrimaryCol));
     }
 
     ///<summary> Creates menu for user to view, edit, and remove memories. </summary>
-    public static void ViewMemories()
+    public void ViewMemories()
     {
         int option = 0;
         while (true)
@@ -166,7 +167,7 @@ public static class GPTFunctions
     }
 
     ///<summary> Creates menu for user to view, edit, and remove specific memory. </summary>
-    static void ViewMemory(int index)
+    void ViewMemory(int index)
     {
         ChatMemory m = memoryHistory[index];
 
@@ -181,7 +182,12 @@ public static class GPTFunctions
 
             option = UserInput.CreateOptionMenu("--- Options ---", ["Edit Memory", "Delete Memory", "Exit"], cursorStartIndex: option);
             ClearLines(5, true);
-            if (option == 0) m.Content = UserInput.GetValidUserInput($"--- Update Memory ---", new UserInputProfile(), m.Content, maxLineCount: 5);
+            if (option == 0)
+            {
+                m.Content = UserInput.GetValidUserInput($"--- Update Memory ---", new UserInputProfile(), m.Content, maxLineCount: 5);
+                memoryHistory[index].Content = m.Content;
+                SaveFileAsJSON(GeneratePath(DataLocation.Console, "History/GPT", "Memories.json"), memoryHistory);
+            }
             else if (option == 1)
             {
                 if (UserInput.CreateTrueFalseOptionMenu("Are You Sure You Want To Delete This Memory?"))
@@ -198,6 +204,16 @@ public static class GPTFunctions
 
         memoryHistory[index] = m;
     }
+
+    ///<summary> Clears the memories of the chatbot. </summary>
+    public void ClearMemories(bool output = true)
+    {
+        memoryHistory = [];
+        SaveFileAsJSON(memoryHistoryPath, memoryHistory);
+        if (output) SendConsoleMessage(new ConsoleLine("ChatGPT Memories Cleared.", ConsoleColor.DarkBlue));
+    }
+
+    // --- CHAT MESSAGE ---
 
     ///<summary> JSON friendly format for chat messages to be saved inbetween sessions. </summary>
     public class SerializableChatMessage
@@ -223,41 +239,115 @@ public static class GPTFunctions
     }
 
     ///<summary> Gathers all context messages needed to generate a response. </summary>
-    static ChatMessage[] GetRelevantChatMessages(bool useMessageHistory, ChatMessage userQuery)
+    ChatMessage[] GetRelevantChatMessages()
     {
         ChatMessage[] messages = [CreateQuerySystemChatMessage()];
 
-        if (useMessageHistory) AddToMessageHistory(userQuery);
+        if (currentQuery?.UseMessageHistory ?? true) messages =
+        [
+            .. messages,
+            .. messageHistory.TakeLast(Math.Min(messageHistory.Count, int.Parse(SettingsApp.GetValue("Conversation Memory")) + 1)),
+        ];
 
-        if (useMessageHistory) messages = messages.Concat(messageHistory.TakeLast(Math.Min(messageHistory.Count, int.Parse(SettingsApp.GetValue("Conversation Memory")) + 1))).ToArray();
-        else messages = [.. messages, userQuery];
+        messages = [.. messages, currentQuery?.Mode == QueryMode.System ? new SystemChatMessage(currentQuery?.Query) : new UserChatMessage(currentQuery?.Query)];
+
+        if (SettingsApp.GetValue("Log GPT Messages") == "Full Context Message") DeveloperTools.Log($"[GPT] Full Context Message: {messages.Select(x => x.Content[0].Text).ToArray().ToElementString()}");
+
+        if (currentQuery?.AddToMessageHistory ?? true) AddToMessageHistory(new UserChatMessage(currentQuery?.Query));
+
         return messages;
     }
 
+    ///<summary> Retuns last messages within the conversation. </summary>
+    public string[] GetLastMessages(int count)
+    {
+        if (count <= 0) return [];
+        if (count > messageHistory.Count) count = messageHistory.Count;
+
+        return [.. messageHistory.TakeLast(count).Select(x => x.Content[0].Text)];
+    }
+
     ///<summary> Add message to previous message history, caps size to 50 to keep data storage reasonable. </summary>
-    static void AddToMessageHistory(ChatMessage message)
+    public void AddToMessageHistory(ChatMessage message)
     {
         while (messageHistory.Count >= 50) messageHistory.RemoveAt(0);
 
         messageHistory.Add(message);
 
-        SaveFileAsJSON(GeneratePath(DataLocation.Console, "History/GPT", "Messages.json"), messageHistory.Select(x => new SerializableChatMessage(x)).ToList());
+        SaveFileAsJSON(messageHistoryPath, messageHistory.Select(x => new SerializableChatMessage(x)).ToList());
     }
 
     ///<summary> Clears the message history of the chatbot. </summary>
-    public static void ClearMessageHistory()
+    public void ClearMessageHistory(bool output = true)
     {
         messageHistory = [];
-        SaveFileAsJSON(GeneratePath(DataLocation.Console, "History/GPT", "Messages.json"), messageHistory.Select(x => new SerializableChatMessage(x)).ToList());
-        SendConsoleMessage(new ConsoleLine("ChatGPT Message History Cleared.", ConsoleColor.DarkBlue));
+        SaveFileAsJSON(messageHistoryPath, messageHistory.Select(x => new SerializableChatMessage(x)).ToList());
+        if (output) SendConsoleMessage(new ConsoleLine("ChatGPT Message History Cleared.", ConsoleColor.DarkBlue));
+    }
+
+    public int MessageHistoryCount => messageHistory.Count;
+
+    // --- OUTPUT FUNCTIONS ---
+
+    ///<summary> Outputs a GPT response in a console friendly format. </summary>
+    void SendFormattedGPTResponse(ChatCompletion response, int messageCount)
+    {
+        UpdatePrimaryConsoleLineAnimation(ConsoleAnimatedLine.None, ConsoleData.primaryLineIndex);
+
+        List<string> lines = [.. StringFunctions.FitToConsole(response.Content[0].Text)];
+
+        ConsoleLine[] colouredResponse = ToGPTFormat(lines);
+
+        if (!currentQuery?.MinimalUI ?? true) SendConsoleMessage(new ConsoleLine($"[{SettingsApp.GetValue("GPT Name")}] ({SettingsApp.GetValue("GPT Model")}) - {response.Usage.TotalTokenCount} Tokens Used ({response.Usage.InputTokenCount} Input, {response.Usage.OutputTokenCount} Output). {messageCount} Messages Used.", ConsoleColor.Cyan));
+        SendConsoleMessages(colouredResponse);
+
+        if (SettingsApp.GetValue("Log GPT Messages") == "Query Info")
+        {
+            DeveloperTools.Log($"({SettingsApp.GetValue("GPT Model")}) - {response.Usage.TotalTokenCount} Tokens Used ({response.Usage.InputTokenCount} Input, {response.Usage.OutputTokenCount} Output). {messageCount} Messages Used.");
+        }
+    }
+
+    ///<summary> Converts list of text to GPT coloured formatting. </summary>
+    public static ConsoleLine[] ToGPTFormat(List<string> lines)
+    {
+        ConsoleLine[] consoleLines = lines.Select(x => ConsoleLine.Clean(new ConsoleLine(x))).ToArray();
+
+        Regex boldRegex = new(@"\*\*(.*?)\*\*");
+
+        for (int i = 0; i < consoleLines.Length; i++)
+        {
+            string originalLine = consoleLines[i].lineText;
+            List<(int start, int length)> indices = [];
+            int shift = 0;
+
+            originalLine = boldRegex.Replace(originalLine, match =>
+            {
+                string highlightedText = match.Groups[1].Value;
+                indices.Add((match.Index - shift, highlightedText.Length));
+                shift += 4;
+                return highlightedText;
+            });
+
+            consoleLines[i] = new ConsoleLine(originalLine, AdvancedHighlight(originalLine.Length, ConsoleColor.DarkBlue, ConsoleColor.Cyan, [.. indices]));
+        }
+
+        return consoleLines;
+    }
+
+    void WaitForGptResponseAnimation(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
+    {
+        int dotCount = (int)animationInfo.metaInfo;
+        SendConsoleMessage(new ConsoleLine($"{currentQuery?.WaitMessage}{new string('.', dotCount)}", AppRegistry.PrimaryCol), ConsoleLineUpdate.SameLine);
+        dotCount = dotCount < 3 ? dotCount + 1 : 0;
+        animationInfo.metaInfo = dotCount;
     }
 
     // --- GPT LOGIC ---
 
     ///<summary> Executes and handles chat tools for the given query. </summary>
-    static bool ExecuteQuery(ChatClient client, ChatMessage[] messages, ChatCompletionOptions options, bool useMessageHistory)
+    bool ExecuteQuery(ChatClient client, ChatMessage[] messages, ChatCompletionOptions options, GPTQuery query)
     {
-        List<ChatMessage> queryMessages = messages.ToList();
+        List<ChatMessage> queryMessages = [.. messages];
 
         bool requiresAction;
         ChatCompletion completion;
@@ -273,7 +363,9 @@ public static class GPTFunctions
             }
             catch (Exception e)
             {
+                ClearLines(1);
                 SendConsoleMessage(ConsoleLine.Clean(new ConsoleLine($"GPT Error: {e.Message}", ConsoleColor.Red)));
+                DeveloperTools.Log($"GPT Error: {e.Message}");
                 return false;
             }
 
@@ -305,32 +397,41 @@ public static class GPTFunctions
                                 break;
                             case nameof(CreateTimer):
                                 toolResult = TryGetJsonFunctionArgument("duration", toolCall, ref success);
-                                if (shouldOutputToolCalls) SendDebugMessage(new ConsoleLine($"[CreateTimer Tool Call] {toolResult}", BuildArray(AppRegistry.SecondaryCol.Extend(23), AppRegistry.PrimaryCol)));
+
                                 if (success) CreateTimer(toolResult);
                                 queryMessages.Add(new ToolChatMessage(toolCall.Id, toolResult));
                                 break;
                             case nameof(LoadApp):
                                 toolResult = TryGetJsonFunctionArgument("appName", toolCall, ref success);
-                                if (shouldOutputToolCalls) SendDebugMessage(new ConsoleLine($"[LoadApp Tool Call] {toolResult}", BuildArray(AppRegistry.SecondaryCol.Extend(19), AppRegistry.PrimaryCol)));
+
                                 if (success) delayedChatTools.Add(() => LoadApp(toolResult));
                                 queryMessages.Add(new ToolChatMessage(toolCall.Id, toolResult));
                                 break;
                             case nameof(SetSetting):
                                 toolResult = TryGetJsonFunctionArgument("settingName", toolCall, ref success);
-                                if (shouldOutputToolCalls) SendDebugMessage(new ConsoleLine($"[SetSetting Tool Call] {toolResult}", BuildArray(AppRegistry.SecondaryCol.Extend(22), AppRegistry.PrimaryCol)));
+
                                 if (success) delayedChatTools.Add(() => SetSetting(toolResult));
                                 queryMessages.Add(new ToolChatMessage(toolCall.Id, toolResult));
                                 break;
                             case nameof(AddToMemories):
                                 toolResult = TryGetJsonFunctionArgument("content", toolCall, ref success);
-                                if (shouldOutputToolCalls) SendDebugMessage(new ConsoleLine($"[AddToMemories Tool Call] {toolResult}", BuildArray(AppRegistry.SecondaryCol.Extend(25), AppRegistry.PrimaryCol)));
+
                                 if (success) AddToMemories(toolResult, "GPT");
                                 queryMessages.Add(new ToolChatMessage(toolCall.Id, toolResult));
                                 break;
                         }
+
+                        if (toolResult == "" && query.AdditionalToolHandling != null)
+                        {
+                            string? result = query.AdditionalToolHandling.Invoke(toolCall, shouldOutputToolCalls);
+                            if (result != null)
+                            {
+                                queryMessages.Add(new ToolChatMessage(toolCall.Id, toolResult)); // so non responded tool calls get picked up
+                            }
+                        }
                     }
 
-                    SendConsoleMessage(new ConsoleLine($"Generating GPT Response.", AppRegistry.PrimaryCol), ConsoleLineUpdate.SameLine,
+                    SendConsoleMessage(new ConsoleLine($"{currentQuery?.WaitMessage}.", AppRegistry.PrimaryCol), ConsoleLineUpdate.SameLine,
                     new ConsoleAnimatedLine(WaitForGptResponseAnimation, 1, tickMod: 12, enabled: true));
 
                     requiresAction = true;
@@ -339,8 +440,8 @@ public static class GPTFunctions
 
         } while (requiresAction);
 
-        if (useMessageHistory) AddToMessageHistory(new AssistantChatMessage(completion));
-        SendFormattedGPTResponse(completion, messages.Length);
+        if (currentQuery?.AddToMessageHistory ?? true) AddToMessageHistory(new AssistantChatMessage(completion));
+        if (currentQuery?.OutputToConsole ?? true) SendFormattedGPTResponse(completion, messages.Length);
 
         Analytics.General.UsedGPTInputTokens += completion.Usage.InputTokenCount;
         Analytics.General.UsedGPTOutputTokens += completion.Usage.OutputTokenCount;
@@ -354,27 +455,27 @@ public static class GPTFunctions
     }
 
     ///<summary> Generates the chat client and options for the currently in use model. </summary>
-    static (ChatClient? client, ChatCompletionOptions options) CreateResponseModel()
+    (ChatClient? client, ChatCompletionOptions options) CreateResponseModel(GPTQuery query)
     {
         string model = SettingsApp.GetValue("GPT Model");
 
         ChatCompletionOptions o;
 
-        if (model == "gpt-4o-mini")
+        if (currentQuery?.BaseToolCalls ?? true)
         {
             o = new ChatCompletionOptions
             {
-                Temperature = float.Parse(SettingsApp.GetValue("Temperature")),
-                Tools = { getCurrentTimeTool, setTimerTool, cancelTimerTool, loadAppTool, setSetting, remember },
+                Tools = { getCurrentTimeTool, setTimerTool, cancelTimerTool, loadAppTool, setSetting, remember }
             };
         }
-        else
+        else o = new ChatCompletionOptions();
+
+        foreach (ChatTool t in query.AdditionalTools)
         {
-            o = new ChatCompletionOptions
-            {
-                Tools = { getCurrentTimeTool, setTimerTool, cancelTimerTool, loadAppTool, setSetting, remember },
-            };
+            o.Tools.Add(t);
         }
+
+        if (model == "gpt-4o-mini") o.Temperature = float.Parse(SettingsApp.GetValue("Temperature"));
 
         return (CreateChatClient(model), o);
     }
@@ -406,30 +507,29 @@ public static class GPTFunctions
     }
 
     ///<summary> Creates the system chat message for a query, this will always be the first information shown to GPT. </summary>
-    static SystemChatMessage CreateQuerySystemChatMessage()
+    SystemChatMessage CreateQuerySystemChatMessage()
     {
-        string msg = $"User's name: {SettingsApp.GetValue("Username")}\nUser's pronouns: {SettingsApp.GetValue("Pronouns")}\nYour Name: {SettingsApp.GetValue("GPT Name")}.\n";
-        if (SettingsApp.GetValue("Behaviour").Length != 0) msg += $"Your Behaviour: {SettingsApp.GetValue("Behaviour")}\n";
-        if (SettingsApp.GetValue("Scenario").Length != 0) msg += $"Current Scenario: {SettingsApp.GetValue("Scenario")}\n";
-        if (SettingsApp.GetValue("Long Term Memory") == "Yes") msg += $"Long Term Memory: {string.Join('\n', memoryHistory.Select(x => x.ToString()))}\n";
-        if (SettingsApp.GetValue("Use Detailed System Promt") == "Yes") msg += string.Join('\n', LoadFile(GeneratePath(DataLocation.Console, "Assets/GPT", "AboutRevistone.txt")));
+        string msg = "";
 
-        if (SettingsApp.GetValue("Log GPT System Messages") == "Yes") DeveloperTools.Log($"[GPT] System Message: {msg}");
+        if (currentQuery?.UseSystemPromt ?? true)
+        {
+            msg += $"User's name: {SettingsApp.GetValue("Username")}\nUser's pronouns: {SettingsApp.GetValue("Pronouns")}\nYour Name: {SettingsApp.GetValue("GPT Name")}.\n";
+            if (SettingsApp.GetValue("Behaviour").Length != 0) msg += $"Your Behaviour: {SettingsApp.GetValue("Behaviour")}\n";
+            if (SettingsApp.GetValue("Scenario").Length != 0) msg += $"Current Scenario: {SettingsApp.GetValue("Scenario")}\n";
+            if (SettingsApp.GetValue("Use Detailed System Promt") == "Yes") msg += string.Join('\n', LoadFile(GeneratePath(DataLocation.Console, "Assets/GPT", "AboutRevistone.txt")));
+        }
+        if (currentQuery?.UseLongTermMemory ?? true) msg += $"Long Term Memory: {string.Join('\n', memoryHistory.Select(x => x.ToString()))}\n";
+
+        if (currentQuery?.UseAdditonalSystemPromt ?? true && additionalSystemPromt.Length > 0) msg += $"\n{additionalSystemPromt}";
+
+        if (SettingsApp.GetValue("Log GPT Messages") == "System Message") DeveloperTools.Log($"[GPT] System Message: {msg}");
         return new SystemChatMessage(msg);
-    }
-
-    static void WaitForGptResponseAnimation(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
-    {
-        int dotCount = (int)animationInfo.metaInfo;
-        SendConsoleMessage(new ConsoleLine($"Generating GPT Response{new string('.', dotCount)}", AppRegistry.PrimaryCol), ConsoleLineUpdate.SameLine);
-        dotCount = dotCount < 3 ? dotCount + 1 : 0;
-        animationInfo.metaInfo = dotCount;
     }
 
     // --- CHAT TOOLS ---
 
     ///<summary> Attempts to get GPT argument for toolCall function. </summary>
-    static string TryGetJsonFunctionArgument(string argument, ChatToolCall toolCall, ref bool success)
+    public static string TryGetJsonFunctionArgument(string argument, ChatToolCall toolCall, ref bool success)
     {
         string jsonString = toolCall.FunctionArguments.ToString();
         try
@@ -439,11 +539,15 @@ public static class GPTFunctions
 
             if (arguments != null && arguments.TryGetValue(argument, out string? argumentValue))
             {
+                if (SettingsApp.GetValueAsBool("Show GPT Tool Results"))
+                    SendDebugMessage(new ConsoleLine($"[{toolCall.FunctionName}] {argumentValue}", BuildArray(AppRegistry.SecondaryCol.Extend(toolCall.FunctionName.Length + 2), AppRegistry.PrimaryCol)));
                 return argumentValue;
             }
             else
             {
                 success = false;
+                if (SettingsApp.GetValueAsBool("Show GPT Tool Results"))
+                    SendDebugMessage(new ConsoleLine($"[{toolCall.FunctionName}] Error: Missing '{argument}' argument.", BuildArray(AppRegistry.SecondaryCol.Extend(toolCall.FunctionName.Length + 2), AppRegistry.PrimaryCol)));
                 return $"Error: Missing '{argument}' argument.";
             }
         }
@@ -453,6 +557,8 @@ public static class GPTFunctions
             return $"Error: Invalid JSON format. {ex.Message}";
         }
     }
+
+    ///<summary> Base Console Tools. </summary>
 
     static readonly ChatTool getCurrentTimeTool = ChatTool.CreateFunctionTool(
         functionName: nameof(GetCurrentTime),

@@ -4,7 +4,7 @@ using Revistone.App.BaseApps;
 using Revistone.Console;
 using Revistone.Console.Data;
 using Revistone.Console.Widget;
-using Revistone.Functions;
+using Revistone.Modules;
 using Revistone.Interaction;
 
 using static Revistone.Functions.PersistentDataFunctions;
@@ -31,15 +31,6 @@ public static class Manager
     static readonly Thread realTimeInputThread = new(UserRealtimeInput.KeyRegistry); // thread for input
     static readonly Thread renderThread = new(ConsoleRendererLogic.HandleConsoleRender); // thread for rendering
 
-    public static readonly long[] threadCycles = new long[4]; // tracks thread cycles for each threaad DO NOT CALL
-    public static readonly List<string>[] threadCheckpoints =
-    [
-        new(), // main thread
-        new(), // tick behaviour thread
-        new(), // real time input thread
-        new()  // render thread
-    ];
-
     public static readonly string[] consoleTips = LoadFile(GeneratePath(DataLocation.Console, "Assets/RevistoneTips.txt")); // tips to display to user
     public static string GetConsoleTip => consoleTips[rng.Next(0, consoleTips.Length)]; // get random tip
 
@@ -50,15 +41,11 @@ public static class Manager
 
         while (true)
         {
-            threadCheckpoints[1].Clear();
-
             tickDuration.Restart();
 
             lock (ConsoleLock)
             {
-                threadCheckpoints[1].Add("Tick Invoke Start");
                 Tick.Invoke(ElapsedTicks); // invoke all tick event watchers
-                threadCheckpoints[1].Add("Tick Invoke End");
             }
 
             Profiler.CalcTime.Add(tickDuration.ElapsedMilliseconds); // how long it took for all tick event to run
@@ -70,7 +57,7 @@ public static class Manager
             Profiler.TickTime.Add(_deltaTime);
             ElapsedTicks++;
 
-            threadCycles[1]++; // increment tick behaviour thread cycle count
+            DeveloperTools.ThreadCycles[1]++; // increment tick behaviour thread cycle count
         }
     }
 
@@ -83,14 +70,14 @@ public static class Manager
     public static string[] GetThreadStatus()
     {
         return [
-            $"Main Thread: {mainThread?.ThreadState} - {threadCycles[0]} Cycles",
-            "Check Points: " + string.Join(", ", threadCheckpoints[0]),
-            $"Tick Behaviour Thread: {tickBehaviourThread.ThreadState} - {threadCycles[1]} Cycles",
-            "Check Points: " + string.Join(", ", threadCheckpoints[1]),
-            $"Real Time Input Thread: {realTimeInputThread.ThreadState} - {threadCycles[2]} Cycles",
-            "Check Points: " + string.Join(", ", threadCheckpoints[2]),
-            $"Render Thread: {renderThread.ThreadState} - {threadCycles[3]} Cycles",
-            "Check Points: " + string.Join(", ", threadCheckpoints[3])
+            $"Main Thread: {mainThread?.ThreadState} - {DeveloperTools.ThreadCycles[0]} Cycles",
+            "Check Points: " + string.Join(", ", DeveloperTools.ThreadCheckpoints[0]),
+            $"Tick Behaviour Thread: {tickBehaviourThread.ThreadState} - {DeveloperTools.ThreadCycles[1]} Cycles",
+            "Check Points: " + string.Join(", ", DeveloperTools.ThreadCheckpoints[1]),
+            $"Real Time Input Thread: {realTimeInputThread.ThreadState} - {DeveloperTools.ThreadCycles[2]} Cycles",
+            "Check Points: " + string.Join(", ", DeveloperTools.ThreadCheckpoints[2]),
+            $"Render Thread: {renderThread.ThreadState} - {DeveloperTools.ThreadCycles[3]} Cycles",
+            "Check Points: " + string.Join(", ", DeveloperTools.ThreadCheckpoints[3])
         ];
     }
 
@@ -120,7 +107,7 @@ public static class Manager
                 AppRegistry.activeApp.OnUserInput(userInput);
             }
 
-            threadCycles[0]++; // increment main thread cycle count
+            DeveloperTools.ThreadCycles[0]++; // increment main thread cycle count
         }
     }
 
@@ -136,7 +123,7 @@ public static class Manager
         ConsoleRenderer.InitializeRenderer(); // init rendering
         ConsoleRendererLogic.InitializeConsoleRendererLogic(); // init rendering pt2
         Profiler.InitializeProfiler(); // init fps tracking (profiler)
-        GPTFunctions.InitializeGPT(); // init gpt
+        GPTClient.InitializeGPT(); // init gpt
         ConsoleData.InitalizeConsoleData(); // init some console setting values
 
         mainThread = Thread.CurrentThread; // set main thread
@@ -176,6 +163,7 @@ public static class Manager
     ///<summary> Called upon standard close of the console. </summary>
     static void OnProcessExit(object? sender, EventArgs e)
     {
+        AppRegistry.activeApp.OnConsoleClose();
         ConsoleVolatileEnvironment.TrySaveEnvironment();
 
         Analytics.General.LastCloseDate = DateTime.Now;
@@ -187,6 +175,7 @@ public static class Manager
     ///<summary> Called upon crash of the console. </summary>
     static void OnProcessCrash(object sender, UnhandledExceptionEventArgs e)
     {
+        AppRegistry.activeApp.OnConsoleClose();
         ConsoleVolatileEnvironment.TryRestoreEnvironment();
 
         Analytics.General.LastCloseDate = DateTime.Now;

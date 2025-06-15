@@ -1,3 +1,5 @@
+using System.ClientModel;
+using System.Diagnostics;
 using Revistone.App.BaseApps;
 using Revistone.Console;
 using Revistone.Functions;
@@ -76,7 +78,7 @@ public static class AppCommandsData
     {
         if (userInput.Trim().Length == 0) //submitted empty load request
         {
-            (string name, ConsoleLine option)[] appList = [.. AppRegistry.appRegistry.OrderByDescending(app => app.displayPriority).Select(app => (app.name, new ConsoleLine(app.name, AppRegistry.SecondaryCol)))];
+            (string name, ConsoleLine option)[] appList = [.. AppRegistry.appRegistry.OrderByDescending(app => app.displayPriority).Select(app => (app.name, new ConsoleLine($"{app.name} - {app.description}", BuildArray(AppRegistry.SecondaryCol.Extend(app.name.Length + 2), AppRegistry.PrimaryCol.Extend(app.description.Length + 10)))))];
 
             int i = UserInput.CreateMultiPageOptionMenu("Apps", [.. appList.Select(x => x.option)], [new ConsoleLine("Exit")], 5);
             if (i == -1) return;

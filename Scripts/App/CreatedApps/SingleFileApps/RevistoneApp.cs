@@ -2,6 +2,7 @@ using Revistone.Interaction;
 using Revistone.Console;
 using Revistone.Functions;
 using Revistone.App.Command;
+using Revistone.Modules;
 
 using static Revistone.Functions.ColourFunctions;
 using Revistone.Management;
@@ -11,11 +12,11 @@ namespace Revistone.App.BaseApps;
 public class RevistoneApp : App
 {
     public RevistoneApp() : base() { }
-    public RevistoneApp(string name, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 100) { }
+    public RevistoneApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 100) { }
 
     public override App[] OnRegister()
     {
-        return [ new RevistoneApp("Revistone", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5),
+        return [ new RevistoneApp("Revistone", "Hub App For The Console.", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5),
                 [
                     new AppCommand(
                         new UserInputProfile(["boop!", "boop"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
@@ -55,7 +56,7 @@ public class RevistoneApp : App
 
         if (firstOpen && SettingsApp.GetValue("Welcome Message") == "Yes")
         {
-            GPTFunctions.Query($"User Has Logged In, Last Log Out Time: {Analytics.General.LastCloseDate}, Log In Time: {Analytics.General.LastOpenDate}", true);
+            GPTClient.Default.Query(new GPTClient.GPTQuery($"User Has Logged In, Last Log Out Time: {Analytics.General.LastCloseDate}, Log In Time: {Analytics.General.LastOpenDate}"));
         }
         firstOpen = false;
     }

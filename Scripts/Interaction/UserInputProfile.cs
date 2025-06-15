@@ -28,6 +28,8 @@ public class UserInputProfile
 
     public bool canBeEmpty;
 
+    public (Func<string, bool> req, string summary)? customRequirement; //special requirements, can be null
+
     //--- MODIFICATIONS ---
 
     public CapitalCasing caseSettings; //changes caps to this
@@ -46,7 +48,7 @@ public class UserInputProfile
     public UserInputProfile(InputType[] validInputTypes, string[] validInputFormats, string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
     int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
     bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
-    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard)
+    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, (Func<string, bool> req, string summary)? customRequirement = null, OutputFormat outputFormat = OutputFormat.Standard)
     {
         this.validInputTypes = validInputTypes;
         this.validInputFormats = validInputFormats;
@@ -61,38 +63,39 @@ public class UserInputProfile
         this.removeTrailingWhitespace = removeTrailingWhitespace;
         this.numericMin = numericMin;
         this.numericMax = numericMax;
+        this.customRequirement = customRequirement;
         this.outputFormat = outputFormat;
     }
 
     public UserInputProfile(InputType[] validInputTypes, string validInputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
     int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
     bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
-    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard) :
-    this(validInputTypes, validInputFormat.Length == 0 ? [] : [validInputFormat], bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, outputFormat)
+    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, (Func<string, bool> req, string summary)? customRequirement = null, OutputFormat outputFormat = OutputFormat.Standard) :
+    this(validInputTypes, validInputFormat.Length == 0 ? [] : [validInputFormat], bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, customRequirement, outputFormat)
     { }
 
     /// <summary> The configuration of the requirements of user input. </summary>
     public UserInputProfile(InputType validType, string validInputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
     int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
     bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
-    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard) :
-    this([validType], validInputFormat.Length == 0 ? [] : [validInputFormat], bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, outputFormat)
+    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, (Func<string, bool> req, string summary)? customRequirement = null, OutputFormat outputFormat = OutputFormat.Standard) :
+    this([validType], validInputFormat.Length == 0 ? [] : [validInputFormat], bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, customRequirement, outputFormat)
     { }
 
     /// <summary> The configuration of the requirements of user input. </summary>
     public UserInputProfile(string validInputFormat = "", string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
     int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
     bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
-    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard) :
-    this([], validInputFormat.Length == 0 ? [] : [validInputFormat], bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, outputFormat)
+    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, (Func<string, bool> req, string summary)? customRequirement = null, OutputFormat outputFormat = OutputFormat.Standard) :
+    this([], validInputFormat.Length == 0 ? [] : [validInputFormat], bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, customRequirement, outputFormat)
     { }
 
     /// <summary> The configuration of the requirements of user input. </summary>
     public UserInputProfile(string[] validInputFormats, string bannedChars = "", CapitalCasing caseRequirements = CapitalCasing.None,
     int charCount = -1, int wordCount = -1, bool canBeEmpty = false, CapitalCasing caseSettings = CapitalCasing.None,
     bool removeWhitespace = false, bool removeLeadingWhitespace = false, bool removeTrailingWhitespace = false,
-    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, OutputFormat outputFormat = OutputFormat.Standard) :
-    this([], validInputFormats, bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, outputFormat)
+    float numericMin = float.NegativeInfinity, float numericMax = float.PositiveInfinity, (Func<string, bool> req, string summary)? customRequirement = null, OutputFormat outputFormat = OutputFormat.Standard) :
+    this([], validInputFormats, bannedChars, caseRequirements, charCount, wordCount, canBeEmpty, caseSettings, removeWhitespace, removeLeadingWhitespace, removeTrailingWhitespace, numericMin, numericMax, customRequirement, outputFormat)
     { }
 
     //--- FUNCTIONS ---
@@ -124,7 +127,12 @@ public class UserInputProfile
             }
             if (!foundFormat) errors.Add($"Input Does Not Meet Required Format: {validInputFormats.ToElementString()}!");
         }
-        // if (validInputFormats != "" && !StringFunctions.InFormat(modInput, validInputFormats)) errors.Add($"Input Does Not Meet Required Format: {validInputFormats}!");
+
+        if (customRequirement != null && !customRequirement.Value.req(modInput))
+        {
+            errors.Add(customRequirement.Value.summary);
+        }
+
         char[] bannedChar = modInput.Where(c => bannedChars.Contains(c.ToString())).ToArray();
         if (bannedChar.Length > 0) errors.Add($"Input Can Not Have Characters: {bannedChar.ToElementString()}!");
         if (validInputTypes.Length != 0 && !validInputTypes.Contains(inputType)) errors.Add($"Input Recognised As [{inputType}], Should Be {validInputTypes.ToElementString()}!");

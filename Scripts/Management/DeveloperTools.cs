@@ -1,8 +1,11 @@
 using System.Runtime.CompilerServices;
+using Revistone.App;
 using Revistone.App.BaseApps;
 using Revistone.App.Command;
+using Revistone.Console;
 
 using static Revistone.Functions.PersistentDataFunctions;
+using static Revistone.Functions.ColourFunctions;
 
 namespace Revistone.Management;
 
@@ -10,6 +13,13 @@ namespace Revistone.Management;
 public static class DeveloperTools
 {
     static readonly SessionLog log = new();
+    static readonly AdvancedSessionLog advancedLog = new();
+
+    // ordered main, tick, realtime, render
+    public static readonly long[] ThreadCycles = new long[4]; // tracks thread cycles for each threaad DO NOT CALL
+    public static readonly List<string>[] ThreadCheckpoints = [[], [], [], []];
+
+    public static readonly ConsoleLine DefaultErrorMessage = new("[ERROR] Issue Or Corruption Has Been Found Via Debugging - Raise A Github Ticket With The File PersistentData/Console/Debug/SessionLog.Json Attatched <3", BuildArray(ConsoleColor.DarkRed.Extend(7), ConsoleColor.DarkBlue.Extend(88), ConsoleColor.Cyan.Extend(45), [ConsoleColor.DarkBlue]));
 
     ///<summary> Log message to the session log. </summary>
     public static void Log<T>(T message, bool flagSession = false, bool advancedLog = false, [CallerFilePath] string callerFilePath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
@@ -50,8 +60,6 @@ public static class DeveloperTools
     }
 
     // --- DEEP DEBUGGING ---
-
-    static readonly AdvancedSessionLog advancedLog = new();
 
     public class AdvancedSessionLog
     {
@@ -139,16 +147,7 @@ public static class DeveloperTools
             .. AppCommandsData.fileHotkeys.Select(x => $"- {x.keyCombo} -> {x.description}"),
             "",
             "Apps [- Name -> Description]:",
-            "- Revistone-> Start app, used for command - line interface, workspace, and GPT interaction",
-            "- Tracker -> Daily logger app",
-            "- Paint -> For creating and editing.cimg files",
-            "- Flash Card Manager -> For creating and using virtual flash cards",
-            "- Debit Card Manager -> Test app, allowing user to create and manager virtual bank accounts",
-            "- Font Showcase -> Allows user to view all the fonts available within the console, with text of their choice",
-            "- Settings -> App for editing and viewing console settings",
-            "- Screenshots -> App for viewing screenshots",
-            "- Pong -> The classic game Pong",
-            "- Tetris -> The classic game Tetris",
+            .. AppRegistry.appRegistry.Select(x => $"- {x.name} - {x.description}"),
             "",
             "Settings [- Name -> Description]:",
             .. SettingsApp.settings.Select(x => $"- {x.settingName} -> {x.description}"),
