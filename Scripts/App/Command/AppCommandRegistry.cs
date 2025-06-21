@@ -12,6 +12,7 @@ using static Revistone.App.Command.AppCommandsData;
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Modules.Workspace;
+using Revistone.Console.Data;
 
 namespace Revistone.App.Command;
 
@@ -67,6 +68,14 @@ public static class AppCommandRegistry
         new AppCommand(
             new UserInputProfile(["memoriesgpt", "memgpt", "memorygpt"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => GPTClient.Default.ViewMemories(), "Memories GPT", "View List Of GPT Memories.", 60, AppCommand.CommandType.ChatGPT),
+        new AppCommand(
+            new UserInputProfile(["lastgpt", "previousgpt", "prevgpt"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => SendConsoleMessages(GPTClient.ToGPTFormat(GPTClient.Default.GetLastMessages(1).SelectMany(s => s.FitToConsole()).ToList())), "Last GPT", "View Last Message From GPT.", 59, AppCommand.CommandType.ChatGPT),
+        new AppCommand(
+            new UserInputProfile("viewgpt[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => {
+                if (int.TryParse(s.Replace(" ", "")[7..], out int i) && i > 0) GPTClient.Default.ViewLastMessages(i); else SendConsoleMessage(new ConsoleLine("Invalid Number Of Messages.", AppRegistry.PrimaryCol));
+            }, "View GPT [Number Of Messages]", "View Given Number Of Previous Messages From GPT.", 58, AppCommand.CommandType.ChatGPT),
         new AppCommand(
             new UserInputProfile("set setting[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
             (s) => SettingInteractCommand(s[11..].TrimStart(), false), "Set Setting [Setting]", "Set The Value Of Given Setting.", 69, AppCommand.CommandType.Apps),
@@ -146,6 +155,14 @@ public static class AppCommandRegistry
             new UserInputProfile(["pausestopwatch", "pausesw", "stopstopwatch", "stopsw", "togglestopwatch", "togglesw"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => TimerWidget.TogglePauseTimer("Stopwatch"), "Toggle Stopwatch", "Pauses Or Unpauses Stopwatch.", 63, AppCommand.CommandType.Widget),
         new AppCommand(
+            new UserInputProfile(["counter", "count", "startcounter", "startcount", "createcounter", "countercreate"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => CreateCounterWidget(), "Counter", "Create Counter Widget.", 62, AppCommand.CommandType.Widget),
+        new AppCommand(
+            new UserInputProfile(["removecounter", "counterremove", "removecount", "countremove", "cancelcounter", "countercancel"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => RemoveCounterWidget(), "Remove Counter", "Removes Counter Widget.", 61, AppCommand.CommandType.Widget),
+        new AppCommand(
+            new UserInputProfile(["counteradd[A:]", "addcounter[A:]"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true, removeTrailingWhitespace: true), (s) => IncrementCounterWidget(s.Replace(" ", "")[10..]), "Counter Add [Amount]", "Add Given Amount To Counter", 60, AppCommand.CommandType.Widget),
+        new AppCommand(
             new UserInputProfile(["exit", "leave", "quit"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => ExitTerminalCommand(false), "Quit", "Closes The Revistone Terminal.", -100, AppCommand.CommandType.Console),
         new AppCommand(
@@ -176,7 +193,7 @@ public static class AppCommandRegistry
             new UserInputProfile(["liststickers", "allstickers"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => PaintApp.ListStickers(), "List Stickers", "Displays List Of All Default And User Stickers (Excluding Workspace).", 38, AppCommand.CommandType.Console),
         new AppCommand(
-            new UserInputProfile(["version", "releaseversion", "buildversion", "build"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            new UserInputProfile(["version", "releaseversion", "buildversion", "build", "ver", "buildver"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => SendConsoleMessage(new ConsoleLine($"Build Version - {Manager.ConsoleVersion}", BuildArray(AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol))), "Version", "Displays Console Version.", 0, AppCommand.CommandType.Console),
         new AppCommand(
             new UserInputProfile("analytics", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
@@ -205,8 +222,8 @@ public static class AppCommandRegistry
             new UserInputProfile(["tickevent", "ticklisteners"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => SendConsoleMessage(new ConsoleLine(Manager.GetTickListeners().ToElementString(), AppRegistry.PrimaryCol)), "Tick Event", "Displays All Methods Invoked By Tick Event.", 100, AppCommand.CommandType.Developer),
         new AppCommand(
-            new UserInputProfile("render test", caseSettings: StringFunctions.CapitalCasing.Lower, removeTrailingWhitespace: true, removeLeadingWhitespace: true),
-            (s) => RenderTestCommand(), "Render Test", "Displays Render Stress Test For The Console.", 90, AppCommand.CommandType.Developer),
+            new UserInputProfile("graphicstest[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
+            (s) => RenderTestCommand(s.Replace(" ", "")[12..]), "Graphics Test [Test]", "Displays Graphics Test For The Console.", 90, AppCommand.CommandType.Developer),
         new AppCommand(
             new UserInputProfile("genrevistoneabout", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => { DeveloperTools.GenerateGPTAboutFile(); SendConsoleMessage(new ConsoleLine("About Revistone File Generated.", AppRegistry.PrimaryCol));}, "Gen Revistone About", "Generates A File For The GPT Model To Use As About Information.", 80, AppCommand.CommandType.Developer),

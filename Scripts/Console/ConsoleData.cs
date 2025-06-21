@@ -37,6 +37,9 @@ internal static class ConsoleData
 
     public static bool showDate;
     public static int maxWorkspacePathLength = 15;
+    public static double counterWidget = 0;
+
+    public static bool useExperimentalRendering = false;
 
     public static void InitalizeConsoleData()
     {

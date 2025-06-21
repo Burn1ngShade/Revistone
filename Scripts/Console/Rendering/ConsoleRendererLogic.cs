@@ -7,7 +7,7 @@ using Revistone.Management;
 
 using static Revistone.Console.Data.ConsoleData;
 
-namespace Revistone.Console;
+namespace Revistone.Console.Rendering;
 
 /// <summary> Class pertaining logic to update ConsoleRenderer. </summary>
 public static class ConsoleRendererLogic
@@ -32,6 +32,8 @@ public static class ConsoleRendererLogic
         Manager.Tick += HandleConsoleDisplayBehaviour;
     }
 
+    // --- RENDERING ---
+
     ///<summary> [DO NOT CALL] Handles console rendering. </summary>
     internal static void HandleConsoleRender()
     {
@@ -43,7 +45,18 @@ public static class ConsoleRendererLogic
 
             lock (Manager.ConsoleLock)
             {
-                RenderConsole();
+                if (!(blockRender || consoleLines.Length < AppRegistry.activeApp.minHeightBuffer))
+                {
+                    if (useExperimentalRendering)
+                    {
+                        QualityConsoleRenderer.RenderConsole();
+                    }
+                    else
+                    {
+                        PerformanceConsoleRenderer.RenderConsole();
+                        PerformanceConsoleRenderer.DrawBuffer();
+                    }
+                }
             }
 
             Profiler.RenderLogicTime.Add(frameDuration.ElapsedTicks);
@@ -59,6 +72,8 @@ public static class ConsoleRendererLogic
         }
     }
 
+    // --- Dynamic Console ---
+
     /// <summary> Main loop for ConsoleDisplay, handles dynamic lines. </summary>
     static void HandleConsoleDisplayBehaviour(int tickNum)
     {
@@ -67,7 +82,10 @@ public static class ConsoleRendererLogic
         {
             System.Console.CursorVisible = false;
             windowSize = (System.Console.WindowWidth, System.Console.WindowHeight);
-            if (!(consoleReload && windowSize.height > AppRegistry.activeApp.minHeightBuffer && windowSize.width > AppRegistry.activeApp.minWidthBuffer)) SoftReloadConsoleDisplay();
+            if (!(consoleReload && windowSize.height > AppRegistry.activeApp.minHeightBuffer && windowSize.width > AppRegistry.activeApp.minWidthBuffer))
+            {
+                SoftReloadConsoleDisplay();
+            }
             else if (!(windowSize.height <= AppRegistry.activeApp.minHeightBuffer || windowSize.width <= AppRegistry.activeApp.minWidthBuffer))
             {
                 ResetConsoleDisplay();
@@ -110,14 +128,14 @@ public static class ConsoleRendererLogic
                     break;
             }
 
-            ConsoleRenderer.Reload();
+            PerformanceConsoleRenderer.Reload();
 
             for (int i = 0; i < 3; i++)
             {
-                for (int j = 0; j < exception[i].Length; j++) ConsoleRenderer.SetChar(j, i, exception[i][j], ConsoleColor.Red, ConsoleColor.Black);
+                for (int j = 0; j < exception[i].Length; j++) PerformanceConsoleRenderer.SetChar(j, i, exception[i][j], ConsoleColor.Red, ConsoleColor.Black);
             }
 
-            ConsoleRenderer.DrawBuffer();
+            PerformanceConsoleRenderer.DrawBuffer();
 
             screenWarningUpdated = true;
         }
@@ -147,11 +165,11 @@ public static class ConsoleRendererLogic
     {
         screenWarningUpdated = false;
 
-        ConsoleRenderer.Reload();
+        if (useExperimentalRendering) QualityConsoleRenderer.Reload(); 
+        else PerformanceConsoleRenderer.Reload();
 
         primaryLineIndex = 1;
         debugLineIndex = debugBufferStartIndex;
-
 
         exceptionLines = new bool[System.Console.WindowHeight - 1];
         consoleLines = new ConsoleLine[System.Console.WindowHeight - 1];
@@ -184,7 +202,8 @@ public static class ConsoleRendererLogic
             return;
         }
 
-        ConsoleRenderer.Reload();
+        if (useExperimentalRendering) QualityConsoleRenderer.Reload(); 
+        else PerformanceConsoleRenderer.Reload();
 
         int debugDistanceFromEnd = consoleLines.Length - debugLineIndex;
 
@@ -235,6 +254,8 @@ public static class ConsoleRendererLogic
 
         consoleInterrupt = true;
     }
+
+    // --- Console Borders ---
 
     /// <summary> Updates console title, with current app name and colour scheme. </summary>
     static void UpdateConsoleTitle()
@@ -288,66 +309,4 @@ public static class ConsoleRendererLogic
     }
 
     // --- CONSOLE RENDERING ---
-
-    /// <summary> Writes given line to screen, using value of consoleLines. </summary>
-    static void WriteConsoleLine(int lineIndex)
-    {
-        //if user decides to set an empty array for colours (please dont do this)
-        if (consoleLines[lineIndex].lineColour.Length == 0) consoleLines[lineIndex].Update(ConsoleColor.White.ToArray());
-        if (consoleLines[lineIndex].lineBGColour.Length == 0) consoleLines[lineIndex].Update(consoleLines[lineIndex].lineText, consoleLines[lineIndex].lineColour, ConsoleColor.Black.ToArray());
-
-        consoleLines[lineIndex].MarkAsUpToDate();
-
-        ConsoleLine c = new ConsoleLine(consoleLines[lineIndex]); //copy of current console line
-        ConsoleLine bc = new ConsoleLine(consoleLinesBuffer[lineIndex]); //copy of buffer console line
-
-        if (bc.lineText.Length > c.lineText.Length) //clears line between end of currentline and buffer line
-        {
-            for (int i = c.lineText.Length; i < windowSize.width; i++)
-            {
-                ConsoleRenderer.SetChar(i, lineIndex, ' ', ConsoleColor.White, ConsoleColor.Black);
-            }
-        }
-
-        for (int i = 0; i < Math.Min(c.lineText.Length, windowSize.width); i++)
-        {
-            ConsoleRenderer.SetChar(i, lineIndex, c.lineText[i], c.lineColour.Length > i ? c.lineColour[i] : c.lineColour[^1], c.lineBGColour.Length > i ? c.lineBGColour[i] : c.lineBGColour[^1]);
-        }
-    }
-
-    /// <summary> Updates the console display, based on current states of consoleLines, before updating consoleLinesBuffer. </summary>
-    public static void RenderConsole()
-    {
-        if (blockRender || consoleLines.Length < AppRegistry.activeApp.minHeightBuffer)
-        {
-            return;
-        }
-
-        if (System.Console.WindowTop != 0)
-        {
-            try
-            {
-                if (OperatingSystem.IsWindows()) System.Console.SetWindowPosition(0, 0);
-            }
-            catch (IOException e)
-            {
-                DeveloperTools.Log(e.Message, true, true);
-            } //needed as its not possible to detect user changing window size (to my knowledge)
-        }
-
-        for (int i = 0; i < consoleLines.Length; i++)
-        {
-            if (consoleLines[i] == null || consoleLines[i].updated) continue;
-
-            if (System.Console.WindowHeight != windowSize.height || System.Console.WindowWidth != windowSize.width)
-            {
-                return;
-            }
-
-            WriteConsoleLine(i);
-            consoleLinesBuffer[i].Update(consoleLines[i]);
-        }
-
-        ConsoleRenderer.DrawBuffer();
-    }
 }

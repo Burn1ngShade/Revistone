@@ -1,7 +1,7 @@
-using System.ClientModel;
-using System.Diagnostics;
 using Revistone.App.BaseApps;
 using Revistone.Console;
+using Revistone.Console.Data;
+using Revistone.Console.Widget;
 using Revistone.Functions;
 using Revistone.Interaction;
 
@@ -19,6 +19,8 @@ public static class AppCommandsData
         ("Ctrl + Shift + P", "Toggles Profiler."),
         ("F11", "Takes A Screenshot Of The Debug Console."),
         ("F12", "Takes A Screenshot Of The Primary Console."),
+        ("Alt + +", "Increments Counter Widget."),
+        ("Alt + -", "Decrements Counter Widget."),
     ];
 
     public static readonly (string keyCombo, string description)[] inputHotkeys = [
@@ -121,10 +123,64 @@ public static class AppCommandsData
         ClearLines(updateCurrentLine: true);
     }
 
-    public static void RenderTestCommand()
+    ///<summary> Stress test console rendering. </summary>
+    public static void RenderTestCommand(string test)
     {
-        ConsoleLine[] lines = [.. Enumerable.Range(0, 40).Select(i => new ConsoleLine(new string('a', 200), AllColours.Repeat(13), AllColours.Repeat(13)))];
-        ConsoleAnimatedLine[] animation = [.. Enumerable.Range(0, 40).Select(i => new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, 5, true))];
-        SendConsoleMessages(lines, animation);
+        int.TryParse(test, out int testNum);
+
+        switch (testNum)
+        {
+            case 1:
+                SendConsoleMessage(new ConsoleLine(new string(' ', 16), [], AllColours));
+                SendConsoleMessage(new ConsoleLine(new string('X', 16), AllColours, []));
+                break;
+
+            default:
+                ConsoleLine[] lines = [.. Enumerable.Range(0, 40).Select(i => new ConsoleLine(new string('a', 200), AllColours.Repeat(13), AllColours.Repeat(13)))];
+                ConsoleAnimatedLine[] animation = [.. Enumerable.Range(0, 40).Select(i => new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, 5, true))];
+                SendConsoleMessages(lines, animation);
+                break;
+        }
+
+        
+    }
+
+    ///<summary> Creates counter widget. </summary>
+    public static void CreateCounterWidget()
+    {
+        if (ConsoleWidget.WidgetExists("Counter"))
+        {
+            if (!UserInput.CreateTrueFalseOptionMenu("Counter Widget Already Exists. Do You Want To Reset It?")) return;
+        }
+
+        ConsoleData.counterWidget = 0;
+        ConsoleWidget.TryAddWidget(new FunctionWidget("Counter", 50, () => ($"Counter: {ConsoleData.counterWidget:0.########}", false)));
+        SendConsoleMessage(new ConsoleLine("Counter Widget Created - 'Counter'", BuildArray(AppRegistry.PrimaryCol.Extend(25), AppRegistry.SecondaryCol)));
+    }
+
+    public static void RemoveCounterWidget()
+    {
+        if (ConsoleWidget.TryRemoveWidget("Counter"))
+        {
+            SendConsoleMessage(new ConsoleLine("Counter Widget Removed - 'Counter'", BuildArray(AppRegistry.PrimaryCol.Extend(25), AppRegistry.SecondaryCol)));
+        }
+        else SendConsoleMessage(new ConsoleLine("Counter Widget Does Not Exist - 'Counter'", BuildArray(AppRegistry.PrimaryCol.Extend(32), AppRegistry.SecondaryCol)));
+    }
+
+    public static void IncrementCounterWidget(string input)
+    {
+        if (!ConsoleWidget.WidgetExists("Counter"))
+        {
+            SendConsoleMessage(new ConsoleLine("Counter Widget Does Not Exist - 'Counter'", BuildArray(AppRegistry.PrimaryCol.Extend(32), AppRegistry.SecondaryCol)));
+            return;
+        }
+
+        if (double.TryParse(input, out double increment))
+        {
+            ConsoleData.counterWidget += increment;
+            return;
+        }
+
+        SendConsoleMessage(new ConsoleLine("Invalid Increment Value.", AppRegistry.PrimaryCol));
     }
 }

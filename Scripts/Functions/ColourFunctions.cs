@@ -1,3 +1,4 @@
+using Revistone.Console;
 using static System.ConsoleColor;
 
 namespace Revistone.Functions;
@@ -158,7 +159,7 @@ public static class ColourFunctions
     }
 
     /// <summary> Generates ConsoleColour to array of given length. </summary>
-    public static ConsoleColor[] ToArray(this ConsoleColor colour, int length = 1) { return ToArray(new (ConsoleColor, int)[] { (colour, length) }); }
+    public static ConsoleColor[] ToArray(this ConsoleColor colour, int length = 1) { return ToArray([(colour, length)]); }
 
     /// <summary> Generates ConsoleColour array to a jaged array of given length. </summary>
     public static ConsoleColor[][] ToJaggedArray(this ConsoleColor[] colours, int length)
@@ -221,8 +222,6 @@ public static class ColourFunctions
     /// <summary> Extends ConsoleColour array to given length, by appending given extendColour. </summary>
     public static ConsoleColor[] Extend(this ConsoleColor[] colours, ConsoleColor extendColour, int length)
     {
-        if (colours.Length == 0) return colours;
-
         ConsoleColor[] c = new ConsoleColor[length];
 
         for (int i = 0; i < c.Length; i++)
@@ -237,11 +236,9 @@ public static class ColourFunctions
     public static ConsoleColor[] Extend(this ConsoleColor colour, int length) { return Extend(colour.ToArray(), length, false); }
 
     ///<summary> Extends ConsoleColour arrary to given length, appending the final colour in the array. </summary>
-    public static ConsoleColor[] ExtendEnd(this ConsoleColor[] colours, int length)
+    public static ConsoleColor[] ExtendEnd(this ConsoleColor[] colours, int length, ConsoleColor fallbackColour = Black)
     {
-        if (colours.Length == 0) return colours;
-
-        return colours.Extend(colours[^1], length);
+        return colours.Extend(colours.Length == 0 ? fallbackColour : colours[^1], length);
     }
 
     /// <summary> Stretchs ConsoleColour array by given factor. </summary>

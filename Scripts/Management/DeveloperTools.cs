@@ -158,6 +158,5 @@ public static class DeveloperTools
 
         SaveFile(GeneratePath(DataLocation.ConsoleAssets, "GPT", "GeneratedAboutRevistone.txt"), [.. aboutInfo]);
         Log("Developer Tool Used.");
-
     }
 }

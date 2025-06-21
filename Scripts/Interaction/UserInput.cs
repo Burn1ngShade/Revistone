@@ -846,6 +846,7 @@ public static class UserInput
                     ClearLines(data.window.height + 1, true);
                     return [.. data.content];
             }
+            while (data.content.Count <= data.curIndex + data.curOffset) data.content.Add(""); 
         }
     }
 

@@ -73,6 +73,8 @@ public static class UserRealtimeInput
         if (KeyPressed(0x11) && KeyPressed(0x10) && KeyPressedDown(80)) Profiler.SetEnabled(!Profiler.Enabled); // ctrl + shift + p
         if (KeyPressedDown(123)) ScreenshotsApp.TakePrimaryScreenshot(); // f12
         if (KeyPressedDown(122)) ScreenshotsApp.TakeDebugScreenshot(); // f11
+        if (KeyPressed(0x12) && KeyPressedDown(0xBB)) ConsoleData.counterWidget++; // increments counter widget
+        if (KeyPressed(0x12) && KeyPressedDown(0xBD)) ConsoleData.counterWidget--; // decrements counter widget
     }
 
     /// <summary> Returns if key currently pressed down. </summary>

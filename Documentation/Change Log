@@ -763,7 +763,7 @@ AppCommandRegistry -> New developer commands, only useable in developer mode (re
 FlashCardApp -> Continued improvements, multiple choice questions now shuffle order, Widget now shows timer for set, can now retry set of failed questions for a flash card set, ui improvements
 PersistentDataFunctions -> Option not to create json file if not found on load, option to include fields on json, better path creation, new is sub directory and copy directory functions
 Analytics -> More changes to try and prevent random corruptions, option to view and restore analytics from manual created backups
-DefaultWidgets -> New stopwatch widget, timer now plays jingle upon completion
+DefaultWidgets -> New stopwatch widget, timer now plays jingle upon completion, improved widget UI, now hides additional widgets instead of overflowing screen, option to collapse workspace widget
 General -> old debug messages removed, scripts split from functions to functions and modules, git ignore improvements
 
 [Minor]

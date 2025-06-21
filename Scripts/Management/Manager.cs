@@ -6,6 +6,7 @@ using Revistone.Console.Data;
 using Revistone.Console.Widget;
 using Revistone.Modules;
 using Revistone.Interaction;
+using Revistone.Console.Rendering;
 
 using static Revistone.Functions.PersistentDataFunctions;
 
@@ -14,7 +15,7 @@ namespace Revistone.Management;
 /// <summary> Main management class, handles initialization, Tick, and main interaction behaviour. </summary>
 public static class Manager
 {
-    public static readonly string ConsoleVersion = "0.8.0";
+    public static readonly string ConsoleVersion = "0.9.0";
     public static readonly object ConsoleLock = new(); // lock for console interaction
 
     public static readonly Random rng = new();
@@ -120,7 +121,21 @@ public static class Manager
         AppRegistry.InitializeAppRegistry(); // init all apps
 
         ConsoleWidget.InitializeWidgets(); // init border widgets
-        ConsoleRenderer.InitializeRenderer(); // init rendering
+
+        if (SettingsApp.GetValueAsBool("Use Experimental Rendering"))
+        {
+            ConsoleData.useExperimentalRendering = true;
+            DeveloperTools.Log("Initializing Quality Renderer.");
+            QualityConsoleRenderer.InitializeRenderer();
+            PerformanceConsoleRenderer.InitializeRenderer(); // TEMP
+        }
+        else
+        {
+            DeveloperTools.Log("Initializing Performance Renderer.");
+            PerformanceConsoleRenderer.InitializeRenderer(); // init rendering
+        }
+
+
         ConsoleRendererLogic.InitializeConsoleRendererLogic(); // init rendering pt2
         Profiler.InitializeProfiler(); // init fps tracking (profiler)
         GPTClient.InitializeGPT(); // init gpt

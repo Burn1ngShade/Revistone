@@ -87,6 +87,13 @@ public class ConsoleLine
     /// <summary> Checks if lineText has length 0. </summary>
     public bool IsEmpty() { return lineText.Length == 0; }
 
+    ///<summary> Ensures that FG and BG colour arrays are atleast aslong as text. </summary>
+    public void Normalise()
+    {
+        if (_lineText.Length > _lineColour.Length) _lineColour = _lineColour.ExtendEnd(_lineText.Length);
+        if (_lineText.Length > _lineBGColour.Length) _lineBGColour = _lineBGColour.ExtendEnd(_lineText.Length);
+    } 
+
     //--- STATIC METHODS ---
 
     /// <summary> Inserts a ConsoleLine into another, overwritting overlapping chars and colours. </summary>
@@ -145,5 +152,5 @@ public class ConsoleLine
         validLineText = validLineText.Replace("\n", "").Replace("\r", "");
 
         return new ConsoleLine(validLineText, baseLine.lineColour, baseLine.lineBGColour);
-    }
+    } 
 }

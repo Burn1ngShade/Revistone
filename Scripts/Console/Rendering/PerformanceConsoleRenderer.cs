@@ -1,11 +1,14 @@
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 
-namespace Revistone.Console;
+using static Revistone.Console.Data.ConsoleData;
+using static Revistone.Functions.ColourFunctions;
+
+namespace Revistone.Console.Rendering;
 
 //Implementation based off https://github.com/crowfingers/FastConsole/blob/master/FastConsole.cs (tyyyyyyyyy :))
 /// <summary> Class pertaining custom logic to write to screen buffer. </summary>
-public static class ConsoleRenderer
+public static class PerformanceConsoleRenderer
 {
     /// <summary> Struct representing left and top position of a char in console. </summary>
     [StructLayout(LayoutKind.Sequential)]
@@ -211,5 +214,44 @@ public static class ConsoleRenderer
         ConsoleColor foreground = (ConsoleColor)(attributes & 0x0F);
         ConsoleColor background = (ConsoleColor)(attributes >> 4);
         return (character, foreground, background);
+    }
+
+    ///<summary> Render Console To Screen. </summary>
+    public static void RenderConsole()
+    {
+        for (int i = 0; i < consoleLines.Length; i++)
+        {
+            if (consoleLines[i] == null || consoleLines[i].updated) continue;
+
+            // mabye move this out??? i dont know if itll break something
+            if (System.Console.WindowHeight != windowSize.height || System.Console.WindowWidth != windowSize.width)
+            {
+                return;
+            }
+
+            WriteConsoleLine(i);
+            consoleLinesBuffer[i].Update(consoleLines[i]);
+        }
+    }
+
+    /// <summary> Writes given line to screen, using value of consoleLines. </summary>
+    static void WriteConsoleLine(int lineIndex)
+    {
+        consoleLines[lineIndex].MarkAsUpToDate();
+
+        consoleLines[lineIndex].Normalise();
+
+        if (consoleLinesBuffer[lineIndex].lineText.Length > consoleLines[lineIndex].lineText.Length) //clears line between end of currentline and buffer line
+        {
+            for (int i = consoleLines[lineIndex].lineText.Length; i < windowSize.width; i++)
+            {
+                SetChar(i, lineIndex, ' ', ConsoleColor.White, ConsoleColor.Black);
+            }
+        }
+
+        for (int i = 0; i < Math.Min(consoleLines[lineIndex].lineText.Length, windowSize.width); i++)
+        {
+            SetChar(i, lineIndex, consoleLines[lineIndex].lineText[i], consoleLines[lineIndex].lineColour[i], consoleLines[lineIndex].lineBGColour[i]);
+        }
     }
 }

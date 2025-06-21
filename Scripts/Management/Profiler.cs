@@ -63,7 +63,7 @@ public static class Profiler
                 string calcTicks = $"Calc Ticks (ms): Avg - {formattedAverages[0]} | {CalcTime.ToElementString()} ";
                 string compTicks = $"Comp Ticks (ms): Avg - {formattedAverages[1]} | {TickTime.ToElementString()}";
 
-                UpdateDebugConsoleLine(new ConsoleLine($"[Profiler] FPS: {Fps}, TPS: {Tps}", BuildArray(AppRegistry.SecondaryCol.Extend(10), AppRegistry.PrimaryCol)), debugStartIndex + 1);
+                UpdateDebugConsoleLine(new ConsoleLine($"[Profiler] FPS: {Fps}, TPS: {Tps}, Mode: {(useExperimentalRendering ? "Quality" : "Performance")}", BuildArray(AppRegistry.SecondaryCol.Extend(10), AppRegistry.PrimaryCol)), debugStartIndex + 1);
                 UpdateDebugConsoleLine(new ConsoleLine($"Tick Num: {tickNum}, Lost Duration {CalcTime.Where(s => s > 25).Sum(s => s - 25)} ms, Total Duration: {Math.Round((double)CalcTime.Sum(), 2)} ms", AppRegistry.PrimaryCol), debugStartIndex + 2);
                 UpdateDebugConsoleLine(new ConsoleLine(calcTicks, ColourTickInfo(calcTicks)), debugStartIndex + 3);
                 UpdateDebugConsoleLine(new ConsoleLine(compTicks, ColourTickInfo(compTicks, 25, 30)), debugStartIndex + 4);

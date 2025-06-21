@@ -3,6 +3,7 @@ using Revistone.App.BaseApps;
 using Revistone.Console.Widget;
 using Revistone.Modules;
 using Revistone.Management;
+using Revistone.Console.Data;
 
 using static Revistone.Functions.PersistentDataFunctions;
 
@@ -14,8 +15,9 @@ public class ConsoleVolatileEnvironment
     static readonly string savePath = GeneratePath(DataLocation.Console, "VolatileEnvironment.json");
 
     public (string name, int order, long duration, bool paused, bool stopWatch)[] ActiveTimers { get; set; } = [];
+    public (bool enabled, double count) CounterWidget { get; set; } = (false, 0);
     public string WorkspacePath { get; set; } = "";
-    public string OpenApp { get; set; } = "Revistone"; 
+    public string OpenApp { get; set; } = "Revistone";
 
     ///<summary> Saves the current volatile console environment. </summary>
     public static bool TrySaveEnvironment()
@@ -23,6 +25,7 @@ public class ConsoleVolatileEnvironment
         ConsoleVolatileEnvironment environment = new()
         {
             ActiveTimers = TimerWidget.GetActiveTimerInfo(),
+            CounterWidget = (ConsoleWidget.WidgetExists("Counter"), ConsoleData.counterWidget),
             WorkspacePath = Workspace.RawPath,
             OpenApp = AppRegistry.activeApp.name,
         };
@@ -54,6 +57,12 @@ public class ConsoleVolatileEnvironment
         foreach ((string name, int order, long duration, bool paused, bool stopwatch) in environment.ActiveTimers)
         {
             ConsoleWidget.TryAddWidget(new TimerWidget(name, order, duration, paused: paused, stopwatch: stopwatch));
+        }
+
+        if (environment.CounterWidget.enabled)
+        {
+            ConsoleWidget.TryAddWidget(new FunctionWidget("Counter", 50, () => ($"Counter: {ConsoleData.counterWidget:0.########}", false)));
+            ConsoleData.counterWidget = environment.CounterWidget.count;
         }
 
         Workspace.UpdatePath(environment.WorkspacePath, false);

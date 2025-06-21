@@ -99,7 +99,7 @@ public class SettingsApp : App
         // --- DEVELOPER SETTINGS ---
         new DropdownSetting("Developer Mode",
             "Enables Debugging Tools And Commands", "No", YesNoOpt, SettingCategory.Developer),
-        new DropdownSetting("Advanced Session Log", 
+        new DropdownSetting("Advanced Session Log",
             "Uses An Extra Thread To Run A Debbugging Loop, Useful For Debugging But Will Cause A Performance Hit. Modify Time Between Updates Based On Use Case.", "Off", ["Off", "2s", "5s", "10s", "30s"], SettingCategory.Developer, true),
         new DropdownSetting("Block Rendering On Crash",
             "Pauses Rendering On Crash, Showing C# Compiler Error But Preventing Final Rendering Passes.", "No", YesNoOpt, SettingCategory.Developer),
@@ -111,6 +111,8 @@ public class SettingsApp : App
             "Override All Settings With Default Value.", "No", YesNoOpt, SettingCategory.Developer),
         new DropdownSetting("Create Log File",
             "Should HoneyC Programs Create A Program Log File?", "No", YesNoOpt, SettingCategory.Developer),
+        new DropdownSetting("Use Experimental Rendering",
+            "Should Experimental Full Colour Renering Be Used?", "No", YesNoOpt, SettingCategory.Developer, true),
     ];
 
     public SettingsApp() : base() { }

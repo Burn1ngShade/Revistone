@@ -267,6 +267,31 @@ public class GPTClient
         return [.. messageHistory.TakeLast(count).Select(x => x.Content[0].Text)];
     }
 
+    ///<summary> View last message in file format. </summary>
+    public bool ViewLastMessages(int messageCount = 1)
+    {
+        if (messageHistory.Count == 0)
+        {
+            SendConsoleMessage(new ConsoleLine("GPT Has No Previous Messages.", AppRegistry.PrimaryCol));
+            return false;
+        }
+
+        UserInput.GetMultiUserInput("Last GPT Message",
+            [.. GetLastMessages(messageCount)
+                .SelectMany((msg, index) =>
+                new[] { $"--- Message {index + 1} ---" } 
+                .Concat(msg
+                .Split(["\r\n", "\n"], StringSplitOptions.None)
+                .Select(line => line.Trim())
+                .Where(line => !string.IsNullOrEmpty(line)).Reverse()
+                .SelectMany(line => line.FitToConsole()))
+                .Concat([""]) // Blank line after each message
+                ).ToArray()
+            ],
+            readOnly: true);
+        return true;
+    }
+
     ///<summary> Add message to previous message history, caps size to 50 to keep data storage reasonable. </summary>
     public void AddToMessageHistory(ChatMessage message)
     {

@@ -1,12 +1,12 @@
 --- TO DO ---
 - Spotify API Support
 - Sand Simulation
-- Settings App Improvements
 - More Colours
 - Console Image Support For Square Colours
+- Widget custom order
 
 --- KNOWN BUGS ---
-Leaving rendering test on for extended period on vscode version of console will brick after a while (idk if this is even my fault)
+Leaving rendering test on for extended period on vscode version of console will brick after a while (idk if this is even my fault) -> this aint my fault, my pc :(
 
 - Know Info.
     program does NOT crash,
@@ -15,6 +15,8 @@ Leaving rendering test on for extended period on vscode version of console will 
     always occours when tick event is called at the same time as a render
 
 --- DONE ---
+Fixed crash when using page down to acess new empty file
+Fixed render test being unusable due to rename command
 
 --- ADDED ---
 
