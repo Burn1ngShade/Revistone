@@ -55,7 +55,7 @@ public static class Workspace
     {
         if (!DirectoryExists(newPath))
         {
-            if (output) SendConsoleMessage(new ConsoleLine($"Directory Does Not Exist - '{newPath[15..^1]}'", BuildArray(AppRegistry.PrimaryCol.Extend(27), AppRegistry.SecondaryCol)));
+            if (output) SendConsoleMessage(new ConsoleLine($"Directory Does Not Exist - '{newPath[15..^1]}'", BuildArray(AppRegistry.PrimaryCol.SetLength(27), AppRegistry.SecondaryCol)));
             return false;
         }
 
@@ -68,7 +68,7 @@ public static class Workspace
 
         if (newPath.Equals(path, StringComparison.CurrentCultureIgnoreCase))
         {
-            if (output) SendConsoleMessage(new ConsoleLine($"Already In Directory - '{DisplayPath}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
+            if (output) SendConsoleMessage(new ConsoleLine($"Already In Directory - '{DisplayPath}'", BuildArray(AppRegistry.PrimaryCol.SetLength(23), AppRegistry.SecondaryCol)));
             return false;
         }
 
@@ -76,7 +76,7 @@ public static class Workspace
         if (!newPath.EndsWith('\\')) newPath += @"\";
         path = newPath[newPath.IndexOf(RootPath, StringComparison.OrdinalIgnoreCase)..];
         dir = new(path);
-        if (output) SendConsoleMessage(new ConsoleLine($"Changed To Directory - '{DisplayPath}'", BuildArray(AppRegistry.PrimaryCol.Extend(23), AppRegistry.SecondaryCol)));
+        if (output) SendConsoleMessage(new ConsoleLine($"Changed To Directory - '{DisplayPath}'", BuildArray(AppRegistry.PrimaryCol.SetLength(23), AppRegistry.SecondaryCol)));
 
         Analytics.General.DirectoriesOpened++;
 
@@ -181,19 +181,19 @@ public static class Workspace
 
             if (nq.FileExtension != q.FileExtension)
             {
-                SendConsoleMessage(new ConsoleLine($"File Must Remain The Same Type - '{q.FileExtension}'", BuildArray(AppRegistry.PrimaryCol.Extend(33), AppRegistry.SecondaryCol)));
+                SendConsoleMessage(new ConsoleLine($"File Must Remain The Same Type - '{q.FileExtension}'", BuildArray(AppRegistry.PrimaryCol.SetLength(33), AppRegistry.SecondaryCol)));
                 return false;
             }
 
             if (!IsNameValid(nq.Name, true)) return false;
             if (FileExists(nq.Location))
             {
-                SendConsoleMessage(new ConsoleLine($"File Already Exists {nq.Info}- '{nq.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(22 + nq.Info.Length), AppRegistry.SecondaryCol)));
+                SendConsoleMessage(new ConsoleLine($"File Already Exists {nq.Info}- '{nq.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(22 + nq.Info.Length), AppRegistry.SecondaryCol)));
                 return false;
             }
 
             File.Move(q.Location, nq.Location);
-            SendConsoleMessage(new ConsoleLine($"File '{q.Name}' Renamed - '{nq.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(5), AppRegistry.SecondaryCol.Extend(q.Name.Length + 2), AppRegistry.PrimaryCol.Extend(11), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"File '{q.Name}' Renamed - '{nq.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(5), AppRegistry.SecondaryCol.SetLength(q.Name.Length + 2), AppRegistry.PrimaryCol.SetLength(11), AppRegistry.SecondaryCol)));
             return true;
         }
         else if (DirectoryExists(path + name))
@@ -207,17 +207,17 @@ public static class Workspace
 
             if (DirectoryExists(nq.Location))
             {
-                SendConsoleMessage(new ConsoleLine($"Directory Already Exists {nq.Info}- '{nq.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(25 + nq.Info.Length), AppRegistry.SecondaryCol)));
+                SendConsoleMessage(new ConsoleLine($"Directory Already Exists {nq.Info}- '{nq.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(25 + nq.Info.Length), AppRegistry.SecondaryCol)));
                 return false;
             }
 
             Directory.Move(q.Location, nq.Location);
-            SendConsoleMessage(new ConsoleLine($"Directory '{q.Name}' Renamed - '{nq.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(10), AppRegistry.SecondaryCol.Extend(q.Name.Length + 2), AppRegistry.PrimaryCol.Extend(11), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Directory '{q.Name}' Renamed - '{nq.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(10), AppRegistry.SecondaryCol.SetLength(q.Name.Length + 2), AppRegistry.PrimaryCol.SetLength(11), AppRegistry.SecondaryCol)));
             return true;
 
         }
 
-        SendConsoleMessage(new ConsoleLine($"No File Or Directory Exists - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(30), AppRegistry.SecondaryCol)));
+        SendConsoleMessage(new ConsoleLine($"No File Or Directory Exists - '{name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(30), AppRegistry.SecondaryCol)));
         return false;
     }
 
@@ -228,18 +228,18 @@ public static class Workspace
         {
             WorkspaceQuery q = new(name, true);
             WorkspaceClipboard = (q, cut);
-            SendConsoleMessage(new ConsoleLine($"File {(cut ? "Cut" : "Copied")} To Workspace Clipboard - '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(cut ? 33 : 37), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"File {(cut ? "Cut" : "Copied")} To Workspace Clipboard - '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(cut ? 33 : 37), AppRegistry.SecondaryCol)));
             return true;
         }
         else if (DirectoryExists(path + name) && !Regex.IsMatch(@"^\.+$", name) && name.Length != 0 && IsNameValid(name, false, false))
         {
             WorkspaceQuery q = new(name);
             WorkspaceClipboard = (q, cut);
-            SendConsoleMessage(new ConsoleLine($"Directory {(cut ? "Cut" : "Copied")} To Workspace Clipboard - '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(cut ? 38 : 42), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Directory {(cut ? "Cut" : "Copied")} To Workspace Clipboard - '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(cut ? 38 : 42), AppRegistry.SecondaryCol)));
             return true;
         }
 
-        SendConsoleMessage(new ConsoleLine($"No File Or Directory Exists - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(30), AppRegistry.SecondaryCol)));
+        SendConsoleMessage(new ConsoleLine($"No File Or Directory Exists - '{name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(30), AppRegistry.SecondaryCol)));
         return false;
     }
 
@@ -263,12 +263,12 @@ public static class Workspace
             if (WorkspaceClipboard.cut)
             {
                 File.Move(WorkspaceClipboard.q.Location, path + name);
-                SendConsoleMessage(new ConsoleLine($"File Pasted - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(14), AppRegistry.SecondaryCol)));
+                SendConsoleMessage(new ConsoleLine($"File Pasted - '{name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(14), AppRegistry.SecondaryCol)));
             }
             else
             {
                 File.Copy(WorkspaceClipboard.q.Location, path + name);
-                SendConsoleMessage(new ConsoleLine($"File Copied - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(14), AppRegistry.SecondaryCol)));
+                SendConsoleMessage(new ConsoleLine($"File Copied - '{name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(14), AppRegistry.SecondaryCol)));
             }
         }
         else
@@ -288,12 +288,12 @@ public static class Workspace
             if (WorkspaceClipboard.cut)
             {
                 Directory.Move(WorkspaceClipboard.q.Location, path + name);
-                SendConsoleMessage(new ConsoleLine($"Directory Pasted - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(19), AppRegistry.SecondaryCol)));
+                SendConsoleMessage(new ConsoleLine($"Directory Pasted - '{name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(19), AppRegistry.SecondaryCol)));
             }
             else
             {
                 CopyDirectory(WorkspaceClipboard.q.Location, path + name);
-                SendConsoleMessage(new ConsoleLine($"Directory Pasted - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(19), AppRegistry.SecondaryCol)));
+                SendConsoleMessage(new ConsoleLine($"Directory Pasted - '{name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(19), AppRegistry.SecondaryCol)));
             }
         }
 
@@ -315,12 +315,12 @@ public static class Workspace
 
         if (DirectoryExists(q.Location))
         {
-            SendConsoleMessage(new ConsoleLine($"{dirLabel} Already Exists {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(18 + dirLabel.Length + q.Info.Length), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"{dirLabel} Already Exists {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(18 + dirLabel.Length + q.Info.Length), AppRegistry.SecondaryCol)));
             return false;
         }
 
         CreateDirectory(q.Location);
-        SendConsoleMessage(new ConsoleLine($"Created {dirLabel} {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(11 + dirLabel.Length + q.Info.Length), AppRegistry.SecondaryCol)));
+        SendConsoleMessage(new ConsoleLine($"Created {dirLabel} {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(11 + dirLabel.Length + q.Info.Length), AppRegistry.SecondaryCol)));
 
         if (q.modifiers["-j"]) UpdatePath(q.Location); // jump to new directory
 
@@ -336,14 +336,14 @@ public static class Workspace
 
         if (!DirectoryExists(q.Location) || q.Name == "")
         {
-            SendConsoleMessage(new ConsoleLine($"Directory Does Not Exist {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(27 + q.Info.Length), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Directory Does Not Exist {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(27 + q.Info.Length), AppRegistry.SecondaryCol)));
             return false;
         }
 
-        if (!UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Are You Sure You Want To Delete Directory {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(44 + q.Info.Length), AppRegistry.SecondaryCol)))) return false;
+        if (!UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Are You Sure You Want To Delete Directory {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(44 + q.Info.Length), AppRegistry.SecondaryCol)))) return false;
 
         DeleteDirectory(q.Location);
-        SendConsoleMessage(new ConsoleLine($"Deleted Directory {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(20 + q.Info.Length), AppRegistry.SecondaryCol)));
+        SendConsoleMessage(new ConsoleLine($"Deleted Directory {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(20 + q.Info.Length), AppRegistry.SecondaryCol)));
 
         if (!DirectoryExists(path)) // if we deleted the directory we are currently in using -p or -r
         {
@@ -370,8 +370,8 @@ public static class Workspace
         (string name, DirectoryInfo info)[] directories = [.. GetSubDirectories(path).Select(x => (x, new DirectoryInfo(path + x))).OrderByDescending(x => x.Item2.GetFiles().Length)];
         (string name, FileInfo info)[] files = [.. GetSubFiles(path).Select(x => (x, new FileInfo(path + x))).OrderByDescending(x => x.Item2.Length)];
 
-        SendConsoleMessage(new ConsoleLine($"Created On - {dir.CreationTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(12), AppRegistry.PrimaryCol)));
-        SendConsoleMessage(new ConsoleLine($"Last Modified - {dir.LastWriteTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(16), AppRegistry.PrimaryCol)));
+        SendConsoleMessage(new ConsoleLine($"Created On - {dir.CreationTime}.", BuildArray(AppRegistry.SecondaryCol.SetLength(12), AppRegistry.PrimaryCol)));
+        SendConsoleMessage(new ConsoleLine($"Last Modified - {dir.LastWriteTime}.", BuildArray(AppRegistry.SecondaryCol.SetLength(16), AppRegistry.PrimaryCol)));
         SendConsoleMessage(new ConsoleLine("")); // prevent some shiftline weirdness
         SendConsoleMessage(new ConsoleLine("Directories:", AppRegistry.SecondaryCol));
         for (int i = 0; i < Math.Min(directories.Length, 6); i++)
@@ -412,9 +412,9 @@ public static class Workspace
             (string name, FileInfo info) = files[option];
 
             SendConsoleMessage(new ConsoleLine($"--- {DisplayPath}\\{info.Name} ---", AppRegistry.PrimaryCol));
-            SendConsoleMessage(new ConsoleLine($"Created On - {info.CreationTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(12), AppRegistry.PrimaryCol)));
-            SendConsoleMessage(new ConsoleLine($"Last Modified - {info.LastWriteTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(16), AppRegistry.PrimaryCol)));
-            SendConsoleMessage(new ConsoleLine($"Size - {info.Length} Bytes.", BuildArray(AppRegistry.SecondaryCol.Extend(6), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Created On - {info.CreationTime}.", BuildArray(AppRegistry.SecondaryCol.SetLength(12), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Last Modified - {info.LastWriteTime}.", BuildArray(AppRegistry.SecondaryCol.SetLength(16), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Size - {info.Length} Bytes.", BuildArray(AppRegistry.SecondaryCol.SetLength(6), AppRegistry.PrimaryCol)));
             SendConsoleMessage("");
 
             int fileOption = UserInput.CreateOptionMenu("--- Options ---", [new ConsoleLine("Open File", AppRegistry.SecondaryCol), new ConsoleLine("Remove File", AppRegistry.SecondaryCol), new ConsoleLine("Exit", AppRegistry.PrimaryCol)]);
@@ -452,10 +452,10 @@ public static class Workspace
             (string name, DirectoryInfo info) = directories[option];
 
             SendConsoleMessage(new ConsoleLine($"--- {DisplayPath}\\{info.Name} ---", AppRegistry.PrimaryCol));
-            SendConsoleMessage(new ConsoleLine($"Created On - {info.CreationTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(12), AppRegistry.PrimaryCol)));
-            SendConsoleMessage(new ConsoleLine($"Last Modified - {info.LastWriteTime}.", BuildArray(AppRegistry.SecondaryCol.Extend(16), AppRegistry.PrimaryCol)));
-            SendConsoleMessage(new ConsoleLine($"Directories - {info.GetDirectories().Length}.", BuildArray(AppRegistry.SecondaryCol.Extend(11), AppRegistry.PrimaryCol)));
-            SendConsoleMessage(new ConsoleLine($"Files - {info.GetFiles().Length}.", BuildArray(AppRegistry.SecondaryCol.Extend(6), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Created On - {info.CreationTime}.", BuildArray(AppRegistry.SecondaryCol.SetLength(12), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Last Modified - {info.LastWriteTime}.", BuildArray(AppRegistry.SecondaryCol.SetLength(16), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Directories - {info.GetDirectories().Length}.", BuildArray(AppRegistry.SecondaryCol.SetLength(11), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Files - {info.GetFiles().Length}.", BuildArray(AppRegistry.SecondaryCol.SetLength(6), AppRegistry.PrimaryCol)));
             SendConsoleMessage("");
 
             int directoryOption = UserInput.CreateOptionMenu("--- Options ---", [new ConsoleLine("Open Directory", AppRegistry.SecondaryCol), new ConsoleLine("Remove Directory", AppRegistry.SecondaryCol), new ConsoleLine("Exit", AppRegistry.PrimaryCol)]);
@@ -492,12 +492,12 @@ public static class Workspace
         if (!IsNameValid(q.Name, true)) return false;
         if (FileExists(q.Location))
         {
-            SendConsoleMessage(new ConsoleLine($"File Already Exists {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(22 + q.Info.Length), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"File Already Exists {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(22 + q.Info.Length), AppRegistry.SecondaryCol)));
             return false;
         }
 
         SaveFile(q.Location, []);
-        SendConsoleMessage(new ConsoleLine($"Created Text File {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(20 + q.Info.Length), AppRegistry.SecondaryCol)));
+        SendConsoleMessage(new ConsoleLine($"Created Text File {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(20 + q.Info.Length), AppRegistry.SecondaryCol)));
         Analytics.General.FilesCreated++;
 
         if (q.modifiers["-j"]) OpenWorkspaceFile(fileName); // open the new file
@@ -512,14 +512,14 @@ public static class Workspace
 
         if (!FileExists(q.Location))
         {
-            SendConsoleMessage(new ConsoleLine($"File Does Not Exist {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(22 + q.Info.Length), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"File Does Not Exist {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(22 + q.Info.Length), AppRegistry.SecondaryCol)));
             return false;
         }
 
-        if (!UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Are You Sure You Want To Delete File {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(38 + q.Info.Length), AppRegistry.SecondaryCol)))) return false;
+        if (!UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Are You Sure You Want To Delete File {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(38 + q.Info.Length), AppRegistry.SecondaryCol)))) return false;
 
         DeleteFile(q.Location);
-        SendConsoleMessage(new ConsoleLine($"Deleted File {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(15 + q.Info.Length), AppRegistry.SecondaryCol)));
+        SendConsoleMessage(new ConsoleLine($"Deleted File {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(15 + q.Info.Length), AppRegistry.SecondaryCol)));
         Analytics.General.FilesDeleted++;
 
         return true;
@@ -532,7 +532,7 @@ public static class Workspace
 
         if (!FileExists(q.Location))
         {
-            SendConsoleMessage(new ConsoleLine($"File Does Not Exist {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(20 + q.Info.Length), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"File Does Not Exist {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(20 + q.Info.Length), AppRegistry.SecondaryCol)));
             return false;
         }
 
@@ -546,7 +546,7 @@ public static class Workspace
                 return true;
             }
 
-            SendConsoleMessage(new ConsoleLine($"Can't Open File Extension - '{q.FileExtension}'", BuildArray(AppRegistry.PrimaryCol.Extend(28), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Can't Open File Extension - '{q.FileExtension}'", BuildArray(AppRegistry.PrimaryCol.SetLength(28), AppRegistry.SecondaryCol)));
             return false;
         }
 
@@ -564,7 +564,7 @@ public static class Workspace
 
         if (!FileExists(q.Location))
         {
-            SendConsoleMessage(new ConsoleLine($"File Does Not Exist {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.Extend(20 + q.Info.Length), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"File Does Not Exist {q.Info}- '{q.Name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(20 + q.Info.Length), AppRegistry.SecondaryCol)));
             return false;
         }
 
@@ -581,7 +581,7 @@ public static class Workspace
             return true;
         }
 
-        SendConsoleMessage(new ConsoleLine($"Can't Run File Extension - '{q.FileExtension}'", BuildArray(AppRegistry.PrimaryCol.Extend(28), AppRegistry.SecondaryCol)));
+        SendConsoleMessage(new ConsoleLine($"Can't Run File Extension - '{q.FileExtension}'", BuildArray(AppRegistry.PrimaryCol.SetLength(28), AppRegistry.SecondaryCol)));
         return false;
     }
 

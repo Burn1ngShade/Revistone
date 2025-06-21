@@ -8,11 +8,12 @@ using Revistone.Management;
 using Revistone.Interaction;
 using System.Text.RegularExpressions;
 using Revistone.App.Command;
+using Revistone.Console.Image;
+using Revistone.Functions;
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
-using Revistone.Functions;
 
 namespace Revistone.Modules;
 
@@ -159,7 +160,7 @@ public class GPTClient
         while (true)
         {
             option = UserInput.CreateMultiPageOptionMenu("GPT Memories", [.. memoryHistory.Select(x => new ConsoleLine(x.ToString(),
-            BuildArray(AppRegistry.SecondaryCol.Extend(x.ToString().IndexOf(']') + 1), AppRegistry.PrimaryCol.Extend(x.ToString().Length))))], [new ConsoleLine("Exit", AppRegistry.PrimaryCol)], 5, option);
+            BuildArray(AppRegistry.SecondaryCol.SetLength(x.ToString().IndexOf(']') + 1), AppRegistry.PrimaryCol.SetLength(x.ToString().Length))))], [new ConsoleLine("Exit", AppRegistry.PrimaryCol)], 5, option);
 
             if (option == -1) break;
             ViewMemory(option);
@@ -175,9 +176,9 @@ public class GPTClient
         while (option != 2)
         {
             SendConsoleMessage(new ConsoleLine("--- GPT Memories ---", AppRegistry.PrimaryCol));
-            SendConsoleMessage(new ConsoleLine($"Content - '{m.Content}'", BuildArray(AppRegistry.SecondaryCol.Extend(9), AppRegistry.PrimaryCol)));
-            SendConsoleMessage(new ConsoleLine($"Creator - '{m.Creator}'", BuildArray(AppRegistry.SecondaryCol.Extend(9), AppRegistry.PrimaryCol)));
-            SendConsoleMessage(new ConsoleLine($"Creation Time - {m.CreationTime}", BuildArray(AppRegistry.SecondaryCol.Extend(15), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Content - '{m.Content}'", BuildArray(AppRegistry.SecondaryCol.SetLength(9), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Creator - '{m.Creator}'", BuildArray(AppRegistry.SecondaryCol.SetLength(9), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Creation Time - {m.CreationTime}", BuildArray(AppRegistry.SecondaryCol.SetLength(15), AppRegistry.PrimaryCol)));
             ShiftLine();
 
             option = UserInput.CreateOptionMenu("--- Options ---", ["Edit Memory", "Delete Memory", "Exit"], cursorStartIndex: option);
@@ -210,7 +211,7 @@ public class GPTClient
     {
         memoryHistory = [];
         SaveFileAsJSON(memoryHistoryPath, memoryHistory);
-        if (output) SendConsoleMessage(new ConsoleLine("ChatGPT Memories Cleared.", ConsoleColor.DarkBlue));
+        if (output) SendConsoleMessage(new ConsoleLine("ChatGPT Memories Cleared.", ConsoleColour.DarkBlue));
     }
 
     // --- CHAT MESSAGE ---
@@ -307,7 +308,7 @@ public class GPTClient
     {
         messageHistory = [];
         SaveFileAsJSON(messageHistoryPath, messageHistory.Select(x => new SerializableChatMessage(x)).ToList());
-        if (output) SendConsoleMessage(new ConsoleLine("ChatGPT Message History Cleared.", ConsoleColor.DarkBlue));
+        if (output) SendConsoleMessage(new ConsoleLine("ChatGPT Message History Cleared.", ConsoleColour.DarkBlue));
     }
 
     public int MessageHistoryCount => messageHistory.Count;
@@ -323,7 +324,7 @@ public class GPTClient
 
         ConsoleLine[] colouredResponse = ToGPTFormat(lines);
 
-        if (!currentQuery?.MinimalUI ?? true) SendConsoleMessage(new ConsoleLine($"[{SettingsApp.GetValue("GPT Name")}] ({SettingsApp.GetValue("GPT Model")}) - {response.Usage.TotalTokenCount} Tokens Used ({response.Usage.InputTokenCount} Input, {response.Usage.OutputTokenCount} Output). {messageCount} Messages Used.", ConsoleColor.Cyan));
+        if (!currentQuery?.MinimalUI ?? true) SendConsoleMessage(new ConsoleLine($"[{SettingsApp.GetValue("GPT Name")}] ({SettingsApp.GetValue("GPT Model")}) - {response.Usage.TotalTokenCount} Tokens Used ({response.Usage.InputTokenCount} Input, {response.Usage.OutputTokenCount} Output). {messageCount} Messages Used.", ConsoleColour.Cyan));
         SendConsoleMessages(colouredResponse);
 
         if (SettingsApp.GetValue("Log GPT Messages") == "Query Info")
@@ -335,25 +336,25 @@ public class GPTClient
     ///<summary> Converts list of text to GPT coloured formatting. </summary>
     public static ConsoleLine[] ToGPTFormat(List<string> lines)
     {
-        ConsoleLine[] consoleLines = lines.Select(x => ConsoleLine.Clean(new ConsoleLine(x))).ToArray();
+        ConsoleLine[] consoleLines = [.. lines.Select(x => ConsoleLine.Clean(new ConsoleLine(x)))];
 
         Regex boldRegex = new(@"\*\*(.*?)\*\*");
 
         for (int i = 0; i < consoleLines.Length; i++)
         {
-            string originalLine = consoleLines[i].lineText;
-            List<(int start, int length)> indices = [];
+            string originalLine = consoleLines[i].LineText;
+            List<(ConsoleColour[] colours, int start, int length)> indices = [];
             int shift = 0;
 
             originalLine = boldRegex.Replace(originalLine, match =>
             {
                 string highlightedText = match.Groups[1].Value;
-                indices.Add((match.Index - shift, highlightedText.Length));
+                indices.Add((ConsoleColour.Cyan.ToArray(), match.Index - shift, highlightedText.Length));
                 shift += 4;
                 return highlightedText;
             });
 
-            consoleLines[i] = new ConsoleLine(originalLine, AdvancedHighlight(originalLine.Length, ConsoleColor.DarkBlue, ConsoleColor.Cyan, [.. indices]));
+            consoleLines[i] = new ConsoleLine(originalLine, Highlight(originalLine.Length, ConsoleColour.DarkBlue.ToArray(), [.. indices]));
         }
 
         return consoleLines;
@@ -389,7 +390,7 @@ public class GPTClient
             catch (Exception e)
             {
                 ClearLines(1);
-                SendConsoleMessage(ConsoleLine.Clean(new ConsoleLine($"GPT Error: {e.Message}", ConsoleColor.Red)));
+                SendConsoleMessage(ConsoleLine.Clean(new ConsoleLine($"GPT Error: {e.Message}", ConsoleColour.Red)));
                 DeveloperTools.Log($"GPT Error: {e.Message}");
                 return false;
             }
@@ -514,17 +515,17 @@ public class GPTClient
         }
         catch (HttpRequestException ex)
         {
-            SendConsoleMessage(new ConsoleLine($"Error: {ex.StatusCode}", ConsoleColor.Red));
+            SendConsoleMessage(new ConsoleLine($"Error: {ex.StatusCode}", ConsoleColour.Red));
         }
         catch (Exception e)
         {
             if (e.Message.StartsWith("HTTP 401") || e.Message == "Value cannot be an empty string. (Parameter 'key')")
             {
-                SendConsoleMessage(new ConsoleLine("Error: Invalid Or No API Key Entered, Update Your API Key In The Settings App!", ConsoleColor.Red));
+                SendConsoleMessage(new ConsoleLine("Error: Invalid Or No API Key Entered, Update Your API Key In The Settings App!", ConsoleColour.Red));
             }
             else
             {
-                SendConsoleMessage(new ConsoleLine($"GPT Error: {e.Message}", ConsoleColor.Red));
+                SendConsoleMessage(new ConsoleLine($"GPT Error: {e.Message}", ConsoleColour.Red));
             }
         }
 
@@ -565,14 +566,14 @@ public class GPTClient
             if (arguments != null && arguments.TryGetValue(argument, out string? argumentValue))
             {
                 if (SettingsApp.GetValueAsBool("Show GPT Tool Results"))
-                    SendDebugMessage(new ConsoleLine($"[{toolCall.FunctionName}] {argumentValue}", BuildArray(AppRegistry.SecondaryCol.Extend(toolCall.FunctionName.Length + 2), AppRegistry.PrimaryCol)));
+                    SendDebugMessage(new ConsoleLine($"[{toolCall.FunctionName}] {argumentValue}", BuildArray(AppRegistry.SecondaryCol.SetLength(toolCall.FunctionName.Length + 2), AppRegistry.PrimaryCol)));
                 return argumentValue;
             }
             else
             {
                 success = false;
                 if (SettingsApp.GetValueAsBool("Show GPT Tool Results"))
-                    SendDebugMessage(new ConsoleLine($"[{toolCall.FunctionName}] Error: Missing '{argument}' argument.", BuildArray(AppRegistry.SecondaryCol.Extend(toolCall.FunctionName.Length + 2), AppRegistry.PrimaryCol)));
+                    SendDebugMessage(new ConsoleLine($"[{toolCall.FunctionName}] Error: Missing '{argument}' argument.", BuildArray(AppRegistry.SecondaryCol.SetLength(toolCall.FunctionName.Length + 2), AppRegistry.PrimaryCol)));
                 return $"Error: Missing '{argument}' argument.";
             }
         }

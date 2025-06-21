@@ -1,5 +1,6 @@
 using System.Globalization;
 using Revistone.App.BaseApps;
+using Revistone.Console.Image;
 using Revistone.Functions;
 
 namespace Revistone.Console;
@@ -8,90 +9,82 @@ namespace Revistone.Console;
 public class ConsoleLine
 {
     //--- NORMAL ---
-    public string lineText { get { return _lineText; } }
-    string _lineText;
-
-    public ConsoleColor[] lineColour { get { return _lineColour; } }
-    ConsoleColor[] _lineColour;
-
-    public ConsoleColor[] lineBGColour { get { return _lineBGColour; } }
-    ConsoleColor[] _lineBGColour;
-
-    public bool updated { get { return _updated; } }
-    bool _updated;
+    public string LineText { get; private set; }
+    public ConsoleColour[] LineColour { get; private set; }
+    public ConsoleColour[] LineBGColour { get; private set; }
+    public bool Updated { get;  private set; } // if true, line needs to be updated on console display
 
     //--- CONSTRUCTORS ---
 
     /// <summary> Class pertaining all info for a line in the console. </summary>
-    public ConsoleLine(string lineText, ConsoleColor[] lineColour, ConsoleColor[] lineColourBG)
+    public ConsoleLine(string lineText, ConsoleColour[] lineColour, ConsoleColour[] lineColourBG)
     {
-        this._lineText = lineText;
-        this._lineColour = lineColour;
-        this._lineBGColour = lineColourBG;
-        this._updated = false;
+        LineText = lineText;
+        LineColour = lineColour;
+        LineBGColour = lineColourBG;
+        Updated = false;
     }
     /// <summary> Class pertaining all info for a line in the console. </summary>
-    public ConsoleLine() : this("", new ConsoleColor[] { ConsoleColor.White }) { }
+    public ConsoleLine() : this("", [ConsoleColour.White], [ConsoleColour.Black]) { }
     /// <summary> Class pertaining all info for a line in the console. </summary>
-    public ConsoleLine(string lineText) : this(lineText, new ConsoleColor[] { ConsoleColor.White }) { }
+    public ConsoleLine(string lineText) : this(lineText, [ConsoleColour.White], [ConsoleColour.Black]) { }
     /// <summary> Class pertaining all info for a line in the console. </summary>
-    public ConsoleLine(string lineText, ConsoleColor lineColour) : this(lineText, new ConsoleColor[] { lineColour }) { }
+    public ConsoleLine(string lineText, ConsoleColour lineColour) : this(lineText, [lineColour], [ConsoleColour.Black]) { }
     /// <summary> Class pertaining all info for a line in the console. </summary>
-    public ConsoleLine(ConsoleLine consoleLine) : this(consoleLine.lineText, consoleLine.lineColour, consoleLine.lineBGColour) { }
+    public ConsoleLine(ConsoleLine consoleLine) : this(consoleLine.LineText, consoleLine.LineColour, consoleLine.LineBGColour) { }
     /// <summary> Class pertaining all info for a line in the console. </summary>
-    public ConsoleLine(string lineText, ConsoleColor[] lineColour) : this(lineText, lineColour, new ConsoleColor[] { ConsoleColor.Black }) { }
+    public ConsoleLine(string lineText, ConsoleColour[] lineColour) : this(lineText, lineColour, [ConsoleColour.Black]) { }
     /// <summary> Class pertaining all info for a line in the console. </summary>
-    public ConsoleLine(string lineText, ConsoleColor lineColour, ConsoleColor lineColourBG) : this(lineText, new ConsoleColor[] { lineColour }, new ConsoleColor[] { lineColourBG }) { }
+    public ConsoleLine(string lineText, ConsoleColour lineColour, ConsoleColour lineColourBG) : this(lineText, [lineColour], [lineColourBG]) { }
 
     //--- METHODS ---
 
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(string lineText, ConsoleColor[] lineColour, ConsoleColor[] lineColourBG)
+    public void Update(string lineText, ConsoleColour[] lineColour, ConsoleColour[] lineColourBG)
     {
-        // lock (Management.Manager.renderLockObject) { }
-        this._lineText = lineText;
-        this._lineColour = lineColour;
-        this._lineBGColour = lineColourBG;
-        this._updated = false;
+        LineText = lineText;
+        LineColour = lineColour;
+        LineBGColour = lineColourBG;
+        Updated = false;
     }
 
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(ConsoleLine lineInfo) { Update(lineInfo.lineText, lineInfo.lineColour, lineInfo.lineBGColour); }
+    public void Update(ConsoleLine lineInfo) { Update(lineInfo.LineText, lineInfo.LineColour, lineInfo.LineBGColour); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(string lineText) { Update(lineText, _lineColour); }
+    public void Update(string lineText) { Update(lineText, LineColour); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(string lineText, ConsoleColor lineColour) { Update(lineText, [lineColour]); }
+    public void Update(string lineText, ConsoleColour lineColour) { Update(lineText, [lineColour]); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(ConsoleColor[] lineColour) { Update(lineText, lineColour); }
+    public void Update(ConsoleColour[] lineColour) { Update(LineText, lineColour); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(string lineText, ConsoleColor[] lineColour) { Update(lineText, lineColour, [ConsoleColor.Black]); }
+    public void Update(string lineText, ConsoleColour[] lineColour) { Update(lineText, lineColour, [ConsoleColour.Black]); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(string lineText, ConsoleColor lineColour, ConsoleColor lineColourBG) { Update(lineText, [lineColour], [lineColourBG]); }
+    public void Update(string lineText, ConsoleColour lineColour, ConsoleColour lineColourBG) { Update(lineText, [lineColour], [lineColourBG]); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(ConsoleColor[] lineColour, ConsoleColor[] lineColourBG) { Update(lineText, lineColour, lineColourBG); }
+    public void Update(ConsoleColour[] lineColour, ConsoleColour[] lineColourBG) { Update(LineText, lineColour, lineColourBG); }
     /// <summary> Updates ConsoleLine and marks line to be updated on console display. </summary>
-    public void Update(ConsoleColor lineColour, ConsoleColor lineColourBG) { Update(lineText, [lineColour], [lineColourBG]); }
+    public void Update(ConsoleColour lineColour, ConsoleColour lineColourBG) { Update(LineText, [lineColour], [lineColourBG]); }
 
     /// <summary> Marks ConsoleLine as updated (try to avoid). </summary>
     public void MarkAsUpToDate()
     {
-        this._updated = true;
+        Updated = true;
     }
 
     /// <summary> Marks ConsoleLine as not updated. </summary>
     public void MarkForUpdate()
     {
-        this._updated = false;
+        Updated = false;
     }
 
     /// <summary> Checks if lineText has length 0. </summary>
-    public bool IsEmpty() { return lineText.Length == 0; }
+    public bool IsEmpty() { return LineText.Length == 0; }
 
     ///<summary> Ensures that FG and BG colour arrays are atleast aslong as text. </summary>
     public void Normalise()
     {
-        if (_lineText.Length > _lineColour.Length) _lineColour = _lineColour.ExtendEnd(_lineText.Length);
-        if (_lineText.Length > _lineBGColour.Length) _lineBGColour = _lineBGColour.ExtendEnd(_lineText.Length);
+        if (LineText.Length > LineColour.Length) LineColour = LineColour.SetLength(LineText.Length);
+        if (LineText.Length > LineBGColour.Length) LineBGColour = LineBGColour.SetLength(LineText.Length);
     } 
 
     //--- STATIC METHODS ---
@@ -99,15 +92,15 @@ public class ConsoleLine
     /// <summary> Inserts a ConsoleLine into another, overwritting overlapping chars and colours. </summary>
     public static ConsoleLine Overwrite(ConsoleLine baseLine, ConsoleLine overwriteLine, int overwriteIndex)
     {
-        string s = baseLine.lineText;
-        s += new string(' ', Math.Clamp(overwriteIndex + overwriteLine.lineText.Length - s.Length, 0, int.MaxValue));
-        s = s.ReplaceAt(overwriteIndex, overwriteLine.lineText.Length, overwriteLine.lineText);
+        string s = baseLine.LineText;
+        s += new string(' ', Math.Clamp(overwriteIndex + overwriteLine.LineText.Length - s.Length, 0, int.MaxValue));
+        s = s.ReplaceAt(overwriteIndex, overwriteLine.LineText.Length, overwriteLine.LineText);
 
-        ConsoleColor[] cl = baseLine.lineColour.Extend(ConsoleColor.White, s.Length);
-        for (int i = overwriteIndex; i < overwriteIndex + overwriteLine.lineText.Length; i++) cl[i] = overwriteLine.lineColour[i - overwriteIndex];
+        ConsoleColour[] cl = baseLine.LineColour.SetLength(ConsoleColour.White, s.Length);
+        for (int i = overwriteIndex; i < overwriteIndex + overwriteLine.LineText.Length; i++) cl[i] = overwriteLine.LineColour[i - overwriteIndex];
 
-        ConsoleColor[] clbg = baseLine.lineBGColour.Extend(ConsoleColor.Black, s.Length);
-        for (int i = overwriteIndex; i < overwriteIndex + overwriteLine.lineText.Length; i++) clbg[i] = overwriteLine.lineBGColour[i - overwriteIndex];
+        ConsoleColour[] clbg = baseLine.LineBGColour.SetLength(ConsoleColour.Black, s.Length);
+        for (int i = overwriteIndex; i < overwriteIndex + overwriteLine.LineText.Length; i++) clbg[i] = overwriteLine.LineBGColour[i - overwriteIndex];
 
         return new ConsoleLine(s, cl, clbg);
     }
@@ -118,7 +111,7 @@ public class ConsoleLine
         string validLineText = "";
         bool allowEmojis = SettingsApp.GetValue("Show Emojis") == "Yes";
 
-        TextElementEnumerator enumerator = StringInfo.GetTextElementEnumerator(baseLine.lineText);
+        TextElementEnumerator enumerator = StringInfo.GetTextElementEnumerator(baseLine.LineText);
         bool lastCharIsEmoji = false;
         while (enumerator.MoveNext())
         {
@@ -151,6 +144,6 @@ public class ConsoleLine
 
         validLineText = validLineText.Replace("\n", "").Replace("\r", "");
 
-        return new ConsoleLine(validLineText, baseLine.lineColour, baseLine.lineBGColour);
+        return new ConsoleLine(validLineText, baseLine.LineColour, baseLine.LineBGColour);
     } 
 }

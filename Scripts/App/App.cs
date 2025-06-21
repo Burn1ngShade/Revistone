@@ -1,5 +1,6 @@
 using Revistone.App.Command;
 using Revistone.Console;
+using Revistone.Console.Image;
 using Revistone.Functions;
 
 namespace Revistone.App;
@@ -10,8 +11,8 @@ public abstract class App
     public string name;
     public string description;
 
-    public (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) colourScheme;
-    public (ConsoleColor[] colours, int speed) borderColourScheme;
+    public (ConsoleColour[] primaryColour, ConsoleColour[] secondaryColour, ConsoleColour[] tertiaryColour) colourScheme;
+    public (ConsoleColour[] colours, int speed) borderColourScheme;
 
     public int minWidthBuffer; //app only displays with atleast this width
     public int minHeightBuffer; //app only displays with atleast this height
@@ -23,7 +24,7 @@ public abstract class App
     //--- CONSTRUCTORS ---
 
     /// <summary> Base class for apps to inherit. </summary>
-    public App(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) colourScheme, (ConsoleColor[] colours, int speed) borderColourScheme, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true, int displayPriority = 0)
+    public App(string name, string description, (ConsoleColour[] primaryColour, ConsoleColour[] secondaryColour, ConsoleColour[] tertiaryColour) colourScheme, (ConsoleColour[] colours, int speed) borderColourScheme, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true, int displayPriority = 0)
     {
         this.name = name;
         this.description = description;
@@ -40,7 +41,7 @@ public abstract class App
     }
 
     /// <summary> Base class for apps to inherit. </summary>
-    public App() : this("app", "default app.", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.DarkCyan.ToArray()), ([], 5), []) { }
+    public App() : this("app", "default app.", (ConsoleColour.DarkBlue.ToArray(), ConsoleColour.Cyan.ToArray(), ConsoleColour.DarkCyan.ToArray()), ([], 5), []) { }
 
     //--- METHODS ---
 

@@ -3,20 +3,21 @@ using Revistone.Console;
 using Revistone.Functions;
 using Revistone.App.Command;
 using Revistone.Modules;
+using Revistone.Management;
+using Revistone.Console.Image;
 
 using static Revistone.Functions.ColourFunctions;
-using Revistone.Management;
 
 namespace Revistone.App.BaseApps;
 
 public class RevistoneApp : App
 {
     public RevistoneApp() : base() { }
-    public RevistoneApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 100) { }
+    public RevistoneApp(string name, string description, (ConsoleColour[] primaryColour, ConsoleColour[] secondaryColour, ConsoleColour[] tertiaryColour) consoleSettings, (ConsoleColour[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 100) { }
 
     public override App[] OnRegister()
     {
-        return [ new RevistoneApp("Revistone", "Hub App For The Console.", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5),
+        return [ new RevistoneApp("Revistone", "Hub App For The Console.", (ConsoleColour.DarkBlue.ToArray(), ConsoleColour.Cyan.ToArray(), ConsoleColour.Blue.ToArray()), (BaseBorderColours.Stretch(3).SetLength(18), 5),
                 [
                     new AppCommand(
                         new UserInputProfile(["boop!", "boop"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
@@ -34,20 +35,20 @@ public class RevistoneApp : App
     {
         base.OnAppInitalisation();
 
-        ConsoleLine[] title = TitleFunctions.CreateTitle("REVISTONE", AdvancedHighlight(97, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10), (ConsoleColor.Cyan.ToArray(), 48, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1);
+        ConsoleLine[] title = TitleFunctions.CreateTitle("REVISTONE", Highlight(97, ConsoleColour.DarkBlue.ToArray(), (ConsoleColour.Cyan.ToArray(), 0, 10), (ConsoleColour.Cyan.ToArray(), 48, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1);
 
         ConsoleAction.ShiftLine();
         ConsoleAction.SendConsoleMessages(title,
-        Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.ActiveApp.borderColourScheme.speed, true), title.Length).ToArray());
 
         ConsoleAction.ShiftLine();
 
-        ConsoleColor[] c = AdvancedHighlight(63, AppRegistry.PrimaryCol.ToArray(), AppRegistry.SecondaryCol, (17, 10), (34, 6), (62, 20));
+        ConsoleColour[] c = Highlight(63, AppRegistry.PrimaryCol.ToArray(), (AppRegistry.SecondaryCol, 17, 10), (AppRegistry.SecondaryCol, 34, 6), (AppRegistry.SecondaryCol, 62, 20));
         ConsoleAction.SendConsoleMessage(new ConsoleLine("More Than Just A [Console!] Input 'Help' For List Of Commands. ", c),
         new ConsoleAnimatedLine(UpdateUI, 5, true));
 
         if (SettingsApp.GetValue("Username") != "User") ConsoleAction.SendConsoleMessage(
-            new ConsoleLine($"Welcome Back {SettingsApp.GetValue("Username")}!", BuildArray(ConsoleColor.DarkBlue.Extend(13), ConsoleColor.Cyan.ToArray())));
+            new ConsoleLine($"Welcome Back {SettingsApp.GetValue("Username")}!", BuildArray(ConsoleColour.DarkBlue.ToArray(13), ConsoleColour.Cyan.ToArray())));
 
         for (int i = 0; i <= 11; i++)
         {

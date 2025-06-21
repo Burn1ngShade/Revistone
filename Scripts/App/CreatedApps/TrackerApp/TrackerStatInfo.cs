@@ -1,4 +1,5 @@
 using Revistone.Console;
+using Revistone.Console.Image;
 using Revistone.Functions;
 using Revistone.Interaction;
 
@@ -60,11 +61,11 @@ class TrackerTextInputStatProfile : TrackerStatProfile
             l.Add(log.value);
         }
 
-        SendConsoleMessage(new ConsoleLine($"--- {timePeriodName} - {statName} ---", ConsoleColor.DarkBlue));
-        SendConsoleMessage(new ConsoleLine($"Last {Math.Min(7, l.Count)} Logs:", ConsoleColor.Cyan));
+        SendConsoleMessage(new ConsoleLine($"--- {timePeriodName} - {statName} ---", ConsoleColour.DarkBlue));
+        SendConsoleMessage(new ConsoleLine($"Last {Math.Min(7, l.Count)} Logs:", ConsoleColour.Cyan));
         for (int i = Math.Max(0, l.Count - 7); i < l.Count; i++)
         {
-            SendConsoleMessage(new ConsoleLine($"- {l[i]}", ConsoleColor.Cyan));
+            SendConsoleMessage(new ConsoleLine($"- {l[i]}", ConsoleColour.Cyan));
         }
     }
 }
@@ -109,31 +110,31 @@ class TrackerNumberInputStatProfile : TrackerStatProfile
         sl.Sort();
         gl = l.GroupBy(v => v).OrderByDescending(v => v.Count()).Select(v => (v.Key, v.Count())).ToList(); // weird notation but splits into group by values
 
-        SendConsoleMessage(new ConsoleLine($"--- {timePeriodName} - {statName} ---", ConsoleColor.DarkBlue));
+        SendConsoleMessage(new ConsoleLine($"--- {timePeriodName} - {statName} ---", ConsoleColour.DarkBlue));
         ShiftLine();
-        SendConsoleMessage(new ConsoleLine($"> Distribution (Total {l.Count})", ConsoleColor.DarkBlue));
-        SendConsoleMessage(new ConsoleLine($"Min - {sl[0]}", ConsoleColor.Cyan));
-        SendConsoleMessage(new ConsoleLine($"Lower Quartile - {GetMedian(sl.Count == 1 ? sl : sl.Take(sl.Count / 2).ToList())}", ConsoleColor.Cyan));
-        SendConsoleMessage(new ConsoleLine($"Medium - {GetMedian(sl)}", ConsoleColor.Cyan));
-        SendConsoleMessage(new ConsoleLine($"Upper Quartile - {GetMedian(sl.Count == 1 ? sl : sl.Skip((sl.Count + 1) / 2).ToList())}", ConsoleColor.Cyan));
-        SendConsoleMessage(new ConsoleLine($"Max - {sl[^1]}", ConsoleColor.Cyan));
-        SendConsoleMessage(new ConsoleLine($"Last {Math.Min(7, l.Count)} Logs - {l.TakeLast(Math.Min(7, l.Count)).ToList().ToElementString()}", ConsoleColor.Cyan));
+        SendConsoleMessage(new ConsoleLine($"> Distribution (Total {l.Count})", ConsoleColour.DarkBlue));
+        SendConsoleMessage(new ConsoleLine($"Min - {sl[0]}", ConsoleColour.Cyan));
+        SendConsoleMessage(new ConsoleLine($"Lower Quartile - {GetMedian(sl.Count == 1 ? sl : sl.Take(sl.Count / 2).ToList())}", ConsoleColour.Cyan));
+        SendConsoleMessage(new ConsoleLine($"Medium - {GetMedian(sl)}", ConsoleColour.Cyan));
+        SendConsoleMessage(new ConsoleLine($"Upper Quartile - {GetMedian(sl.Count == 1 ? sl : sl.Skip((sl.Count + 1) / 2).ToList())}", ConsoleColour.Cyan));
+        SendConsoleMessage(new ConsoleLine($"Max - {sl[^1]}", ConsoleColour.Cyan));
+        SendConsoleMessage(new ConsoleLine($"Last {Math.Min(7, l.Count)} Logs - {l.TakeLast(Math.Min(7, l.Count)).ToList().ToElementString()}", ConsoleColour.Cyan));
         ShiftLine();
-        SendConsoleMessage(new ConsoleLine("> Statistics", ConsoleColor.DarkBlue));
-        SendConsoleMessage(new ConsoleLine($"Mean - {Math.Round(l.Sum() / l.Count, 2)}", ConsoleColor.Cyan));
-        SendConsoleMessage(new ConsoleLine($"Mode - {gl[0].value}", ConsoleColor.Cyan));
-        SendConsoleMessage(new ConsoleLine($"Sum - {Math.Round(l.Sum(), 2)}", ConsoleColor.Cyan));
-        SendConsoleMessage(new ConsoleLine($"Variance - {Math.Round(GetVariance(sl), 2)}", ConsoleColor.Cyan));
-        SendConsoleMessage(new ConsoleLine($"Standard Deviation - {Math.Round(Math.Sqrt(GetVariance(sl)), 2)}", ConsoleColor.Cyan));
+        SendConsoleMessage(new ConsoleLine("> Statistics", ConsoleColour.DarkBlue));
+        SendConsoleMessage(new ConsoleLine($"Mean - {Math.Round(l.Sum() / l.Count, 2)}", ConsoleColour.Cyan));
+        SendConsoleMessage(new ConsoleLine($"Mode - {gl[0].value}", ConsoleColour.Cyan));
+        SendConsoleMessage(new ConsoleLine($"Sum - {Math.Round(l.Sum(), 2)}", ConsoleColour.Cyan));
+        SendConsoleMessage(new ConsoleLine($"Variance - {Math.Round(GetVariance(sl), 2)}", ConsoleColour.Cyan));
+        SendConsoleMessage(new ConsoleLine($"Standard Deviation - {Math.Round(Math.Sqrt(GetVariance(sl)), 2)}", ConsoleColour.Cyan));
         ShiftLine();
-        SendConsoleMessage(new ConsoleLine("> Frequency (Value - Count)", ConsoleColor.DarkBlue));
+        SendConsoleMessage(new ConsoleLine("> Frequency (Value - Count)", ConsoleColour.DarkBlue));
         int trackedCount = 0;
         for (int i = 0; i < Math.Min(5, gl.Count); i++)
         {
             trackedCount += gl[i].count;
-            SendConsoleMessage(new ConsoleLine($"{gl[i].value} - {gl[i].count} ({Math.Round((double)gl[i].count / l.Count * 100)}%)", ConsoleColor.Cyan));
+            SendConsoleMessage(new ConsoleLine($"{gl[i].value} - {gl[i].count} ({Math.Round((double)gl[i].count / l.Count * 100)}%)", ConsoleColour.Cyan));
         }
-        if (trackedCount < l.Count) SendConsoleMessage(new ConsoleLine($"Other - {l.Count - trackedCount} ({Math.Round((double)(l.Count - trackedCount) / l.Count * 100)}%)", ConsoleColor.Cyan));
+        if (trackedCount < l.Count) SendConsoleMessage(new ConsoleLine($"Other - {l.Count - trackedCount} ({Math.Round((double)(l.Count - trackedCount) / l.Count * 100)}%)", ConsoleColour.Cyan));
     }
 }
 
@@ -181,18 +182,18 @@ class TrackerDropdownStatProfile : TrackerStatProfile
         }
         gl = l.GroupBy(v => v).Select(v => (v.Key, v.Count())).OrderBy(v => v.Key).ToList(); // weird notation but splits into group by values
 
-        SendConsoleMessage(new ConsoleLine($"--- {timePeriodName} - {stat.statName} ---", ConsoleColor.DarkBlue));
+        SendConsoleMessage(new ConsoleLine($"--- {timePeriodName} - {stat.statName} ---", ConsoleColour.DarkBlue));
         ShiftLine();
-        SendConsoleMessage(new ConsoleLine($"> Statistics", ConsoleColor.DarkBlue));
-        SendConsoleMessage(new ConsoleLine($"Completion Rate - {totalCorrect} / {l.Count} ({Math.Round((double)totalCorrect/l.Count * 100)}%)", ConsoleColor.Cyan));
-        SendConsoleMessage(new ConsoleLine($"Current Streak - {currentStreak} Days", ConsoleColor.Cyan));
-        SendConsoleMessage(new ConsoleLine($"Best Streak - {bestStreak} Days", ConsoleColor.Cyan));
+        SendConsoleMessage(new ConsoleLine($"> Statistics", ConsoleColour.DarkBlue));
+        SendConsoleMessage(new ConsoleLine($"Completion Rate - {totalCorrect} / {l.Count} ({Math.Round((double)totalCorrect/l.Count * 100)}%)", ConsoleColour.Cyan));
+        SendConsoleMessage(new ConsoleLine($"Current Streak - {currentStreak} Days", ConsoleColour.Cyan));
+        SendConsoleMessage(new ConsoleLine($"Best Streak - {bestStreak} Days", ConsoleColour.Cyan));
         ShiftLine();
-        SendConsoleMessage(new ConsoleLine($"> Frequency (Total {l.Count})", ConsoleColor.DarkBlue));
+        SendConsoleMessage(new ConsoleLine($"> Frequency (Total {l.Count})", ConsoleColour.DarkBlue));
         foreach ((int value, int count) in gl)
         {
-            SendConsoleMessage(new ConsoleLine($"{stat.options[value].option} - {count} ({Math.Round((double)count / l.Count * 100)}%)", ConsoleColor.Cyan));
+            SendConsoleMessage(new ConsoleLine($"{stat.options[value].option} - {count} ({Math.Round((double)count / l.Count * 100)}%)", ConsoleColour.Cyan));
         }
-        SendConsoleMessage(new ConsoleLine($"Last {Math.Min(7, l.Count)} Logs - {l.TakeLast(Math.Min(7, l.Count)).Select(x => stat.options[x].option).ToList().ToElementString()}", ConsoleColor.Cyan));
+        SendConsoleMessage(new ConsoleLine($"Last {Math.Min(7, l.Count)} Logs - {l.TakeLast(Math.Min(7, l.Count)).Select(x => stat.options[x].option).ToList().ToElementString()}", ConsoleColour.Cyan));
     }
 }

@@ -1,19 +1,21 @@
-using System.Runtime.Intrinsics.Arm;
+using Revistone.Management;
+using Revistone.Modules;
 
 namespace Revistone.Console.Image;
 
 public class ConsoleColour
 {
-    public byte R { get; private set; }
-    public byte G { get; private set; }
-    public byte B { get; private set; }
+    public Byte3 RGB { get; private set; }
+    public byte R => RGB.x;
+    public byte G => RGB.y;
+    public byte B => RGB.z;
 
-    byte flags;
+    public byte TextStyleFlags { get; private set; } // bit flags for text styles
     public ConsoleColor EquivalentConsoleColor { get; private set; }
 
     public string ANSIFlagCode { get; private set; } = "";
     public string ANSIFGCode => $"\u001b[{ANSIFlagCode}38;2;{R};{G};{B}m";
-    public string ANSIBGCode => $"\u001b[{ANSIFlagCode}48;2;{R};{G};{B}m";
+    public string ANSIBGCode => $"\u001b[48;2;{R};{G};{B}m";
 
     public enum TextStyles
     {
@@ -27,85 +29,111 @@ public class ConsoleColour
     }
 
     static readonly byte[] ANSICodeLookup = [1, 2, 3, 4, 9, 53]; // bold, faint, italic, underline, strike-through, overline
-    static readonly Dictionary<ConsoleColor, (byte r, byte g, byte b)> ConsoleColourMap = new()
+    static readonly Dictionary<ConsoleColor, Byte3> ConsoleColourMap = new()
     {
-        { ConsoleColor.Black, (40, 44, 52) },
-        { ConsoleColor.DarkBlue, (86, 166, 239) },
-        { ConsoleColor.DarkGreen, (142, 194, 102) },
-        { ConsoleColor.DarkCyan, (78, 180, 194) },
-        { ConsoleColor.DarkRed, (220, 81, 98) },
-        { ConsoleColor.DarkMagenta, (191, 97, 221) },
-        { ConsoleColor.DarkYellow, (206, 142, 83) },
-        { ConsoleColor.DarkGray, (80, 86, 102) },
-        { ConsoleColor.Gray, (215, 218, 224) },
-        { ConsoleColor.Blue, (92, 197, 254) },
-        { ConsoleColor.Green, (167, 224, 118) },
-        { ConsoleColor.Cyan, (91, 210, 224) },
-        { ConsoleColor.Red, (255, 93, 113) },
-        { ConsoleColor.Magenta, (220, 113, 254) },
-        { ConsoleColor.Yellow, (236, 163, 95) },
-        { ConsoleColor.White, (230, 230, 230) },
+        { ConsoleColor.Black, new(40, 44, 52) },
+        { ConsoleColor.DarkBlue, new(86, 166, 239) },
+        { ConsoleColor.DarkGreen, new(142, 194, 102) },
+        { ConsoleColor.DarkCyan, new(78, 180, 194) },
+        { ConsoleColor.DarkRed, new(220, 81, 98) },
+        { ConsoleColor.DarkMagenta, new(191, 97, 221) },
+        { ConsoleColor.DarkYellow, new(206, 142, 83) },
+        { ConsoleColor.DarkGray, new(80, 86, 102) },
+        { ConsoleColor.Gray, new(215, 218, 224) },
+        { ConsoleColor.Blue, new(92, 197, 254) },
+        { ConsoleColor.Green, new(167, 224, 118) },
+        { ConsoleColor.Cyan, new(91, 210, 224) },
+        { ConsoleColor.Red, new(255, 93, 113) },
+        { ConsoleColor.Magenta, new(220, 113, 254) },
+        { ConsoleColor.Yellow, new(236, 163, 95) },
+        { ConsoleColor.White, new(230, 230, 230) },
 
     };
 
     // --- CONSTRUCTORS ---
 
-    public ConsoleColour(byte r, byte g, byte b, params TextStyles[] styles)
+    public ConsoleColour(Byte3 rgb, params TextStyles[] styles)
     {
-        R = r;
-        G = g;
-        B = b;
+        RGB = new Byte3(rgb);
 
         SetFlags(styles);
         SetEquivalentConsoleColour();
     }
 
+    public ConsoleColour(Byte3 rgb, byte textStyleFlags)
+    {
+        RGB = new Byte3(rgb);
+
+        SetFlags(textStyleFlags);
+        SetEquivalentConsoleColour();
+    }
+
+    public ConsoleColour(byte r, byte g, byte b, params TextStyles[] styles)
+    {
+        RGB = new Byte3(r, g, b);
+
+        SetFlags(styles);
+        SetEquivalentConsoleColour();
+    }
+
+    public ConsoleColour(byte r, byte g, byte b, byte textStyleFlags)
+    {
+        RGB = new Byte3(r, g, b);
+
+        SetFlags(textStyleFlags);
+        SetEquivalentConsoleColour();
+    }
+
     public ConsoleColour(ConsoleColor colour, params TextStyles[] styles)
     {
-        (byte r, byte g, byte b) = ConsoleColourMap[colour];
-        R = r;
-        G = g;
-        B = b;
+        RGB = ConsoleColourMap[colour];
 
         SetFlags(styles);
         SetEquivalentConsoleColour();
     }
 
     public static ConsoleColour Black => new(40, 44, 52);
-    public static ConsoleColour DarkBlue => new(0, 0, 128);
-    public static ConsoleColour DarkGreen => new(0, 128, 0);
-    public static ConsoleColour DarkCyan => new(0, 128, 128);
-    public static ConsoleColour DarkRed => new(128, 0, 0);
-    public static ConsoleColour DarkMagenta => new(128, 0, 128);
-    public static ConsoleColour DarkYellow => new(128, 128, 0);
-    public static ConsoleColour Gray => new(192, 192, 192);
-    public static ConsoleColour DarkGray => new(128, 128, 128);
-    public static ConsoleColour Blue => new(0, 0, 255);
-    public static ConsoleColour Green => new(0, 255, 0);
-    public static ConsoleColour Cyan => new(0, 255, 255);
-    public static ConsoleColour Red => new(255, 0, 0);
-    public static ConsoleColour Magenta => new(255, 0, 255);
-    public static ConsoleColour Yellow => new(255, 255, 0);
-    public static ConsoleColour White => new(255, 255, 255);
+    public static ConsoleColour DarkBlue => new(86, 166, 239);
+    public static ConsoleColour DarkGreen => new(142, 194, 102);
+    public static ConsoleColour DarkCyan => new(78, 180, 194);
+    public static ConsoleColour DarkRed => new(220, 81, 98);
+    public static ConsoleColour DarkMagenta => new(191, 97, 221);
+    public static ConsoleColour DarkYellow => new(206, 142, 83);
+    public static ConsoleColour DarkGray => new(80, 86, 102);
+    public static ConsoleColour Gray => new(215, 218, 224);
+    public static ConsoleColour Blue => new(92, 197, 254);
+    public static ConsoleColour Green => new(167, 224, 118);
+    public static ConsoleColour Cyan => new(91, 210, 224);
+    public static ConsoleColour Red => new(255, 93, 113);
+    public static ConsoleColour Magenta => new(220, 113, 254);
+    public static ConsoleColour Yellow => new(236, 163, 95);
+    public static ConsoleColour White => new(230, 230, 230);
+    public static ConsoleColour ConsoleBackground => new(40, 44, 52);
 
     // --- Functions ---
 
     ///<summary> Update ANSI flag string using current flag data. </summary>
-    private void SetFlags(TextStyles[] styles)
+    private void SetFlags(byte textStyleFlags)
     {
-        flags = 0;
-        foreach (TextStyles style in styles)
-        {
-            if (style == TextStyles.None) continue;
-            flags |= (byte)style;
-        }
-
+        TextStyleFlags = textStyleFlags;
         ANSIFlagCode = "";
 
         for (int i = 0; i < 6; i++)
         {
-            if ((flags & 1 << i) != 0) ANSIFlagCode += ANSICodeLookup[i] + ";";
+            if ((TextStyleFlags & 1 << i) != 0) ANSIFlagCode += ANSICodeLookup[i] + ";";
         }
+    }
+
+    private void SetFlags(TextStyles[] styles)
+    {
+        byte tempTextStyleFlags = 0;
+        foreach (TextStyles style in styles)
+        {
+            if (style == TextStyles.None) continue;
+            tempTextStyleFlags |= (byte)style;
+        }
+
+        SetFlags(tempTextStyleFlags);
     }
 
     ///<summary> Converts rgb value to closest ConsoleColour equivelent. </summary>
@@ -115,8 +143,18 @@ public class ConsoleColour
 
         foreach (var entry in ConsoleColourMap)
         {
-            var (r, g, b) = entry.Value;
-            double cDistance = Math.Pow(R - r, 2) + Math.Pow(G - g, 2) + Math.Pow(B - b, 2); // dont have to sqrt, as comparision
+            if (RGB == entry.Value)
+            {
+                colour = entry.Key;
+                EquivalentConsoleColor = colour;
+                return; // Exact match found
+            }
+            Byte3 b = entry.Value;
+
+            double cDistance = Math.Pow(RGB.x - b.x, 2) +
+                Math.Pow(RGB.y - b.y, 2) +
+                Math.Pow(RGB.z - b.z, 2);
+
 
             if (cDistance < distance)
             {

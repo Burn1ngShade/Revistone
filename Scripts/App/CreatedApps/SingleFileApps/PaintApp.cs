@@ -7,7 +7,6 @@ using Revistone.App.Command;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
 using static Revistone.Console.ConsoleAction;
-using Revistone.Management;
 
 namespace Revistone.App.BaseApps;
 
@@ -15,11 +14,11 @@ namespace Revistone.App.BaseApps;
 public class PaintApp : App
 {
     public PaintApp() : base() { }
-    public PaintApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 85) { }
+    public PaintApp(string name, string description, (ConsoleColour[] primaryColour, ConsoleColour[] secondaryColour, ConsoleColour[] tertiaryColour) consoleSettings, (ConsoleColour[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 85) { }
 
     public override App[] OnRegister()
     {
-        return [new PaintApp("Paint", "Create And View Your Own Console Stickers.", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 70, 51)];
+        return [new PaintApp("Paint", "Create And View Your Own Console Stickers.", (ConsoleColour.DarkBlue.ToArray(), ConsoleColour.Cyan.ToArray(), ConsoleColour.Blue.ToArray()), (BaseBorderColours.Stretch(3).SetLength(18), 5), [], 70, 51)];
     }
 
     public static (string path, string name) StaticImage = ("", "");
@@ -35,8 +34,8 @@ public class PaintApp : App
     {
         ClearPrimaryConsole();
 
-        ConsoleLine[] title = TitleFunctions.CreateTitle("PAINT", AdvancedHighlight(52, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1, topSpace: 1);
-        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        ConsoleLine[] title = TitleFunctions.CreateTitle("PAINT", Highlight(52, ConsoleColour.DarkBlue.ToArray(), (ConsoleColour.Cyan.ToArray(), 0, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1, topSpace: 1);
+        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.ActiveApp.borderColourScheme.speed, true), title.Length).ToArray());
 
         for (int i = 0; i <= 10; i++)
         {
@@ -53,7 +52,7 @@ public class PaintApp : App
 
         while (option != 4)
         {
-            option = UserInput.CreateOptionMenu("--- Options ---", [(new ConsoleLine("Create New Image", ConsoleColor.Cyan), CreateImage), (new ConsoleLine("Edit Image", ConsoleColor.Cyan), SelectImage), (new ConsoleLine("Delete Image", ConsoleColor.Cyan), DeleteImage), (new ConsoleLine("Hotkeys", ConsoleColor.Cyan), Hotkeys), (new ConsoleLine("Exit", ConsoleColor.DarkBlue), ExitApp)], cursorStartIndex: option);
+            option = UserInput.CreateOptionMenu("--- Options ---", [(new ConsoleLine("Create New Image", ConsoleColour.Cyan), CreateImage), (new ConsoleLine("Edit Image", ConsoleColour.Cyan), SelectImage), (new ConsoleLine("Delete Image", ConsoleColour.Cyan), DeleteImage), (new ConsoleLine("Hotkeys", ConsoleColour.Cyan), Hotkeys), (new ConsoleLine("Exit", ConsoleColour.DarkBlue), ExitApp)], cursorStartIndex: option);
         }
     }
 
@@ -67,7 +66,7 @@ public class PaintApp : App
 
         ConsoleImage.SaveToCIMG(GeneratePath(DataLocation.App, "Paint", $"{imageName}.cimg"), new ConsoleImage(width, height));
 
-        SendConsoleMessage(new ConsoleLine("Image Created! Press Enter Key To Continue.", ConsoleColor.DarkBlue));
+        SendConsoleMessage(new ConsoleLine("Image Created! Press Enter Key To Continue.", ConsoleColour.DarkBlue));
         ShiftLine();
         UserInput.WaitForUserInput();
 
@@ -81,7 +80,7 @@ public class PaintApp : App
 
         if (imageFiles.Length == 0)
         {
-            SendConsoleMessage(new ConsoleLine("No Images Found! Press Enter Key To Continue.", ConsoleColor.DarkBlue));
+            SendConsoleMessage(new ConsoleLine("No Images Found! Press Enter Key To Continue.", ConsoleColour.DarkBlue));
             ShiftLine();
             UserInput.WaitForUserInput();
             ClearPrimaryConsole();
@@ -136,7 +135,7 @@ public class PaintApp : App
                     UpdateCursor(0, -1);
                     break;
                 case ConsoleKey.Enter:
-                    image.SetPixelBackground(x, y, colours[currentColour]);
+                    image.SetPixelBackground(x, y, BaseColours[currentColour]);
                     UpdateCursor(0, 0);
                     break;
                 case ConsoleKey.J or ConsoleKey.LeftArrow:
@@ -155,12 +154,12 @@ public class PaintApp : App
                     UpdateImageUI(image, currentColour);
                     break;
                 case ConsoleKey.E:
-                    int exitType = UserInput.CreateOptionMenu("--- Exit ---", [new ConsoleLine("Save And Exit", ConsoleColor.Cyan), new ConsoleLine("Exit Without Saving", ConsoleColor.Cyan), new ConsoleLine("Cancel", ConsoleColor.Cyan)]);
+                    int exitType = UserInput.CreateOptionMenu("--- Exit ---", [new ConsoleLine("Save And Exit", ConsoleColour.Cyan), new ConsoleLine("Exit Without Saving", ConsoleColour.Cyan), new ConsoleLine("Cancel", ConsoleColour.Cyan)]);
                     if (exitType == 2) break;
                     if (exitType == 0)
                     {
                         image.SetPixelChar(x, y, ' ');
-                        image.SetPixelForeground(x, y, ConsoleColor.White);
+                        image.SetPixelForeground(x, y, ConsoleColour.White);
                         ConsoleImage.SaveToCIMG(StaticImage.name.Length != 0 ? StaticImage.path : GeneratePath(DataLocation.App, "Paint", filePath), image);
                     }
                     ClearPrimaryConsole();
@@ -184,57 +183,38 @@ public class PaintApp : App
             x = Math.Clamp(x + xShift, 0, image.Width - 1);
             y = Math.Clamp(y + yShift, 0, image.Height - 1);
             image.SetPixelChar(x, y, '\u2592');
-            image.SetPixelForeground(x, y, ContrastColour[image.GetPixel(x, y).BGColour]);
+            image.SetPixelForeground(x, y, ColourFunctions.GetContrastColour(image.GetPixel(x, y).BGColour));
         }
 
         void OutputImage(bool baseUI = false)
         {
             if (baseUI)
             {
-                ConsoleLine[] consoleUI = [.. Enumerable.Repeat(new ConsoleLine($"|{new string(' ', image.Width)}|", ConsoleColor.DarkBlue.Extend(image.Width + 2)), image.Height)];
+                ConsoleLine[] consoleUI = [.. Enumerable.Repeat(new ConsoleLine($"|{new string(' ', image.Width)}|", ConsoleColour.DarkBlue.SetLength(image.Width + 2)), image.Height)];
 
-                consoleUI[1] = new ConsoleLine($"{consoleUI[1].lineText}     Image Width: {image.Width}", ConsoleColor.DarkBlue.Extend(100));
-                consoleUI[2] = new ConsoleLine($"{consoleUI[2].lineText}     Image Height: {image.Height}", ConsoleColor.DarkBlue.Extend(100));
+                consoleUI[1] = new ConsoleLine($"{consoleUI[1].LineText}     Image Width: {image.Width}", ConsoleColour.DarkBlue.SetLength(100));
+                consoleUI[2] = new ConsoleLine($"{consoleUI[2].LineText}     Image Height: {image.Height}", ConsoleColour.DarkBlue.SetLength(100));
 
                 ClearPrimaryConsole();
-                SendConsoleMessage(new ConsoleLine($"+{new string('-', image.Width)}+     Image Name: {filePath[..^5]}", ConsoleColor.DarkBlue));
+                SendConsoleMessage(new ConsoleLine($"+{new string('-', image.Width)}+     Image Name: {filePath[..^5]}", ConsoleColour.DarkBlue));
                 SendConsoleMessages(consoleUI);
-                SendConsoleMessage(new ConsoleLine($"+{new string('-', image.Width)}+", ConsoleColor.DarkBlue));
+                SendConsoleMessage(new ConsoleLine($"+{new string('-', image.Width)}+", ConsoleColour.DarkBlue));
             }
 
             image.OutputAt(1, 12);
         }
     }
 
-    static readonly ConsoleColor[] colours = [
-        ConsoleColor.White,
-        ConsoleColor.Gray,
-        ConsoleColor.DarkGray,
-        ConsoleColor.Black,
-        ConsoleColor.Red,
-        ConsoleColor.DarkRed,
-        ConsoleColor.Yellow,
-        ConsoleColor.DarkYellow,
-        ConsoleColor.Green,
-        ConsoleColor.DarkGreen,
-        ConsoleColor.Cyan,
-        ConsoleColor.DarkCyan,
-        ConsoleColor.Blue,
-        ConsoleColor.DarkBlue,
-        ConsoleColor.Magenta,
-        ConsoleColor.DarkMagenta
-    ];
-
     private void UpdateImageUI(ConsoleImage image, int currentColour)
     {
         GoToLine(14 + image.Height);
-        SendConsoleMessage(new ConsoleLine("Colour Palette:", ConsoleColor.DarkBlue));
-        SendConsoleMessage(new ConsoleLine(new string(' ', 32), [ConsoleColor.White],
-            BuildArray(Enumerable.Range(0, 16).Select(x => new ConsoleColor[] { colours[x], ConsoleColor.Black }).ToArray())));
-        SendConsoleMessage(new ConsoleLine(new string(' ', currentColour * 2) + "^", ConsoleColor.Cyan));
+        SendConsoleMessage(new ConsoleLine("Colour Palette:", ConsoleColour.DarkBlue));
+        SendConsoleMessage(new ConsoleLine(new string(' ', 32), [ConsoleColour.White],
+            BuildArray(Enumerable.Range(0, 16).Select(x => new ConsoleColour[] { BaseColours[x], ConsoleColour.Black }).ToArray())));
+        SendConsoleMessage(new ConsoleLine(new string(' ', currentColour * 2) + "^", ConsoleColour.Cyan));
         ShiftLine();
         SendConsoleMessage(new ConsoleLine("[E]: Exit, [J]: Previous Colour, [K]: Next Colour, [R]: Resize Image",
-        AdvancedHighlight("[E]: Exit, [J]: Previous Colour, [K]: Next Colour, [R]: Resize Image", [ConsoleColor.DarkBlue], [ConsoleColor.Cyan], 0, 2, 5, 8)));
+        ToArray((ConsoleColour.Cyan, 4), (ConsoleColour.DarkBlue, 7), (ConsoleColour.Cyan, 4), (ConsoleColour.DarkBlue, 18), (ConsoleColour.Cyan, 4), (ConsoleColour.DarkBlue, 14), (ConsoleColour.Cyan, 4), (ConsoleColour.DarkBlue, 1))));
         ShiftLine();
 
     }
@@ -245,7 +225,7 @@ public class PaintApp : App
 
         if (imageFiles.Length == 0)
         {
-            SendConsoleMessage(new ConsoleLine("No Images Found! Press Enter Key To Continue.", ConsoleColor.DarkBlue));
+            SendConsoleMessage(new ConsoleLine("No Images Found! Press Enter Key To Continue.", ConsoleColour.DarkBlue));
             ShiftLine();
             UserInput.WaitForUserInput();
             ClearPrimaryConsole();
@@ -257,7 +237,7 @@ public class PaintApp : App
         if (option == -1) return;
 
         DeleteFile(GeneratePath(DataLocation.App, "Paint", imageFiles[option]));
-        SendConsoleMessage(new ConsoleLine("Image Deleted! Press Enter Key To Continue.", ConsoleColor.DarkBlue));
+        SendConsoleMessage(new ConsoleLine("Image Deleted! Press Enter Key To Continue.", ConsoleColour.DarkBlue));
         ShiftLine();
         UserInput.WaitForUserInput();
         ClearPrimaryConsole();
@@ -265,7 +245,7 @@ public class PaintApp : App
 
     private void Hotkeys()
     {
-        ConsoleColor[] colours = BuildArray(ConsoleColor.Cyan.Extend(4), ConsoleColor.DarkBlue.ToArray());
+        ConsoleColour[] colours = BuildArray(ConsoleColour.Cyan.SetLength(4), ConsoleColour.DarkBlue.ToArray());
 
         UserInput.CreateReadMenu("Hotkeys", 4,
             new ConsoleLine("[A]: Move Cursor Left.", colours),
@@ -291,7 +271,7 @@ public class PaintApp : App
         if (!File.Exists(path)) path = GeneratePath(DataLocation.Workspace, sticker); // workspace location sticker
         if (!File.Exists(path))
         {
-            SendConsoleMessage(new ConsoleLine($"Sticker Could Not Be Found - '{sticker}'", BuildArray(AppRegistry.PrimaryCol.Extend(29), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Sticker Could Not Be Found - '{sticker}'", BuildArray(AppRegistry.PrimaryCol.SetLength(29), AppRegistry.SecondaryCol)));
             return false; // ts does not exist
         }
 

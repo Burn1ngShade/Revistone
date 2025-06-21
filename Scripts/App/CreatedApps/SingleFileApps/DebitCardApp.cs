@@ -2,12 +2,14 @@ using Revistone.Console;
 using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.App.Command;
+using Revistone.Console.Image;
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Interaction.UserInput;
 using static Revistone.Interaction.UserInputProfile;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
+using static Revistone.Console.Image.ConsoleColour;
 
 namespace Revistone.App.BaseApps;
 
@@ -15,11 +17,11 @@ public class DebitCardApp : App
 {
     // --- APP BOILER PLATE ---
     public DebitCardApp() : base() { }
-    public DebitCardApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 10) { }
+    public DebitCardApp(string name, string description, (ConsoleColour[] primaryColour, ConsoleColour[] secondaryColour, ConsoleColour[] tertiaryColour) consoleSettings, (ConsoleColour[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 10) { }
 
     public override App[] OnRegister()
     {
-        return [ new DebitCardApp("Debit Card Manager", "The First Ever Console App (Useless But History).", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Magenta.ToArray(), ConsoleColor.Blue.ToArray()), (Alternate(DarkBlueAndMagenta.Flip(), 6, 3), 5),
+        return [ new DebitCardApp("Debit Card Manager", "The First Ever Console App (Useless But History).", (ConsoleColour.DarkBlue.ToArray(), ConsoleColour.Magenta.ToArray(), ConsoleColour.Blue.ToArray()), (VariableStretch([ConsoleColour.Magenta, ConsoleColour.DarkBlue], 6, 3), 5),
                 [], 94) ];
     }
 
@@ -38,13 +40,13 @@ public class DebitCardApp : App
         ClearPrimaryConsole();
 
         ShiftLine();
-        ConsoleLine[] title = TitleFunctions.CreateTitle("Honey Bank", ColourFunctions.Extend(CyanDarkMagentaGradient, 93, true), TitleFunctions.AsciiFont.BigMoneyNW);
+        ConsoleLine[] title = TitleFunctions.CreateTitle("Honey Bank", ColourFunctions.SetLength([ConsoleColour.Cyan, ConsoleColour.DarkCyan, ConsoleColour.Blue, ConsoleColour.DarkBlue, ConsoleColour.Magenta, ConsoleColour.DarkMagenta], 93), TitleFunctions.AsciiFont.BigMoneyNW);
         SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", 10, true), title.Length).ToArray());
 
         CreateOptionMenu($"Options", new (string, Action)[] { ("Access Debit Card", AccessCard), ("Create Debit Card", CreateCard),
                 ("View All Accounts", ViewAllCards), ("Verify Long Card Number", ValidateCardNumber), ("Exit", ExitApp) }, true);
 
-        if (AppRegistry.activeApp.name != "Debit Card Manager") return;
+        if (AppRegistry.ActiveApp.name != "Debit Card Manager") return;
         MainMenu();
     }
 
@@ -52,18 +54,18 @@ public class DebitCardApp : App
     void AccessCard()
     {
         //way to easily stop dynamic line 
-        string accountNumber = GetValidUserInput(new ConsoleLine("Account Number [Last 4 Digits Of The Card Number]: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.Int, charCount: 4));
+        string accountNumber = GetValidUserInput(new ConsoleLine("Account Number [Last 4 Digits Of The Card Number]: ", ConsoleColour.DarkBlue), new UserInputProfile(InputType.Int, charCount: 4));
         for (int i = 0; i < DebitCard.db.Count; i++)
         {
             if (accountNumber != DebitCard.db[i].accountNumber.Substring(12)) continue;
 
-            SendConsoleMessage(new ConsoleLine($"Account With The Number {accountNumber} Found, Owner {DebitCard.db[i].initals}!", ConsoleColor.DarkBlue));
+            SendConsoleMessage(new ConsoleLine($"Account With The Number {accountNumber} Found, Owner {DebitCard.db[i].initals}!", ConsoleColour.DarkBlue));
 
             WaitForUserInput(space: true);
 
             ClearPrimaryConsole();
 
-            DateOnly d = DateOnly.Parse(GetValidUserInput(new ConsoleLine("DOB [dd/mm/yyyy]: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.DateOnly)));
+            DateOnly d = DateOnly.Parse(GetValidUserInput(new ConsoleLine("DOB [dd/mm/yyyy]: ", ConsoleColour.DarkBlue), new UserInputProfile(InputType.DateOnly)));
             if (d != DebitCard.db[i].dob)
             {
                 SendConsoleMessage("DOB Incorrect!");
@@ -71,7 +73,7 @@ public class DebitCardApp : App
                 return;
             }
 
-            int p = int.Parse(GetValidUserInput(new ConsoleLine("Pin: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.Int, charCount: 4)));
+            int p = int.Parse(GetValidUserInput(new ConsoleLine("Pin: ", ConsoleColour.DarkBlue), new UserInputProfile(InputType.Int, charCount: 4)));
             if (p != DebitCard.db[i].decryptedPin)
             {
                 SendConsoleMessage("Pin Incorrect!");
@@ -92,7 +94,7 @@ public class DebitCardApp : App
     /// <summary> Logic for creating a card.</summary>
     void CreateCard()
     {
-        string dob = GetValidUserInput(new ConsoleLine("DOB [dd/mm/yyyy]: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.DateOnly));
+        string dob = GetValidUserInput(new ConsoleLine("DOB [dd/mm/yyyy]: ", ConsoleColour.DarkBlue), new UserInputProfile(InputType.DateOnly));
         DateOnly dobCheck = DateOnly.FromDateTime(DateTime.Now).AddYears(-30);
         if (DateOnly.Parse(dob) > dobCheck)
         {
@@ -100,33 +102,40 @@ public class DebitCardApp : App
         }
         else
         {
-            SendConsoleMessage(new ConsoleLine("You Are Over 30 Years Old! You Can't Create An Account! ", ConsoleColor.Red), new ConsoleLineUpdate());
+            SendConsoleMessage(new ConsoleLine("You Are Over 30 Years Old! You Can't Create An Account! ", Red), new ConsoleLineUpdate());
             WaitForUserInput(space: true);
             return;
         }
 
-        string name = GetValidUserInput(new ConsoleLine("Enter Your Full Name: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.FullText, wordCount: 2));
-        int pin = int.Parse(GetValidUserInput(new ConsoleLine("Create A Pin [4 Digits]: ", ConsoleColor.DarkBlue), new UserInputProfile(InputType.Int, charCount: 4)));
-        bool masterCard = CreateOptionMenu("Card Type: ", new string[] { "Visa", "Mastercard" }, true) == 0 ? false : true;
+        string name = GetValidUserInput(new ConsoleLine("Enter Your Full Name: ", DarkBlue), new UserInputProfile(InputType.FullText, wordCount: 2));
+        int pin = int.Parse(GetValidUserInput(new ConsoleLine("Create A Pin [4 Digits]: ", DarkBlue), new UserInputProfile(InputType.Int, charCount: 4)));
+        bool masterCard = CreateOptionMenu("Card Type: ", ["Visa", "Mastercard"], true) == 0 ? false : true;
         bool contactless = CreateTrueFalseOptionMenu("Contactless: ");
 
-        ConsoleColor[][] c = new ConsoleColor[][] {
-                ConsoleColor.White.ToArray(), ConsoleColor.Black.ToArray(), RedGradient, BlueGradient, GreenGradient, MagentaGradient,CyanDarkBlueGradient, GreenAndBlue};
+        ConsoleColour[][] c = new ConsoleColour[][] {
+                White.ToArray(), Black.ToArray(),
+                    [Red, DarkRed],
+                    [Blue, DarkBlue],
+                    [Green, DarkGreen],
+                    [Magenta, DarkMagenta],
+                    [Cyan, DarkCyan, Blue, DarkBlue],
+                    [Green, Blue]
+                };
 
-        int colourScheme = CreateOptionMenu("Colour Scheme: ", new string[] {
-                    "White", "Black", "Red", "Blue", "Green", "Magenta", "Cyan To Blue", "Green And Blue" }, true);
-        List<ConsoleColor> colours = c[colourScheme].ToList();
+        int colourScheme = CreateOptionMenu("Colour Scheme: ", [
+                    "White", "Black", "Red", "Blue", "Green", "Magenta", "Cyan To Blue", "Green And Blue" ], true);
+        List<ConsoleColour> colours = c[colourScheme].ToList();
 
-        int accountType = CreateOptionMenu("Account Type: ", new string[] { "Standard", "Premier", "Gold", "Ruby" }, true);
+        int accountType = CreateOptionMenu("Account Type: ", ["Standard", "Premier", "Gold", "Ruby"], true);
 
-        DebitCard d = new DebitCard(name, DateOnly.Parse(dob), dobCheck, pin, colours, masterCard, contactless, (DebitCard.AccountType)accountType);
+        DebitCard d = new(name, DateOnly.Parse(dob), dobCheck, pin, colours, masterCard, contactless, (DebitCard.AccountType)accountType);
         DebitCard.db.Add(d);
         DebitCard.SaveDataBase();
 
         ClearPrimaryConsole();
 
         string s = $"Congrats On Your New Honeycomb [{(DebitCard.AccountType)accountType} Account] {d.holderName}!";
-        SendConsoleMessage(new ConsoleLine(s, AdvancedHighlight(s, ConsoleColor.White.ToArray(), DebitCard.accountColourLookup[accountType].ToArray(), 5, 6)));
+        SendConsoleMessage(s);
         ShiftLine();
         d.DisplayCard();
         WaitForUserInput(space: true);
@@ -160,12 +169,12 @@ public class DebitCardApp : App
     /// <summary> Takes card number and validates according to Luhn code.</summary>
     void ValidateCardNumber()
     {
-        string card = GetValidUserInput(new ConsoleLine("Enter A Card Number", ConsoleColor.DarkBlue), new UserInputProfile(InputType.Int, charCount: 16, removeWhitespace: true));
+        string card = GetValidUserInput(new ConsoleLine("Enter A Card Number", DarkBlue), new UserInputProfile(InputType.Int, charCount: 16, removeWhitespace: true));
 
         card = card.Replace(" ", "");
         int[] digits = card.Select(c => int.TryParse(c.ToString(), out int result) ? result : 0).ToArray();
-        if (IsValidLuhn(digits)) SendConsoleMessage(new ConsoleLine("Debit Card Number Is Valid!", ConsoleColor.Green));
-        else SendConsoleMessage(new ConsoleLine("Debit Card Number Is NOT Valid!", ConsoleColor.Red));
+        if (IsValidLuhn(digits)) SendConsoleMessage(new ConsoleLine("Debit Card Number Is Valid!", Green));
+        else SendConsoleMessage(new ConsoleLine("Debit Card Number Is NOT Valid!", Red));
 
         WaitForUserInput(ConsoleKey.Enter, true, true);
     }
@@ -179,7 +188,7 @@ public class DebitCardApp : App
         string s = $"Welcome Back To Your [{c.accountType} Account] {c.holderName}!";
         string funds = $"You Currently Have £{Math.Round(c.funds, 2)}";
 
-        SendConsoleMessage(new ConsoleLine(s, AdvancedHighlight(s, ConsoleColor.White.ToArray(), DebitCard.accountColourLookup[(int)c.accountType].ToArray(), 4, 5)));
+        SendConsoleMessage(s);
         SendConsoleMessage(funds);
 
         ShiftLine();
@@ -193,11 +202,11 @@ public class DebitCardApp : App
             switch (option)
             {
                 case 0:
-                    float fundChange = float.Parse(GetValidUserInput(new ConsoleLine("How Much Would You Like To Deposit Or Withdraw: ", ConsoleColor.DarkBlue),
+                    float fundChange = float.Parse(GetValidUserInput(new ConsoleLine("How Much Would You Like To Deposit Or Withdraw: ", DarkBlue),
                     new UserInputProfile(new InputType[] { InputType.Int, InputType.Float }, removeWhitespace: true)));
                     if (c.funds + fundChange < 0)
                     {
-                        SendConsoleMessage(new ConsoleLine("Insufficient Funds!", ConsoleColor.Red));
+                        SendConsoleMessage(new ConsoleLine("Insufficient Funds!", Red));
                         WaitForUserInput(space: true);
                         ClearLines(3, true);
                     }
@@ -213,15 +222,23 @@ public class DebitCardApp : App
                     }
                     break;
                 case 1:
-                    ConsoleColor[][] colourSchemes = new ConsoleColor[][] {
-                ConsoleColor.White.ToArray(), ConsoleColor.Black.ToArray(), RedGradient, BlueGradient, GreenGradient, MagentaGradient,CyanDarkBlueGradient, GreenAndBlue};
+                    ConsoleColour[][] colourSchemes = [
+                        White.ToArray(),
+                        Black.ToArray(),
+                        [Red, DarkRed],
+                        [Blue, DarkBlue],
+                        [Green, DarkGreen],
+                        [Magenta, DarkMagenta],
+                        [Cyan, DarkCyan, Blue, DarkBlue],
+                        [Green, Blue]
+                    ];
                     GoToLine(14);
                     int colourScheme = CreateOptionMenu("New Colour Scheme: ", new string[] {
                     "White", "Black", "Red", "Blue", "Green", "Magenta", "Cyan To Blue", "Green And Blue" }, true);
                     c.accountColours = colourSchemes[colourScheme].ToList();
                     DebitCard.SaveDataBase();
                     ClearPrimaryConsole();
-                    SendConsoleMessage(new ConsoleLine(s, AdvancedHighlight(s, ConsoleColor.White.ToArray(), DebitCard.accountColourLookup[(int)c.accountType].ToArray(), 4, 5)));
+                    SendConsoleMessage(s);
                     SendConsoleMessage(funds);
 
                     ShiftLine();
@@ -230,12 +247,12 @@ public class DebitCardApp : App
                     break;
                 case 2:
                     GoToLine(14);
-                    int accountType = CreateOptionMenu("New Account Type: ", new string[] { "Standard", "Premier", "Gold", "Ruby" }, true);
+                    int accountType = CreateOptionMenu("New Account Type: ", ["Standard", "Premier", "Gold", "Ruby"], true);
                     c.accountType = (DebitCard.AccountType)accountType;
                     DebitCard.SaveDataBase();
                     ClearPrimaryConsole();
                     s = $"Welcome Back To Your [{c.accountType} Account] {c.holderName}!";
-                    SendConsoleMessage(new ConsoleLine(s, ColourFunctions.AdvancedHighlight(s, ConsoleColor.White, (DebitCard.accountColourLookup[(int)c.accountType].ToArray(), 4), (DebitCard.accountColourLookup[(int)c.accountType].ToArray(), 5))));
+                    SendConsoleMessage(new ConsoleLine(s, White));
                     SendConsoleMessage(funds);
 
                     ShiftLine();
@@ -283,8 +300,8 @@ public class DebitCardApp : App
     class DebitCard
     {
         //static 
-        public static List<DebitCard> db = new List<DebitCard>();
-        public static ConsoleColor[] accountColourLookup = new ConsoleColor[] { ConsoleColor.White, ConsoleColor.DarkBlue, ConsoleColor.Yellow, ConsoleColor.Red };
+        public static List<DebitCard> db = [];
+        public static ConsoleColour[] accountColourLookup = [White, DarkBlue, Yellow, Red];
         public static int accountID = 0;
 
         //account values
@@ -295,7 +312,7 @@ public class DebitCardApp : App
 
         public enum AccountType { Standard, Premier, Gold, Ruby }
         public AccountType accountType;
-        public List<ConsoleColor> accountColours;
+        public List<ConsoleColour> accountColours;
 
         public float funds = 1000;
         int pin;
@@ -308,7 +325,7 @@ public class DebitCardApp : App
         public bool contactless;
 
         /// <summary> Class for info to do with a debit card.</summary>
-        public DebitCard(string holderName, DateOnly dob, DateOnly expiryDate, int pin, List<ConsoleColor> accountColours, bool masterCard, bool contactless, AccountType accountType)
+        public DebitCard(string holderName, DateOnly dob, DateOnly expiryDate, int pin, List<ConsoleColour> accountColours, bool masterCard, bool contactless, AccountType accountType)
         {
             this.holderName = holderName;
             this.dob = dob;
@@ -331,7 +348,7 @@ public class DebitCardApp : App
             pin = int.Parse(cardString[2]);
             masterCard = bool.Parse(cardString[3]);
             contactless = bool.Parse(cardString[4]);
-            accountColours = cardString[5].Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => (ConsoleColor)int.Parse(s)).ToList();
+            accountColours = [.. cardString[5].Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => new ConsoleColour((ConsoleColor)int.Parse(s)))];
             accountNumber = cardString[6];
             accountType = Enum.Parse<AccountType>(cardString[7]);
             funds = float.Parse(cardString[8]);
@@ -339,16 +356,16 @@ public class DebitCardApp : App
 
         public override string ToString()
         {
-            return $"{holderName}\n{dob}\n{pin}\n{masterCard}\n{contactless}\n{string.Join(",", accountColours.Select(colour => (int)colour))}\n{accountNumber}\n{accountType}\n{funds}\n";
+            return $"{holderName}\n{dob}\n{pin}\n{masterCard}\n{contactless}\n{string.Join(",", accountColours.Select(colour => (int)colour.EquivalentConsoleColor))}\n{accountNumber}\n{accountType}\n{funds}\n";
         }
 
         /// <summary> Displays card in console </summary>
         public void DisplayCard(bool censored = false)
         {
-            ConsoleColor[] c = Alternate(accountColours.ToArray(), 60, 2);
+            ConsoleColour[] c = VariableStretch([.. accountColours], 60, 2);
             string s = $"{(masterCard ? "Mastercard" : "Visa")} {(contactless ? "- Contactless" : "")}", s2 = $"Honeycomb Bank [{(censored ? "******" : accountType)} Account]  |";
 
-            string[] cardLines = new string[] {
+            string[] cardLines = [
                         $"+{new string('-', 58)}+",
                         $"|{new string(' ', 58)}|",
                         $"|  {s}{new string(' ', 34 - s.Length)}Account Number: {accountNumber.ToString().Substring(12)}  |",
@@ -358,7 +375,7 @@ public class DebitCardApp : App
                         $"|  {initals}{new string(' ', 53 - s2.Length)}{s2}",
                         $"|{new string(' ', 58)}|",
                         $"+{new string('-', 58)}+"
-                    };
+                    ];
 
             for (int i = 0; i < cardLines.Length; i++) { SendConsoleMessage(new ConsoleLine(cardLines[i], c), new ConsoleLineUpdate(), new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "1", 10, true)); }
         }

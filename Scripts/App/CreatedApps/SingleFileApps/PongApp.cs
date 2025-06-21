@@ -19,12 +19,12 @@ public class PongApp : App
     (int score, int pos) player2;
 
     public PongApp() : base() { }
-    public PongApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 50) { }
+    public PongApp(string name, string description, (ConsoleColour[] primaryColour, ConsoleColour[] secondaryColour, ConsoleColour[] tertiaryColour) consoleSettings, (ConsoleColour[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 50) { }
 
     public override App[] OnRegister()
     {
         return [
-            new PongApp("Pong", "The Classic Game.", (ConsoleColor.DarkBlue.ToArray(), CyanGradient, BlueGradient), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 60, 40)
+            new PongApp("Pong", "The Classic Game.", (ConsoleColour.DarkBlue.ToArray(), ConsoleColour.Cyan.ToArray(), ConsoleColour.DarkBlue.ToArray()), (BaseBorderColours.Stretch(3).SetLength(18), 5), [], 60, 40)
         ];
     }
 
@@ -102,8 +102,8 @@ public class PongApp : App
         ClearPrimaryConsole();
         ShiftLine();
         SendConsoleMessages(
-            TitleFunctions.CreateTitle("PONG!", AdvancedHighlight(48, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1),
-            Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), 48).ToArray());
+            TitleFunctions.CreateTitle("PONG!", Highlight(48, ConsoleColour.DarkBlue.ToArray(), (ConsoleColour.Cyan.ToArray(), 0, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1),
+            Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.ActiveApp.borderColourScheme.speed, true), 48).ToArray());
         ShiftLine();
         int i = UserInput.CreateOptionMenu("Options:", new (string, Action)[] {
                     ("1 Player", () => GameLoad(1)),
@@ -114,9 +114,9 @@ public class PongApp : App
         while (gameState != 0) { }
         GoToLine(2);
         string[] title = TitleFunctions.CreateTitle($"P{(player1.score == 3 ? '1' : '2')} WINS!", TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1).ToArray();
-        ConsoleColor[] titleColours = AdvancedHighlight(title[0].Length, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), title[0].Length / 2, 10));
+        ConsoleColour[] titleColours = Highlight(title[0].Length, ConsoleColour.DarkBlue.ToArray(), (ConsoleColour.Cyan.ToArray(), title[0].Length / 2, 10));
         SendConsoleMessages(title.Select(s => new ConsoleLine(s, titleColours)).ToArray(),
-        Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.ActiveApp.borderColourScheme.speed, true), title.Length).ToArray());
         UserInput.WaitForUserInput(space: true);
 
         MainMenu();
@@ -147,15 +147,15 @@ public class PongApp : App
     void DrawFrame()
     {
         ConsoleImage frame = new(67, 17);
-        frame.SetPixelBlock(0, 0, 67, 1, new ConsolePixel(bg: ConsoleColor.DarkGray));
-        frame.SetPixelBlock(0, 16, 67, 1, new ConsolePixel(bg: ConsoleColor.DarkGray));
-        frame.SetPixelBlock(65, 1, 2, 15, new ConsolePixel(bg: ConsoleColor.DarkBlue));
-        frame.SetPixelBlock(0, 1, 2, 15, new ConsolePixel(bg: ConsoleColor.DarkRed));
-        frame.SetPixelBlock(5, player1.pos + 1, 1, 4, new ConsolePixel(bg: ConsoleColor.DarkRed));
-        frame.SetPixelBlock(61, player2.pos + 1, 1, 4, new ConsolePixel(bg: ConsoleColor.DarkBlue));
-        frame.SetPixels(15, 9, TitleFunctions.CreateTitle($"{player1.score}", ConsoleColor.White.ToArray(), TitleFunctions.AsciiFont.Small).Reverse().ToArray());
-        frame.SetPixels(47, 9, TitleFunctions.CreateTitle($"{player2.score}", ConsoleColor.White.ToArray(), TitleFunctions.AsciiFont.Small).Reverse().ToArray());
-        frame.SetPixel(ball.pos.x + 2, ball.pos.y + 1, new ConsolePixel(bg: ConsoleColor.White));
+        frame.SetPixelBlock(0, 0, 67, 1, new ConsolePixel(ConsoleColour.White, ConsoleColour.DarkGray));
+        frame.SetPixelBlock(0, 16, 67, 1, new ConsolePixel(ConsoleColour.White, ConsoleColour.DarkGray));
+        frame.SetPixelBlock(65, 1, 2, 15, new ConsolePixel(ConsoleColour.White, ConsoleColour.DarkGray));
+        frame.SetPixelBlock(0, 1, 2, 15, new ConsolePixel(ConsoleColour.White, ConsoleColour.DarkRed));
+        frame.SetPixelBlock(5, player1.pos + 1, 1, 4, new ConsolePixel(ConsoleColour.White, ConsoleColour.DarkRed));
+        frame.SetPixelBlock(61, player2.pos + 1, 1, 4, new ConsolePixel(ConsoleColour.White, ConsoleColour.DarkBlue));
+        frame.SetPixels(15, 9, TitleFunctions.CreateTitle($"{player1.score}", ConsoleColour.White.ToArray(), TitleFunctions.AsciiFont.Small).Reverse().ToArray());
+        frame.SetPixels(47, 9, TitleFunctions.CreateTitle($"{player2.score}", ConsoleColour.White.ToArray(), TitleFunctions.AsciiFont.Small).Reverse().ToArray());
+        frame.SetPixel(ball.pos.x + 2, ball.pos.y + 1, new ConsolePixel(ConsoleColour.White, ConsoleColour.White));
         frame.OutputAt(0, 13);
     }
 

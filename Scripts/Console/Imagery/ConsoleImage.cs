@@ -1,3 +1,4 @@
+using Revistone.App;
 using Revistone.Console.Data;
 using Revistone.Functions;
 using Revistone.Management;
@@ -27,6 +28,24 @@ public class ConsoleImage
 
     /// <summary> Class pertaining all logic for creating images in the console. </summary>
     public ConsoleImage(int width = 10, int height = 10) : this(width, height, new ConsolePixel()) { }
+
+    ///<summary> Converts ConsoleColour array to square pixel image. </summary>
+    public ConsoleImage(ConsoleColour[,] pixels)
+    {
+        int width = pixels.GetLength(0);
+        int height = pixels.GetLength(1);
+        int outputHeight = height / 2;
+
+        SetImageSize(width, outputHeight);
+
+        for (int y = 0; y < outputHeight; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                this.pixels[x, y] = new ConsolePixel('▄', pixels[x, y * 2], pixels[x, y * 2 + 1]);
+            }
+        }
+    }
 
     // --- IMAGE CONTROL ---
 
@@ -76,7 +95,7 @@ public class ConsoleImage
     }
 
     ///<summary> Set pixel foreground at given position. </summary>
-    public bool SetPixelForeground(int x, int y, ConsoleColor colour)
+    public bool SetPixelForeground(int x, int y, ConsoleColour colour)
     {
         if (!PixelExists(x, y)) return false;
         pixels[x, y].SetForeground(colour);
@@ -84,7 +103,7 @@ public class ConsoleImage
     }
 
     ///<summary> Set pixel background at given position. </summary>
-    public bool SetPixelBackground(int x, int y, ConsoleColor colour)
+    public bool SetPixelBackground(int x, int y, ConsoleColour colour)
     {
         if (!PixelExists(x, y)) return false;
         pixels[x, y].SetBackground(colour);
@@ -117,8 +136,8 @@ public class ConsoleImage
     /// <summary> Set given pixel positions, from a ConsleLine. </summary>
     public bool SetPixels(int x, int y, ConsoleLine consoleLine)
     {
-        ConsoleLine c = new(consoleLine.lineText, consoleLine.lineColour.ExtendEnd(consoleLine.lineText.Length), consoleLine.lineBGColour.ExtendEnd(consoleLine.lineText.Length));
-        return SetPixelBlock(x, y, c.lineText.Length, 1, [.. c.lineText.Select((cr, index) => new ConsolePixel(char.IsSurrogate(cr) ? ' ' : cr, c.lineColour[index], c.lineBGColour[index]))]);
+        ConsoleLine c = new(consoleLine.LineText, consoleLine.LineColour.SetLength(consoleLine.LineText.Length), consoleLine.LineBGColour.SetLength(consoleLine.LineText.Length));
+        return SetPixelBlock(x, y, c.LineText.Length, 1, [.. c.LineText.Select((cr, index) => new ConsolePixel(char.IsSurrogate(cr) ? ' ' : cr, c.LineColour[index], c.LineBGColour[index]))]);
     }
 
     /// <summary> Set given pixel positions, from A ConsoleLine array. </summary>
@@ -222,19 +241,20 @@ public class ConsoleImage
         using (BinaryWriter writer = new(fs))
         {
             writer.Write("CIMG"); // file type
+            writer.Write('2'); // version number
             writer.Write(image.Width);
             writer.Write(image.Height);
             writer.Write(image.defaultPixel.Character);
-            writer.Write((byte)image.defaultPixel.FGColour);
-            writer.Write((byte)image.defaultPixel.BGColour);
+            writer.Write([image.defaultPixel.FGColour.R, image.defaultPixel.FGColour.G, image.defaultPixel.FGColour.B, image.defaultPixel.FGColour.TextStyleFlags]);
+            writer.Write([image.defaultPixel.BGColour.R, image.defaultPixel.BGColour.G, image.defaultPixel.BGColour.B, image.defaultPixel.BGColour.TextStyleFlags]);
 
             for (int x = 0; x < image.Width; x++)
             {
                 for (int y = 0; y < image.Height; y++)
                 {
                     writer.Write(image.pixels[x, y].Character);
-                    writer.Write((byte)image.pixels[x, y].FGColour);
-                    writer.Write((byte)image.pixels[x, y].BGColour);
+                    writer.Write([image.pixels[x, y].FGColour.R, image.pixels[x, y].FGColour.G, image.pixels[x, y].FGColour.B, image.pixels[x, y].FGColour.TextStyleFlags]);
+                    writer.Write([image.pixels[x, y].BGColour.R, image.pixels[x, y].BGColour.G, image.pixels[x, y].BGColour.B, image.pixels[x, y].BGColour.TextStyleFlags]);
                 }
             }
         }
@@ -248,7 +268,7 @@ public class ConsoleImage
 
         using FileStream fs = new(filePath, FileMode.Open);
         using BinaryReader reader = new(fs);
-        
+
         if (fs.Length <= 8) return new ConsoleImage(); // will crash trying to read .cimg
 
         if (reader.ReadString() != "CIMG")
@@ -257,20 +277,54 @@ public class ConsoleImage
             return null;
         }
 
+        char versionNum = (char)reader.PeekChar();
+
         int width = reader.ReadInt32();
         int height = reader.ReadInt32();
-        ConsolePixel defaultPixel = new(reader.ReadChar(), (ConsoleColor)reader.ReadByte(), (ConsoleColor)reader.ReadByte());
 
-        ConsoleImage image = new(width, height, defaultPixel);
-
-        for (int x = 0; x < image.Width; x++)
+        if (versionNum == '2')
         {
-            for (int y = 0; y < image.Height; y++)
+            char pixelChar = reader.ReadChar();
+            byte[] pixelData = reader.ReadBytes(8);
+
+            ConsolePixel defaultPixel = new(pixelChar,
+                new ConsoleColour(pixelData[0], pixelData[1], pixelData[2], pixelData[3]),
+                new ConsoleColour(pixelData[4], pixelData[5], pixelData[6], pixelData[7]));
+
+            ConsoleImage image = new(width, height, defaultPixel);
+
+            for (int x = 0; x < image.Width; x++)
             {
-                image.pixels[x, y] = new ConsolePixel(reader.ReadChar(), (ConsoleColor)reader.ReadByte(), (ConsoleColor)reader.ReadByte());
+                for (int y = 0; y < image.Height; y++)
+                {
+                    pixelChar = reader.ReadChar();
+                    pixelData = reader.ReadBytes(8);
+                    image.pixels[x, y] = new ConsolePixel(reader.ReadChar(),
+                        new ConsoleColour(pixelData[0], pixelData[1], pixelData[2], pixelData[3]),
+                        new ConsoleColour(pixelData[4], pixelData[5], pixelData[6], pixelData[7]));
+                }
             }
+
+            return image;
+        }
+        else
+        {
+            ConsolePixel defaultPixel = new(reader.ReadChar(), new ConsoleColour((ConsoleColor)reader.ReadByte()), new ConsoleColour((ConsoleColor)reader.ReadByte()));
+
+            ConsoleImage image = new(width, height, defaultPixel);
+
+            for (int x = 0; x < image.Width; x++)
+            {
+                for (int y = 0; y < image.Height; y++)
+                {
+                    image.pixels[x, y] = new ConsolePixel(reader.ReadChar(), new ConsoleColour((ConsoleColor)reader.ReadByte()), new ConsoleColour((ConsoleColor)reader.ReadByte()));
+                }
+            }
+            ConsoleAction.SendDebugMessage(new ConsoleLine("[WARNING] ConsoleImage Is Using Legacy CIMG Format, Please Recompile To Update.", ColourFunctions.BuildArray(ConsoleColour.Red.ToArray(9), AppRegistry.PrimaryCol)));
+
+            return image;
         }
 
-        return image;
+
     }
 }

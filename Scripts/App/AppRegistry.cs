@@ -1,4 +1,5 @@
 using System.Reflection;
+using Revistone.Console.Image;
 using Revistone.Console.Widget;
 using Revistone.Management;
 
@@ -7,20 +8,17 @@ namespace Revistone.App;
 /// <summary> Class pertaining the info and abilty to register app to the console. </summary>
 public static class AppRegistry
 {
-    //must have Revistone assigned here so its first in list and loaded by default
-    private static List<App> _appRegistry = new List<App>() { };
-    public static List<App> appRegistry { get { return _appRegistry; } }
+    public static List<App> AppReg { get; private set; } = [];
 
-    static int _activeAppIndex = 0;
-    public static int activeAppIndex { get { return _activeAppIndex; } }
+    public static int ActiveAppIndex { get; private set; }
+    public static App ActiveApp { get { return AppReg[ActiveAppIndex]; } }
 
-    public static App activeApp { get { return _appRegistry[_activeAppIndex]; } }
     ///<summary> Primary colour of active app. </summary>
-    public static ConsoleColor[] PrimaryCol => activeApp.colourScheme.primaryColour;
+    public static ConsoleColour[] PrimaryCol => ActiveApp.colourScheme.primaryColour;
     ///<summary> Secondary colour of active app. </summary>
-    public static ConsoleColor[] SecondaryCol => activeApp.colourScheme.secondaryColour;
+    public static ConsoleColour[] SecondaryCol => ActiveApp.colourScheme.secondaryColour;
     ///<summary> Tertiary colour of active app. </summary>
-    public static ConsoleColor[] TertiaryColour => activeApp.colourScheme.tertiaryColour;
+    public static ConsoleColour[] TertiaryColour => ActiveApp.colourScheme.tertiaryColour;
 
     // --- METHODS ---
 
@@ -28,20 +26,20 @@ public static class AppRegistry
     /// <summary> Register app to revistone console (name MUST be unique). </summary>
     public static bool RegisterApp(App app)
     {
-        for (int i = 0; i < _appRegistry.Count; i++) if (_appRegistry[i].name == app.name) return false;
+        for (int i = 0; i < AppReg.Count; i++) if (AppReg[i].name == app.name) return false;
 
-        _appRegistry.Add(app);
+        AppReg.Add(app);
         return true;
     }
 
     /// <summary> Deregister app from revistone console. </summary>
     public static bool DeregisterApp(string appName)
     {
-        for (int i = 0; i < _appRegistry.Count; i++)
+        for (int i = 0; i < AppReg.Count; i++)
         {
-            if (_appRegistry[i].name != appName) continue;
+            if (AppReg[i].name != appName) continue;
 
-            _appRegistry.RemoveAt(i);
+            AppReg.RemoveAt(i);
             return true;
         }
 
@@ -51,15 +49,15 @@ public static class AppRegistry
     /// <summary> Sets active app to given index. </summary>
     public static bool SetActiveApp(int index)
     {
-        if (index < 0 || index >= _appRegistry.Count) return false;
+        if (index < 0 || index >= AppReg.Count) return false;
 
-        Manager.Tick -= activeApp.OnUpdate;
-        _activeAppIndex = index;
-        Manager.Tick += activeApp.OnUpdate;
+        Manager.Tick -= ActiveApp.OnUpdate;
+        ActiveAppIndex = index;
+        Manager.Tick += ActiveApp.OnUpdate;
 
-        ConsoleWidget.UpdateWidgetHideInApp(activeApp.name);
+        ConsoleWidget.UpdateWidgetHideInApp(ActiveApp.name);
 
-        DeveloperTools.Log($"Loaded App: {activeApp.name}.");
+        DeveloperTools.Log($"Loaded App: {ActiveApp.name}.");
 
         return true;
     }
@@ -67,9 +65,9 @@ public static class AppRegistry
     /// <summary> Sets active app to app of given name. </summary>
     public static bool SetActiveApp(string name)
     {
-        for (int i = 0; i < _appRegistry.Count; i++)
+        for (int i = 0; i < AppReg.Count; i++)
         {
-            if (_appRegistry[i].name.ToLower() == name.ToLower())
+            if (AppReg[i].name.ToLower() == name.ToLower())
             {
                 Analytics.App.TrackAppOpen(name);
                 return SetActiveApp(i);
@@ -82,9 +80,9 @@ public static class AppRegistry
     /// <summary> Returns if app of given name is registered. </summary>
     public static bool AppExists(string name)
     {
-        for (int i = 0; i < _appRegistry.Count; i++)
+        for (int i = 0; i < AppReg.Count; i++)
         {
-            if (_appRegistry[i].name.ToLower() == name.ToLower()) return true;
+            if (AppReg[i].name.ToLower() == name.ToLower()) return true;
         }
 
         return false;
@@ -115,7 +113,7 @@ public static class AppRegistry
             }
         }
 
-        foreach (App app in _appRegistry)
+        foreach (App app in AppReg)
         {
             app.OnRevistoneStartup();
         }

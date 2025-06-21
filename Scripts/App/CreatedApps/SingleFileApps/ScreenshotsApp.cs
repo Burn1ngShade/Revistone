@@ -16,11 +16,11 @@ namespace Revistone.App.BaseApps;
 public class ScreenshotsApp : App
 {
     public ScreenshotsApp() : base() { }
-    public ScreenshotsApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 30) { }
+    public ScreenshotsApp(string name, string description, (ConsoleColour[] primaryColour, ConsoleColour[] secondaryColour, ConsoleColour[] tertiaryColour) consoleSettings, (ConsoleColour[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 30) { }
 
     public override App[] OnRegister()
     {
-        return [new ScreenshotsApp("Screenshots", "View Console Screenshots.", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 70, 40)];
+        return [new ScreenshotsApp("Screenshots", "View Console Screenshots.", (ConsoleColour.DarkBlue.ToArray(), ConsoleColour.Cyan.ToArray(), ConsoleColour.Blue.ToArray()), (BaseBorderColours.Stretch(3).SetLength(18), 5), [], 70, 40)];
     }
 
     public override void OnAppInitalisation()
@@ -42,8 +42,8 @@ public class ScreenshotsApp : App
     {
         if (init == false)
         {
-            titleGraphic = TitleFunctions.CreateTitle("SCREENSHOTS", AdvancedHighlight(120, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10), (ConsoleColor.Cyan.ToArray(), 60, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1, topSpace: 1);
-            SendConsoleMessages(titleGraphic, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), titleGraphic.Length).ToArray());
+            titleGraphic = TitleFunctions.CreateTitle("SCREENSHOTS", Highlight(120, ConsoleColour.DarkBlue.ToArray(), (ConsoleColour.Cyan.ToArray(), 0, 10), (ConsoleColour.Cyan.ToArray(), 60, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1, topSpace: 1);
+            SendConsoleMessages(titleGraphic, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.ActiveApp.borderColourScheme.speed, true), titleGraphic.Length).ToArray());
             init = true;
         }
 
@@ -73,7 +73,7 @@ public class ScreenshotsApp : App
             return;
         }
 
-        option = UserInput.CreateMultiPageOptionMenu("Options", [.. Enumerable.Range(0, screenshots.Length).Select(i => new ConsoleLine(screenshots[i][..^5], ConsoleColor.Cyan))], [new ConsoleLine("Exit", ConsoleColor.DarkBlue)], 10, option);
+        option = UserInput.CreateMultiPageOptionMenu("Options", [.. Enumerable.Range(0, screenshots.Length).Select(i => new ConsoleLine(screenshots[i][..^5], ConsoleColour.Cyan))], [new ConsoleLine("Exit", ConsoleColour.DarkBlue)], 10, option);
 
         if (option != -1)
         {
@@ -93,8 +93,8 @@ public class ScreenshotsApp : App
         string title = $" Viewing Screenshot - {filePath} ";
         int leftBuffer = Math.Max((int)Math.Floor((ConsoleData.windowSize.width - title.Length) / 2f), 0);
         int rightBuffer = Math.Max((int)Math.Ceiling((ConsoleData.windowSize.width - title.Length) / 2f), 0) - 1;
-        SendConsoleMessage(new ConsoleLine(new string('=', leftBuffer) + title + new string('=', rightBuffer), CyanDarkBlueGradient.Stretch(3).Extend(ConsoleData.windowSize.width, true)), new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, enabled: true));
-        if (img.Width > ConsoleData.windowSize.width || img.Height > ConsoleData.windowSize.height - 16) SendConsoleMessage(new ConsoleLine("Warning, Screenshot Is Larger Than Console Window.", ConsoleColor.Yellow));
+        SendConsoleMessage(new ConsoleLine(new string('=', leftBuffer) + title + new string('=', rightBuffer), BaseBorderColours.Stretch(3).SetLength(ConsoleData.windowSize.width)), new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, enabled: true));
+        if (img.Width > ConsoleData.windowSize.width || img.Height > ConsoleData.windowSize.height - 16) SendConsoleMessage(new ConsoleLine("Warning, Screenshot Is Larger Than Console Window.", ConsoleColour.Yellow));
         else ShiftLine();
 
         option = UserInput.CreateOptionMenu("--- Options ---", [new ConsoleLine("Reload Screenshot", AppRegistry.SecondaryCol), new ConsoleLine("Delete Screenshot", AppRegistry.SecondaryCol), new ConsoleLine("Exit", AppRegistry.PrimaryCol)]);
@@ -119,7 +119,7 @@ public class ScreenshotsApp : App
         }
 
         ClearPrimaryConsole();
-        SendConsoleMessages(titleGraphic, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        SendConsoleMessages(titleGraphic, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.ActiveApp.borderColourScheme.speed, true), title.Length).ToArray());
     }
 
     // --- GENERAL CONSOLE ---
@@ -134,7 +134,7 @@ public class ScreenshotsApp : App
 
         if (FileExists(path))
         {
-            SendConsoleMessage(new ConsoleLine($"Screenshot With Name Already Exists - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(38), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Screenshot With Name Already Exists - '{name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(38), AppRegistry.SecondaryCol)));
             return;
         }
 
@@ -150,7 +150,7 @@ public class ScreenshotsApp : App
         image.SetPixels(0, 0, c);
         ConsoleImage.SaveToCIMG(path, image);
 
-        SendDebugMessage(new ConsoleLine($"Screenshot Taken - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(19), AppRegistry.SecondaryCol)));
+        SendDebugMessage(new ConsoleLine($"Screenshot Taken - '{name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(19), AppRegistry.SecondaryCol)));
     }
 
     ///<summary> Takes a screenshot of the debug console. </summary>
@@ -163,7 +163,7 @@ public class ScreenshotsApp : App
 
         if (FileExists(path))
         {
-            SendConsoleMessage(new ConsoleLine($"Screenshot With Name Already Exists - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(38), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Screenshot With Name Already Exists - '{name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(38), AppRegistry.SecondaryCol)));
             return;
         }
 
@@ -178,6 +178,6 @@ public class ScreenshotsApp : App
         image.SetPixels(0, 0, c);
         ConsoleImage.SaveToCIMG(path, image);
 
-        SendDebugMessage(new ConsoleLine($"Debug Screenshot Taken - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(25), AppRegistry.SecondaryCol)));
+        SendDebugMessage(new ConsoleLine($"Debug Screenshot Taken - '{name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(25), AppRegistry.SecondaryCol)));
     }
 }

@@ -1,5 +1,5 @@
 using Revistone.Console;
-
+using Revistone.Console.Image;
 using static Revistone.Functions.PersistentDataFunctions;
 
 namespace Revistone.Functions;
@@ -51,7 +51,7 @@ public static class TitleFunctions
     }
 
     /// <summary> Creates an array of consolecolour that forms a title of given text, colour, and given font. </summary>
-    public static ConsoleLine[] CreateTitle(string text, ConsoleColor[] colours, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true, int bottomSpace = 0, int topSpace = 0)
+    public static ConsoleLine[] CreateTitle(string text, ConsoleColour[] colours, AsciiFont font, int emptySpacing = 3, int letterSpacing = 0, bool removeEmptyLines = true, int bottomSpace = 0, int topSpace = 0)
     {
         return CreateTitle(text, font, emptySpacing, letterSpacing, removeEmptyLines, bottomSpace, topSpace).Select(s => new ConsoleLine(s, colours)).ToArray();
     }

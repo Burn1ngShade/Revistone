@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Revistone.Console;
+using Revistone.Console.Image;
 using Revistone.Functions;
 
 using static Revistone.App.BaseApps.Calculator.CalculatorComputations;
@@ -89,7 +90,7 @@ public static class CalculatorInterpreter
                 rangeProfile.SetIndexes(i + 1, bracketIndexes[i + 1]);
                 ranges.Add(rangeProfile);
 
-                if (flags.debug) SendConsoleMessage(new ConsoleLine("---- Debug End ----", ConsoleColor.Cyan));
+                if (flags.debug) SendConsoleMessage(new ConsoleLine("---- Debug End ----", ConsoleColour.Cyan));
                 continue;
             }
 
@@ -173,7 +174,7 @@ public static class CalculatorInterpreter
     /// <summary> Throws interpreter error and halts program. </summary>
     public static void ThrowInterpreterError(string error, FlagProfile flags)
     {
-        if (!flags.hideError) SendConsoleMessage(new ConsoleLine($"Error: {error}!", ConsoleColor.Red));
+        if (!flags.hideError) SendConsoleMessage(new ConsoleLine($"Error: {error}!", ConsoleColour.Red));
     }
 
     /// <summary> Throws interpreter error and halts program. </summary>

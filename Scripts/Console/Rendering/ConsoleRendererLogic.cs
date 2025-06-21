@@ -45,7 +45,7 @@ public static class ConsoleRendererLogic
 
             lock (Manager.ConsoleLock)
             {
-                if (!(blockRender || consoleLines.Length < AppRegistry.activeApp.minHeightBuffer))
+                if (!(blockRender || consoleLines.Length < AppRegistry.ActiveApp.minHeightBuffer))
                 {
                     if (useExperimentalRendering)
                     {
@@ -78,15 +78,15 @@ public static class ConsoleRendererLogic
     static void HandleConsoleDisplayBehaviour(int tickNum)
     {
         //if console display resized
-        if (windowSize.width != System.Console.WindowWidth || windowSize.height != System.Console.WindowHeight || (consoleReload && windowSize.height > AppRegistry.activeApp.minHeightBuffer && windowSize.width > AppRegistry.activeApp.minWidthBuffer))
+        if (windowSize.width != System.Console.WindowWidth || windowSize.height != System.Console.WindowHeight || (consoleReload && windowSize.height > AppRegistry.ActiveApp.minHeightBuffer && windowSize.width > AppRegistry.ActiveApp.minWidthBuffer))
         {
             System.Console.CursorVisible = false;
             windowSize = (System.Console.WindowWidth, System.Console.WindowHeight);
-            if (!(consoleReload && windowSize.height > AppRegistry.activeApp.minHeightBuffer && windowSize.width > AppRegistry.activeApp.minWidthBuffer))
+            if (!(consoleReload && windowSize.height > AppRegistry.ActiveApp.minHeightBuffer && windowSize.width > AppRegistry.ActiveApp.minWidthBuffer))
             {
                 SoftReloadConsoleDisplay();
             }
-            else if (!(windowSize.height <= AppRegistry.activeApp.minHeightBuffer || windowSize.width <= AppRegistry.activeApp.minWidthBuffer))
+            else if (!(windowSize.height <= AppRegistry.ActiveApp.minHeightBuffer || windowSize.width <= AppRegistry.ActiveApp.minWidthBuffer))
             {
                 ResetConsoleDisplay();
                 consoleReload = false;
@@ -95,7 +95,7 @@ public static class ConsoleRendererLogic
 
         // --- Render Console ---
 
-        if (windowSize.height <= AppRegistry.activeApp.minHeightBuffer || windowSize.width <= AppRegistry.activeApp.minWidthBuffer)
+        if (windowSize.height <= AppRegistry.ActiveApp.minHeightBuffer || windowSize.width <= AppRegistry.ActiveApp.minWidthBuffer)
         {
             if (System.Console.WindowTop != 0) try
                 {
@@ -106,24 +106,24 @@ public static class ConsoleRendererLogic
             if (screenWarningUpdated || windowSize.height == 0 || windowSize.width == 0) return;
 
             //0 height and width to small, 1 height too small, 2 width too small
-            int errorCase = windowSize.height <= AppRegistry.activeApp.minHeightBuffer && windowSize.width <= AppRegistry.activeApp.minWidthBuffer ? 0 :
-            windowSize.height <= AppRegistry.activeApp.minHeightBuffer ? 1 : 2;
+            int errorCase = windowSize.height <= AppRegistry.ActiveApp.minHeightBuffer && windowSize.width <= AppRegistry.ActiveApp.minWidthBuffer ? 0 :
+            windowSize.height <= AppRegistry.ActiveApp.minHeightBuffer ? 1 : 2;
             string[] exception = new string[3];
             switch (errorCase)
             {
                 case 0:
-                    exception[0] = $"[Window Exception] '{AppRegistry.activeApp.name}' Window Height And Width Too Small";
-                    exception[1] = $"Expected Values -> ({AppRegistry.activeApp.minWidthBuffer + 1}, {AppRegistry.activeApp.minHeightBuffer + 1})";
+                    exception[0] = $"[Window Exception] '{AppRegistry.ActiveApp.name}' Window Height And Width Too Small";
+                    exception[1] = $"Expected Values -> ({AppRegistry.ActiveApp.minWidthBuffer + 1}, {AppRegistry.ActiveApp.minHeightBuffer + 1})";
                     exception[2] = $"Actual Values -> ({windowSize.width}, {windowSize.height})";
                     break;
                 case 1:
-                    exception[0] = $"[Window Exception] '{AppRegistry.activeApp.name}' Window Height Too Small";
-                    exception[1] = $"Expected Value -> {AppRegistry.activeApp.minHeightBuffer + 1}";
+                    exception[0] = $"[Window Exception] '{AppRegistry.ActiveApp.name}' Window Height Too Small";
+                    exception[1] = $"Expected Value -> {AppRegistry.ActiveApp.minHeightBuffer + 1}";
                     exception[2] = $"Actual Value -> {windowSize.height}";
                     break;
                 case 2:
-                    exception[0] = $"[Window Exception] '{AppRegistry.activeApp.name}' Window Width Too Small";
-                    exception[1] = $"Expected Value -> {AppRegistry.activeApp.minWidthBuffer + 1}";
+                    exception[0] = $"[Window Exception] '{AppRegistry.ActiveApp.name}' Window Width Too Small";
+                    exception[1] = $"Expected Value -> {AppRegistry.ActiveApp.minWidthBuffer + 1}";
                     exception[2] = $"Actual Value -> {windowSize.width}";
                     break;
             }
@@ -194,7 +194,7 @@ public static class ConsoleRendererLogic
     {
         screenWarningUpdated = false;
 
-        if (windowSize.height <= AppRegistry.activeApp.minHeightBuffer) return;
+        if (windowSize.height <= AppRegistry.ActiveApp.minHeightBuffer) return;
 
         if (consoleLines.Length == 0)
         {
@@ -260,31 +260,31 @@ public static class ConsoleRendererLogic
     /// <summary> Updates console title, with current app name and colour scheme. </summary>
     static void UpdateConsoleTitle()
     {
-        if (consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return;
+        if (consoleLines.Length < AppRegistry.ActiveApp.minHeightBuffer) return;
         exceptionLines[0] = true;
         consoleLinesBuffer[0].Update(""); //stops buffer width
 
-        string title = $" [{AppRegistry.activeApp.name}] ";
+        string title = $" [{AppRegistry.ActiveApp.name}] ";
         int leftBuffer = Math.Max((int)Math.Floor((windowSize.width - title.Length) / 2f), 0);
         int rightBuffer = Math.Max((int)Math.Ceiling((windowSize.width - title.Length) / 2f), 0) - 1;
-        consoleLines[0].Update(new string('-', leftBuffer) + title + new string('-', rightBuffer), ColourFunctions.Alternate(AppRegistry.activeApp.borderColourScheme.colours, windowSize.width - 1, 1));
-        consoleLineUpdates[0].Update(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "1", AppRegistry.activeApp.borderColourScheme.speed, true));
+        consoleLines[0].Update(new string('-', leftBuffer) + title + new string('-', rightBuffer), ColourFunctions.VariableStretch(AppRegistry.ActiveApp.borderColourScheme.colours, windowSize.width - 1));
+        consoleLineUpdates[0].Update(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "1", AppRegistry.ActiveApp.borderColourScheme.speed, true));
     }
 
     /// <summary> Updates console border, with current app colour scheme. </summary>
     static void UpdateConsoleBorder()
     {
-        if (consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return;
+        if (consoleLines.Length < AppRegistry.ActiveApp.minHeightBuffer) return;
         exceptionLines[^8] = true;
         consoleLinesBuffer[^8].Update(""); //stops buffer width
-        consoleLines[^8].Update(GenerateConsoleBorderString(), ColourFunctions.Alternate(AppRegistry.activeApp.borderColourScheme.colours, windowSize.width - 1, 1));
+        consoleLines[^8].Update(GenerateConsoleBorderString(), ColourFunctions.VariableStretch(AppRegistry.ActiveApp.borderColourScheme.colours, windowSize.width - 1));
         consoleLineUpdates[^8].Update(new ConsoleAnimatedLine(UpdateConsoleBorderAnimation, "", 1, true));
     }
 
     /// <summary> Updates console border widgets. </summary>
     static void UpdateConsoleBorderAnimation(ConsoleLine lineInfo, ConsoleAnimatedLine animationInfo, int tickNum)
     {
-        if (tickNum % AppRegistry.activeApp.borderColourScheme.speed == 0) lineInfo.Update(lineInfo.lineColour.Shift(1));
+        if (tickNum % AppRegistry.ActiveApp.borderColourScheme.speed == 0) lineInfo.Update(lineInfo.LineColour.Cycle(1));
         if (tickNum % widgetTickInterval == 0) lineInfo.Update(GenerateConsoleBorderString());
     }
 

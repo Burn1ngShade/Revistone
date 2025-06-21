@@ -1,4 +1,5 @@
 using Revistone.Console;
+using Revistone.Console.Image;
 using Revistone.Functions;
 using static Revistone.App.BaseApps.Tetris.TetrisData;
 using static Revistone.Console.ConsoleAction;
@@ -171,9 +172,9 @@ public class TetrisGameboard
             switch (type)
             {
                 case 0:
-                    SendConsoleMessage(new ConsoleLine(text, ConsoleColor.DarkBlue.ToArray(), BuildArray(ConsoleColor.DarkGray.ToArray(2),
+                    SendConsoleMessage(new ConsoleLine(text, ConsoleColour.DarkBlue.ToArray(), BuildArray(ConsoleColour.DarkGray.ToArray(2),
                             Enumerable.Range(0, 10).Select(x => GetBlockColour(outputData[x, y])).ToArray().Stretch(2),
-                            ConsoleColor.DarkGray.ToArray(2))));
+                            ConsoleColour.DarkGray.ToArray(2))));
                     break;
                 case 1:
                     int[,] bd = new int[4, 4];
@@ -181,11 +182,11 @@ public class TetrisGameboard
                     {
                         bd = GetBlockData(heldBlock, 0);
 
-                        SendConsoleMessage(new ConsoleLine(text, ConsoleColor.DarkBlue.ToArray(), BuildArray(ConsoleColor.DarkGray.ToArray(2),
+                        SendConsoleMessage(new ConsoleLine(text, ConsoleColour.DarkBlue.ToArray(), BuildArray(ConsoleColour.DarkGray.ToArray(2),
                             Enumerable.Range(0, 10).Select(x => GetBlockColour(outputData[x, y])).ToArray().Stretch(2),
-                            ConsoleColor.DarkGray.ToArray(6), ConsoleColor.Black.ToArray(2),
-                            Enumerable.Range(0, 4).Select(x => bd[x, y - 3] == 1 ? GetBlockColour((int)heldBlock + 1) : ConsoleColor.Black).ToArray().Stretch(2),
-                            ConsoleColor.Black.ToArray(2), ConsoleColor.DarkGray.ToArray(4))));
+                            ConsoleColour.DarkGray.ToArray(6), ConsoleColour.Black.ToArray(2),
+                            Enumerable.Range(0, 4).Select(x => bd[x, y - 3] == 1 ? GetBlockColour((int)heldBlock + 1) : ConsoleColour.Black).ToArray().Stretch(2),
+                            ConsoleColour.Black.ToArray(2), ConsoleColour.DarkGray.ToArray(4))));
                         break;
                     }
 
@@ -193,11 +194,11 @@ public class TetrisGameboard
                     {
                         bd = GetBlockData(pieceQueue[0], 0);
 
-                        SendConsoleMessage(new ConsoleLine(text, ConsoleColor.DarkBlue.ToArray(), BuildArray(ConsoleColor.DarkGray.ToArray(2),
+                        SendConsoleMessage(new ConsoleLine(text, ConsoleColour.DarkBlue.ToArray(), BuildArray(ConsoleColour.DarkGray.ToArray(2),
                             Enumerable.Range(0, 10).Select(x => GetBlockColour(outputData[x, y])).ToArray().Stretch(2),
-                            ConsoleColor.DarkGray.ToArray(6), ConsoleColor.Black.ToArray(2),
-                            Enumerable.Range(0, 4).Select(x => bd[x, y - 9] == 1 ? GetBlockColour((int)pieceQueue[0] + 1) : ConsoleColor.Black).ToArray().Stretch(2),
-                            ConsoleColor.Black.ToArray(2), ConsoleColor.DarkGray.ToArray(4))));
+                            ConsoleColour.DarkGray.ToArray(6), ConsoleColour.Black.ToArray(2),
+                            Enumerable.Range(0, 4).Select(x => bd[x, y - 9] == 1 ? GetBlockColour((int)pieceQueue[0] + 1) : ConsoleColour.Black).ToArray().Stretch(2),
+                            ConsoleColour.Black.ToArray(2), ConsoleColour.DarkGray.ToArray(4))));
                         break;
                     }
 
@@ -205,34 +206,34 @@ public class TetrisGameboard
                     {
                         bd = GetBlockData(pieceQueue[1], 0);
 
-                        SendConsoleMessage(new ConsoleLine(text, ConsoleColor.DarkBlue.ToArray(), BuildArray(ConsoleColor.DarkGray.ToArray(2),
+                        SendConsoleMessage(new ConsoleLine(text, ConsoleColour.DarkBlue.ToArray(), BuildArray(ConsoleColour.DarkGray.ToArray(2),
                             Enumerable.Range(0, 10).Select(x => GetBlockColour(outputData[x, y])).ToArray().Stretch(2),
-                            ConsoleColor.DarkGray.ToArray(6), ConsoleColor.Black.ToArray(2),
-                            Enumerable.Range(0, 4).Select(x => bd[x, y - 13] == 1 ? GetBlockColour((int)pieceQueue[1] + 1) : ConsoleColor.Black).ToArray().Stretch(2),
-                            ConsoleColor.Black.ToArray(2), ConsoleColor.DarkGray.ToArray(4))));
+                            ConsoleColour.DarkGray.ToArray(6), ConsoleColour.Black.ToArray(2),
+                            Enumerable.Range(0, 4).Select(x => bd[x, y - 13] == 1 ? GetBlockColour((int)pieceQueue[1] + 1) : ConsoleColour.Black).ToArray().Stretch(2),
+                            ConsoleColour.Black.ToArray(2), ConsoleColour.DarkGray.ToArray(4))));
                         break;
                     }
 
 
 
-                    SendConsoleMessage(new ConsoleLine(text, ConsoleColor.DarkBlue.ToArray(), BuildArray(ConsoleColor.DarkGray.ToArray(2),
+                    SendConsoleMessage(new ConsoleLine(text, ConsoleColour.DarkBlue.ToArray(), BuildArray(ConsoleColour.DarkGray.ToArray(2),
                             Enumerable.Range(0, 10).Select(x => GetBlockColour(outputData[x, y])).ToArray().Stretch(2),
-                            ConsoleColor.DarkGray.ToArray(6),
-                            ConsoleColor.Black.ToArray(12),
-                            ConsoleColor.DarkGray.ToArray(6))));
+                            ConsoleColour.DarkGray.ToArray(6),
+                            ConsoleColour.Black.ToArray(12),
+                            ConsoleColour.DarkGray.ToArray(6))));
                     break;
                 case 2:
-                    SendConsoleMessage(new ConsoleLine(text, ConsoleColor.DarkBlue.ToArray(), ConsoleColor.DarkGray.ToArray()));
+                    SendConsoleMessage(new ConsoleLine(text, ConsoleColour.DarkBlue.ToArray(), ConsoleColour.DarkGray.ToArray()));
                     break;
                 case 3:
                     bd = GetBlockData(heldBlock, 0);
-                    SendConsoleMessage(new ConsoleLine(text, ConsoleColor.DarkBlue.ToArray(), BuildArray(ConsoleColor.DarkGray.ToArray(28),
-                    ConsoleColor.Black.ToArray(2), y >= 3 ? Enumerable.Range(0, 4).Select(x => bd[x, y - 3] == 1 ? GetBlockColour((int)heldBlock + 1) : ConsoleColor.Black).ToArray().Stretch(2) : ConsoleColor.Black.ToArray(8),
-                    ConsoleColor.Black.ToArray(2), ConsoleColor.DarkGray.ToArray())));
+                    SendConsoleMessage(new ConsoleLine(text, ConsoleColour.DarkBlue.ToArray(), BuildArray(ConsoleColour.DarkGray.ToArray(28),
+                    ConsoleColour.Black.ToArray(2), y >= 3 ? Enumerable.Range(0, 4).Select(x => bd[x, y - 3] == 1 ? GetBlockColour((int)heldBlock + 1) : ConsoleColour.Black).ToArray().Stretch(2) : ConsoleColour.Black.ToArray(8),
+                    ConsoleColour.Black.ToArray(2), ConsoleColour.DarkGray.ToArray())));
                     break;
             }
         }
-        SendConsoleMessage(new ConsoleLine(new string(' ', 46), ConsoleColor.White, ConsoleColor.DarkGray));
+        SendConsoleMessage(new ConsoleLine(new string(' ', 46), ConsoleColour.White, ConsoleColour.DarkGray));
     }
 
 

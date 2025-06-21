@@ -1,5 +1,6 @@
 using Revistone.Console;
 using Revistone.Interaction;
+using Revistone.Console.Image;
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.App.BaseApps.Tracker.TrackerData;
@@ -24,7 +25,7 @@ public static class TrackerSettingMenus
         while (true)
         {
             settingIndex = UserInput.CreateOptionMenu("--- Settings ---",
-            settings.Select(s => new ConsoleLine(s.settingName, ConsoleColor.Cyan)).Concat([new ConsoleLine("Exit", ConsoleColor.DarkBlue)]).ToArray(),
+            settings.Select(s => new ConsoleLine(s.settingName, ConsoleColour.Cyan)).Concat([new ConsoleLine("Exit", ConsoleColour.DarkBlue)]).ToArray(),
             cursorStartIndex: settingIndex);
 
             if (settingIndex == settings.Length) return;
@@ -33,7 +34,7 @@ public static class TrackerSettingMenus
             while (true)
             {
                 i = UserInput.CreateOptionMenu($"--- {settings[settingIndex].settingName[..^1]} Settings ---",
-                settings[settingIndex].options.Select(o => (new ConsoleLine(o.name, ConsoleColor.Cyan), o.action)).Concat([(new ConsoleLine("Exit", ConsoleColor.DarkBlue), () => { })]).ToArray(),
+                settings[settingIndex].options.Select(o => (new ConsoleLine(o.name, ConsoleColour.Cyan), o.action)).Concat([(new ConsoleLine("Exit", ConsoleColour.DarkBlue), () => { })]).ToArray(),
                 cursorStartIndex: i);
                 if (i == settings[settingIndex].options.Count) break;
             }
@@ -52,10 +53,10 @@ public static class TrackerSettingMenus
     static void CreateArc()
     {
         List<string> arcData = LoadFile(GeneratePath(DataLocation.App, "Tracker", "ArcData")).ToList();
-        string statName = UserInput.GetValidUserInput(new ConsoleLine("--- Enter Arc Name ---", ConsoleColor.DarkBlue), new UserInputProfile(InputType.FullText));
+        string statName = UserInput.GetValidUserInput(new ConsoleLine("--- Enter Arc Name ---", ConsoleColour.DarkBlue), new UserInputProfile(InputType.FullText));
         arcData.Add(statName);
-        arcData.Add(UserInput.GetValidUserInput(new ConsoleLine($"--- Enter [{statName}] Start Date ---", ConsoleColor.DarkBlue), new UserInputProfile(InputType.DateOnly)));
-        arcData.Add(UserInput.GetValidUserInput(new ConsoleLine($"--- Enter [{statName}] End Date ---", ConsoleColor.DarkBlue), new UserInputProfile(InputType.DateOnly)));
+        arcData.Add(UserInput.GetValidUserInput(new ConsoleLine($"--- Enter [{statName}] Start Date ---", ConsoleColour.DarkBlue), new UserInputProfile(InputType.DateOnly)));
+        arcData.Add(UserInput.GetValidUserInput(new ConsoleLine($"--- Enter [{statName}] End Date ---", ConsoleColour.DarkBlue), new UserInputProfile(InputType.DateOnly)));
         SaveFile(GeneratePath(DataLocation.App, "Tracker", "ArcData"), arcData.ToArray());
 
         ClearPrimaryConsole();
@@ -67,18 +68,18 @@ public static class TrackerSettingMenus
         (string name, DateOnly startDate, DateOnly endDate)[] arcs = LoadFile(GeneratePath(DataLocation.App, "Tracker", "ArcData"), 3, true).Select(x => (x[0], DateOnly.Parse(x[1]), DateOnly.Parse(x[2]))).ToArray();
         if (arcs.Length == 0)
         {
-            SendConsoleMessage(new ConsoleLine("No Arcs Exist!", ConsoleColor.DarkBlue));
+            SendConsoleMessage(new ConsoleLine("No Arcs Exist!", ConsoleColour.DarkBlue));
             UserInput.WaitForUserInput(space: true);
             ShiftLine(-2);
             return;
         }
 
-        int arcIndex = UserInput.CreateMultiPageOptionMenu("Arcs", arcs.Select(x => new ConsoleLine($"{x.name}: [{x.startDate}] - [{x.endDate}]", ConsoleColor.Cyan)).ToArray(),
-        [new ConsoleLine("Exit", ConsoleColor.DarkBlue)], 3);
+        int arcIndex = UserInput.CreateMultiPageOptionMenu("Arcs", arcs.Select(x => new ConsoleLine($"{x.name}: [{x.startDate}] - [{x.endDate}]", ConsoleColour.Cyan)).ToArray(),
+        [new ConsoleLine("Exit", ConsoleColour.DarkBlue)], 3);
         if (arcIndex == -1) return; //exit
 
-        arcs[arcIndex].startDate = DateOnly.Parse(UserInput.GetValidUserInput(new ConsoleLine($"--- Enter [{arcs[arcIndex].name}] Start Date ---", ConsoleColor.DarkBlue), new UserInputProfile(UserInputProfile.InputType.DateOnly)));
-        arcs[arcIndex].endDate = DateOnly.Parse(UserInput.GetValidUserInput(new ConsoleLine($"--- Enter [{arcs[arcIndex].name}] End Date ---", ConsoleColor.DarkBlue), new UserInputProfile(UserInputProfile.InputType.DateOnly)));
+        arcs[arcIndex].startDate = DateOnly.Parse(UserInput.GetValidUserInput(new ConsoleLine($"--- Enter [{arcs[arcIndex].name}] Start Date ---", ConsoleColour.DarkBlue), new UserInputProfile(InputType.DateOnly)));
+        arcs[arcIndex].endDate = DateOnly.Parse(UserInput.GetValidUserInput(new ConsoleLine($"--- Enter [{arcs[arcIndex].name}] End Date ---", ConsoleColour.DarkBlue), new UserInputProfile(InputType.DateOnly)));
 
         SaveFile(GeneratePath(DataLocation.App, "Tracker", "ArcData"),
         arcs.Select(x => new string[] { x.name, x.startDate.ToString(), x.endDate.ToString() }).SelectMany(arr => arr).ToArray());
@@ -92,14 +93,14 @@ public static class TrackerSettingMenus
         List<(string name, DateOnly startDate, DateOnly endDate)> arcs = LoadFile(GeneratePath(DataLocation.App, "Tracker", "ArcData"), 3, true).Select(x => (x[0], System.DateOnly.Parse(x[1]), System.DateOnly.Parse(x[2]))).ToList();
         if (arcs.Count == 0)
         {
-            SendConsoleMessage(new ConsoleLine("No Arcs Exist!", ConsoleColor.DarkBlue));
+            SendConsoleMessage(new ConsoleLine("No Arcs Exist!", ConsoleColour.DarkBlue));
             UserInput.WaitForUserInput(space: true);
             ShiftLine(-2);
             return;
         }
 
-        int arcIndex = UserInput.CreateMultiPageOptionMenu("Arcs", arcs.Select(x => new ConsoleLine($"{x.name}: [{x.startDate}] - [{x.endDate}]", ConsoleColor.Cyan)).ToArray(),
-        [new ConsoleLine("Exit", ConsoleColor.DarkBlue)], 3);
+        int arcIndex = UserInput.CreateMultiPageOptionMenu("Arcs", arcs.Select(x => new ConsoleLine($"{x.name}: [{x.startDate}] - [{x.endDate}]", ConsoleColour.Cyan)).ToArray(),
+        [new ConsoleLine("Exit", ConsoleColour.DarkBlue)], 3);
         if (arcIndex == -1) return; //exit
 
         arcs.RemoveAt(arcIndex);
@@ -116,16 +117,16 @@ public static class TrackerSettingMenus
     static void CreateStat()
     {
         int statType = UserInput.CreateOptionMenu("--- Options ---", [
-            new ConsoleLine("Add Input Stat", ConsoleColor.Cyan),
-            new ConsoleLine("Add Dropdown Stat", ConsoleColor.Cyan),
-            new ConsoleLine("Exit", ConsoleColor.DarkBlue)]);
+            new ConsoleLine("Add Input Stat", ConsoleColour.Cyan),
+            new ConsoleLine("Add Dropdown Stat", ConsoleColour.Cyan),
+            new ConsoleLine("Exit", ConsoleColour.DarkBlue)]);
         if (statType == 2) return; //exit
 
-        string statName = UserInput.GetValidUserInput(new ConsoleLine("--- Enter Stat Name ---", ConsoleColor.DarkBlue), new UserInputProfile(InputType.FullText));
+        string statName = UserInput.GetValidUserInput(new ConsoleLine("--- Enter Stat Name ---", ConsoleColour.DarkBlue), new UserInputProfile(InputType.FullText));
         if (TrackerDayData.trackedStats.Select(x => x.statName).Contains(statName))
         {
-            SendConsoleMessage(new ConsoleLine("--- Input Invalid ---", ConsoleColor.Cyan));
-            SendConsoleMessage(new ConsoleLine($"1. Stat Name [{statName}] Is Already In Use!", ConsoleColor.DarkBlue));
+            SendConsoleMessage(new ConsoleLine("--- Input Invalid ---", ConsoleColour.Cyan));
+            SendConsoleMessage(new ConsoleLine($"1. Stat Name [{statName}] Is Already In Use!", ConsoleColour.DarkBlue));
             UserInput.WaitForUserInput(space: true);
             ShiftLine(-3);
             CreateStat();
@@ -135,9 +136,9 @@ public static class TrackerSettingMenus
         if (statType == 0)
         {
             int validType = UserInput.CreateOptionMenu("Valid Inputs", [
-                new ConsoleLine("Int", ConsoleColor.Cyan),
-                new ConsoleLine("Number", ConsoleColor.Cyan),
-                new ConsoleLine("Text", ConsoleColor.Cyan),
+                new ConsoleLine("Int", ConsoleColour.Cyan),
+                new ConsoleLine("Number", ConsoleColour.Cyan),
+                new ConsoleLine("Text", ConsoleColour.Cyan),
             ]);
 
             TrackerDayData.trackedStats.Add(new TrackerInputStat(statName, validType == 0 ? [InputType.Int] : validType == 1 ? [InputType.Float, InputType.Int] : [InputType.FullText, InputType.PartialText]));
@@ -148,7 +149,7 @@ public static class TrackerSettingMenus
             List<(string option, bool success)> options = [];
             while (true)
             {
-                string option = UserInput.GetValidUserInput(new ConsoleLine("--- Enter Dropdown Option ---", ConsoleColor.DarkBlue), new UserInputProfile([InputType.FullText, InputType.PartialText]));
+                string option = UserInput.GetValidUserInput(new ConsoleLine("--- Enter Dropdown Option ---", ConsoleColour.DarkBlue), new UserInputProfile([InputType.FullText, InputType.PartialText]));
                 bool success = UserInput.CreateTrueFalseOptionMenu($"--- Is [{option}] A Success? ---");
                 options.Add((option, success));
 
@@ -175,11 +176,11 @@ public static class TrackerSettingMenus
         {
             while (true)
             {
-                string statName = UserInput.GetValidUserInput(new ConsoleLine("--- Enter New Stat Name ---", ConsoleColor.DarkBlue), new UserInputProfile(InputType.FullText));
+                string statName = UserInput.GetValidUserInput(new ConsoleLine("--- Enter New Stat Name ---", ConsoleColour.DarkBlue), new UserInputProfile(InputType.FullText));
                 if (TrackerDayData.trackedStats.Select(x => x.statName).Contains(statName))
                 {
-                    SendConsoleMessage(new ConsoleLine("--- Input Invalid ---", ConsoleColor.Cyan));
-                    SendConsoleMessage(new ConsoleLine($"1. Stat Name [{statName}] Is Already In Use!", ConsoleColor.DarkBlue));
+                    SendConsoleMessage(new ConsoleLine("--- Input Invalid ---", ConsoleColour.Cyan));
+                    SendConsoleMessage(new ConsoleLine($"1. Stat Name [{statName}] Is Already In Use!", ConsoleColour.DarkBlue));
                     UserInput.WaitForUserInput(space: true);
                     ShiftLine(-3);
                 }
@@ -222,7 +223,7 @@ public static class TrackerSettingMenus
     static void CreateSave()
     {
         DATA.Save($"Saves/Data {DateTime.Now.ToString("[yyyy-MM-dd_HH-mm-ss]")}");
-        SendConsoleMessage(new ConsoleLine("Manual Save Created!", ConsoleColor.DarkBlue));
+        SendConsoleMessage(new ConsoleLine("Manual Save Created!", ConsoleColour.DarkBlue));
         UserInput.WaitForUserInput(space: true);
         ShiftLine(-2);
     }
@@ -244,7 +245,7 @@ public static class TrackerSettingMenus
         if (savePath.Length > 0)
         {
             DeleteFile(GeneratePath(DataLocation.App, "Tracker", $"Saves/{savePath}"));
-            SendConsoleMessage(new ConsoleLine("Manual Save Deleted!", ConsoleColor.DarkBlue));
+            SendConsoleMessage(new ConsoleLine("Manual Save Deleted!", ConsoleColour.DarkBlue));
             UserInput.WaitForUserInput(space: true);
             ShiftLine(-2);
         }
@@ -252,17 +253,17 @@ public static class TrackerSettingMenus
 
     static string GetSavePath()
     {
-        ConsoleLine[] saves = GetSubFiles(GeneratePath(DataLocation.App, "Tracker", $"Saves")).Select(x => new ConsoleLine(x, ConsoleColor.Cyan)).Reverse().ToArray();
+        ConsoleLine[] saves = GetSubFiles(GeneratePath(DataLocation.App, "Tracker", $"Saves")).Select(x => new ConsoleLine(x, ConsoleColour.Cyan)).Reverse().ToArray();
         if (saves.Length == 0)
         {
-            SendConsoleMessage(new ConsoleLine("No Manual Saves Exist!", ConsoleColor.DarkBlue));
+            SendConsoleMessage(new ConsoleLine("No Manual Saves Exist!", ConsoleColour.DarkBlue));
             UserInput.WaitForUserInput(space: true);
             ShiftLine(-2);
             return "";
         }
 
-        int saveIndex = UserInput.CreateMultiPageOptionMenu("Saves:", saves, [new ConsoleLine("Exit", ConsoleColor.DarkBlue)], 3);
+        int saveIndex = UserInput.CreateMultiPageOptionMenu("Saves:", saves, [new ConsoleLine("Exit", ConsoleColour.DarkBlue)], 3);
         if (saveIndex == -1) return "";
-        return saves[saveIndex].lineText;
+        return saves[saveIndex].LineText;
     }
 }

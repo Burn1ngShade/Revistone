@@ -3,6 +3,7 @@ using Revistone.App;
 using Revistone.App.BaseApps;
 using Revistone.App.Command;
 using Revistone.Console;
+using Revistone.Console.Image;
 
 using static Revistone.Functions.PersistentDataFunctions;
 using static Revistone.Functions.ColourFunctions;
@@ -19,7 +20,7 @@ public static class DeveloperTools
     public static readonly long[] ThreadCycles = new long[4]; // tracks thread cycles for each threaad DO NOT CALL
     public static readonly List<string>[] ThreadCheckpoints = [[], [], [], []];
 
-    public static readonly ConsoleLine DefaultErrorMessage = new("[ERROR] Issue Or Corruption Has Been Found Via Debugging - Raise A Github Ticket With The File PersistentData/Console/Debug/SessionLog.Json Attatched <3", BuildArray(ConsoleColor.DarkRed.Extend(7), ConsoleColor.DarkBlue.Extend(88), ConsoleColor.Cyan.Extend(45), [ConsoleColor.DarkBlue]));
+    public static readonly ConsoleLine DefaultErrorMessage = new("[ERROR] Issue Or Corruption Has Been Found Via Debugging - Raise A Github Ticket With The File PersistentData/Console/Debug/SessionLog.Json Attatched <3", BuildArray(ConsoleColour.DarkRed.SetLength(7), ConsoleColour.DarkBlue.SetLength(88), ConsoleColour.Cyan.SetLength(45), [ConsoleColour.DarkBlue]));
 
     ///<summary> Log message to the session log. </summary>
     public static void Log<T>(T message, bool flagSession = false, bool advancedLog = false, [CallerFilePath] string callerFilePath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
@@ -147,7 +148,7 @@ public static class DeveloperTools
             .. AppCommandsData.fileHotkeys.Select(x => $"- {x.keyCombo} -> {x.description}"),
             "",
             "Apps [- Name -> Description]:",
-            .. AppRegistry.appRegistry.Select(x => $"- {x.name} - {x.description}"),
+            .. AppRegistry.AppReg.Select(x => $"- {x.name} - {x.description}"),
             "",
             "Settings [- Name -> Description]:",
             .. SettingsApp.settings.Select(x => $"- {x.settingName} -> {x.description}"),

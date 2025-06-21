@@ -64,7 +64,7 @@ public class ConsoleAnimatedLine
     {
         int shift = 1;
         if (animationInfo.metaInfo as int? != null) shift = (int)animationInfo.metaInfo;
-        lineInfo.Update(lineInfo.lineColour.Shift(shift));
+        lineInfo.Update(lineInfo.LineColour.Cycle(shift));
     }
 
     /// <summary> Shift background colour by given shift (within animationMetaInfo). </summary>
@@ -72,7 +72,7 @@ public class ConsoleAnimatedLine
     {
         int shift = 1;
         if (animationInfo.metaInfo as int? != null) shift = (int)animationInfo.metaInfo;
-        lineInfo.Update(lineInfo.lineText, lineInfo.lineColour, lineInfo.lineBGColour.Shift(shift));
+        lineInfo.Update(lineInfo.LineText, lineInfo.LineColour, lineInfo.LineBGColour.Cycle(shift));
     }
 
     /// <summary> Shift foreground and background colour by given shift (within animationMetaInfo). </summary>
@@ -80,7 +80,7 @@ public class ConsoleAnimatedLine
     {
         int shift = 1;
         if (animationInfo.metaInfo as int? != null) shift = (int)animationInfo.metaInfo;
-        lineInfo.Update(lineInfo.lineText, lineInfo.lineColour.Shift(shift), lineInfo.lineBGColour.Shift(shift));
+        lineInfo.Update(lineInfo.LineText, lineInfo.LineColour.Cycle(shift), lineInfo.LineBGColour.Cycle(shift));
     }
 
     ///<summary> Cycle through an array of ConsoleLines. </summary>

@@ -4,23 +4,23 @@ using Revistone.Console;
 using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.Modules;
+using Revistone.Console.Image;
 
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Modules.GPTClient;
 using static Revistone.Functions.PersistentDataFunctions;
 using static Revistone.Console.ConsoleAction;
-using Revistone.Management;
 
 namespace Revistone.App.BaseApps;
 
 public class ScenarioMakerApp : App
 {
     public ScenarioMakerApp() : base() { }
-    public ScenarioMakerApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = false) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 30) { }
+    public ScenarioMakerApp(string name, string description, (ConsoleColour[] primaryColour, ConsoleColour[] secondaryColour, ConsoleColour[] tertiaryColour) consoleSettings, (ConsoleColour[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = false) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 30) { }
 
     public override App[] OnRegister()
     {
-        return [new ScenarioMakerApp("Scenario Maker", "Create Worlds To Experience Through GPT.", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5),
+        return [new ScenarioMakerApp("Scenario Maker", "Create Worlds To Experience Through GPT.", (ConsoleColour.DarkBlue.ToArray(), ConsoleColour.Cyan.ToArray(), ConsoleColour.Blue.ToArray()), (BaseBorderColours.Stretch(3).SetLength(18), 5),
         [
             new AppCommand(new UserInputProfile(["quit", "exit", "quitscenario", "exitscenario"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
                 (s) => QuitScenario(), "Quit Scenario", "Quit The Current Scenario."),
@@ -33,7 +33,7 @@ public class ScenarioMakerApp : App
         70, 40)];
     }
 
-    static ConsoleLine[] title = TitleFunctions.CreateTitle("SCENARIO MAKER", AdvancedHighlight(140, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10), (ConsoleColor.Cyan.ToArray(), 60, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, topSpace: 1, bottomSpace: 1);
+    static ConsoleLine[] title = TitleFunctions.CreateTitle("SCENARIO MAKER", Highlight(140, ConsoleColour.DarkBlue.ToArray(), (ConsoleColour.Cyan.ToArray(), 0, 10), (ConsoleColour.Cyan.ToArray(), 60, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, topSpace: 1, bottomSpace: 1);
 
     static readonly List<Scenario> scenarios = [];
 
@@ -48,7 +48,7 @@ public class ScenarioMakerApp : App
 
         Scenario.LoadScenarios();
 
-        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.ActiveApp.borderColourScheme.speed, true), title.Length).ToArray());
 
         while (true)
         {
@@ -75,7 +75,7 @@ public class ScenarioMakerApp : App
         if (i != -1)
         {
             RunScenario(scenarios[i]);
-            SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+            SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.ActiveApp.borderColourScheme.speed, true), title.Length).ToArray());
         }
     }
 
@@ -109,7 +109,7 @@ public class ScenarioMakerApp : App
                 new ConsoleLine("Writing Style", AppRegistry.SecondaryCol),
                 new ConsoleLine("Scenario Intro", AppRegistry.SecondaryCol),
                 new ConsoleLine("Characters", AppRegistry.SecondaryCol),
-                new ConsoleLine("Delete Scenario", ConsoleColor.DarkRed),
+                new ConsoleLine("Delete Scenario", ConsoleColour.DarkRed),
                 new ConsoleLine("Exit", AppRegistry.PrimaryCol)
             ],
             cursorStartIndex: option);
@@ -136,7 +136,7 @@ public class ScenarioMakerApp : App
                     Scenario.SaveScenario(scenario, false);
                     break;
                 case 6:
-                    if (UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Are You Sure You Want To [PERMANENTLY] Delete - {scenario.Name}", BuildArray(AppRegistry.PrimaryCol.Extend(25), ConsoleColor.DarkRed.Extend(13), AppRegistry.PrimaryCol.Extend(10), AppRegistry.SecondaryCol)), cursorStartIndex: 1))
+                    if (UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Are You Sure You Want To [PERMANENTLY] Delete - {scenario.Name}", BuildArray(AppRegistry.PrimaryCol.SetLength(25), ConsoleColour.DarkRed.SetLength(13), AppRegistry.PrimaryCol.SetLength(10), AppRegistry.SecondaryCol)), cursorStartIndex: 1))
                     {
                         Scenario.DeleteScenario(scenario);
                         return;
@@ -181,7 +181,7 @@ public class ScenarioMakerApp : App
         while (true)
         {
             SendConsoleMessage(new ConsoleLine($"--- {character.Name} ---", AppRegistry.PrimaryCol));
-            SendConsoleMessage(new ConsoleLine($"Is User - {character.IsUser}", BuildArray(AppRegistry.PrimaryCol.Extend(10), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Is User - {character.IsUser}", BuildArray(AppRegistry.PrimaryCol.SetLength(10), AppRegistry.SecondaryCol)));
             ShiftLine();
             index = UserInput.CreateOptionMenu("--- Options ---", [
             (new ConsoleLine("Name", AppRegistry.SecondaryCol), () => {
@@ -299,7 +299,7 @@ public class ScenarioMakerApp : App
     ///<summary> Quit active scenario. </summary>
     static void QuitScenario()
     {
-        if (UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Are You Sure You Want To Quit Scenario - {currentScenario?.Name}", BuildArray(AppRegistry.PrimaryCol.Extend(41), AppRegistry.SecondaryCol))))
+        if (UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Are You Sure You Want To Quit Scenario - {currentScenario?.Name}", BuildArray(AppRegistry.PrimaryCol.SetLength(41), AppRegistry.SecondaryCol))))
         {
             ClearPrimaryConsole();
             scenarioState = 2;
@@ -310,7 +310,7 @@ public class ScenarioMakerApp : App
     ///<summary> Reset active scenario. </summary>
     static void ResetScenario()
     {
-        if (UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Are You Sure You Want To Reset Scenario - {currentScenario?.Name}", BuildArray(AppRegistry.PrimaryCol.Extend(41), AppRegistry.SecondaryCol))))
+        if (UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Are You Sure You Want To Reset Scenario - {currentScenario?.Name}", BuildArray(AppRegistry.PrimaryCol.SetLength(41), AppRegistry.SecondaryCol))))
         {
             ClearPrimaryConsole();
             scenarioState = 3;

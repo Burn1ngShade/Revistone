@@ -41,23 +41,23 @@ public static class QualityConsoleRenderer
         StringBuilder outputAnsi = new();
         for (int i = 0; i < consoleLines.Length; i++)
         {
-            if (consoleLines[i] == null || consoleLines[i].updated) continue;
+            if (consoleLines[i] == null || consoleLines[i].Updated) continue;
 
             consoleLines[i].Normalise();
 
             outputAnsi.Append($"\x1b[{i + 1};0H");
 
-            for (int j = 0; j < consoleLines[i].lineText.Length; j++)
+            for (int j = 0; j < consoleLines[i].LineText.Length; j++)
             {
-                outputAnsi.Append($"{new ConsoleColour(consoleLines[i].lineColour[j]).ANSIFGCode}");
-                outputAnsi.Append($"{new ConsoleColour(consoleLines[i].lineBGColour[j]).ANSIBGCode}");
-                outputAnsi.Append(consoleLines[i].lineText[j]);
+                outputAnsi.Append($"{consoleLines[i].LineColour[j].ANSIFGCode}");
+                outputAnsi.Append($"{consoleLines[i].LineBGColour[j].ANSIBGCode}");
+                outputAnsi.Append(consoleLines[i].LineText[j]);
             }
 
-            if (consoleLinesBuffer[i].lineText.Length > consoleLines[i].lineText.Length)
+            if (consoleLinesBuffer[i].LineText.Length > consoleLines[i].LineText.Length)
             {
                 outputAnsi.Append("\x1b[0m");
-                outputAnsi.Append(' ', consoleLinesBuffer[i].lineText.Length - consoleLines[i].lineText.Length);
+                outputAnsi.Append(' ', consoleLinesBuffer[i].LineText.Length - consoleLines[i].LineText.Length);
             }
 
             consoleLinesBuffer[i].Update(consoleLines[i]);
@@ -70,7 +70,7 @@ public static class QualityConsoleRenderer
     /// <summary> Reloads renderer (Called on screen resize). </summary>
     public static void Reload()
     {
-        ConsoleColour c = new(ConsoleColor.Black);
+        ConsoleColour c = ConsoleColour.ConsoleBackground;
         System.Console.Write($"\x1b[48;2;{c.R};{c.G};{c.B}m\x1b[2J\x1b[H");
     }
 }

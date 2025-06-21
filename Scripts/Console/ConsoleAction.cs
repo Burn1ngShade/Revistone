@@ -154,7 +154,7 @@ public static class ConsoleAction
     /// <summary> Updates lineInfo at given index, adjusting position of ConsoleLines within console if needed, returns index of updated line.  </summary>
     public static int UpdateEnclosedConsole(ConsoleLine lineInfo, ConsoleLineUpdate updateInfo, int consoleTop, int consoleBot, ref int consoleIndex)
     {
-        if (consoleLines.Length == 0 || consoleLines[0] == null || consoleLines.Length < AppRegistry.activeApp.minHeightBuffer) return -1;
+        if (consoleLines.Length == 0 || consoleLines[0] == null || consoleLines.Length < AppRegistry.ActiveApp.minHeightBuffer) return -1;
 
         if (consoleIndex > consoleBot) //need to move back in console
         {
@@ -185,14 +185,14 @@ public static class ConsoleAction
 
         if (updateInfo.append)
         {
-            consoleLines[consoleIndex].Update(consoleLines[consoleIndex].lineText + lineInfo.lineText, consoleLines[consoleIndex].lineColour.Concat(lineInfo.lineColour).ToArray());
+            consoleLines[consoleIndex].Update(consoleLines[consoleIndex].LineText + lineInfo.LineText, [.. consoleLines[consoleIndex].LineColour, .. lineInfo.LineColour]);
         }
         else
         {
             consoleLines[consoleIndex].Update(lineInfo);
         }
 
-        if (updateInfo.timeStamp) consoleLines[consoleIndex].Update($"[{DateTime.Now.ToString("HH:mm:ss:fff")}] {consoleLines[consoleIndex].lineText}");
+        if (updateInfo.timeStamp) consoleLines[consoleIndex].Update($"[{DateTime.Now.ToString("HH:mm:ss:fff")}] {consoleLines[consoleIndex].LineText}");
 
         if (updateInfo.newLine) consoleIndex++;
 

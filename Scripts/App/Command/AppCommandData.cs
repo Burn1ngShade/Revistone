@@ -1,6 +1,7 @@
 using Revistone.App.BaseApps;
 using Revistone.Console;
 using Revistone.Console.Data;
+using Revistone.Console.Image;
 using Revistone.Console.Widget;
 using Revistone.Functions;
 using Revistone.Interaction;
@@ -69,10 +70,10 @@ public static class AppCommandsData
     public static void DisplayHotkeysCommand()
     {
         UserInput.CreateCategorisedReadMenu("Hotkeys", 5,
-        ("General", generalHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}] - {x.description}", BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 4), [.. AppRegistry.PrimaryCol]))).ToArray()),
-        ("Input", inputHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}] - {x.description}", BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 4), [.. AppRegistry.PrimaryCol]))).ToArray()),
-        ("Menu", menuHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}] - {x.description}", BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 4), [.. AppRegistry.PrimaryCol]))).ToArray()),
-        ("File", fileHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}] - {x.description}", BuildArray(AppRegistry.SecondaryCol.Extend(x.keyCombo.Length + 4), [.. AppRegistry.PrimaryCol]))).ToArray()));
+        ("General", generalHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}] - {x.description}", BuildArray(AppRegistry.SecondaryCol.SetLength(x.keyCombo.Length + 4), [.. AppRegistry.PrimaryCol]))).ToArray()),
+        ("Input", inputHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}] - {x.description}", BuildArray(AppRegistry.SecondaryCol.SetLength(x.keyCombo.Length + 4), [.. AppRegistry.PrimaryCol]))).ToArray()),
+        ("Menu", menuHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}] - {x.description}", BuildArray(AppRegistry.SecondaryCol.SetLength(x.keyCombo.Length + 4), [.. AppRegistry.PrimaryCol]))).ToArray()),
+        ("File", fileHotkeys.Select(x => new ConsoleLine($"[{x.keyCombo}] - {x.description}", BuildArray(AppRegistry.SecondaryCol.SetLength(x.keyCombo.Length + 4), [.. AppRegistry.PrimaryCol]))).ToArray()));
     }
 
     /// <summary> Gives user y/n option to load an app. </summary>
@@ -80,7 +81,7 @@ public static class AppCommandsData
     {
         if (userInput.Trim().Length == 0) //submitted empty load request
         {
-            (string name, ConsoleLine option)[] appList = [.. AppRegistry.appRegistry.OrderByDescending(app => app.displayPriority).Select(app => (app.name, new ConsoleLine($"{app.name} - {app.description}", BuildArray(AppRegistry.SecondaryCol.Extend(app.name.Length + 2), AppRegistry.PrimaryCol.Extend(app.description.Length + 10)))))];
+            (string name, ConsoleLine option)[] appList = [.. AppRegistry.AppReg.OrderByDescending(app => app.displayPriority).Select(app => (app.name, new ConsoleLine($"{app.name} - {app.description}", BuildArray(AppRegistry.SecondaryCol.SetLength(app.name.Length + 2), AppRegistry.PrimaryCol.SetLength(app.description.Length + 10)))))];
 
             int i = UserInput.CreateMultiPageOptionMenu("Apps", [.. appList.Select(x => x.option)], [new ConsoleLine("Exit")], 5);
             if (i == -1) return;
@@ -90,14 +91,14 @@ public static class AppCommandsData
         string appName = userInput.TrimStart().AdjustCapitalisation(StringFunctions.CapitalCasing.FirstLetterUpper);
         if (AppRegistry.AppExists(appName))
         {
-            if (UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Load App - '{appName}'", BuildArray(AppRegistry.PrimaryCol.Extend(11), AppRegistry.SecondaryCol))))
+            if (UserInput.CreateTrueFalseOptionMenu(new ConsoleLine($"Load App - '{appName}'", BuildArray(AppRegistry.PrimaryCol.SetLength(11), AppRegistry.SecondaryCol))))
             {
                 AppRegistry.SetActiveApp(appName);
                 ReloadConsole();
             }
             else SendConsoleMessage(new ConsoleLine($"App Load Cancelled!", AppRegistry.PrimaryCol));
         }
-        else SendConsoleMessage(new ConsoleLine($"App Could Not Be Found - '{appName}'", BuildArray(AppRegistry.PrimaryCol.Extend(25), AppRegistry.SecondaryCol)));
+        else SendConsoleMessage(new ConsoleLine($"App Could Not Be Found - '{appName}'", BuildArray(AppRegistry.PrimaryCol.SetLength(25), AppRegistry.SecondaryCol)));
     }
 
     ///<summary> Interact with a setting app setting. </summary>
@@ -108,13 +109,13 @@ public static class AppCommandsData
             if (readOnly) SettingsApp.SettingGetMenu(userInput);
             else SettingsApp.SettingSetMenu(userInput);
         }
-        else SendConsoleMessage(new ConsoleLine($"Setting Could Not Be Found - '{userInput}'", BuildArray(AppRegistry.PrimaryCol.Extend(29), AppRegistry.SecondaryCol)));
+        else SendConsoleMessage(new ConsoleLine($"Setting Could Not Be Found - '{userInput}'", BuildArray(AppRegistry.PrimaryCol.SetLength(29), AppRegistry.SecondaryCol)));
     }
 
     ///<summary> Confirms user choice and kills/exit terminal. </summary>
     public static void ExitTerminalCommand(bool crash)
     {
-        if (crash) SendConsoleMessage(new ConsoleLine("[WARNING] This Will Force Close Console (Crash).", ConsoleColor.DarkRed));
+        if (crash) SendConsoleMessage(new ConsoleLine("[WARNING] This Will Force Close Console (Crash).", ConsoleColour.DarkRed));
         if (UserInput.CreateTrueFalseOptionMenu(crash ? "Kill Terminal?" : "Close Terminal?", cursorStartIndex: 1))
         {
             if (crash) throw new Exception("User Killed Terminal.");
@@ -131,12 +132,24 @@ public static class AppCommandsData
         switch (testNum)
         {
             case 1:
-                SendConsoleMessage(new ConsoleLine(new string(' ', 16), [], AllColours));
-                SendConsoleMessage(new ConsoleLine(new string('X', 16), AllColours, []));
+                SendConsoleMessage(new ConsoleLine(new string(' ', 16), [], BaseColours));
+                SendConsoleMessage(new ConsoleLine(new string('X', 16), BaseColours, []));
                 break;
-
+            case 2:
+                int size = 80;
+                ConsoleColour[,] colours = new ConsoleColour[size, size];
+                for (int y = 0; y < size; y++)
+                {
+                    for (int x = 0; x < size; x++)
+                    {
+                        colours[x, y] = new((byte)((255d / size) * x), 0, (byte)((255d / size) * y));
+                    }
+                }
+                ConsoleImage image = new(colours);
+                image.Output();
+                break; 
             default:
-                ConsoleLine[] lines = [.. Enumerable.Range(0, 40).Select(i => new ConsoleLine(new string('a', 200), AllColours.Repeat(13), AllColours.Repeat(13)))];
+                ConsoleLine[] lines = [.. Enumerable.Range(0, 40).Select(i => new ConsoleLine(new string('a', 200), BaseColours.Repeat(13), BaseColours.Repeat(13)))];
                 ConsoleAnimatedLine[] animation = [.. Enumerable.Range(0, 40).Select(i => new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftColour, 5, true))];
                 SendConsoleMessages(lines, animation);
                 break;
@@ -155,23 +168,23 @@ public static class AppCommandsData
 
         ConsoleData.counterWidget = 0;
         ConsoleWidget.TryAddWidget(new FunctionWidget("Counter", 50, () => ($"Counter: {ConsoleData.counterWidget:0.########}", false)));
-        SendConsoleMessage(new ConsoleLine("Counter Widget Created - 'Counter'", BuildArray(AppRegistry.PrimaryCol.Extend(25), AppRegistry.SecondaryCol)));
+        SendConsoleMessage(new ConsoleLine("Counter Widget Created - 'Counter'", BuildArray(AppRegistry.PrimaryCol.SetLength(25), AppRegistry.SecondaryCol)));
     }
 
     public static void RemoveCounterWidget()
     {
         if (ConsoleWidget.TryRemoveWidget("Counter"))
         {
-            SendConsoleMessage(new ConsoleLine("Counter Widget Removed - 'Counter'", BuildArray(AppRegistry.PrimaryCol.Extend(25), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine("Counter Widget Removed - 'Counter'", BuildArray(AppRegistry.PrimaryCol.SetLength(25), AppRegistry.SecondaryCol)));
         }
-        else SendConsoleMessage(new ConsoleLine("Counter Widget Does Not Exist - 'Counter'", BuildArray(AppRegistry.PrimaryCol.Extend(32), AppRegistry.SecondaryCol)));
+        else SendConsoleMessage(new ConsoleLine("Counter Widget Does Not Exist - 'Counter'", BuildArray(AppRegistry.PrimaryCol.SetLength(32), AppRegistry.SecondaryCol)));
     }
 
     public static void IncrementCounterWidget(string input)
     {
         if (!ConsoleWidget.WidgetExists("Counter"))
         {
-            SendConsoleMessage(new ConsoleLine("Counter Widget Does Not Exist - 'Counter'", BuildArray(AppRegistry.PrimaryCol.Extend(32), AppRegistry.SecondaryCol)));
+            SendConsoleMessage(new ConsoleLine("Counter Widget Does Not Exist - 'Counter'", BuildArray(AppRegistry.PrimaryCol.SetLength(32), AppRegistry.SecondaryCol)));
             return;
         }
 

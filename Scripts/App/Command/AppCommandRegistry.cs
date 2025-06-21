@@ -31,7 +31,7 @@ public static class AppCommandRegistry
             (s) => LoadAppCommand(s[4..]), "Load [AppName]", "Loads App Of Entered Name.", 90, AppCommand.CommandType.Apps),
         new AppCommand(
             new UserInputProfile("reload", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-            (s) => LoadAppCommand(AppRegistry.activeApp.name), "Reload", "Reloads Current App.", 60, AppCommand.CommandType.Apps),
+            (s) => LoadAppCommand(AppRegistry.ActiveApp.name), "Reload", "Reloads Current App.", 60, AppCommand.CommandType.Apps),
         new AppCommand(
             new UserInputProfile(["setting", "settings"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => LoadAppCommand("Settings"), "Settings", "Loads Settings App.", 70, AppCommand.CommandType.Apps),
@@ -84,10 +84,10 @@ public static class AppCommandRegistry
             (s) => SettingInteractCommand(s[11..].TrimStart(), true), "Get Setting [Setting]", "Get The Value Of Given Setting.", 68, AppCommand.CommandType.Apps),
         new AppCommand(
             new UserInputProfile("time", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-            (s) => SendConsoleMessage(new ConsoleLine($"Current System Time - {DateTime.Now}", BuildArray(AppRegistry.PrimaryCol.Extend(22), AppRegistry.SecondaryCol))), "Time", "Displays The Current System Time.", 50, AppCommand.CommandType.Console),
+            (s) => SendConsoleMessage(new ConsoleLine($"Current System Time - {DateTime.Now}", BuildArray(AppRegistry.PrimaryCol.SetLength(22), AppRegistry.SecondaryCol))), "Time", "Displays The Current System Time.", 50, AppCommand.CommandType.Console),
         new AppCommand(
             new UserInputProfile(["runtime", "uptime"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-            (s) => SendConsoleMessage(new ConsoleLine($"Console Uptime - {(Manager.ElapsedTicks / 40d).ToString("0.00")}s", BuildArray(AppRegistry.PrimaryCol.Extend(17), AppRegistry.SecondaryCol))), "Runtime", "Displays The Current Console Session Uptime.", 40, AppCommand.CommandType.Console),
+            (s) => SendConsoleMessage(new ConsoleLine($"Console Uptime - {(Manager.ElapsedTicks / 40d).ToString("0.00")}s", BuildArray(AppRegistry.PrimaryCol.SetLength(17), AppRegistry.SecondaryCol))), "Runtime", "Displays The Current Console Session Uptime.", 40, AppCommand.CommandType.Console),
         new AppCommand(
             new UserInputProfile("mkdir[A:]", caseSettings: StringFunctions.CapitalCasing.Lower, removeLeadingWhitespace: true, removeTrailingWhitespace: true),
             (s) => CreateWorkspaceDirectory(s[5..].Trim()), "Mkdir [Directory]", "Create A Workspace Directory.", 100, AppCommand.CommandType.Workspace),
@@ -194,7 +194,7 @@ public static class AppCommandRegistry
             (s) => PaintApp.ListStickers(), "List Stickers", "Displays List Of All Default And User Stickers (Excluding Workspace).", 38, AppCommand.CommandType.Console),
         new AppCommand(
             new UserInputProfile(["version", "releaseversion", "buildversion", "build", "ver", "buildver"], caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-            (s) => SendConsoleMessage(new ConsoleLine($"Build Version - {Manager.ConsoleVersion}", BuildArray(AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol))), "Version", "Displays Console Version.", 0, AppCommand.CommandType.Console),
+            (s) => SendConsoleMessage(new ConsoleLine($"Build Version - {Manager.ConsoleVersion}", BuildArray(AppRegistry.PrimaryCol.SetLength(16), AppRegistry.SecondaryCol))), "Version", "Displays Console Version.", 0, AppCommand.CommandType.Console),
         new AppCommand(
             new UserInputProfile("analytics", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
             (s) => Analytics.ViewAnalytics(), "Analytics", "Displays Analytics Data.", 3, AppCommand.CommandType.Console
@@ -209,7 +209,7 @@ public static class AppCommandRegistry
         ),
         new AppCommand(
             new UserInputProfile("tip", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
-            (s) => SendConsoleMessage(new ConsoleLine($"Tip - {Manager.GetConsoleTip}", BuildArray(AppRegistry.PrimaryCol.Extend(6), AppRegistry.SecondaryCol))), "Tip", "Displays A Random Console Tip.", 11, AppCommand.CommandType.Console
+            (s) => SendConsoleMessage(new ConsoleLine($"Tip - {Manager.GetConsoleTip}", BuildArray(AppRegistry.PrimaryCol.SetLength(6), AppRegistry.SecondaryCol))), "Tip", "Displays A Random Console Tip.", 11, AppCommand.CommandType.Console
         ),
         new AppCommand(
             new UserInputProfile("tips", caseSettings: StringFunctions.CapitalCasing.Lower, removeWhitespace: true),
@@ -234,7 +234,7 @@ public static class AppCommandRegistry
     /// <summary> Checks for and calls and commands if found within user input. </summary>
     public static bool Commands(string userInput)
     {
-        foreach (AppCommand command in AppRegistry.activeApp.appCommands)
+        foreach (AppCommand command in AppRegistry.ActiveApp.appCommands)
         {
             command.format.outputFormat = UserInputProfile.OutputFormat.NoOutput; //prevent accidentley leaving output on standard from crashing
 
@@ -246,7 +246,7 @@ public static class AppCommandRegistry
             }
         }
 
-        if (!AppRegistry.activeApp.useBaseCommands) return false;
+        if (!AppRegistry.ActiveApp.useBaseCommands) return false;
 
         foreach (AppCommand command in baseCommands)
         {
@@ -279,18 +279,18 @@ public static class AppCommandRegistry
             {
                 commandList.Add(c.type.ToString(), []);
             }
-            commandList[c.type.ToString()].Add((new ConsoleLine($"{c.commandName} - {c.description}", BuildArray(AppRegistry.SecondaryCol.Extend(c.commandName.Length + 3), [.. AppRegistry.PrimaryCol])), c.displayPriority));
+            commandList[c.type.ToString()].Add((new ConsoleLine($"{c.commandName} - {c.description}", BuildArray(AppRegistry.SecondaryCol.SetLength(c.commandName.Length + 3), [.. AppRegistry.PrimaryCol])), c.displayPriority));
         }
 
-        foreach (AppCommand c in AppRegistry.activeApp.appCommands)
+        foreach (AppCommand c in AppRegistry.ActiveApp.appCommands)
         {
-            string catName = c.type == AppCommand.CommandType.AppSpecific ? AppRegistry.activeApp.name : c.type.ToString();
+            string catName = c.type == AppCommand.CommandType.AppSpecific ? AppRegistry.ActiveApp.name : c.type.ToString();
 
             if (!commandList.ContainsKey(catName))
             {
                 commandList.Add(catName, []);
             }
-            commandList[catName].Add((new ConsoleLine($"{c.commandName} - {c.description}", BuildArray(AppRegistry.SecondaryCol.Extend(c.commandName.Length + 3), [.. AppRegistry.PrimaryCol])), c.displayPriority));
+            commandList[catName].Add((new ConsoleLine($"{c.commandName} - {c.description}", BuildArray(AppRegistry.SecondaryCol.SetLength(c.commandName.Length + 3), [.. AppRegistry.PrimaryCol])), c.displayPriority));
         }
 
         UserInput.CreateCategorisedReadMenu("Help", 5, commandList.Select(x => (x.Key, x.Value.OrderByDescending(x => x.Item2).Select(x => x.Item1).ToArray())).ToArray());

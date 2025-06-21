@@ -156,7 +156,7 @@ public class UserInputProfile
 
         if (errors.Count == 0 || outputFormat == OutputFormat.NoOutput) return errors.Count == 0;
 
-        ConsoleAction.SendConsoleMessage(new ConsoleLine("--- Input Invalid --- ", AppRegistry.SecondaryCol.Extend(22)));
+        ConsoleAction.SendConsoleMessage(new ConsoleLine("--- Input Invalid --- ", AppRegistry.SecondaryCol.SetLength(22)));
         for (int i = 0; i < errors.Count; i++)
         {
             ConsoleAction.SendConsoleMessage(new ConsoleLine($"{i + 1}. {errors[i]}", AppRegistry.PrimaryCol));

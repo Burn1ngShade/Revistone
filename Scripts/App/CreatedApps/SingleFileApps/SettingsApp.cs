@@ -9,6 +9,7 @@ using static Revistone.Console.ConsoleAction;
 using static Revistone.App.BaseApps.SettingsApp.Setting;
 using static Revistone.Functions.PersistentDataFunctions;
 using System.Dynamic;
+using Revistone.Console.Image;
 
 namespace Revistone.App.BaseApps;
 
@@ -116,11 +117,11 @@ public class SettingsApp : App
     ];
 
     public SettingsApp() : base() { }
-    public SettingsApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 90) { }
+    public SettingsApp(string name, string description, (ConsoleColour[] primaryColour, ConsoleColour[] secondaryColour, ConsoleColour[] tertiaryColour) consoleSettings, (ConsoleColour[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 90) { }
 
     public override App[] OnRegister()
     {
-        return [new SettingsApp("Settings", "For Editing And Viewing Console Settings.", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 70, 40)];
+        return [new SettingsApp("Settings", "For Editing And Viewing Console Settings.", (ConsoleColour.DarkBlue.ToArray(), ConsoleColour.Cyan.ToArray(), ConsoleColour.Blue.ToArray()), (BaseBorderColours.Stretch(3).SetLength(18), 5), [], 70, 40)];
     }
 
     public override void OnRevistoneStartup()
@@ -136,18 +137,18 @@ public class SettingsApp : App
         for (int i = 0; i <= 10; i++) { UpdateLineExceptionStatus(true, i); }
 
         ShiftLine();
-        ConsoleLine[] title = TitleFunctions.CreateTitle("SETTINGS", AdvancedHighlight(97, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10), (ConsoleColor.Cyan.ToArray(), 48, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1);
-        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        ConsoleLine[] title = TitleFunctions.CreateTitle("SETTINGS", Highlight(97, ConsoleColour.DarkBlue.ToArray(), (ConsoleColour.Cyan.ToArray(), 0, 10), (ConsoleColour.Cyan.ToArray(), 48, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1);
+        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.ActiveApp.borderColourScheme.speed, true), title.Length).ToArray());
 
         int catIndex = 0;
         while (true)
         {
 
-            SendConsoleMessage(new ConsoleLine($"Tip - {Manager.GetConsoleTip}", BuildArray(AppRegistry.SecondaryCol.Extend(5), AppRegistry.PrimaryCol)));
+            SendConsoleMessage(new ConsoleLine($"Tip - {Manager.GetConsoleTip}", BuildArray(AppRegistry.SecondaryCol.SetLength(5), AppRegistry.PrimaryCol)));
             ShiftLine();
 
-            catIndex = UserInput.CreateOptionMenu("--- Settings ---", ((SettingCategory[])Enum.GetValues(typeof(SettingCategory))).Select(x => new ConsoleLine($"{x} [{settings.Where(y => y.category.ToString() == x.ToString()).ToArray().Length}]", BuildArray(ConsoleColor.Cyan.ToArray(x.ToString().Length), ConsoleColor.DarkBlue.ToArray(5)))).Concat(
-                [new ConsoleLine("Exit", ConsoleColor.DarkBlue)]
+            catIndex = UserInput.CreateOptionMenu("--- Settings ---", ((SettingCategory[])Enum.GetValues(typeof(SettingCategory))).Select(x => new ConsoleLine($"{x} [{settings.Where(y => y.category.ToString() == x.ToString()).ToArray().Length}]", BuildArray(ConsoleColour.Cyan.ToArray(x.ToString().Length), ConsoleColour.DarkBlue.ToArray(5)))).Concat(
+                [new ConsoleLine("Exit", ConsoleColour.DarkBlue)]
             ).ToArray(), cursorStartIndex: catIndex);
 
             ClearLines(2, true);
@@ -164,8 +165,8 @@ public class SettingsApp : App
             {
                 SendConsoleMessage(new ConsoleLine(CategoryDescriptions[catIndex], AppRegistry.SecondaryCol));
                 ShiftLine();
-                setIndex = UserInput.CreateOptionMenu($"--- Settings -> {(SettingCategory)catIndex} ---", selectedCat.Select(x => new ConsoleLine($"{x.settingName} - {(x.currentValue.Length <= 25 ? x.currentValue : $"{x.currentValue[..25].TrimEnd()}...")}", BuildArray(AppRegistry.SecondaryCol.Extend(x.settingName.Length + 2), AppRegistry.PrimaryCol.Extend(30)))).Concat(
-                    [new ConsoleLine("Exit", ConsoleColor.DarkBlue)]
+                setIndex = UserInput.CreateOptionMenu($"--- Settings -> {(SettingCategory)catIndex} ---", selectedCat.Select(x => new ConsoleLine($"{x.settingName} - {(x.currentValue.Length <= 25 ? x.currentValue : $"{x.currentValue[..25].TrimEnd()}...")}", BuildArray(AppRegistry.SecondaryCol.SetLength(x.settingName.Length + 2), AppRegistry.PrimaryCol.SetLength(30)))).Concat(
+                    [new ConsoleLine("Exit", ConsoleColour.DarkBlue)]
                 ).ToArray(), cursorStartIndex: setIndex);
                 ClearLines(2, true);
 
@@ -183,25 +184,25 @@ public class SettingsApp : App
 
         while (true)
         {
-            ConsoleColor[] inputColur = [(ConsoleColor)Enum.Parse(typeof(ConsoleColor), GetValue("Input Text Colour").Replace(" ", ""))];
+            ConsoleColour[] inputColur = [new ConsoleColour((ConsoleColor)Enum.Parse(typeof(ConsoleColor), GetValue("Input Text Colour").Replace(" ", "")))];
             int additionalShift = 0;
 
-            SendConsoleMessage(new ConsoleLine($"--- {setting.settingName} - {setting.category} ---", ConsoleColor.DarkBlue));
-            SendConsoleMessage(new ConsoleLine($"{setting.settingName} - '{setting.currentValue}'", BuildArray(ConsoleColor.Cyan.Extend(setting.settingName.Length + 3), inputColur)));
+            SendConsoleMessage(new ConsoleLine($"--- {setting.settingName} - {setting.category} ---", ConsoleColour.DarkBlue));
+            SendConsoleMessage(new ConsoleLine($"{setting.settingName} - '{setting.currentValue}'", BuildArray(ConsoleColour.Cyan.SetLength(setting.settingName.Length + 3), inputColur)));
             ShiftLine();
-            SendConsoleMessage(new ConsoleLine($"Summary - {setting.description}", BuildArray(ConsoleColor.Cyan.Extend(9), ConsoleColor.DarkBlue.ToArray())));
-            SendConsoleMessage(new ConsoleLine($"Default Value - '{setting.defaultValue}'", BuildArray(ConsoleColor.Cyan.Extend(15), ConsoleColor.DarkBlue.ToArray())));
+            SendConsoleMessage(new ConsoleLine($"Summary - {setting.description}", BuildArray(ConsoleColour.Cyan.SetLength(9), ConsoleColour.DarkBlue.ToArray())));
+            SendConsoleMessage(new ConsoleLine($"Default Value - '{setting.defaultValue}'", BuildArray(ConsoleColour.Cyan.SetLength(15), ConsoleColour.DarkBlue.ToArray())));
             ShiftLine();
             if (setting.requiresRestart || (setting.category == SettingCategory.Developer && setting.settingName != "Developer Mode"))
             {
                 if (setting.category == SettingCategory.Developer && setting.settingName != "Developer Mode")
                 {
-                    SendConsoleMessage(new ConsoleLine("This Setting Only Applies In Developer Mode.", ConsoleColor.DarkYellow));
+                    SendConsoleMessage(new ConsoleLine("This Setting Only Applies In Developer Mode.", ConsoleColour.DarkYellow));
                     additionalShift++;
                 }
                 if (setting.requiresRestart)
                 {
-                    SendConsoleMessage(new ConsoleLine("This Setting Requires A Restart To Take Effect.", ConsoleColor.DarkYellow));
+                    SendConsoleMessage(new ConsoleLine("This Setting Requires A Restart To Take Effect.", ConsoleColour.DarkYellow));
                     additionalShift++;
                 }
                 ShiftLine();
@@ -209,7 +210,7 @@ public class SettingsApp : App
             }
 
             userOption = UserInput.CreateOptionMenu("--- Options ---", [
-            new ConsoleLine("Edit Value", ConsoleColor.Cyan), new ConsoleLine("Reset Value", ConsoleColor.Cyan), new ConsoleLine("Exit", ConsoleColor.DarkBlue)],
+            new ConsoleLine("Edit Value", ConsoleColour.Cyan), new ConsoleLine("Reset Value", ConsoleColour.Cyan), new ConsoleLine("Exit", ConsoleColour.DarkBlue)],
             cursorStartIndex: userOption);
 
             if (clearConsole) ClearPrimaryConsole();
@@ -233,14 +234,14 @@ public class SettingsApp : App
 
                         if (dropdownSetting.options.Length >= 6)
                         {
-                            int selectedOption = UserInput.CreateMultiPageOptionMenu($"Update [{dropdownSetting.settingName}]", [.. dropdownSetting.options.Select((x, i) => new ConsoleLine(x, i == selectedIndex ? ConsoleColor.DarkYellow : ConsoleColor.Cyan))], [new ConsoleLine("Exit", AppRegistry.PrimaryCol)], 6, selectedIndex);
+                            int selectedOption = UserInput.CreateMultiPageOptionMenu($"Update [{dropdownSetting.settingName}]", [.. dropdownSetting.options.Select((x, i) => new ConsoleLine(x, i == selectedIndex ? ConsoleColour.DarkYellow : ConsoleColour.Cyan))], [new ConsoleLine("Exit", AppRegistry.PrimaryCol)], 6, selectedIndex);
                             if (selectedOption == -1) break; // user exited
                             settings[settingIndex].currentValue = dropdownSetting.options[selectedOption];
                         }
                         else
                         {
                             int selectedOption = UserInput.CreateOptionMenu($"--- Update [{dropdownSetting.settingName}] ---",
-                            dropdownSetting.options.Select((x, i) => new ConsoleLine(x, i == selectedIndex ? ConsoleColor.DarkYellow : ConsoleColor.Cyan)).Concat([new ConsoleLine("Exit", ConsoleColor.DarkBlue)]).ToArray(), cursorStartIndex: selectedIndex);
+                            dropdownSetting.options.Select((x, i) => new ConsoleLine(x, i == selectedIndex ? ConsoleColour.DarkYellow : ConsoleColour.Cyan)).Concat([new ConsoleLine("Exit", ConsoleColour.DarkBlue)]).ToArray(), cursorStartIndex: selectedIndex);
                             if (selectedOption == dropdownSetting.options.Length) break; // user exited
                             settings[settingIndex].currentValue = dropdownSetting.options[selectedOption];
                         }
@@ -272,19 +273,19 @@ public class SettingsApp : App
     /// <summary> Allows the user to view a given setting </summary>
     public static void SettingGetMenu(string setting)
     {
-        ConsoleColor[] inputColur = [(ConsoleColor)Enum.Parse(typeof(ConsoleColor), GetValue("Input Text Colour").Replace(" ", ""))];
+        ConsoleColour[] inputColur = [new ConsoleColour((ConsoleColor)Enum.Parse(typeof(ConsoleColor), GetValue("Input Text Colour").Replace(" ", "")))];
 
         Setting s = settings[GetSettingIndex(setting)];
-        SendConsoleMessage(new ConsoleLine($"--- {s.settingName} - {s.category} ---", ConsoleColor.DarkBlue));
-        SendConsoleMessage(new ConsoleLine($"{s.settingName} - '{s.currentValue}'", BuildArray(ConsoleColor.Cyan.Extend(s.settingName.Length + 3), inputColur)));
+        SendConsoleMessage(new ConsoleLine($"--- {s.settingName} - {s.category} ---", ConsoleColour.DarkBlue));
+        SendConsoleMessage(new ConsoleLine($"{s.settingName} - '{s.currentValue}'", BuildArray(ConsoleColour.Cyan.ToArray(s.settingName.Length + 3), inputColur)));
         ShiftLine();
-        SendConsoleMessage(new ConsoleLine($"Summary - {s.description}", BuildArray(ConsoleColor.Cyan.Extend(9), ConsoleColor.DarkBlue.ToArray())));
-        SendConsoleMessage(new ConsoleLine($"Default Value - '{s.defaultValue}'", BuildArray(ConsoleColor.Cyan.Extend(15), ConsoleColor.DarkBlue.ToArray())));
+        SendConsoleMessage(new ConsoleLine($"Summary - {s.description}", BuildArray(ConsoleColour.Cyan.SetLength(9), ConsoleColour.DarkBlue.ToArray())));
+        SendConsoleMessage(new ConsoleLine($"Default Value - '{s.defaultValue}'", BuildArray(ConsoleColour.Cyan.ToArray(15), ConsoleColour.DarkBlue.ToArray())));
         if (s.requiresRestart || (s.category == SettingCategory.Developer && s.settingName != "Developer Mode"))
         {
             ShiftLine();
-            if (s.category == SettingCategory.Developer && s.settingName != "Developer Mode") SendConsoleMessage(new ConsoleLine("This Setting Only Applies In Developer Mode.", ConsoleColor.DarkYellow));
-            if (s.requiresRestart) SendConsoleMessage(new ConsoleLine("This Setting Requires A Restart To Take Effect.", ConsoleColor.DarkYellow));
+            if (s.category == SettingCategory.Developer && s.settingName != "Developer Mode") SendConsoleMessage(new ConsoleLine("This Setting Only Applies In Developer Mode.", ConsoleColour.DarkYellow));
+            if (s.requiresRestart) SendConsoleMessage(new ConsoleLine("This Setting Requires A Restart To Take Effect.", ConsoleColour.DarkYellow));
         }
     }
 
@@ -379,9 +380,9 @@ public class SettingsApp : App
     }
 
     ///<summary> Get the value of a setting with a given name. </summary>
-    public static ConsoleColor[] GetValueAsConsoleColour(string settingName)
+    public static ConsoleColour[] GetValueAsConsoleColour(string settingName)
     {
-        return [(ConsoleColor)Enum.Parse(typeof(ConsoleColor), GetValue(settingName).Replace(" ", ""))];
+        return [new ConsoleColour((ConsoleColor)Enum.Parse(typeof(ConsoleColor), GetValue(settingName).Replace(" ", "")))];
     }
 
     ///<summary> Get the value of a setting with a given name. </summary>

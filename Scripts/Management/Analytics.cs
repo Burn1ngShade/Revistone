@@ -8,6 +8,7 @@ using static Revistone.Functions.ColourFunctions;
 using Revistone.Console;
 using Revistone.Interaction;
 using System.Diagnostics;
+using Revistone.Console.Image;
 
 namespace Revistone.Management;
 
@@ -41,7 +42,7 @@ public static class Analytics
         {
             General.TotalRuntimeTicks += Manager.ElapsedTicks - lastRuntimeTicks;
             rAnalytics.Difference(General); // dif between last update and now
-            App.TrackAppRuntime(AppRegistry.activeApp.name, rAnalytics); // add dif
+            App.TrackAppRuntime(AppRegistry.ActiveApp.name, rAnalytics); // add dif
 
             SaveAnalytics();
             rAnalytics = new(General);
@@ -157,10 +158,10 @@ public static class Analytics
     ///<summary> Attempts to restore corrupted data from most recent backup. </summary>
     public static void RestoreAnalyticsBackup()
     {
-        ConsoleColor[][] c = [
-            BuildArray(AppRegistry.PrimaryCol.Extend(24), AppRegistry.SecondaryCol),
-            BuildArray(AppRegistry.PrimaryCol.Extend(21), AppRegistry.SecondaryCol),
-            BuildArray(AppRegistry.PrimaryCol.Extend(28), AppRegistry.SecondaryCol)
+        ConsoleColour[][] c = [
+            BuildArray(AppRegistry.PrimaryCol.SetLength(24), AppRegistry.SecondaryCol),
+            BuildArray(AppRegistry.PrimaryCol.SetLength(21), AppRegistry.SecondaryCol),
+            BuildArray(AppRegistry.PrimaryCol.SetLength(28), AppRegistry.SecondaryCol)
         ];
 
         GeneralAnalyticsData? g = LoadFileFromJSON<GeneralAnalyticsData>(path + "Backup/General.json", false);

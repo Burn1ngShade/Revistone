@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Revistone.Console;
+using Revistone.Console.Image;
 using Revistone.Functions;
 
 using static Revistone.Console.ConsoleAction;
@@ -37,7 +38,7 @@ public static class Diagnostics
         if (header) programLog += $"Time Elapsed - {Math.Round(ElapsedTime, 2)} ms\n";
         if (showInConsole)
         {
-            SendConsoleMessage(new ConsoleLine($"{t}", header ? AppRegistry.SecondaryCol : isWarning ? [ConsoleColor.Yellow] : AppRegistry.PrimaryCol));
+            SendConsoleMessage(new ConsoleLine($"{t}", header ? AppRegistry.SecondaryCol : isWarning ? [ConsoleColour.Yellow] : AppRegistry.PrimaryCol));
             if (header) SendConsoleMessage(new ConsoleLine($"Time Elapsed - {Math.Round(ElapsedTime, 2)} ms", AppRegistry.PrimaryCol));
         }
     }
@@ -54,8 +55,8 @@ public static class Diagnostics
 
         int errorStartIndex = tokens.Take(index).Select(x => x.content.Length + 1).Sum() + 2;
 
-        SendConsoleMessages(errorStrings.Select((x, i) => new ConsoleLine(x, [ConsoleColor.Red],
-        i == 1 ? ColourFunctions.AdvancedHighlight(errorStrings[1].Length, ConsoleColor.Black, ConsoleColor.DarkGray, (errorStartIndex, tokens[index].content.Length)) : [ConsoleColor.Black])).ToArray());
+        SendConsoleMessages(errorStrings.Select((x, i) => new ConsoleLine(x, [ConsoleColour.Red],
+        i == 1 ? ColourFunctions.Highlight(errorStrings[1].Length, ConsoleColour.Black.ToArray(), (ConsoleColour.DarkGray.ToArray(), errorStartIndex, tokens[index].content.Length)) : [ConsoleColour.Black])).ToArray());
 
         programLog += "\n--- Error ---\n";
         programLog += string.Join('\n', errorStrings);

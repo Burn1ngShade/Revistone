@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Revistone.App;
 using Revistone.Console;
+using Revistone.Console.Image;
 using Revistone.Functions;
 
 using static Revistone.Console.ConsoleAction;
@@ -63,7 +64,7 @@ public static class Profiler
                 string calcTicks = $"Calc Ticks (ms): Avg - {formattedAverages[0]} | {CalcTime.ToElementString()} ";
                 string compTicks = $"Comp Ticks (ms): Avg - {formattedAverages[1]} | {TickTime.ToElementString()}";
 
-                UpdateDebugConsoleLine(new ConsoleLine($"[Profiler] FPS: {Fps}, TPS: {Tps}, Mode: {(useExperimentalRendering ? "Quality" : "Performance")}", BuildArray(AppRegistry.SecondaryCol.Extend(10), AppRegistry.PrimaryCol)), debugStartIndex + 1);
+                UpdateDebugConsoleLine(new ConsoleLine($"[Profiler] FPS: {Fps}, TPS: {Tps}, Mode: {(useExperimentalRendering ? "Quality" : "Performance")}", BuildArray(AppRegistry.SecondaryCol.SetLength(10), AppRegistry.PrimaryCol)), debugStartIndex + 1);
                 UpdateDebugConsoleLine(new ConsoleLine($"Tick Num: {tickNum}, Lost Duration {CalcTime.Where(s => s > 25).Sum(s => s - 25)} ms, Total Duration: {Math.Round((double)CalcTime.Sum(), 2)} ms", AppRegistry.PrimaryCol), debugStartIndex + 2);
                 UpdateDebugConsoleLine(new ConsoleLine(calcTicks, ColourTickInfo(calcTicks)), debugStartIndex + 3);
                 UpdateDebugConsoleLine(new ConsoleLine(compTicks, ColourTickInfo(compTicks, 25, 30)), debugStartIndex + 4);
@@ -76,7 +77,7 @@ public static class Profiler
             RenderLogicTime.Clear();
         }
 
-        if (Enabled && GetConsoleLine(debugLineIndex + 1).lineText.Length != 0) // stats that require more realtime updates
+        if (Enabled && GetConsoleLine(debugLineIndex + 1).LineText.Length != 0) // stats that require more realtime updates
         {
             UpdateDebugConsoleLine(new ConsoleLine($"Window Width: {windowSize.width}, Window Height: {windowSize.height}", AppRegistry.PrimaryCol), debugStartIndex + 6);
             UpdateDebugConsoleLine(new ConsoleLine($"Primary Line Index: {primaryLineIndex}, Debug Line Index: {debugLineIndex}", AppRegistry.PrimaryCol), debugStartIndex + 7);
@@ -84,12 +85,13 @@ public static class Profiler
     }
 
     /// <summary> Colours ticks according to their duration. </summary>
-    static ConsoleColor[] ColourTickInfo(string ticks, int warningThreshold = 15, int errorThreshold = 25)
+    static ConsoleColour[] ColourTickInfo(string ticks, int warningThreshold = 15, int errorThreshold = 25)
     {
-        ConsoleColor[] colours = new ConsoleColor[ticks.Length];
+        DeveloperTools.Log(ticks.Length);
+      
+        ConsoleColour[] colours = new ConsoleColour[ticks.Length];
         for (int i = 0; i < ticks.Length; i++)
         {
-            if (colours[i] != ConsoleColor.Black) continue;
 
             string numberString = "";
             int k = 0;
@@ -103,12 +105,14 @@ public static class Profiler
                 else break;
             }
 
+            
             colours[i] = AppRegistry.PrimaryCol[0];
             for (int j = 0; j < numberString.Length; j++)
             {
                 int tickDuration = int.Parse(numberString);
-                colours[i + j] = tickDuration > errorThreshold ? ConsoleColor.Red : tickDuration > warningThreshold ? ConsoleColor.Yellow : AppRegistry.PrimaryCol[0];
+                colours[i + j] = tickDuration > errorThreshold ? ConsoleColour.Red : tickDuration > warningThreshold ? ConsoleColour.Yellow : AppRegistry.PrimaryCol[0];
             }
+            
         }
 
         return colours;

@@ -92,11 +92,11 @@ public static class Manager
             if (ConsoleData.appInitalisation) // load new app
             {
                 Profiler.SetEnabled(Profiler.Enabled);
-                AppRegistry.activeApp.OnAppInitalisation();
+                AppRegistry.ActiveApp.OnAppInitalisation();
                 ConsoleData.appInitalisation = false;
             }
 
-            AppRegistry.activeApp.OnUserPromt();
+            AppRegistry.ActiveApp.OnUserPromt();
 
             if (ConsoleData.consoleReload) continue;
 
@@ -105,7 +105,7 @@ public static class Manager
             if (userInput != "")
             {
                 ConsoleAction.ShiftLine();
-                AppRegistry.activeApp.OnUserInput(userInput);
+                AppRegistry.ActiveApp.OnUserInput(userInput);
             }
 
             DeveloperTools.ThreadCycles[0]++; // increment main thread cycle count
@@ -178,7 +178,7 @@ public static class Manager
     ///<summary> Called upon standard close of the console. </summary>
     static void OnProcessExit(object? sender, EventArgs e)
     {
-        AppRegistry.activeApp.OnRevistoneClose();
+        AppRegistry.ActiveApp.OnRevistoneClose();
         ConsoleVolatileEnvironment.TrySaveEnvironment();
 
         Analytics.General.LastCloseDate = DateTime.Now;
@@ -190,7 +190,7 @@ public static class Manager
     ///<summary> Called upon crash of the console. </summary>
     static void OnProcessCrash(object sender, UnhandledExceptionEventArgs e)
     {
-        AppRegistry.activeApp.OnRevistoneClose();
+        AppRegistry.ActiveApp.OnRevistoneClose();
         ConsoleVolatileEnvironment.TryRestoreEnvironment();
 
         Analytics.General.LastCloseDate = DateTime.Now;

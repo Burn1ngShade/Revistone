@@ -27,7 +27,7 @@ public class ConsoleVolatileEnvironment
             ActiveTimers = TimerWidget.GetActiveTimerInfo(),
             CounterWidget = (ConsoleWidget.WidgetExists("Counter"), ConsoleData.counterWidget),
             WorkspacePath = Workspace.RawPath,
-            OpenApp = AppRegistry.activeApp.name,
+            OpenApp = AppRegistry.ActiveApp.name,
         };
 
         if (SaveFileAsJSON(savePath, environment, true))

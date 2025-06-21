@@ -3,20 +3,22 @@ using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.Management;
 using Revistone.App.Command;
+using Revistone.Console.Image;
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
+
 
 namespace Revistone.App.BaseApps.Tetris;
 
 public class TetrisApp : App
 {
     public TetrisApp() : base() { }
-    public TetrisApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 70) { }
+    public TetrisApp(string name, string description, (ConsoleColour[] primaryColour, ConsoleColour[] secondaryColour, ConsoleColour[] tertiaryColour) consoleSettings, (ConsoleColour[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 70) { }
 
     public override App[] OnRegister()
     {
-        return [ new TetrisApp("Tetris", "It's Tetris.", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.Blue.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5),
+        return [ new TetrisApp("Tetris", "It's Tetris.", (ConsoleColour.DarkBlue.ToArray(), ConsoleColour.Cyan.ToArray(), ConsoleColour.Blue.ToArray()), (BaseBorderColours.Stretch(3).SetLength(18), 5),
             [], 98, 40) ];
     }
 
@@ -24,9 +26,9 @@ public class TetrisApp : App
     {
         base.OnAppInitalisation();
 
-        ConsoleLine[] title = TitleFunctions.CreateTitle("TETRIS", AdvancedHighlight(62, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1, topSpace: 1);
+        ConsoleLine[] title = TitleFunctions.CreateTitle("TETRIS", Highlight(62, ConsoleColour.DarkBlue.ToArray(), (ConsoleColour.Cyan.ToArray(), 0, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1, topSpace: 1);
         SendConsoleMessages(title,
-        Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.ActiveApp.borderColourScheme.speed, true), title.Length).ToArray());
 
         for (int i = 0; i <= 10; i++)
         {
@@ -38,18 +40,21 @@ public class TetrisApp : App
         while (true)
         {
             menuIndex = UserInput.CreateOptionMenu("Options", [
-            (new ConsoleLine("Play", ConsoleColor.Cyan), Play),
-            (new ConsoleLine("Controls", ConsoleColor.Cyan), () => {UserInput.CreateReadMenu("Controls", 4,
-                new ConsoleLine("[A]: Move Piece Left.", ConsoleColor.Cyan),
-                new ConsoleLine("[D]: Move Piece Right.", ConsoleColor.Cyan),
-                new ConsoleLine("[Q]: Rotate Piece Left.", ConsoleColor.Cyan),
-                new ConsoleLine("[E]: Rotate Piece Right.", ConsoleColor.Cyan),
-                new ConsoleLine("[S]: Quick Drop Piece.", ConsoleColor.Cyan),
-                new ConsoleLine("[Space]: Slam Drop Piece.", ConsoleColor.Cyan),
-                new ConsoleLine("[R]: Hold Piece.", ConsoleColor.Cyan),
-                new ConsoleLine("[P]: Pause Game.", ConsoleColor.Cyan),
-                new ConsoleLine("[E]: End Game (If Paused)", ConsoleColor.Cyan));}),
-            (new ConsoleLine("Exit", ConsoleColor.Cyan), () => { ExitApp(); })], cursorStartIndex: menuIndex);
+            (new ConsoleLine("Play", ConsoleColour.Cyan), Play),
+            (new ConsoleLine("Controls", ConsoleColour.Cyan), () =>
+            {
+                UserInput.CreateReadMenu("Controls", 4,
+                    new ConsoleLine("[A]: Move Piece Left.", ConsoleColour.Cyan),
+                    new ConsoleLine("[D]: Move Piece Right.", ConsoleColour.Cyan),
+                    new ConsoleLine("[Q]: Rotate Piece Left.", ConsoleColour.Cyan),
+                    new ConsoleLine("[E]: Rotate Piece Right.", ConsoleColour.Cyan),
+                    new ConsoleLine("[S]: Quick Drop Piece.", ConsoleColour.Cyan),
+                    new ConsoleLine("[Space]: Slam Drop Piece.", ConsoleColour.Cyan),
+                    new ConsoleLine("[R]: Hold Piece.", ConsoleColour.Cyan),
+                    new ConsoleLine("[P]: Pause Game.", ConsoleColour.Cyan),
+                    new ConsoleLine("[E]: End Game (If Paused)", ConsoleColour.Cyan));
+            }),
+            (new ConsoleLine("Exit", ConsoleColour.Cyan), ExitApp)], cursorStartIndex: menuIndex);
 
             if (menuIndex == 2) return;
         }

@@ -2,6 +2,7 @@ using Revistone.Functions;
 using Revistone.Interaction;
 using Revistone.Console;
 using Revistone.App.Command;    
+using Revistone.Console.Image;
 
 using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
@@ -15,11 +16,11 @@ public class TrackerApp : App
     // --- APP BOILER ---
 
     public TrackerApp() : base() { }
-    public TrackerApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 80) { }
+    public TrackerApp(string name, string description, (ConsoleColour[] primaryColour, ConsoleColour[] secondaryColour, ConsoleColour[] tertiaryColour) consoleSettings, (ConsoleColour[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 80) { }
 
     public override App[] OnRegister()
     {
-        return [new TrackerApp("Tracker", "Track Your Goals And Daily Life", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.Cyan.ToArray(), ConsoleColor.DarkCyan.ToArray()), (CyanDarkBlueGradient.Stretch(3).Extend(18, true), 5), [], 70, 50)];
+        return [new TrackerApp("Tracker", "Track Your Goals And Daily Life", (ConsoleColour.DarkBlue.ToArray(), ConsoleColour.Cyan.ToArray(), ConsoleColour.DarkCyan.ToArray()), (BaseBorderColours.Stretch(3).SetLength(18), 5), [], 70, 50)];
     }
 
     public override void ExitApp()
@@ -47,8 +48,8 @@ public class TrackerApp : App
     void MainMenu()
     {
         ShiftLine();
-        ConsoleLine[] title = TitleFunctions.CreateTitle("FOCUS", AdvancedHighlight(97, ConsoleColor.DarkBlue.ToArray(), (ConsoleColor.Cyan.ToArray(), 0, 10), (ConsoleColor.Cyan.ToArray(), 48, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1);
-        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        ConsoleLine[] title = TitleFunctions.CreateTitle("FOCUS", Highlight(97, ConsoleColour.DarkBlue.ToArray(), (ConsoleColour.Cyan.ToArray(), 0, 10), (ConsoleColour.Cyan.ToArray(), 48, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1, bottomSpace: 1);
+        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.ActiveApp.borderColourScheme.speed, true), title.Length).ToArray());
 
         DATA.GetDayData(DATA.today).Display();
 
@@ -56,12 +57,12 @@ public class TrackerApp : App
         while (true)
         {
             pointer = UserInput.CreateOptionMenu("--- Options ---", [
-                (new ConsoleLine("Log", ConsoleColor.Cyan), Log),
-                (new ConsoleLine("Stats", ConsoleColor.Cyan), StatsMenu),
-                (new ConsoleLine("Settings", ConsoleColor.Cyan), TrackerSettingMenus.SettingsMenu),
-                (new ConsoleLine("Next Day", ConsoleColor.DarkBlue), () => DATA.ModifySelectedDate(DATA.selectedDate.AddDays(1))),
-                (new ConsoleLine("Last Day", ConsoleColor.DarkBlue), () => DATA.ModifySelectedDate(DATA.selectedDate.AddDays(-1))),
-                (new ConsoleLine("Exit", ConsoleColor.DarkBlue), ExitApp)], cursorStartIndex: pointer);
+                (new ConsoleLine("Log", ConsoleColour.Cyan), Log),
+                (new ConsoleLine("Stats", ConsoleColour.Cyan), StatsMenu),
+                (new ConsoleLine("Settings", ConsoleColour.Cyan), TrackerSettingMenus.SettingsMenu),
+                (new ConsoleLine("Next Day", ConsoleColour.DarkBlue), () => DATA.ModifySelectedDate(DATA.selectedDate.AddDays(1))),
+                (new ConsoleLine("Last Day", ConsoleColour.DarkBlue), () => DATA.ModifySelectedDate(DATA.selectedDate.AddDays(-1))),
+                (new ConsoleLine("Exit", ConsoleColour.DarkBlue), ExitApp)], cursorStartIndex: pointer);
 
             if (pointer == 5) return;
         }
@@ -138,7 +139,7 @@ public class TrackerApp : App
 
                 ShiftLine();
                 timePeriod = UserInput.CreateMultiPageOptionMenu("Time Period",
-                timePeriodData.Select((x, i) => new ConsoleLine(x.name, i == timePeriod ? ConsoleColor.Yellow : ConsoleColor.Cyan)).ToArray(), [new ConsoleLine("Exit", ConsoleColor.DarkBlue)], 5, timePeriod);
+                [.. timePeriodData.Select((x, i) => new ConsoleLine(x.name, i == timePeriod ? ConsoleColour.Yellow : ConsoleColour.Cyan))], [new ConsoleLine("Exit", ConsoleColour.DarkBlue)], 5, timePeriod);
                 if (timePeriod == -1) break;
             }
         }

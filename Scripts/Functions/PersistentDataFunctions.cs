@@ -52,14 +52,14 @@ public static class PersistentDataFunctions
         {
             if (name.Contains(c) && !(allowSlashes && (c == '/' || c == '\\')))
             {
-                if (outputErrors) ConsoleAction.SendConsoleMessage(new ConsoleLine($"File Name Contains Invalid Character - '{c}'", BuildArray(AppRegistry.PrimaryCol.Extend(39), AppRegistry.SecondaryCol)));
+                if (outputErrors) ConsoleAction.SendConsoleMessage(new ConsoleLine($"File Name Contains Invalid Character - '{c}'", BuildArray(AppRegistry.PrimaryCol.SetLength(39), AppRegistry.SecondaryCol)));
                 return false;
             }
         }
 
         if (reservedNames.Contains(name))
         {
-            if (outputErrors) ConsoleAction.SendConsoleMessage(new ConsoleLine($"File Name Is Reserved - '{name}'", BuildArray(AppRegistry.PrimaryCol.Extend(24), AppRegistry.SecondaryCol)));
+            if (outputErrors) ConsoleAction.SendConsoleMessage(new ConsoleLine($"File Name Is Reserved - '{name}'", BuildArray(AppRegistry.PrimaryCol.SetLength(24), AppRegistry.SecondaryCol)));
             return false;
         }
 

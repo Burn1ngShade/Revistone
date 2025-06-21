@@ -8,6 +8,7 @@ using static Revistone.Console.ConsoleAction;
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Functions.PersistentDataFunctions;
 using Revistone.Console.Widget;
+using Revistone.Console.Image;
 
 //FCS -> Flash Card Set
 
@@ -18,16 +19,16 @@ public class FlashCardApp : App
     // --- APP BOILER ---
 
     public FlashCardApp() : base() { }
-    public FlashCardApp(string name, string description, (ConsoleColor[] primaryColour, ConsoleColor[] secondaryColour, ConsoleColor[] tertiaryColour) consoleSettings, (ConsoleColor[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 40) { }
+    public FlashCardApp(string name, string description, (ConsoleColour[] primaryColour, ConsoleColour[] secondaryColour, ConsoleColour[] tertiaryColour) consoleSettings, (ConsoleColour[] colours, int speed) borderSettings, AppCommand[] appCommands, int minAppWidth = 30, int minAppHeight = 30, bool baseCommands = true) : base(name, description, consoleSettings, borderSettings, appCommands, minAppWidth, minAppHeight, baseCommands, 40) { }
 
     public override App[] OnRegister()
     {
         return [
-                new FlashCardApp("Flash Card Manager", "Pratice And Memorise Topics.", (ConsoleColor.DarkBlue.ToArray(), ConsoleColor.DarkGreen.ToArray(), ConsoleColor.Green.ToArray()), (Alternate(DarkGreenAndDarkBlue, 6, 3), 5), [], 70, 40)
+                new FlashCardApp("Flash Card Manager", "Pratice And Memorise Topics.", (ConsoleColour.DarkBlue.ToArray(), ConsoleColour.DarkGreen.ToArray(), ConsoleColour.Green.ToArray()), (VariableStretch([ConsoleColour.DarkGreen, ConsoleColour.DarkBlue], 6, 3), 5), [], 70, 40)
             ];
     }
 
-    static ConsoleColor[] inputCol = [];
+    static ConsoleColour[] inputCol = [];
 
     public override void OnAppInitalisation()
     {
@@ -38,8 +39,8 @@ public class FlashCardApp : App
         inputCol = SettingsApp.GetValueAsConsoleColour("Input Text Colour");
 
         ShiftLine();
-        ConsoleLine[] title = TitleFunctions.CreateTitle("REVISE", AdvancedHighlight(64, AppRegistry.PrimaryCol, (AppRegistry.SecondaryCol.ToArray(), 0, 10), (AppRegistry.PrimaryCol.ToArray(), 32, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1);
-        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.activeApp.borderColourScheme.speed, true), title.Length).ToArray());
+        ConsoleLine[] title = TitleFunctions.CreateTitle("REVISE", Highlight(64, AppRegistry.PrimaryCol, (AppRegistry.SecondaryCol.ToArray(), 0, 10), (AppRegistry.PrimaryCol.ToArray(), 32, 10)), TitleFunctions.AsciiFont.BigMoneyNW, letterSpacing: 1);
+        SendConsoleMessages(title, Enumerable.Repeat(new ConsoleAnimatedLine(ConsoleAnimatedLine.ShiftForegroundColour, "", AppRegistry.ActiveApp.borderColourScheme.speed, true), title.Length).ToArray());
         ShiftLine();
         MainMenu();
     }
@@ -54,7 +55,7 @@ public class FlashCardApp : App
         UserInput.CreateOptionMenu("--- Options ---", [("Use Flash Cards", MainMenuSelectFCS), ("Edit Flash Cards", MainMenuEditFCS),
                 ("Stats", MainMenuStats), ("Exit", ExitApp)]);
 
-        if (AppRegistry.activeApp.name != "Flash Card Manager") return;
+        if (AppRegistry.ActiveApp.name != "Flash Card Manager") return;
 
         MainMenu();
     }
@@ -65,7 +66,7 @@ public class FlashCardApp : App
         string[] flashNames = GetSubFiles(GeneratePath(DataLocation.App, "FlashCard"));
         if (flashNames.Length == 0)
         {
-            SendConsoleMessage(new ConsoleLine("No Flash Card Sets Can Be Found!", ConsoleColor.DarkRed));
+            SendConsoleMessage(new ConsoleLine("No Flash Card Sets Can Be Found!", ConsoleColour.DarkRed));
             UserInput.WaitForUserInput(space: true);
             return;
         }
@@ -113,7 +114,7 @@ public class FlashCardApp : App
             string[] flashNames = GetSubFiles(GeneratePath(DataLocation.App, "FlashCard"));
             if (flashNames.Length == 0)
             {
-                SendConsoleMessage(new ConsoleLine("No Flash Card Sets Can Be Found!", ConsoleColor.DarkRed));
+                SendConsoleMessage(new ConsoleLine("No Flash Card Sets Can Be Found!", ConsoleColour.DarkRed));
                 UserInput.WaitForUserInput(space: true);
                 MainMenuStats();
                 return;
@@ -194,12 +195,12 @@ public class FlashCardApp : App
                     answer = mcfc.answers[int.Parse(answer.Trim())];
                     correctAnswer = mcfc.answers[mcfc.answerIndex];
                 }
-                SendConsoleMessage(new ConsoleLine("Answer Incorrect!", ConsoleColor.DarkRed));
-                SendConsoleMessage(new ConsoleLine($"Your Answer: {answer.Trim()}", BuildArray(AppRegistry.SecondaryCol.Extend(12), inputCol)));
+                SendConsoleMessage(new ConsoleLine("Answer Incorrect!", ConsoleColour.DarkRed));
+                SendConsoleMessage(new ConsoleLine($"Your Answer: {answer.Trim()}", BuildArray(AppRegistry.SecondaryCol.SetLength(12), inputCol)));
                 SendConsoleMessage(new ConsoleLine($"Correct Answer: {correctAnswer}", AppRegistry.SecondaryCol));
             }
 
-            if (UserInput.WaitForUserInput([ConsoleKey.Enter, ConsoleKey.E], space: true, customMessage: new ConsoleLine("Press [Enter] To Continue Or [E] To Exit", BuildArray(AppRegistry.PrimaryCol.Extend(6), AppRegistry.SecondaryCol.Extend(7), AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol.Extend(3), AppRegistry.PrimaryCol.Extend(8)))) == ConsoleKey.E)
+            if (UserInput.WaitForUserInput([ConsoleKey.Enter, ConsoleKey.E], space: true, customMessage: new ConsoleLine("Press [Enter] To Continue Or [E] To Exit", BuildArray(AppRegistry.PrimaryCol.SetLength(6), AppRegistry.SecondaryCol.SetLength(7), AppRegistry.PrimaryCol.SetLength(16), AppRegistry.SecondaryCol.SetLength(3), AppRegistry.PrimaryCol.SetLength(8)))) == ConsoleKey.E)
             {
                 TimerWidget.CancelTimer("Flash Cards");
                 return;
@@ -238,7 +239,7 @@ public class FlashCardApp : App
 
         if (correctQuestions.Count < s.questions.Count)
         {
-            if (UserInput.WaitForUserInput([ConsoleKey.Enter, ConsoleKey.R], space: true, customMessage: new ConsoleLine("Press [Enter] To Continue Or [R] To Retry Incorrect Questions", BuildArray(AppRegistry.PrimaryCol.Extend(6), AppRegistry.SecondaryCol.Extend(7), AppRegistry.PrimaryCol.Extend(16), AppRegistry.SecondaryCol.Extend(3), AppRegistry.PrimaryCol.Extend(19)))) == ConsoleKey.R)
+            if (UserInput.WaitForUserInput([ConsoleKey.Enter, ConsoleKey.R], space: true, customMessage: new ConsoleLine("Press [Enter] To Continue Or [R] To Retry Incorrect Questions", BuildArray(AppRegistry.PrimaryCol.SetLength(6), AppRegistry.SecondaryCol.SetLength(7), AppRegistry.PrimaryCol.SetLength(16), AppRegistry.SecondaryCol.SetLength(3), AppRegistry.PrimaryCol.SetLength(19)))) == ConsoleKey.R)
             {
                 FlashCardSet incorrectSet = new FlashCardSet($"{s.name}{(subset ? "" : " - Incorrect Answers")}", [.. shuffledQuestions.Where((x, i) => !correctQuestions.Contains(i))]);
                 UseFCS(incorrectSet, true);
@@ -352,7 +353,7 @@ public class FlashCardApp : App
                     ClearLines(1, true);
                     if (validQuestionIndexes.Contains(questionIndex) || questionIndex < 0 || questionIndex >= promt.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length)
                     {
-                        SendConsoleMessage(new ConsoleLine("Index Already Registered, Or Out Of Bounds Of The Promt!", ConsoleColor.DarkRed));
+                        SendConsoleMessage(new ConsoleLine("Index Already Registered, Or Out Of Bounds Of The Promt!", ConsoleColour.DarkRed));
                         UserInput.WaitForUserInput(space: true);
                         ClearLines(2, true);
                     }
@@ -368,7 +369,7 @@ public class FlashCardApp : App
     {
         if (s.questions.Count == 0)
         {
-            SendConsoleMessage(new ConsoleLine("This Flash Card Set Has No Questions!", ConsoleColor.DarkRed));
+            SendConsoleMessage(new ConsoleLine("This Flash Card Set Has No Questions!", ConsoleColour.DarkRed));
             UserInput.WaitForUserInput(space: true);
             return;
         }

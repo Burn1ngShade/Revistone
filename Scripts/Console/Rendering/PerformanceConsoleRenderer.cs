@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
-
+using Revistone.Functions;
 using static Revistone.Console.Data.ConsoleData;
 using static Revistone.Functions.ColourFunctions;
 
@@ -221,7 +221,7 @@ public static class PerformanceConsoleRenderer
     {
         for (int i = 0; i < consoleLines.Length; i++)
         {
-            if (consoleLines[i] == null || consoleLines[i].updated) continue;
+            if (consoleLines[i] == null || consoleLines[i].Updated) continue;
 
             // mabye move this out??? i dont know if itll break something
             if (System.Console.WindowHeight != windowSize.height || System.Console.WindowWidth != windowSize.width)
@@ -238,20 +238,19 @@ public static class PerformanceConsoleRenderer
     static void WriteConsoleLine(int lineIndex)
     {
         consoleLines[lineIndex].MarkAsUpToDate();
-
         consoleLines[lineIndex].Normalise();
-
-        if (consoleLinesBuffer[lineIndex].lineText.Length > consoleLines[lineIndex].lineText.Length) //clears line between end of currentline and buffer line
+        
+        if (consoleLinesBuffer[lineIndex].LineText.Length > consoleLines[lineIndex].LineText.Length) //clears line between end of currentline and buffer line
         {
-            for (int i = consoleLines[lineIndex].lineText.Length; i < windowSize.width; i++)
+            for (int i = consoleLines[lineIndex].LineText.Length; i < windowSize.width; i++)
             {
                 SetChar(i, lineIndex, ' ', ConsoleColor.White, ConsoleColor.Black);
             }
         }
 
-        for (int i = 0; i < Math.Min(consoleLines[lineIndex].lineText.Length, windowSize.width); i++)
+        for (int i = 0; i < Math.Min(consoleLines[lineIndex].LineText.Length, windowSize.width); i++)
         {
-            SetChar(i, lineIndex, consoleLines[lineIndex].lineText[i], consoleLines[lineIndex].lineColour[i], consoleLines[lineIndex].lineBGColour[i]);
+            SetChar(i, lineIndex, consoleLines[lineIndex].LineText[i], consoleLines[lineIndex].LineColour[i].EquivalentConsoleColor, consoleLines[lineIndex].LineBGColour[i].EquivalentConsoleColor);
         }
     }
 }

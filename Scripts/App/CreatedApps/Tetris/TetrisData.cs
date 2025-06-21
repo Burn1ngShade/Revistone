@@ -1,22 +1,24 @@
+using Revistone.Console.Image;
+
 namespace Revistone.App.BaseApps.Tetris;
 
 public static class TetrisData
 {
     public enum BlockType { I, L, J, S, T, Z, O, Null }
 
-    static ConsoleColor[] blockColours = [
-        ConsoleColor.Black,
-        ConsoleColor.Cyan,
-        ConsoleColor.DarkGreen,
-        ConsoleColor.Blue,
-        ConsoleColor.Green,
-        ConsoleColor.Magenta,
-        ConsoleColor.Red,
-        ConsoleColor.Yellow,
-        ConsoleColor.Gray,
+    static ConsoleColour[] blockColours = [
+        ConsoleColour.Black,
+        ConsoleColour.Cyan,
+        ConsoleColour.DarkGreen,
+        ConsoleColour.Blue,
+        ConsoleColour.Green,
+        ConsoleColour.Magenta,
+        ConsoleColour.Red,
+        ConsoleColour.Yellow,
+        ConsoleColour.Gray,
     ];
 
-    public static ConsoleColor GetBlockColour(int blockType)
+    public static ConsoleColour GetBlockColour(int blockType)
     {
         return blockColours[blockType];
     }

@@ -1,5 +1,6 @@
 using Revistone.Console;
 using Revistone.Interaction;
+using Revistone.Console.Image;
 
 using static Revistone.Functions.ColourFunctions;
 using static Revistone.Console.ConsoleAction;
@@ -66,32 +67,32 @@ class TrackerDayData
 
     public void Display()
     {
-        ConsoleColor[] inputColour = SettingsApp.GetValueAsConsoleColour("Input Text Colour");
+        ConsoleColour[] inputColour = SettingsApp.GetValueAsConsoleColour("Input Text Colour");
 
         (string name, DateOnly startDate, DateOnly endDate)[] arc = LoadFile(GeneratePath(DataLocation.App, "Tracker", $"ArcData"), 3, true).Select(x => (x[0], DateOnly.Parse(x[1]), DateOnly.Parse(x[2]))).ToArray();
         string arcString = string.Join(' ', arc.Where(x => x.startDate <= date && x.endDate >= date).Select(x => $"[{x.name}]"));
 
         string dayString = $"--- Day {DATA.GetDayIndex(date) + 1} - [{date}] ---";
-        SendConsoleMessage(new ConsoleLine($"{dayString} {arcString}", BuildArray(ConsoleColor.DarkBlue.Extend(dayString.Length), ConsoleColor.Red.Extend(arcString.Length))));
+        SendConsoleMessage(new ConsoleLine($"{dayString} {arcString}", BuildArray(ConsoleColour.DarkBlue.SetLength(dayString.Length), ConsoleColour.Red.SetLength(arcString.Length))));
         foreach (TrackerStat stat in stats)
         {
-            SendConsoleMessage(new ConsoleLine(stat.ToString(), BuildArray(ConsoleColor.Cyan.Extend(stat.statName.Length + 2), inputColour)));
+            SendConsoleMessage(new ConsoleLine(stat.ToString(), BuildArray(ConsoleColour.Cyan.ToArray(stat.statName.Length + 2), inputColour)));
         }
         ShiftLine();
     }
 
     public void DisplayAsMenu(ref int pointer)
     {
-        ConsoleColor[] inputColour = SettingsApp.GetValueAsConsoleColour("Input Text Colour").ExtendEnd(1000);
+        ConsoleColour[] inputColour = SettingsApp.GetValueAsConsoleColour("Input Text Colour").SetLength(1000);
 
         ConsoleLine[] dayStatsSelect = [.. stats.Select(
-            x => new ConsoleLine($"{x} ", BuildArray(ConsoleColor.Cyan.Extend(x.statName.Length + 2), inputColour)))];
-        dayStatsSelect = dayStatsSelect.Concat(new ConsoleLine[] { new ConsoleLine("Exit", ConsoleColor.DarkBlue) }).ToArray();
+            x => new ConsoleLine($"{x} ", BuildArray(ConsoleColour.Cyan.SetLength(x.statName.Length + 2), inputColour)))];
+        dayStatsSelect = [.. dayStatsSelect, new ConsoleLine("Exit", ConsoleColour.DarkBlue)];
 
         (string name, DateOnly startDate, DateOnly endDate)[] arc = LoadFile(GeneratePath(DataLocation.App, "Tracker", $"ArcData"), 3, true).Select(x => (x[0], DateOnly.Parse(x[1]), DateOnly.Parse(x[2]))).ToArray();
         string arcString = string.Join(' ', arc.Where(x => x.startDate <= date && x.endDate >= date).Select(x => $"[{x.name}]"));
         string dayString = $"--- Day {DATA.GetDayIndex(date) + 1} - [{date}] ---";
 
-        pointer = UserInput.CreateOptionMenu(new ConsoleLine($"{dayString} {arcString}", BuildArray(ConsoleColor.DarkBlue.Extend(dayString.Length), ConsoleColor.Red.Extend(arcString.Length))), dayStatsSelect, cursorStartIndex: pointer);
+        pointer = UserInput.CreateOptionMenu(new ConsoleLine($"{dayString} {arcString}", BuildArray(ConsoleColour.DarkBlue.SetLength(dayString.Length), ConsoleColour.Red.SetLength(arcString.Length))), dayStatsSelect, cursorStartIndex: pointer);
     }
 }
